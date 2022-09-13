@@ -3,8 +3,6 @@ Welcome to Project Compass.
 This is the beginnings of the repo of Project Compass located here on Slack.
 https://sfbrigade.slack.com/archives/C01R8E75N1K
 
-Project Leads are - Niko and Nina Hildo
-
 This is the main file for the project summary
 https://docs.google.com/document/d/13S8i_FnynycBV8vipjiFO4DwM2tDbauoN212gAurUd4/edit#heading=h.2vr8ga7aqr4o
 
