@@ -6,7 +6,12 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "tsx src/scripts/migrate-database.ts",
-    "db:reset": "tsx src/scripts/reset-database.ts"
+    "db:reset": "tsx src/scripts/reset-database.ts",
+    "format": "prettier --write --ignore-unknown .",
+    "prepare": "cd .. && husky install api/.husky"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   },
   "repository": {
     "type": "git",
@@ -31,6 +36,9 @@
     "ava": "^5.1.1",
     "ava-postgres": "^3.0.0",
     "dotenv": "^16.0.3",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.3",
     "tsx": "^3.12.2",
     "type-fest": "^3.5.4",
     "typescript": "^4.9.5"

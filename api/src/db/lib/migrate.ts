@@ -1,24 +1,27 @@
-import * as postgresMigrations from "postgres-migrations"
-import * as zg from "zapatos/generate"
-import { Pool } from "pg"
-import path from "node:path"
-import { logger } from "~/lib"
+import * as postgresMigrations from "postgres-migrations";
+import * as zg from "zapatos/generate";
+import { Pool } from "pg";
+import path from "node:path";
+import { logger } from "~/lib";
 
 export const migrate = async (databaseUrl: string) => {
-  const migrationsDirectory = path.join(process.cwd(), "src/db/migrations")
-  const zapatosDirectory = path.join(process.cwd(), "src/db")
+  const migrationsDirectory = path.join(process.cwd(), "src/db/migrations");
+  const zapatosDirectory = path.join(process.cwd(), "src/db");
 
-  logger.info("Migrating database...")
+  logger.info("Migrating database...");
 
   const pool = new Pool({
-    connectionString: databaseUrl
-  })
-  await postgresMigrations.migrate({
-    client: pool,
-  }, migrationsDirectory)
-  await pool.end()
+    connectionString: databaseUrl,
+  });
+  await postgresMigrations.migrate(
+    {
+      client: pool,
+    },
+    migrationsDirectory
+  );
+  await pool.end();
 
-  logger.info("Generating types...")
+  logger.info("Generating types...");
 
   // Generate typings
   await zg.generate({
@@ -26,5 +29,5 @@ export const migrate = async (databaseUrl: string) => {
       connectionString: databaseUrl,
     },
     outDir: zapatosDirectory,
-  })
-}
+  });
+};
