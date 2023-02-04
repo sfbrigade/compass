@@ -18,5 +18,5 @@ jobs:
           cache-dependency-path: ./api/package-lock.json
       - name: Install dependencies
         run: npm i --ci
-      - name: Run format:check
-        run: npm run format:check
+      - name: Check types
+        run: npm run tsc --noEmit
