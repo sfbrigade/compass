@@ -4,10 +4,12 @@ import { loadEnvFromFile, logger } from "~/lib";
 const main = () => {
   loadEnvFromFile();
 
+  const port = process.env.PORT || 8080;
+
   const app = appFactory();
 
-  app.listen(8080, () => {
-    logger.info("Server started on port 8080");
+  app.listen(port, () => {
+    logger.info(`Server started on port ${port}: http://localhost:${port}`);
   });
 };
 
