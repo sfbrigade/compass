@@ -4,11 +4,13 @@ import { Pool } from "pg";
 import path from "node:path";
 import { logger } from "~/lib";
 
-export const migrate = async (databaseUrl: string) => {
+export const migrate = async (databaseUrl: string, silent = false) => {
   const migrationsDirectory = path.join(process.cwd(), "src/db/migrations");
   const zapatosDirectory = path.join(process.cwd(), "src/db");
 
-  logger.info("Migrating database...");
+  if (!silent) {
+    logger.info("Migrating database...");
+  }
 
   const pool = new Pool({
     connectionString: databaseUrl,
@@ -21,7 +23,9 @@ export const migrate = async (databaseUrl: string) => {
   );
   await pool.end();
 
-  logger.info("Generating types...");
+  if (!silent) {
+    logger.info("Generating types...");
+  }
 
   // Generate typings
   await zg.generate({

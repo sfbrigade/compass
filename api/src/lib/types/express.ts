@@ -1,4 +1,5 @@
 import { Pool } from "pg";
+import { logger } from "../logger";
 import { KyselyDatabaseInstance } from "./derived-db-types";
 import { Env } from "./env";
 
@@ -10,6 +11,7 @@ declare global {
       env: Env;
       db: KyselyDatabaseInstance;
       pool: Pool;
+      logger: typeof logger;
     }
   }
 }
