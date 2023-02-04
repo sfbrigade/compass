@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:migrate": "tsx src/scripts/migrate-database.ts",
     "db:reset": "tsx src/scripts/reset-database.ts",
+    "dev": "tsx watch src/scripts/start-api.ts",
     "format": "prettier --write --ignore-unknown .",
     "prepare": "cd .. && husky install api/.husky"
   },
@@ -24,6 +25,7 @@
   },
   "homepage": "https://github.com/sfbrigade/project-compass#readme",
   "dependencies": {
+    "express": "^4.18.2",
     "kysely": "^0.23.4",
     "pg": "^8.9.0",
     "pg-connection-string": "^2.5.0",
@@ -32,6 +34,7 @@
     "zapatos": "^6.1.4"
   },
   "devDependencies": {
+    "@types/express": "^4.17.17",
     "@types/node": "^18.11.18",
     "ava": "^5.1.1",
     "ava-postgres": "^3.0.0",
