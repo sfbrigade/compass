@@ -9,6 +9,7 @@
     "db:reset": "tsx src/scripts/reset-database.ts",
     "dev": "tsx watch src/scripts/start-api.ts",
     "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check --ignore-unknown .",
     "prepare": "cd .. && husky install api/.husky"
   },
   "lint-staged": {
