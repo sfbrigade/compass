@@ -1,0 +1,64 @@
+name: PR
+on: [pull_request]
+jobs:
+  type-test:
+    name: Type test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ./api/package-lock.json
+      - name: Install dependencies
+        run: npm i --ci
+      - name: Check types
+        run: npx tsc --noEmit
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ./api/package-lock.json
+      - name: Install dependencies
+        run: npm i --ci
+      - name: Run format:check
+        run: npm run format:check
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./api
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+          cache: "npm"
+          cache-dependency-path: ./api/package-lock.json
+      - name: Install dependencies
+        run: npm i --ci
+      - name: Pre-pull Postgres image
+        run: docker pull postgres:15
+      - name: Run tests
+        run: npm run test
