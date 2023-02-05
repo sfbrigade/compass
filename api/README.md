@@ -12,6 +12,7 @@ This is the backend API for Compass.
 ## Getting started
 
 1. Copy `.env.example` to `.env.local` and modify as necessary
+(maybe clarify how to copy the page?)
 2. Run `docker compose up -d` to start the database
 3. Run `npm install` to install dependencies
 4. Run `npm run db:reset` to reset and migrate the database
