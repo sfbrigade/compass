@@ -190,6 +190,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       last_name: string;
+      /**
+      * **student.birth_year**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      birth_year: number;
     }
     export interface JSONSelectable {
       /**
@@ -210,6 +216,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       last_name: string;
+      /**
+      * **student.birth_year**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      birth_year: number;
     }
     export interface Whereable {
       /**
@@ -230,6 +242,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **student.birth_year**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -250,6 +268,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       last_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **student.birth_year**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      birth_year: number | db.Parameter<number> | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -270,6 +294,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **student.birth_year**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
     }
     export type UniqueIndex = 'student_pkey';
     export type Column = keyof Selectable;
