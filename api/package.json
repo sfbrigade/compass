@@ -11,6 +11,8 @@
     "dev": "tsx watch src/scripts/start-api.ts",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "tsc --noEmit --watch",
     "prepare": "cd .. && husky install api/.husky"
   },
   "lint-staged": {
