@@ -4,7 +4,15 @@ import { Pool } from "pg";
 import path from "node:path";
 import { logger } from "~/lib";
 
-export const migrate = async (databaseUrl: string, silent = false) => {
+interface MigrateOptions {
+  silent?: boolean;
+  shouldGenerateTypes?: boolean;
+}
+
+export const migrate = async (
+  databaseUrl: string,
+  { silent = false, shouldGenerateTypes = true }: MigrateOptions = {}
+) => {
   const migrationsDirectory = path.join(process.cwd(), "src/db/migrations");
   const zapatosDirectory = path.join(process.cwd(), "src/db");
 
@@ -23,15 +31,17 @@ export const migrate = async (databaseUrl: string, silent = false) => {
   );
   await pool.end();
 
-  if (!silent) {
-    logger.info("Generating types...");
-  }
+  if (shouldGenerateTypes) {
+    if (!silent) {
+      logger.info("Generating types...");
+    }
 
-  // Generate typings
-  await zg.generate({
-    db: {
-      connectionString: databaseUrl,
-    },
-    outDir: zapatosDirectory,
-  });
+    // Generate typings
+    await zg.generate({
+      db: {
+        connectionString: databaseUrl,
+      },
+      outDir: zapatosDirectory,
+    });
+  }
 };

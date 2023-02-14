@@ -4,6 +4,9 @@ import { migrate } from "~/db";
 export const getTestDatabase = getTestPostgresDatabaseFactory({
   postgresVersion: "15",
   async beforeTemplateIsBaked({ connection: { connectionString } }) {
-    await migrate(connectionString, true);
+    await migrate(connectionString, {
+      silent: true,
+      shouldGenerateTypes: false,
+    });
   },
 });

@@ -1,4 +1,4 @@
-import { Client, Pool } from "pg";
+import { Client } from "pg";
 import { parse } from "pg-connection-string";
 import { logger } from "~/lib";
 import { migrate } from "./migrate";
