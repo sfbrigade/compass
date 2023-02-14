@@ -174,10 +174,10 @@ declare module 'zapatos/schema' {
     export interface Selectable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id: number;
+      student_id: string;
       /**
       * **student.first_name**
       * - `text` in database
@@ -191,19 +191,19 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number;
+      assigned_case_manager_id: string | null;
     }
     export interface JSONSelectable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id: number;
+      student_id: string;
       /**
       * **student.first_name**
       * - `text` in database
@@ -217,19 +217,19 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number;
+      assigned_case_manager_id: string | null;
     }
     export interface Whereable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **student.first_name**
       * - `text` in database
@@ -243,19 +243,19 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      assigned_case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
+      student_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
       * **student.first_name**
       * - `text` in database
@@ -269,19 +269,19 @@ declare module 'zapatos/schema' {
       */
       last_name: string | db.Parameter<string> | db.SQLFragment;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number | db.Parameter<number> | db.SQLFragment;
+      assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.DefaultType | db.SQLFragment>;
+      student_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **student.first_name**
       * - `text` in database
@@ -295,13 +295,156 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'student_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **user**
+   * - Table in database
+   */
+  export namespace user {
+    export type Table = 'user';
+    export interface Selectable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id: string;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string;
+      /**
+      * **user.roles**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      roles: string[];
+    }
+    export interface JSONSelectable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id: string;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string;
+      /**
+      * **user.roles**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      roles: string[];
+    }
+    export interface Whereable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.roles**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      roles?: string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **user.roles**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      roles: string[] | db.Parameter<string[]> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **user.roles**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      roles?: string[] | db.Parameter<string[]> | db.SQLFragment | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'user_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
@@ -311,20 +454,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = migrations.Table | student.Table;
-    export type Selectable = migrations.Selectable | student.Selectable;
-    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable;
-    export type Whereable = migrations.Whereable | student.Whereable;
-    export type Insertable = migrations.Insertable | student.Insertable;
-    export type Updatable = migrations.Updatable | student.Updatable;
-    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex;
-    export type Column = migrations.Column | student.Column;
+    export type Table = migrations.Table | student.Table | user.Table;
+    export type Selectable = migrations.Selectable | student.Selectable | user.Selectable;
+    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
+    export type Whereable = migrations.Whereable | student.Whereable | user.Whereable;
+    export type Insertable = migrations.Insertable | student.Insertable | user.Insertable;
+    export type Updatable = migrations.Updatable | student.Updatable | user.Updatable;
+    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
+    export type Column = migrations.Column | student.Column | user.Column;
   
-    export type AllBaseTables = [migrations.Table, student.Table];
+    export type AllBaseTables = [migrations.Table, student.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [migrations.Table, student.Table];
+    export type AllTablesAndViews = [migrations.Table, student.Table, user.Table];
   }
 
 
@@ -354,41 +497,49 @@ declare module 'zapatos/schema' {
   export type SelectableForTable<T extends Table> = {
     "migrations": migrations.Selectable;
     "student": student.Selectable;
+    "user": user.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
     "migrations": migrations.JSONSelectable;
     "student": student.JSONSelectable;
+    "user": user.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
     "migrations": migrations.Whereable;
     "student": student.Whereable;
+    "user": user.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
     "migrations": migrations.Insertable;
     "student": student.Insertable;
+    "user": user.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
     "migrations": migrations.Updatable;
     "student": student.Updatable;
+    "user": user.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
     "migrations": migrations.UniqueIndex;
     "student": student.UniqueIndex;
+    "user": user.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
     "migrations": migrations.Column;
     "student": student.Column;
+    "user": user.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
     "migrations": migrations.SQL;
     "student": student.SQL;
+    "user": user.SQL;
   }[T];
 
 }

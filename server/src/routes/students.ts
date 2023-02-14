@@ -11,7 +11,7 @@ studentsRouter.get("/list", async (req, res) => {
 });
 
 studentsRouter.post("/create", async (req, res) => {
-  const {first_name, last_name, birth_year} = req.body;
+  const { first_name, last_name, birth_year } = req.body;
 
   const student = await req.db
     .insertInto("student")
@@ -22,6 +22,6 @@ studentsRouter.post("/create", async (req, res) => {
   res.json({
     student,
   });
-})
+});
 
 export { studentsRouter };
