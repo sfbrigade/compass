@@ -4,7 +4,7 @@ CREATE TABLE "user" (
   user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
-  roles TEXT[] NOT NULL CHECK (roles <@ '{"para", "case_manager", "admin"}')
+  role TEXT NOT NULL CHECK (role IN ('para', 'case_manager', 'admin'))
 );
 
 CREATE TABLE "student" (

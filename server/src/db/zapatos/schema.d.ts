@@ -334,11 +334,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **user.roles**
-      * - `_text` in database
+      * **user.role**
+      * - `text` in database
       * - `NOT NULL`, no default
       */
-      roles: string[];
+      role: string;
     }
     export interface JSONSelectable {
       /**
@@ -360,11 +360,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **user.roles**
-      * - `_text` in database
+      * **user.role**
+      * - `text` in database
       * - `NOT NULL`, no default
       */
-      roles: string[];
+      role: string;
     }
     export interface Whereable {
       /**
@@ -386,11 +386,11 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **user.roles**
-      * - `_text` in database
+      * **user.role**
+      * - `text` in database
       * - `NOT NULL`, no default
       */
-      roles?: string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn>;
+      role?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -412,11 +412,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string | db.Parameter<string> | db.SQLFragment;
       /**
-      * **user.roles**
-      * - `_text` in database
+      * **user.role**
+      * - `text` in database
       * - `NOT NULL`, no default
       */
-      roles: string[] | db.Parameter<string[]> | db.SQLFragment;
+      role: string | db.Parameter<string> | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -438,11 +438,11 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
-      * **user.roles**
-      * - `_text` in database
+      * **user.role**
+      * - `text` in database
       * - `NOT NULL`, no default
       */
-      roles?: string[] | db.Parameter<string[]> | db.SQLFragment | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment>;
+      role?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
     }
     export type UniqueIndex = 'user_pkey';
     export type Column = keyof Selectable;
