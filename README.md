@@ -34,3 +34,16 @@ Recent Changes:
 - moved installation of `node_modules` folder from `client` to `/` root (to accommodate for future Node.js requirement in backend development)
 - Updated `.gitignore` setting match changes
 
+## Getting Started with Docker
+
+1. Install Docker Desktop
+
+2. Clone this repo. Windows users, make sure that the git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
+
+3. In the repo directory, run: `docker compose up`
+
+4. Wait a bit for the image to build, it should start both the client and server in development mode.  
+
+   You can verify the client build is running by visiting: http://localhost:3000
+
+   You can verify the server is running by hitting the health-check endpoint, i.e. by using curl: `curl http://localhost:8080/health`
