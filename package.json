@@ -1,0 +1,13 @@
+{
+  "name": "project-compass",
+  "workspaces": [
+    "client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "nf start -j Procfile.dev"
+  },
+  "devDependencies": {
+    "foreman": "^3.0.1"
+  }
+}
