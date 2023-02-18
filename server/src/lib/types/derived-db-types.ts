@@ -1,12 +1,8 @@
 import { ColumnType, Kysely } from "kysely";
 import * as schema from "zapatos/schema";
-import { Primitive } from "type-fest";
-import { JSONValue } from "zapatos/db";
+import { SQLFragment } from "zapatos/db";
 
-type ZapatosInsertableTypeToPrimitive<T> = Exclude<
-  Extract<T, Primitive | Date | JSONValue>,
-  symbol
->;
+type ZapatosInsertableTypeToPrimitive<T> = Exclude<T, symbol | SQLFragment>;
 
 export type ZapatosTableNameToKyselySchema<T extends schema.Table> = {
   [K in keyof schema.SelectableForTable<T>]: ColumnType<

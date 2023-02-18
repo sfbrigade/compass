@@ -10,6 +10,7 @@ Released under the MIT licence: see LICENCE file
 declare module 'zapatos/schema' {
 
   import type * as db from 'zapatos/db';
+  import type * as c from 'zapatos/custom';
 
   // got a type error on schemaVersionCanary below? update by running `npx zapatos`
   export interface schemaVersionCanary extends db.SchemaVersionCanary { version: 104 }
@@ -174,10 +175,10 @@ declare module 'zapatos/schema' {
     export interface Selectable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id: number;
+      student_id: string;
       /**
       * **student.first_name**
       * - `text` in database
@@ -200,10 +201,10 @@ declare module 'zapatos/schema' {
     export interface JSONSelectable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id: number;
+      student_id: string;
       /**
       * **student.first_name**
       * - `text` in database
@@ -226,10 +227,10 @@ declare module 'zapatos/schema' {
     export interface Whereable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **student.first_name**
       * - `text` in database
@@ -252,10 +253,10 @@ declare module 'zapatos/schema' {
     export interface Insertable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
+      student_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
       * **student.first_name**
       * - `text` in database
@@ -278,10 +279,10 @@ declare module 'zapatos/schema' {
     export interface Updatable {
       /**
       * **student.student_id**
-      * - `int4` in database
-      * - `NOT NULL`, default: `nextval('student_student_id_seq'::regclass)`
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      student_id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.DefaultType | db.SQLFragment>;
+      student_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **student.first_name**
       * - `text` in database
@@ -308,23 +309,733 @@ declare module 'zapatos/schema' {
     export type SQL = SQLExpression | SQLExpression[];
   }
 
+  /**
+   * **task**
+   * - Table in database
+   */
+  export namespace task {
+    export type Table = 'task';
+    export interface Selectable {
+      /**
+      * **task.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_id: string;
+      /**
+      * **task.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **task.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **task.tools**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      tools: string[];
+      /**
+      * **task.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
+      /**
+      * **task.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string;
+      /**
+      * **task.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **task.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_id: string;
+      /**
+      * **task.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **task.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **task.tools**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      tools: string[];
+      /**
+      * **task.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
+      /**
+      * **task.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string;
+      /**
+      * **task.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampString;
+    }
+    export interface Whereable {
+      /**
+      * **task.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.tools**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      tools?: string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **task.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **task.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task.tools**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      tools: string[] | db.Parameter<string[]> | db.SQLFragment;
+      /**
+      * **task.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **task.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **task.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task.tools**
+      * - `_text` in database
+      * - `NOT NULL`, no default
+      */
+      tools?: string[] | db.Parameter<string[]> | db.SQLFragment | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment>;
+      /**
+      * **task.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'task_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **task_attempt**
+   * - Table in database
+   */
+  export namespace task_attempt {
+    export type Table = 'task_attempt';
+    export interface Selectable {
+      /**
+      * **task_attempt.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_id: string;
+      /**
+      * **task_attempt.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string;
+      /**
+      * **task_attempt.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string;
+      /**
+      * **task_attempt.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **task_attempt.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_id: string;
+      /**
+      * **task_attempt.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string;
+      /**
+      * **task_attempt.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string;
+      /**
+      * **task_attempt.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampString;
+    }
+    export interface Whereable {
+      /**
+      * **task_attempt.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **task_attempt.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **task_attempt.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task_attempt.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task_attempt.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **task_attempt.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **task_attempt.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task_attempt.student_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task_attempt.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'task_attempt_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **task_attempt_question_answer**
+   * - Table in database
+   */
+  export namespace task_attempt_question_answer {
+    export type Table = 'task_attempt_question_answer';
+    export interface Selectable {
+      /**
+      * **task_attempt_question_answer.task_attempt_question_answer_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_question_answer_id: string;
+      /**
+      * **task_attempt_question_answer.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_attempt_id: string;
+      /**
+      * **task_attempt_question_answer.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_question_id: string;
+      /**
+      * **task_attempt_question_answer.answer**
+      * - `task_attempt_question_answer_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      answer: c.PgTask_attempt_question_answer_jsonb;
+      /**
+      * **task_attempt_question_answer.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **task_attempt_question_answer.task_attempt_question_answer_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_question_answer_id: string;
+      /**
+      * **task_attempt_question_answer.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_attempt_id: string;
+      /**
+      * **task_attempt_question_answer.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_question_id: string;
+      /**
+      * **task_attempt_question_answer.answer**
+      * - `task_attempt_question_answer_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      answer: c.PgTask_attempt_question_answer_jsonb;
+      /**
+      * **task_attempt_question_answer.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampString;
+    }
+    export interface Whereable {
+      /**
+      * **task_attempt_question_answer.task_attempt_question_answer_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_question_answer_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt_question_answer.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_attempt_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt_question_answer.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_question_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt_question_answer.answer**
+      * - `task_attempt_question_answer_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      answer?: c.PgTask_attempt_question_answer_jsonb | db.Parameter<c.PgTask_attempt_question_answer_jsonb> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, c.PgTask_attempt_question_answer_jsonb | db.Parameter<c.PgTask_attempt_question_answer_jsonb> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_attempt_question_answer.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **task_attempt_question_answer.task_attempt_question_answer_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_question_answer_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **task_attempt_question_answer.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_attempt_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task_attempt_question_answer.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_question_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task_attempt_question_answer.answer**
+      * - `task_attempt_question_answer_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      answer: c.PgTask_attempt_question_answer_jsonb | db.Parameter<c.PgTask_attempt_question_answer_jsonb> | db.SQLFragment;
+      /**
+      * **task_attempt_question_answer.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **task_attempt_question_answer.task_attempt_question_answer_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_attempt_question_answer_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **task_attempt_question_answer.task_attempt_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_attempt_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task_attempt_question_answer.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_question_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task_attempt_question_answer.answer**
+      * - `task_attempt_question_answer_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      answer?: c.PgTask_attempt_question_answer_jsonb | db.Parameter<c.PgTask_attempt_question_answer_jsonb> | db.SQLFragment | db.SQLFragment<any, c.PgTask_attempt_question_answer_jsonb | db.Parameter<c.PgTask_attempt_question_answer_jsonb> | db.SQLFragment>;
+      /**
+      * **task_attempt_question_answer.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'task_attempt_question_answer_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **task_question**
+   * - Table in database
+   */
+  export namespace task_question {
+    export type Table = 'task_question';
+    export interface Selectable {
+      /**
+      * **task_question.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_question_id: string;
+      /**
+      * **task_question.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string;
+      /**
+      * **task_question.question**
+      * - `task_question_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      question: c.PgTask_question_jsonb;
+      /**
+      * **task_question.type**
+      * - `text` in database
+      * - Generated column
+      */
+      type: string | null;
+      /**
+      * **task_question.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **task_question.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_question_id: string;
+      /**
+      * **task_question.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string;
+      /**
+      * **task_question.question**
+      * - `task_question_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      question: c.PgTask_question_jsonb;
+      /**
+      * **task_question.type**
+      * - `text` in database
+      * - Generated column
+      */
+      type: string | null;
+      /**
+      * **task_question.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampString;
+    }
+    export interface Whereable {
+      /**
+      * **task_question.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_question_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_question.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_question.question**
+      * - `task_question_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      question?: c.PgTask_question_jsonb | db.Parameter<c.PgTask_question_jsonb> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, c.PgTask_question_jsonb | db.Parameter<c.PgTask_question_jsonb> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_question.type**
+      * - `text` in database
+      * - Generated column
+      */
+      type?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task_question.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **task_question.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_question_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **task_question.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **task_question.question**
+      * - `task_question_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      question: c.PgTask_question_jsonb | db.Parameter<c.PgTask_question_jsonb> | db.SQLFragment;
+      /**
+      * **task_question.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **task_question.task_question_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      task_question_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **task_question.task_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **task_question.question**
+      * - `task_question_jsonb` (base type: `jsonb`) in database
+      * - `NOT NULL`, no default
+      */
+      question?: c.PgTask_question_jsonb | db.Parameter<c.PgTask_question_jsonb> | db.SQLFragment | db.SQLFragment<any, c.PgTask_question_jsonb | db.Parameter<c.PgTask_question_jsonb> | db.SQLFragment>;
+      /**
+      * **task_question.created_at**
+      * - `timestamp` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'task_question_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = migrations.Table | student.Table;
-    export type Selectable = migrations.Selectable | student.Selectable;
-    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable;
-    export type Whereable = migrations.Whereable | student.Whereable;
-    export type Insertable = migrations.Insertable | student.Insertable;
-    export type Updatable = migrations.Updatable | student.Updatable;
-    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex;
-    export type Column = migrations.Column | student.Column;
+    export type Table = migrations.Table | student.Table | task.Table | task_attempt.Table | task_attempt_question_answer.Table | task_question.Table;
+    export type Selectable = migrations.Selectable | student.Selectable | task.Selectable | task_attempt.Selectable | task_attempt_question_answer.Selectable | task_question.Selectable;
+    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable | task.JSONSelectable | task_attempt.JSONSelectable | task_attempt_question_answer.JSONSelectable | task_question.JSONSelectable;
+    export type Whereable = migrations.Whereable | student.Whereable | task.Whereable | task_attempt.Whereable | task_attempt_question_answer.Whereable | task_question.Whereable;
+    export type Insertable = migrations.Insertable | student.Insertable | task.Insertable | task_attempt.Insertable | task_attempt_question_answer.Insertable | task_question.Insertable;
+    export type Updatable = migrations.Updatable | student.Updatable | task.Updatable | task_attempt.Updatable | task_attempt_question_answer.Updatable | task_question.Updatable;
+    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex | task.UniqueIndex | task_attempt.UniqueIndex | task_attempt_question_answer.UniqueIndex | task_question.UniqueIndex;
+    export type Column = migrations.Column | student.Column | task.Column | task_attempt.Column | task_attempt_question_answer.Column | task_question.Column;
   
-    export type AllBaseTables = [migrations.Table, student.Table];
+    export type AllBaseTables = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [migrations.Table, student.Table];
+    export type AllTablesAndViews = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table];
   }
 
 
@@ -354,41 +1065,73 @@ declare module 'zapatos/schema' {
   export type SelectableForTable<T extends Table> = {
     "migrations": migrations.Selectable;
     "student": student.Selectable;
+    "task": task.Selectable;
+    "task_attempt": task_attempt.Selectable;
+    "task_attempt_question_answer": task_attempt_question_answer.Selectable;
+    "task_question": task_question.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
     "migrations": migrations.JSONSelectable;
     "student": student.JSONSelectable;
+    "task": task.JSONSelectable;
+    "task_attempt": task_attempt.JSONSelectable;
+    "task_attempt_question_answer": task_attempt_question_answer.JSONSelectable;
+    "task_question": task_question.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
     "migrations": migrations.Whereable;
     "student": student.Whereable;
+    "task": task.Whereable;
+    "task_attempt": task_attempt.Whereable;
+    "task_attempt_question_answer": task_attempt_question_answer.Whereable;
+    "task_question": task_question.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
     "migrations": migrations.Insertable;
     "student": student.Insertable;
+    "task": task.Insertable;
+    "task_attempt": task_attempt.Insertable;
+    "task_attempt_question_answer": task_attempt_question_answer.Insertable;
+    "task_question": task_question.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
     "migrations": migrations.Updatable;
     "student": student.Updatable;
+    "task": task.Updatable;
+    "task_attempt": task_attempt.Updatable;
+    "task_attempt_question_answer": task_attempt_question_answer.Updatable;
+    "task_question": task_question.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
     "migrations": migrations.UniqueIndex;
     "student": student.UniqueIndex;
+    "task": task.UniqueIndex;
+    "task_attempt": task_attempt.UniqueIndex;
+    "task_attempt_question_answer": task_attempt_question_answer.UniqueIndex;
+    "task_question": task_question.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
     "migrations": migrations.Column;
     "student": student.Column;
+    "task": task.Column;
+    "task_attempt": task_attempt.Column;
+    "task_attempt_question_answer": task_attempt_question_answer.Column;
+    "task_question": task_question.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
     "migrations": migrations.SQL;
     "student": student.SQL;
+    "task": task.SQL;
+    "task_attempt": task_attempt.SQL;
+    "task_attempt_question_answer": task_attempt_question_answer.SQL;
+    "task_question": task_question.SQL;
   }[T];
 
 }
