@@ -9,7 +9,6 @@ test("GET /students/list", async (t) => {
     .values({
       first_name: "Foo",
       last_name: "Bar",
-      birth_year: 2000,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -25,7 +24,6 @@ test("POST /students/create", async (t) => {
   const { data } = await axios.post("/students/create", {
     first_name: "Foo",
     last_name: "Bar",
-    birth_year: 2000,
   });
 
   t.truthy(data.student.student_id);

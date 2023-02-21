@@ -192,11 +192,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number;
+      assigned_case_manager_id: string | null;
     }
     export interface JSONSelectable {
       /**
@@ -218,11 +218,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number;
+      assigned_case_manager_id: string | null;
     }
     export interface Whereable {
       /**
@@ -244,11 +244,11 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      assigned_case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -270,11 +270,11 @@ declare module 'zapatos/schema' {
       */
       last_name: string | db.Parameter<string> | db.SQLFragment;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year: number | db.Parameter<number> | db.SQLFragment;
+      assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -296,11 +296,11 @@ declare module 'zapatos/schema' {
       */
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
-      * **student.birth_year**
-      * - `int4` in database
-      * - `NOT NULL`, no default
+      * **student.assigned_case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
       */
-      birth_year?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'student_pkey';
     export type Column = keyof Selectable;
@@ -1019,23 +1019,166 @@ declare module 'zapatos/schema' {
     export type SQL = SQLExpression | SQLExpression[];
   }
 
+  /**
+   * **user**
+   * - Table in database
+   */
+  export namespace user {
+    export type Table = 'user';
+    export interface Selectable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id: string;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string;
+      /**
+      * **user.role**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      role: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id: string;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string;
+      /**
+      * **user.role**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      role: string;
+    }
+    export interface Whereable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **user.role**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      role?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **user.role**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      role: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **user.user_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      user_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **user.first_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      first_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **user.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **user.role**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      role?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'user_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = migrations.Table | student.Table | task.Table | task_attempt.Table | task_attempt_question_answer.Table | task_question.Table;
-    export type Selectable = migrations.Selectable | student.Selectable | task.Selectable | task_attempt.Selectable | task_attempt_question_answer.Selectable | task_question.Selectable;
-    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable | task.JSONSelectable | task_attempt.JSONSelectable | task_attempt_question_answer.JSONSelectable | task_question.JSONSelectable;
-    export type Whereable = migrations.Whereable | student.Whereable | task.Whereable | task_attempt.Whereable | task_attempt_question_answer.Whereable | task_question.Whereable;
-    export type Insertable = migrations.Insertable | student.Insertable | task.Insertable | task_attempt.Insertable | task_attempt_question_answer.Insertable | task_question.Insertable;
-    export type Updatable = migrations.Updatable | student.Updatable | task.Updatable | task_attempt.Updatable | task_attempt_question_answer.Updatable | task_question.Updatable;
-    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex | task.UniqueIndex | task_attempt.UniqueIndex | task_attempt_question_answer.UniqueIndex | task_question.UniqueIndex;
-    export type Column = migrations.Column | student.Column | task.Column | task_attempt.Column | task_attempt_question_answer.Column | task_question.Column;
+    export type Table = migrations.Table | student.Table | task.Table | task_attempt.Table | task_attempt_question_answer.Table | task_question.Table | user.Table;
+    export type Selectable = migrations.Selectable | student.Selectable | task.Selectable | task_attempt.Selectable | task_attempt_question_answer.Selectable | task_question.Selectable | user.Selectable;
+    export type JSONSelectable = migrations.JSONSelectable | student.JSONSelectable | task.JSONSelectable | task_attempt.JSONSelectable | task_attempt_question_answer.JSONSelectable | task_question.JSONSelectable | user.JSONSelectable;
+    export type Whereable = migrations.Whereable | student.Whereable | task.Whereable | task_attempt.Whereable | task_attempt_question_answer.Whereable | task_question.Whereable | user.Whereable;
+    export type Insertable = migrations.Insertable | student.Insertable | task.Insertable | task_attempt.Insertable | task_attempt_question_answer.Insertable | task_question.Insertable | user.Insertable;
+    export type Updatable = migrations.Updatable | student.Updatable | task.Updatable | task_attempt.Updatable | task_attempt_question_answer.Updatable | task_question.Updatable | user.Updatable;
+    export type UniqueIndex = migrations.UniqueIndex | student.UniqueIndex | task.UniqueIndex | task_attempt.UniqueIndex | task_attempt_question_answer.UniqueIndex | task_question.UniqueIndex | user.UniqueIndex;
+    export type Column = migrations.Column | student.Column | task.Column | task_attempt.Column | task_attempt_question_answer.Column | task_question.Column | user.Column;
   
-    export type AllBaseTables = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table];
+    export type AllBaseTables = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table];
+    export type AllTablesAndViews = [migrations.Table, student.Table, task.Table, task_attempt.Table, task_attempt_question_answer.Table, task_question.Table, user.Table];
   }
 
 
@@ -1069,6 +1212,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.Selectable;
     "task_attempt_question_answer": task_attempt_question_answer.Selectable;
     "task_question": task_question.Selectable;
+    "user": user.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
@@ -1078,6 +1222,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.JSONSelectable;
     "task_attempt_question_answer": task_attempt_question_answer.JSONSelectable;
     "task_question": task_question.JSONSelectable;
+    "user": user.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
@@ -1087,6 +1232,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.Whereable;
     "task_attempt_question_answer": task_attempt_question_answer.Whereable;
     "task_question": task_question.Whereable;
+    "user": user.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
@@ -1096,6 +1242,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.Insertable;
     "task_attempt_question_answer": task_attempt_question_answer.Insertable;
     "task_question": task_question.Insertable;
+    "user": user.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
@@ -1105,6 +1252,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.Updatable;
     "task_attempt_question_answer": task_attempt_question_answer.Updatable;
     "task_question": task_question.Updatable;
+    "user": user.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
@@ -1114,6 +1262,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.UniqueIndex;
     "task_attempt_question_answer": task_attempt_question_answer.UniqueIndex;
     "task_question": task_question.UniqueIndex;
+    "user": user.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
@@ -1123,6 +1272,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.Column;
     "task_attempt_question_answer": task_attempt_question_answer.Column;
     "task_question": task_question.Column;
+    "user": user.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
@@ -1132,6 +1282,7 @@ declare module 'zapatos/schema' {
     "task_attempt": task_attempt.SQL;
     "task_attempt_question_answer": task_attempt_question_answer.SQL;
     "task_question": task_question.SQL;
+    "user": user.SQL;
   }[T];
 
 }
