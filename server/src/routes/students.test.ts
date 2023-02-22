@@ -5,7 +5,7 @@ test("GET /students/list", async (t) => {
   const { axios, db } = await getTestServer();
 
   const { student_id } = await db
-    .insertInto("student")
+    .insertInto("students")
     .values({
       first_name: "Foo",
       last_name: "Bar",
