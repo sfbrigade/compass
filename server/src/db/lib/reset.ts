@@ -19,10 +19,12 @@ export const reset = async (databaseUrl: string) => {
 
   await client.connect();
 
-  logger.info(`Dropping database ${connectionConfig.database}...`);
+  const targetDatabaseName = connectionConfig.database as string;
+
+  logger.info(`Dropping database ${targetDatabaseName}...`);
 
   await client
-    .query(`DROP DATABASE IF EXISTS ${connectionConfig.database}`)
+    .query(`DROP DATABASE IF EXISTS ${targetDatabaseName}`)
     .catch((error: Error) => {
       if (error.message.includes("does not exist")) {
         return;
@@ -31,8 +33,8 @@ export const reset = async (databaseUrl: string) => {
       throw error;
     });
 
-  logger.info(`Creating database ${connectionConfig.database}...`);
-  await client.query(`CREATE DATABASE ${connectionConfig.database}`);
+  logger.info(`Creating database ${targetDatabaseName}...`);
+  await client.query(`CREATE DATABASE ${targetDatabaseName}`);
   await client.end();
 
   logger.info("Running migrations...");

@@ -10,8 +10,13 @@ studentsRouter.get("/list", async (req, res) => {
   });
 });
 
+interface CreateStudentBody {
+  first_name: string;
+  last_name: string;
+}
+
 studentsRouter.post("/create", async (req, res) => {
-  const { first_name, last_name } = req.body;
+  const { first_name, last_name } = req.body as CreateStudentBody;
 
   const student = await req.db
     .insertInto("student")

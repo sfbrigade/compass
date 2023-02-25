@@ -1,0 +1,26 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "overrides": [
+    {
+      "files": ["*.ts", "*.tsx"],
+      "extends": [
+        "eslint:recommended",
+        "plugin:@next/next/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@typescript-eslint/recommended-requiring-type-checking"
+      ],
+      "parserOptions": {
+        "project": ["./client/tsconfig.json", "./server/tsconfig.json"]
+      },
+      "rules": {
+        "@typescript-eslint/no-non-null-assertion": "off",
+        "@typescript-eslint/no-misused-promises": "off"
+      }
+    }
+  ],
+  "rules": {
+    "@next/next/no-html-link-for-pages": ["error", "client/pages/"]
+  },
+  "plugins": ["@typescript-eslint"],
+  "root": true
+}
