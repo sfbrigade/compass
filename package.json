@@ -5,9 +5,18 @@
     "server"
   ],
   "scripts": {
-    "dev": "nf start -j Procfile.dev"
+    "dev": "nf start -j Procfile.dev",
+    "prepare": "husky install",
+    "format": "prettier --write --ignore-unknown .",
+    "format:check": "prettier --check --ignore-unknown ."
   },
   "devDependencies": {
-    "foreman": "^3.0.1"
+    "foreman": "^3.0.1",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "prettier": "2.8.3"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
   }
 }
