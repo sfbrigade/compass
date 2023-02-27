@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import axios from 'axios'
+import useSWR from 'swr'
 
 // TODO(amantri): get this from the server code, preferably auto-generated
 interface Student {
@@ -9,22 +10,11 @@ interface Student {
 }
 
 export default function Students() {
-  const [data, setData] = useState(null)
-  const [isLoading, setLoading] = useState(false)
+  const fetcher = (url: string) => axios.get(url).then(res => res.data)
+  const { data, error, isLoading } = useSWR('http://localhost:8080/students/list', fetcher)
 
-  useEffect(() => {
-    setLoading(true)
-    // TODO(amantri): Get backend url from env
-    fetch('http://localhost:8080/students/list')
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data)
-        setLoading(false)
-      })
-  }, [])
-
-  if (isLoading) return <p>Loading...</p>
-  if (!data) return <p>No profile data</p>
+  if (error) return <div>Failed to load: {error.message}</div>
+  if (isLoading) return <div>Loading...</div>
 
   return (
     <>
