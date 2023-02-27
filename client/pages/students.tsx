@@ -9,9 +9,11 @@ interface Student {
   assigned_case_manager: string;
 }
 
+const apiPath = (process.env.NEXT_PUBLIC_SERVER || 'http://localhost:8080') + '/students/list'
+
 export default function Students() {
   const fetcher = (url: string) => axios.get(url).then(res => res.data)
-  const { data, error, isLoading } = useSWR('http://localhost:8080/students/list', fetcher)
+  const { data, error, isLoading } = useSWR(apiPath, fetcher)
 
   if (error) return <div>Failed to load: {error.message}</div>
   if (isLoading) return <div>Loading...</div>
