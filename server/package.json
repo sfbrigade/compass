@@ -9,14 +9,8 @@
     "db:migrate": "tsx src/scripts/migrate-database.ts",
     "db:reset": "tsx src/scripts/reset-database.ts",
     "dev": "tsx watch src/scripts/start-api.ts",
-    "format": "prettier --write --ignore-unknown .",
-    "format:check": "prettier --check --ignore-unknown .",
     "type-check": "tsc --noEmit",
-    "type-check:watch": "tsc --noEmit --watch",
-    "prepare": "cd .. && husky install api/.husky"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
+    "type-check:watch": "tsc --noEmit --watch"
   },
   "repository": {
     "type": "git",
@@ -49,9 +43,6 @@
     "dotenv": "^16.0.3",
     "esbuild": "^0.17.5",
     "esbuild-register": "^3.4.2",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.1.0",
-    "prettier": "2.8.3",
     "tsx": "^3.12.2",
     "type-fest": "^3.5.4",
     "typescript": "^4.9.5"

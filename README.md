@@ -10,8 +10,8 @@ These are the main Figma files the team is using to develop the app on.
 (Make sure this goes to correct page)
 https://www.figma.com/team_invite/redeem/GVUO8uYgZtnHXWrewd9DBH
 
-
 How to Run Web Server:
+
 1. cd to root folder (/project-compass)
 2. Run `npm install` in terminal/cmd
 3. Run `npm start` to start server
@@ -19,18 +19,21 @@ How to Run Web Server:
 # Project Compass React Frontend
 
 ## Tech Stack
-* React
-* React-Router
-* Material UI
+
+- React
+- React-Router
+- Material UI
 
 ## Getting Started
+
 ~~1. cd into /client~~
+
 1. cd into /client
 2. npm i
 3. npm start
 
-
 Recent Changes:
+
 - moved installation of `node_modules` folder from `client` to `/` root (to accommodate for future Node.js requirement in backend development)
 - Updated `.gitignore` setting match changes
 
@@ -42,7 +45,7 @@ Recent Changes:
 
 3. In the repo directory, run: `docker compose up`
 
-4. Wait a bit for the image to build, it should start both the client and server in development mode.  
+4. Wait a bit for the image to build, it should start both the client and server in development mode.
 
    You can verify the client build is running by visiting: http://localhost:3000
 

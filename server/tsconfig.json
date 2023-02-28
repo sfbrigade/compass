@@ -6,7 +6,6 @@
     "esModuleInterop": true,
     "target": "es2020",
     "sourceMap": true,
-    "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "strict": true,

@@ -4,9 +4,6 @@ jobs:
   type-test:
     name: Type test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -15,18 +12,14 @@ jobs:
         with:
           node-version: 18
           cache: "npm"
-          cache-dependency-path: ./server/package-lock.json
       - name: Install dependencies
         run: npm i --ci
       - name: Check types
-        run: npx tsc --noEmit
+        run: npm run type-check -ws
 
   lint:
     name: Lint
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -35,18 +28,16 @@ jobs:
         with:
           node-version: 18
           cache: "npm"
-          cache-dependency-path: ./server/package-lock.json
       - name: Install dependencies
         run: npm i --ci
       - name: Run format:check
         run: npm run format:check
+      - name: Run lint
+        run: npm run lint
 
   test:
     name: test
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ./server
     steps:
       - name: Checkout
         uses: actions/checkout@v1
@@ -55,10 +46,9 @@ jobs:
         with:
           node-version: 18
           cache: "npm"
-          cache-dependency-path: ./server/package-lock.json
       - name: Install dependencies
         run: npm i --ci
       - name: Pre-pull Postgres image
         run: docker pull postgres:15
       - name: Run tests
-        run: npm run test
+        run: npm run test -w server

@@ -11,4 +11,4 @@ const main = async () => {
   await reset(process.env.DATABASE_URL);
 };
 
-main();
+void main();
