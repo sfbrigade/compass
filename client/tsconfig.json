@@ -16,9 +16,10 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "~/*": ["../server/src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
