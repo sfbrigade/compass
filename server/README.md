@@ -1,4 +1,4 @@
-# 🧭 api
+# 🧭 server
 
 This is the backend API for Compass.
 
