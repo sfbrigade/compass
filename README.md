@@ -47,7 +47,7 @@ There are two ways to run Compass locally
    npm install           # install dependencies
    ```
 
-1. Bring up the database in docker and the server, starting in the `project-compass` directory
+2. Bring up the database in docker and the server, starting in the `project-compass` directory
 
    ```sh
    cd server
@@ -58,7 +58,7 @@ There are two ways to run Compass locally
 
    Server url: http://localhost:8080/health
 
-1. Bring up the client in a separate terminal, starting in the `project-compass` directory
+3. Bring up the client in a separate terminal, starting in the `project-compass` directory
    ```sh
    cd client
    npm run dev           # start the server in development mode
