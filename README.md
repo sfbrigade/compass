@@ -1,52 +1,66 @@
-Welcome to Project Compass.
+# 🧭 Project Compass
 
-This is the beginnings of the repo of Project Compass located here on Slack.
-https://sfbrigade.slack.com/archives/C01R8E75N1K
+Compass is a tool to help educators create and manage Individualized Education Programs (IEPs) for better student outcome.
 
-This is the main file for the project summary
-https://docs.google.com/document/d/13S8i_FnynycBV8vipjiFO4DwM2tDbauoN212gAurUd4/edit#heading=h.2vr8ga7aqr4o
+Useful resources:
 
-These are the main Figma files the team is using to develop the app on.  
-(Make sure this goes to correct page)
-https://www.figma.com/team_invite/redeem/GVUO8uYgZtnHXWrewd9DBH
+- [Notion wiki](https://www.notion.so/Compass-source-of-truth-9a02b2ee92144ef99d51999e74ccde1c)
+- [Slack channel](https://sfbrigade.slack.com/archives/C01R8E75N1K)
 
-How to Run Web Server:
+## Contributing to our code base
 
-1. cd to root folder (/project-compass)
-2. Run `npm install` in terminal/cmd
-3. Run `npm start` to start server
+### One time setup
 
-# Project Compass React Frontend
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+2. Clone the github repo:
+   ```sh
+   cd <parent folder of project-compass>
+   git clone https://github.com/sfbrigade/project-compass.git
+   cd project-compass
+   ```
+   - _Windows users_: make sure that the git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
+3. Create the local server env file
+   ```sh
+   cp server/.env.example server/.env.local
+   ```
 
-## Tech Stack
+There are two ways to run Compass locally
 
-- React
-- React-Router
-- Material UI
+### **Option 1: Run client, server and database in docker (recommended)**
 
-## Getting Started
+1. Bring up the server, client and database
 
-~~1. cd into /client~~
+   ```
+   docker compose up
+   ```
 
-1. cd into /client
-2. npm i
-3. npm start
+2. Wait a bit for the image to build, it should start both the client and server in development mode.
 
-Recent Changes:
+   - Client url: http://localhost:3000
+   - Server url: http://localhost:8080/health
 
-- moved installation of `node_modules` folder from `client` to `/` root (to accommodate for future Node.js requirement in backend development)
-- Updated `.gitignore` setting match changes
+### Option 2: Run client and server locally, and database in docker
 
-## Getting Started with Docker
+1. Install node dependencies, starting in the `project-compass` directory
 
-1. Install Docker Desktop
+   ```sh
+   npm install           # install dependencies
+   ```
 
-2. Clone this repo. Windows users, make sure that the git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
+2. Bring up the database in docker and the server, starting in the `project-compass` directory
 
-3. In the repo directory, run: `docker compose up`
+   ```sh
+   cd server
+   docker compose up -d  # start the database
+   npm run db:reset      # reset and migrate the database
+   npm run dev           # start the server in development mode
+   ```
 
-4. Wait a bit for the image to build, it should start both the client and server in development mode.
+   Server url: http://localhost:8080/health
 
-   You can verify the client build is running by visiting: http://localhost:3000
-
-   You can verify the server is running by hitting the health-check endpoint, i.e. by using curl: `curl http://localhost:8080/health`
+3. Bring up the client in a separate terminal, starting in the `project-compass` directory
+   ```sh
+   cd client
+   npm run dev           # start the server in development mode
+   ```
+   Client url: http://localhost:3000

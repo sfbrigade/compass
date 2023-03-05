@@ -1,22 +1,6 @@
-# 🧭 api
+# 🧭 server
 
-This is the backend API for Compass.
-
-**Prerequisites for development**:
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Node.js >= v18
-  - You can check your version with `node -v`.
-  - If it's out of date, [nvm](https://github.com/nvm-sh/nvm) is a great tool to manage multiple Node versions and keep it up-to-date.
-
-## Getting started
-
-1. Copy `.env.example` to `.env.local` and modify as necessary
-2. Run `docker compose up -d` to start the database
-3. Run `npm install` to install dependencies
-4. Run `npm run db:reset` to reset and migrate the database
-5. Run `npm run dev` to start the server in development mode
-6. By default, the server will be running at `http://localhost:8080`
+This is the backend server for Compass.
 
 ## Running tests
 
