@@ -22,7 +22,7 @@
     "prettier": "2.8.3"
   },
   "lint-staged": {
-    "**/*": [
+    "**/*.{js,jsx,ts,tsx}": [
       "prettier --write --ignore-unknown",
       "eslint --fix"
     ]
