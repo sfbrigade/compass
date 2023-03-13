@@ -1,0 +1,12 @@
+{
+  "name": "proto",
+  "version": "1.0.0",
+  "description": "Protos for Compass",
+  "devDependencies": {
+    "grpc_tools_node_protoc_ts": "^5.3.3",
+    "grpc-tools": "^1.12.4"
+  },
+  "scripts": {
+    "build": "PROTO_DEST=./; npx grpc_tools_node_protoc --ts_out=grpc_js:${PROTO_DEST} -I . *.proto"
+  }
+}

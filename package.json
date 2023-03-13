@@ -1,6 +1,7 @@
 {
   "name": "project-compass",
   "workspaces": [
+    "proto",
     "client",
     "server"
   ],
