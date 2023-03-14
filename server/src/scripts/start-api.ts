@@ -2,7 +2,7 @@ import * as grpc from "@grpc/grpc-js";
 import { appFactory } from "~/app";
 import { loadEnvFromFile, logger } from "~/lib";
 import { CompassServer } from "../grpc_server";
-import { CompassService } from "../compass_grpc_pb"; // TODO: share
+import { CompassService } from "proto"; // TODO: share
 
 const main = () => {
   loadEnvFromFile();

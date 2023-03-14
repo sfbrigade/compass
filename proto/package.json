@@ -6,7 +6,9 @@
     "grpc_tools_node_protoc_ts": "^5.3.3",
     "grpc-tools": "^1.12.4"
   },
+  "main": "./index.ts",
+  "types": "./index.ts",
   "scripts": {
-    "build": "PROTO_DEST=./; npx grpc_tools_node_protoc --ts_out=grpc_js:${PROTO_DEST} -I . *.proto"
+    "build": "PROTO_DEST=./gen; npx grpc_tools_node_protoc --js_out=import_style=commonjs:${PROTO_DEST} --grpc_out=grpc_js:${PROTO_DEST} --ts_out=grpc_js:${PROTO_DEST} -I . *.proto"
   }
 }
