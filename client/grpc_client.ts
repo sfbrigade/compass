@@ -1,4 +1,3 @@
+import { CompassClient } from "./proto-gen/CompassServiceClientPb";
 
-import { CompassClient } from "./proto/CompassServiceClientPb";
-
-export const grpcClient = new CompassClient("localhost:8081");
+export const grpcClient = new CompassClient("localhost:8080");

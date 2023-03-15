@@ -2,7 +2,7 @@ import * as grpc from "@grpc/grpc-js";
 import { appFactory } from "~/app";
 import { loadEnvFromFile, logger } from "~/lib";
 import { CompassServer } from "../grpc_server";
-import { CompassService } from "../../proto/compass_grpc_pb"; // TODO: export this from grpc_server as well - that should ideally be the only place interacting with pb
+import { CompassService } from "../../proto-gen/compass_grpc_pb"; // TODO: export this from grpc_server as well - that should ideally be the only place interacting with pb
 
 const main = () => {
   loadEnvFromFile();
@@ -22,7 +22,7 @@ const main = () => {
     }
   );
 
-  const port = process.env.PORT || 8080;
+  const port = process.env.PORT || 8085;
 
   const app = appFactory();
   app.listen(port, () => {
