@@ -3,8 +3,8 @@ import {
   sendUnaryData,
   UntypedHandleCall,
 } from "@grpc/grpc-js";
-import { ICompassServer } from "proto"; // TODO: share
-import { GetStudentsRequest, GetStudentsResponse, Student } from "proto"; // TODO: share
+import { ICompassServer } from "../proto/compass_grpc_pb"; // TODO: share
+import { GetStudentsRequest, GetStudentsResponse, Student } from "../proto/compass_pb"; // TODO: share
 
 export class CompassServer implements ICompassServer {
   [name: string]: UntypedHandleCall;
@@ -23,4 +23,4 @@ export class CompassServer implements ICompassServer {
     resp.addStudent(s);
     callback(null, resp);
   }
-}
+};

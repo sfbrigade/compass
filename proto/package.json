@@ -4,11 +4,14 @@
   "description": "Protos for Compass",
   "devDependencies": {
     "grpc_tools_node_protoc_ts": "^5.3.3",
-    "grpc-tools": "^1.12.4"
+    "grpc-tools": "^1.12.4",
+    "protoc-gen-grpc-web": "^1.4.1"
   },
   "main": "./index.ts",
   "types": "./index.ts",
   "scripts": {
-    "build": "PROTO_DEST=./gen; npx grpc_tools_node_protoc --js_out=import_style=commonjs:${PROTO_DEST} --grpc_out=grpc_js:${PROTO_DEST} --ts_out=grpc_js:${PROTO_DEST} -I . *.proto"
+    "build-server": "PROTO_DEST=../server/proto; mkdir -p $PROTO_DEST && npx grpc_tools_node_protoc --js_out=import_style=commonjs,binary:${PROTO_DEST} --grpc_out=grpc_js:${PROTO_DEST} --ts_out=grpc_js:${PROTO_DEST} -I . *.proto",
+    "build-client": "PROTO_DEST=../client/proto; mkdir -p $PROTO_DEST && npx grpc_tools_node_protoc --js_out=import_style=commonjs:${PROTO_DEST} --grpc-web_out=import_style=typescript,mode=grpcwebtext:${PROTO_DEST}  -I . *.proto",
+    "build": "npm run build-server && npm run build-client"
   }
 }

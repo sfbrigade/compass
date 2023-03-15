@@ -2,12 +2,12 @@ import * as grpc from "@grpc/grpc-js";
 import { appFactory } from "~/app";
 import { loadEnvFromFile, logger } from "~/lib";
 import { CompassServer } from "../grpc_server";
-import { CompassService } from "proto"; // TODO: share
+import { CompassService } from "../../proto/compass_grpc_pb"; // TODO: export this from grpc_server as well - that should ideally be the only place interacting with pb
 
 const main = () => {
   loadEnvFromFile();
 
-  const grpcPort = process.env.GRPC_PORT || 8081;
+  const grpcPort = process.env.GRPC_PORT || 9090;
   const grpcServer = new grpc.Server();
   grpcServer.addService(CompassService, new CompassServer());
   grpcServer.bindAsync(
@@ -17,7 +17,7 @@ const main = () => {
       if (err) {
         throw err;
       }
-      console.log(`Started grpc server at http://localhost:${grpcPort}`);
+      logger.info(`Started grpc server at http://localhost:${grpcPort}`);
       grpcServer.start();
     }
   );
@@ -26,7 +26,7 @@ const main = () => {
 
   const app = appFactory();
   app.listen(port, () => {
-    logger.info(`Server started on port ${port}: http://localhost:${port}`);
+    logger.info(`Server http server at http://localhost:${port}`);
   });
 };
 
