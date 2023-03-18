@@ -42,7 +42,7 @@ const AllStudentsPage = () => {
       <ul>
         {students?.map((student) => (
           <li key={student.student_id}>
-            <Link href={`/students/${student.student_id}/view`}>
+            <Link href={`/students/${student.student_id}`}>
               {student.first_name} {student.last_name}
             </Link>
           </li>
