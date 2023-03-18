@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { t } from "./context";
 
+// todo: define .output() schemas for all procedures
+
 export const studentProcedures = {
   getStudentById: t.procedure
     .input(z.object({ student_id: z.string().uuid() }))
