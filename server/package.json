@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/sfbrigade/project-compass#readme",
   "dependencies": {
+    "@trpc/client": "^10.16.0",
     "@trpc/server": "^10.13.0",
     "axios": "^1.3.2",
     "cors": "^2.8.5",

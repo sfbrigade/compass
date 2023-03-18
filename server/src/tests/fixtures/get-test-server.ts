@@ -5,6 +5,8 @@ import axios from "axios";
 import { appFactory } from "~/app";
 import { getDb } from "~/db/lib/get-db";
 import { Env } from "~/lib";
+import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
+import { AppRouter } from "~/routes/trpc";
 
 export const getTestServer = async () => {
   const [{ connectionString: databaseConnectionString }, appPort] =
@@ -32,6 +34,13 @@ export const getTestServer = async () => {
   return {
     axios: axios.create({
       baseURL: `http://localhost:${appPort}`,
+    }),
+    trpc: createTRPCProxyClient<AppRouter>({
+      links: [
+        httpBatchLink({
+          url: `http://localhost:${appPort}/trpc`,
+        }),
+      ],
     }),
     db,
     pool,

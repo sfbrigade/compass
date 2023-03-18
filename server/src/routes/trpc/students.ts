@@ -1,19 +1,7 @@
-import { initTRPC } from "@trpc/server";
-import { createExpressMiddleware } from "@trpc/server/adapters/express";
 import { z } from "zod";
-import { getDb } from "~/db/lib/get-db";
+import { t } from "./context";
 
-const createContext = () => {
-  return {
-    ...getDb(process.env.DATABASE_URL!),
-  };
-};
-
-const t = initTRPC.context<typeof createContext>().create();
-
-const router = t.router;
-
-const trpcRouter = router({
+export const studentProcedures = {
   getStudentById: t.procedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
@@ -47,11 +35,4 @@ const trpcRouter = router({
 
       return result;
     }),
-});
-
-export const withTrpc = createExpressMiddleware({
-  router: trpcRouter,
-  createContext,
-});
-
-export type AppRouter = typeof trpcRouter;
+};
