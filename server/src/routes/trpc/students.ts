@@ -29,6 +29,7 @@ export const studentProcedures = {
     .mutation(async (req) => {
       const { first_name, last_name } = req.input;
 
+      // todo: add a unique constraint to prevent duplicate students
       const result = await req.ctx.db
         .insertInto("student")
         .values({ first_name, last_name })
