@@ -16,9 +16,11 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      // See https://github.com/sfbrigade/project-compass/pull/20#discussion_r1121094435 for why this is needed
+      "~/*": ["../server/src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx"],
   "exclude": ["node_modules"]
 }
