@@ -1,4 +1,5 @@
 import { trpc } from "@/lib/trpc";
+import Link from "next/link";
 import { useRouter } from "next/router";
 
 const ViewStudentPage = () => {
@@ -16,10 +17,13 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <h1>Student {student?.student_id}</h1>
+      <h1>Student: {student?.student_id}</h1>
       <p>
         {student?.first_name} {student?.last_name}
       </p>
+      <button>
+        <Link href={"/students"}>GO BACK</Link>
+      </button>
     </div>
   );
 };
