@@ -25,7 +25,7 @@ const Home: NextPage = () => {
           {session && session.user ? (
             <div className={styles.card}>
               <img
-                src={session.user.image}
+                src={session.user.image || ""}
                 width={50}
                 height={50}
                 referrerPolicy="no-referrer"
