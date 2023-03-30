@@ -1,7 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+
 const Home: NextPage = () => {
   const { data: session } = useSession();
   return (
@@ -24,8 +26,9 @@ const Home: NextPage = () => {
         <div>
           {session && session.user ? (
             <div className={styles.card}>
-              <img
-                src={session.user.image}
+              <Image
+                src={session.user.image || ""}
+                alt="Profile picture"
                 width={50}
                 height={50}
                 referrerPolicy="no-referrer"
