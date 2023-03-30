@@ -15,5 +15,5 @@
     },
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "src/tests/**/*"]
+  "include": ["src/**/*", "../client/src/api/tests/**/*"]
 }

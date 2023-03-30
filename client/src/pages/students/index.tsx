@@ -1,4 +1,4 @@
-import { trpc } from "@/src/lib/trpc";
+import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
 
