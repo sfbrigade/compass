@@ -9,7 +9,7 @@ done
 psql ${DATABASE_URL} -c '' > /dev/null 2>&1
 RESULT=$?
 if [ $RESULT -ne 0 ]; then
-  npm run db:reset -w server
+  npm run db:reset
 fi
 
 # Make sure npm modules are up to date.
