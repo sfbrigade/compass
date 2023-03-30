@@ -1,2 +1,2 @@
-server/src/db/zapatos
-client/.next
+src/db/zapatos
+.next
