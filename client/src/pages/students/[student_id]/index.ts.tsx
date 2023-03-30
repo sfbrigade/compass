@@ -1,4 +1,4 @@
-import { trpc } from "@/lib/trpc";
+import { trpc } from "@/src/lib/trpc";
 import { useRouter } from "next/router";
 
 const ViewStudentPage = () => {
