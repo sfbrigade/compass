@@ -17,9 +17,7 @@
     "baseUrl": "./src",
     "paths": {
       "@/*": ["./*"],
-      "api/*": ["./api/*"],
-      // See https://github.com/sfbrigade/project-compass/pull/20#discussion_r1121094435 for why this is needed
-      "~/*": ["../server/src/*"]
+      "api/*": ["./api/*"]
     }
   },
   "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx"],
