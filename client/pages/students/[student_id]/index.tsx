@@ -17,13 +17,14 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <h1>Student: {student?.student_id}</h1>
-      <p>
-        {student?.first_name} {student?.last_name}
-      </p>
-      <button>
-        <Link href={"/students"}>GO BACK</Link>
-      </button>
+      <h1>
+        Name: {student?.first_name} {student?.last_name}
+      </h1>
+      <h3>Student ID: {student?.student_id}</h3>
+
+      <div>
+        <Link href={"/students"}>Return to Student List</Link>
+      </div>
     </div>
   );
 };

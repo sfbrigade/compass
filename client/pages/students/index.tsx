@@ -25,7 +25,7 @@ const AllStudentsPage = () => {
 
   return (
     <div>
-      <h2>Create a student</h2>
+      <h2>Add New Student</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -38,7 +38,7 @@ const AllStudentsPage = () => {
         <button type="submit">Create</button>
       </form>
 
-      <h2>All students</h2>
+      <h2>All Students</h2>
       <ul>
         {students?.map((student) => (
           <li key={student.student_id}>
