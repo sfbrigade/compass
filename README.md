@@ -24,7 +24,7 @@ Useful resources:
    cp server/.env.example server/.env.local
    ```
 
-There are two ways to run Compass locally
+There are three ways to run Compass locally
 
 ### **Option 1: Run client, server and database in docker (recommended)**
 
@@ -52,6 +52,36 @@ There are two ways to run Compass locally
    ```sh
    cd server
    docker compose up -d  # start the database
+   npm run db:reset      # reset and migrate the database
+   npm run dev           # start the server in development mode
+   ```
+
+   Server url: http://localhost:8080/health
+
+3. Bring up the client in a separate terminal, starting in the `project-compass` directory
+   ```sh
+   cd client
+   npm run dev           # start the server in development mode
+   ```
+   Client url: http://localhost:3000
+
+### Option 3: Run client, server and database locally
+
+0. One time setup:
+
+- Install Postgresql db from your preferred source ([pgAdmin 4](https://www.postgresql.org/download/), [Homebrew](https://wiki.postgresql.org/wiki/Homebrew), ...)
+- Create a username and password on the Postgres server.
+- Update the `DATABASE_URL` in _server/.env.local_ to include your actual `<username>` and `<password>`:
+  ```
+  DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
+  ```
+
+1. Launch the local Postgresql
+
+2. Reset the database and bring up the server, starting in the `project-compass` directory
+
+   ```sh
+   cd server
    npm run db:reset      # reset and migrate the database
    npm run dev           # start the server in development mode
    ```
