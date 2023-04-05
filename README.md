@@ -19,14 +19,14 @@ Useful resources:
    cd project-compass
    ```
    - _Windows users_: make sure that the git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
-3. Create the local server env file
+3. Create the local server env file:
    ```sh
-   cp server/.env.example server/.env.local
+   cp .env.example .env.local
    ```
 
 ### Running Compass
 
-There are two ways to run Compass locally:
+There are three ways to run Compass locally:
 
 **Option 1: Run client, server and database in docker (easiest to get started)**
 
@@ -62,7 +62,35 @@ There are two ways to run Compass locally:
    npm run dev           # start the server in development mode
    ```
 
-   Server url: http://localhost:3000
+   Server URL: http://localhost:3000
+
+**Option 3: Run client, server and database locally**
+
+0. One time setup:
+
+- Install Postgres from your preferred source ([pgAdmin 4](https://www.postgresql.org/download/), [Homebrew](https://wiki.postgresql.org/wiki/Homebrew), ...)
+- Create a username and password on the Postgres server.
+- Update the `DATABASE_URL` in _server/.env.local_ to include your actual `<username>` and `<password>`:
+  ```
+  DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
+  ```
+
+1. Launch your local Postgres instance
+
+2. Install node dependencies, starting in the `project-compass` directory
+
+   ```sh
+   npm install           # install dependencies
+   ```
+
+3. Reset the database and bring up the server
+
+   ```sh
+   npm run db:reset      # reset and migrate the database
+   npm run dev           # start the server in development mode
+   ```
+
+   Server URL: http://localhost:3000
 
 ### Running tests
 
