@@ -21,6 +21,7 @@ const ViewStudentPage = () => {
         Name: {student?.first_name} {student?.last_name}
       </h1>
       <h3>Student ID: {student?.student_id}</h3>
+      <h3>Student email: {student?.email}</h3>
 
       <div>
         <Link href={"/students"}>Return to Student List</Link>

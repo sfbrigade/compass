@@ -16,6 +16,7 @@ const AllStudentsPage = () => {
     mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
+      email: data.get("email") as string,
     });
   };
 
@@ -35,6 +36,12 @@ const AllStudentsPage = () => {
           required
         />
         <input type="text" name="last_name" placeholder="Last name" required />
+        <input
+          type="email"
+          name="email"
+          placeholder="student@email.com"
+          required
+        />
         <button type="submit">Create</button>
       </form>
 
