@@ -15,7 +15,7 @@ jobs:
       - name: Install dependencies
         run: npm i --ci
       - name: Check types
-        run: npm run type-check -ws
+        run: npm run type-check
 
   lint:
     name: Lint
@@ -51,4 +51,4 @@ jobs:
       - name: Pre-pull Postgres image
         run: docker pull postgres:15
       - name: Run tests
-        run: npm run test -w server
+        run: npm run test

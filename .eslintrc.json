@@ -1,5 +1,6 @@
 {
   "parser": "@typescript-eslint/parser",
+  "extends": "next/core-web-vitals",
   "ignorePatterns": ["*.json"],
   "overrides": [
     {
@@ -11,7 +12,7 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
       "parserOptions": {
-        "project": ["./client/tsconfig.json", "./server/tsconfig.json"]
+        "project": ["./tsconfig.json"]
       },
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -20,7 +21,7 @@
     }
   ],
   "rules": {
-    "@next/next/no-html-link-for-pages": ["error", "client/pages/"]
+    "@next/next/no-html-link-for-pages": ["error", "src/pages/"]
   },
   "plugins": ["@typescript-eslint"],
   "root": true
