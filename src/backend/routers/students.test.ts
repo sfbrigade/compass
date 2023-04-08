@@ -1,5 +1,5 @@
 import test from "ava";
-import { getTestServer } from "api/tests";
+import { getTestServer } from "backend/tests";
 
 test("getStudentById", async (t) => {
   const { trpc, db } = await getTestServer(t);

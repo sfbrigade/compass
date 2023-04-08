@@ -1,5 +1,5 @@
 import { getTestPostgresDatabaseFactory } from "ava-postgres";
-import { migrate } from "api/db";
+import { migrate } from "backend/db";
 
 export const getTestDatabase = getTestPostgresDatabaseFactory({
   postgresVersion: "15",

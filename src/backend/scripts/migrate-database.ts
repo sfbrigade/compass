@@ -1,5 +1,5 @@
-import { migrate } from "api/db";
-import { loadEnvFromFile } from "api/lib";
+import { migrate } from "backend/db";
+import { loadEnvFromFile } from "backend/lib";
 
 const main = async () => {
   loadEnvFromFile();

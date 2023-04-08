@@ -1,9 +1,9 @@
 import { getTestDatabase } from "./get-test-database";
 import getPort from "@ava/get-port";
-import { getDb } from "api/db/lib/get-db";
-import { Env } from "api/lib";
+import { getDb } from "backend/db/lib/get-db";
+import { Env } from "backend/lib";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
-import { AppRouter } from "api/routers/_app";
+import { AppRouter } from "backend/routers/_app";
 import next from "next";
 import { ExecutionContext } from "ava";
 import { createServer, Server } from "http";

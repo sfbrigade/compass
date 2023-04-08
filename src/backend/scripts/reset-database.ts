@@ -1,5 +1,5 @@
-import { reset } from "api/db/lib";
-import { loadEnvFromFile } from "api/lib";
+import { reset } from "backend/db/lib";
+import { loadEnvFromFile } from "backend/lib";
 
 const main = async () => {
   loadEnvFromFile();
