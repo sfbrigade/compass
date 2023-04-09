@@ -9,6 +9,7 @@ test("getStudentById", async (t) => {
     .values({
       first_name: "Foo",
       last_name: "Bar",
+      email: "foo.bar@gmail.com",
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -25,6 +26,7 @@ test("getAllStudents", async (t) => {
     .values({
       first_name: "Foo",
       last_name: "Bar",
+      email: "foo.bar@gmail.com",
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -40,6 +42,7 @@ test("createStudent", async (t) => {
   await trpc.createStudent.mutate({
     first_name: "Foo",
     last_name: "Bar",
+    email: "foo.bar@gmail.com",
   });
 
   t.truthy(
