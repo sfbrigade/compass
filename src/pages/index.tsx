@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import logo from "../styles/img/compass-logo.png";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
   const { data: session }: { data: { user: { name: string, image?: string } } | null | undefined } = useSession();
@@ -27,6 +27,7 @@ const Home: NextPage = () => {
               />
               {JSON.stringify(session)}
               user.name: {session.user.name}
+              <button onClick={() => signOut()}>Sign out</button>
             </div>
           ) : (
             <div className={styles.greet}>
