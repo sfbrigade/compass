@@ -2,10 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useSession, signIn, signOut } from "next-auth/react";
+import logo from "../styles/img/compass-logo.png";
+import { useSession, signIn } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
+  const { data: session }: { data: { user: { name: string, image?: string } } | null | undefined } = useSession();
   return (
     <div className={styles.container}>
       <Head>
@@ -13,15 +14,6 @@ const Home: NextPage = () => {
         <meta name="description" content="Make IEPs easier" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <nav className={styles.navbar}>
-        <div className={styles.signup}>
-          {session && session.user ? (
-            <button onClick={() => signOut()}>Sign out</button>
-          ) : (
-            <button onClick={() => signIn()}>Sign in</button>
-          )}
-        </div>
-      </nav>
       <main className={styles.main}>
         <div>
           {session && session.user ? (
@@ -37,7 +29,18 @@ const Home: NextPage = () => {
               user.name: {session.user.name}
             </div>
           ) : (
-            <p>You need to sign in to access Compass</p>
+            <div className={styles.greet}>
+              <Image src={logo} alt="logo" />
+              <div>Welcome to Project Compass</div>
+              <div>You need to sign in to access Compass</div>
+              <div className={styles.navbar}>
+                <div className={styles.signin}>
+                  <button onClick={() => signIn("google")}>
+                    Sign in with Google
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
         </div>
       </main>
