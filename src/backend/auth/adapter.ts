@@ -24,6 +24,13 @@ const mapStoredSessionToAdapterSession = (
   expires: session.expires_at,
 });
 
+/**
+ * Factory function to create a custom Auth.js adapter.
+ * At time of writing, there isn't an official adapter that works with our setup.
+ * Having a custom adapter also gives us more control over the User model.
+ *
+ * See https://next-auth.js.org/tutorials/creating-a-database-adapter
+ */
 export const createPersistedAuthAdapter = (
   db: KyselyDatabaseInstance
 ): Adapter => ({
@@ -39,6 +46,7 @@ export const createPersistedAuthAdapter = (
         last_name,
         email: user.email,
         email_verified_at: user.emailVerified,
+        // todo: this should be pulled from an invite or something else instead of defaulting to a para
         role: "para",
         image_url: user.image,
       })

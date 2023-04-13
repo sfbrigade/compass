@@ -10,6 +10,8 @@ CREATE TABLE "user" (
   image_url TEXT
 );
 
+-- This table is managed by Auth.js via our adapter at backend/auth/adapter.ts
+-- See https://authjs.dev/reference/adapters#models for more details
 CREATE TABLE "account" (
   account_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   user_id UUID REFERENCES "user" (user_id) ON DELETE CASCADE,
