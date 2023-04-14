@@ -8,8 +8,7 @@ import { useSession, signIn, signOut } from "next-auth/react";
 const Home: NextPage = () => {
   const {
     data: session,
-  }: { data: { user: { name: string; image?: string } } | null | undefined } =
-    useSession();
+  }: { data: { user: { name: string; image?: string } } } = useSession();
 
   return (
     <div className={styles.container}>
