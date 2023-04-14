@@ -36,4 +36,17 @@ export const paraProcedures = {
 
       return result;
     }),
+
+  deletePara: procedure
+    .input(z.object({ para_id: z.string() }))
+    .mutation(async (req) => {
+      const { para_id } = req.input;
+
+      const result = await req.ctx.db
+        .deleteFrom("para")
+        .where("para_id", "=", para_id)
+        .execute();
+
+      return result;
+    }),
 };
