@@ -1,7 +1,6 @@
-.container{
-  background-color: #F6F5FF;
+.container {
+  background-color: #f6f5ff;
 }
-
 
 .main {
   display: flex;
@@ -11,7 +10,7 @@
   min-height: 100vh;
 }
 
-.greet{
+.greet {
   display: flex;
   flex-direction: column;
   justify-content: center;
