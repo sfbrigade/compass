@@ -858,6 +858,225 @@ declare module "zapatos/schema" {
   }
 
   /**
+   * **para**
+   * - Table in database
+   */
+  export namespace para {
+    export type Table = "para";
+    export interface Selectable {
+      /**
+       * **para.para_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      para_id: string;
+      /**
+       * **para.first_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      first_name: string;
+      /**
+       * **para.last_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      last_name: string;
+      /**
+       * **para.assigned_case_manager_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      assigned_case_manager_id: string | null;
+    }
+    export interface JSONSelectable {
+      /**
+       * **para.para_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      para_id: string;
+      /**
+       * **para.first_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      first_name: string;
+      /**
+       * **para.last_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      last_name: string;
+      /**
+       * **para.assigned_case_manager_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      assigned_case_manager_id: string | null;
+    }
+    export interface Whereable {
+      /**
+       * **para.para_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      para_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **para.first_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      first_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **para.last_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      last_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **para.assigned_case_manager_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      assigned_case_manager_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+    }
+    export interface Insertable {
+      /**
+       * **para.para_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      para_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+       * **para.first_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      first_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **para.last_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      last_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **para.assigned_case_manager_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      assigned_case_manager_id?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+       * **para.para_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      para_id?:
+        | string
+        | db.Parameter<string>
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.DefaultType | db.SQLFragment
+          >;
+      /**
+       * **para.first_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      first_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **para.last_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      last_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **para.assigned_case_manager_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      assigned_case_manager_id?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+    }
+    export type UniqueIndex = "para_pkey";
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<
+      Selectable,
+      T[number]
+    >;
+    export type SQLExpression =
+      | Table
+      | db.ColumnNames<Updatable | (keyof Updatable)[]>
+      | db.ColumnValues<Updatable>
+      | Whereable
+      | Column
+      | db.ParentColumn
+      | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **session**
    * - Table in database
    */
@@ -1668,48 +1887,56 @@ declare module "zapatos/schema" {
     export type Table =
       | account.Table
       | migrations.Table
+      | para.Table
       | session.Table
       | student.Table
       | user.Table;
     export type Selectable =
       | account.Selectable
       | migrations.Selectable
+      | para.Selectable
       | session.Selectable
       | student.Selectable
       | user.Selectable;
     export type JSONSelectable =
       | account.JSONSelectable
       | migrations.JSONSelectable
+      | para.JSONSelectable
       | session.JSONSelectable
       | student.JSONSelectable
       | user.JSONSelectable;
     export type Whereable =
       | account.Whereable
       | migrations.Whereable
+      | para.Whereable
       | session.Whereable
       | student.Whereable
       | user.Whereable;
     export type Insertable =
       | account.Insertable
       | migrations.Insertable
+      | para.Insertable
       | session.Insertable
       | student.Insertable
       | user.Insertable;
     export type Updatable =
       | account.Updatable
       | migrations.Updatable
+      | para.Updatable
       | session.Updatable
       | student.Updatable
       | user.Updatable;
     export type UniqueIndex =
       | account.UniqueIndex
       | migrations.UniqueIndex
+      | para.UniqueIndex
       | session.UniqueIndex
       | student.UniqueIndex
       | user.UniqueIndex;
     export type Column =
       | account.Column
       | migrations.Column
+      | para.Column
       | session.Column
       | student.Column
       | user.Column;
@@ -1717,6 +1944,7 @@ declare module "zapatos/schema" {
     export type AllBaseTables = [
       account.Table,
       migrations.Table,
+      para.Table,
       session.Table,
       student.Table,
       user.Table
@@ -1727,6 +1955,7 @@ declare module "zapatos/schema" {
     export type AllTablesAndViews = [
       account.Table,
       migrations.Table,
+      para.Table,
       session.Table,
       student.Table,
       user.Table
@@ -1757,6 +1986,7 @@ declare module "zapatos/schema" {
   export type SelectableForTable<T extends Table> = {
     account: account.Selectable;
     migrations: migrations.Selectable;
+    para: para.Selectable;
     session: session.Selectable;
     student: student.Selectable;
     user: user.Selectable;
@@ -1765,6 +1995,7 @@ declare module "zapatos/schema" {
   export type JSONSelectableForTable<T extends Table> = {
     account: account.JSONSelectable;
     migrations: migrations.JSONSelectable;
+    para: para.JSONSelectable;
     session: session.JSONSelectable;
     student: student.JSONSelectable;
     user: user.JSONSelectable;
@@ -1773,6 +2004,7 @@ declare module "zapatos/schema" {
   export type WhereableForTable<T extends Table> = {
     account: account.Whereable;
     migrations: migrations.Whereable;
+    para: para.Whereable;
     session: session.Whereable;
     student: student.Whereable;
     user: user.Whereable;
@@ -1781,6 +2013,7 @@ declare module "zapatos/schema" {
   export type InsertableForTable<T extends Table> = {
     account: account.Insertable;
     migrations: migrations.Insertable;
+    para: para.Insertable;
     session: session.Insertable;
     student: student.Insertable;
     user: user.Insertable;
@@ -1789,6 +2022,7 @@ declare module "zapatos/schema" {
   export type UpdatableForTable<T extends Table> = {
     account: account.Updatable;
     migrations: migrations.Updatable;
+    para: para.Updatable;
     session: session.Updatable;
     student: student.Updatable;
     user: user.Updatable;
@@ -1797,6 +2031,7 @@ declare module "zapatos/schema" {
   export type UniqueIndexForTable<T extends Table> = {
     account: account.UniqueIndex;
     migrations: migrations.UniqueIndex;
+    para: para.UniqueIndex;
     session: session.UniqueIndex;
     student: student.UniqueIndex;
     user: user.UniqueIndex;
@@ -1805,6 +2040,7 @@ declare module "zapatos/schema" {
   export type ColumnForTable<T extends Table> = {
     account: account.Column;
     migrations: migrations.Column;
+    para: para.Column;
     session: session.Column;
     student: student.Column;
     user: user.Column;
@@ -1813,6 +2049,7 @@ declare module "zapatos/schema" {
   export type SQLForTable<T extends Table> = {
     account: account.SQL;
     migrations: migrations.SQL;
+    para: para.SQL;
     session: session.SQL;
     student: student.SQL;
     user: user.SQL;

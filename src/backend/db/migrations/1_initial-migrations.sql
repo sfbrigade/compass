@@ -40,3 +40,10 @@ CREATE TABLE "student" (
   last_name TEXT NOT NULL,
   assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
 );
+
+CREATE TABLE "para" (
+  para_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
+);
