@@ -6,9 +6,7 @@ import logo from "../styles/img/compass-logo.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
-  const {
-    data: session,
-  }: { data: { user: { name: string; image?: string } } } = useSession();
+  const { data: session } = useSession();
 
   return (
     <div className={styles.container}>
