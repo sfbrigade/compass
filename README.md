@@ -14,8 +14,8 @@ Useful resources:
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Clone the github repo:
    ```sh
-   cd <parent folder of project-compass>
-   git clone https://github.com/sfbrigade/project-compass.git
+   cd <parent folder of project compass>
+   git clone https://github.com/sfbrigade/compass.git
    cd project-compass
    ```
    - _Windows users_: make sure that the git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`

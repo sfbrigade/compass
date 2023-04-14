@@ -23,6 +23,623 @@ declare module "zapatos/schema" {
   /* --- tables --- */
 
   /**
+   * **account**
+   * - Table in database
+   */
+  export namespace account {
+    export type Table = "account";
+    export interface Selectable {
+      /**
+       * **account.account_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      account_id: string;
+      /**
+       * **account.user_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      user_id: string | null;
+      /**
+       * **account.provider_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_name: string;
+      /**
+       * **account.provider_account_id**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_account_id: string;
+      /**
+       * **account.access_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      access_token: string | null;
+      /**
+       * **account.refresh_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      refresh_token: string | null;
+      /**
+       * **account.expires_at**
+       * - `int4` in database
+       * - Nullable, no default
+       */
+      expires_at: number | null;
+      /**
+       * **account.token_type**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      token_type: string | null;
+      /**
+       * **account.scope**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      scope: string | null;
+      /**
+       * **account.id_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      id_token: string | null;
+      /**
+       * **account.session_state**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      session_state: string | null;
+    }
+    export interface JSONSelectable {
+      /**
+       * **account.account_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      account_id: string;
+      /**
+       * **account.user_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      user_id: string | null;
+      /**
+       * **account.provider_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_name: string;
+      /**
+       * **account.provider_account_id**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_account_id: string;
+      /**
+       * **account.access_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      access_token: string | null;
+      /**
+       * **account.refresh_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      refresh_token: string | null;
+      /**
+       * **account.expires_at**
+       * - `int4` in database
+       * - Nullable, no default
+       */
+      expires_at: number | null;
+      /**
+       * **account.token_type**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      token_type: string | null;
+      /**
+       * **account.scope**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      scope: string | null;
+      /**
+       * **account.id_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      id_token: string | null;
+      /**
+       * **account.session_state**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      session_state: string | null;
+    }
+    export interface Whereable {
+      /**
+       * **account.account_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      account_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.user_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      user_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.provider_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.provider_account_id**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_account_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.access_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      access_token?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.refresh_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      refresh_token?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.expires_at**
+       * - `int4` in database
+       * - Nullable, no default
+       */
+      expires_at?:
+        | number
+        | db.Parameter<number>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            number | db.Parameter<number> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.token_type**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      token_type?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.scope**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      scope?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.id_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      id_token?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **account.session_state**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      session_state?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+    }
+    export interface Insertable {
+      /**
+       * **account.account_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      account_id?:
+        | string
+        | db.Parameter<string>
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.user_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      user_id?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.provider_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **account.provider_account_id**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_account_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **account.access_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      access_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.refresh_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      refresh_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.expires_at**
+       * - `int4` in database
+       * - Nullable, no default
+       */
+      expires_at?:
+        | number
+        | db.Parameter<number>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.token_type**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      token_type?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.scope**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      scope?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.id_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      id_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **account.session_state**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      session_state?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+       * **account.account_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      account_id?:
+        | string
+        | db.Parameter<string>
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.DefaultType | db.SQLFragment
+          >;
+      /**
+       * **account.user_id**
+       * - `uuid` in database
+       * - Nullable, no default
+       */
+      user_id?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.provider_name**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_name?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **account.provider_account_id**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      provider_account_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **account.access_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      access_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.refresh_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      refresh_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.expires_at**
+       * - `int4` in database
+       * - Nullable, no default
+       */
+      expires_at?:
+        | number
+        | db.Parameter<number>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | number
+            | db.Parameter<number>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.token_type**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      token_type?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.scope**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      scope?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.id_token**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      id_token?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **account.session_state**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      session_state?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+    }
+    export type UniqueIndex =
+      | "account_pkey"
+      | "account_provider_name_provider_account_id_key";
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<
+      Selectable,
+      T[number]
+    >;
+    export type SQLExpression =
+      | Table
+      | db.ColumnNames<Updatable | (keyof Updatable)[]>
+      | db.ColumnValues<Updatable>
+      | Whereable
+      | Column
+      | db.ParentColumn
+      | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **migrations**
    * - Table in database
    */
@@ -224,6 +841,226 @@ declare module "zapatos/schema" {
           >;
     }
     export type UniqueIndex = "migrations_name_key" | "migrations_pkey";
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<
+      Selectable,
+      T[number]
+    >;
+    export type SQLExpression =
+      | Table
+      | db.ColumnNames<Updatable | (keyof Updatable)[]>
+      | db.ColumnValues<Updatable>
+      | Whereable
+      | Column
+      | db.ParentColumn
+      | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **session**
+   * - Table in database
+   */
+  export namespace session {
+    export type Table = "session";
+    export interface Selectable {
+      /**
+       * **session.session_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      session_id: string;
+      /**
+       * **session.session_token**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      session_token: string;
+      /**
+       * **session.user_id**
+       * - `uuid` in database
+       * - `NOT NULL`, no default
+       */
+      user_id: string;
+      /**
+       * **session.expires_at**
+       * - `timestamptz` in database
+       * - `NOT NULL`, no default
+       */
+      expires_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+       * **session.session_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      session_id: string;
+      /**
+       * **session.session_token**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      session_token: string;
+      /**
+       * **session.user_id**
+       * - `uuid` in database
+       * - `NOT NULL`, no default
+       */
+      user_id: string;
+      /**
+       * **session.expires_at**
+       * - `timestamptz` in database
+       * - `NOT NULL`, no default
+       */
+      expires_at: db.TimestampTzString;
+    }
+    export interface Whereable {
+      /**
+       * **session.session_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      session_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **session.session_token**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      session_token?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **session.user_id**
+       * - `uuid` in database
+       * - `NOT NULL`, no default
+       */
+      user_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **session.expires_at**
+       * - `timestamptz` in database
+       * - `NOT NULL`, no default
+       */
+      expires_at?:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            | (db.TimestampTzString | Date)
+            | db.Parameter<db.TimestampTzString | Date>
+            | db.SQLFragment
+            | db.ParentColumn
+          >;
+    }
+    export interface Insertable {
+      /**
+       * **session.session_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      session_id?:
+        | string
+        | db.Parameter<string>
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **session.session_token**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      session_token: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **session.user_id**
+       * - `uuid` in database
+       * - `NOT NULL`, no default
+       */
+      user_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **session.expires_at**
+       * - `timestamptz` in database
+       * - `NOT NULL`, no default
+       */
+      expires_at:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+       * **session.session_id**
+       * - `uuid` in database
+       * - `NOT NULL`, default: `uuid_generate_v4()`
+       */
+      session_id?:
+        | string
+        | db.Parameter<string>
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.DefaultType | db.SQLFragment
+          >;
+      /**
+       * **session.session_token**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      session_token?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **session.user_id**
+       * - `uuid` in database
+       * - `NOT NULL`, no default
+       */
+      user_id?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **session.expires_at**
+       * - `timestamptz` in database
+       * - `NOT NULL`, no default
+       */
+      expires_at?:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | (db.TimestampTzString | Date)
+            | db.Parameter<db.TimestampTzString | Date>
+            | db.SQLFragment
+          >;
+    }
+    export type UniqueIndex = "session_pkey" | "session_session_token_key";
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<
       Selectable,
@@ -494,6 +1331,24 @@ declare module "zapatos/schema" {
        * - `NOT NULL`, no default
        */
       role: string;
+      /**
+       * **user.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string;
+      /**
+       * **user.email_verified_at**
+       * - `timestamptz` in database
+       * - Nullable, no default
+       */
+      email_verified_at: Date | null;
+      /**
+       * **user.image_url**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      image_url: string | null;
     }
     export interface JSONSelectable {
       /**
@@ -520,6 +1375,24 @@ declare module "zapatos/schema" {
        * - `NOT NULL`, no default
        */
       role: string;
+      /**
+       * **user.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string;
+      /**
+       * **user.email_verified_at**
+       * - `timestamptz` in database
+       * - Nullable, no default
+       */
+      email_verified_at: db.TimestampTzString | null;
+      /**
+       * **user.image_url**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      image_url: string | null;
     }
     export interface Whereable {
       /**
@@ -578,6 +1451,51 @@ declare module "zapatos/schema" {
             any,
             string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
           >;
+      /**
+       * **user.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
+       * **user.email_verified_at**
+       * - `timestamptz` in database
+       * - Nullable, no default
+       */
+      email_verified_at?:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            | (db.TimestampTzString | Date)
+            | db.Parameter<db.TimestampTzString | Date>
+            | db.SQLFragment
+            | db.ParentColumn
+          >;
+      /**
+       * **user.image_url**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      image_url?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
     }
     export interface Insertable {
       /**
@@ -604,6 +1522,34 @@ declare module "zapatos/schema" {
        * - `NOT NULL`, no default
        */
       role: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **user.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **user.email_verified_at**
+       * - `timestamptz` in database
+       * - Nullable, no default
+       */
+      email_verified_at?:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
+      /**
+       * **user.image_url**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      image_url?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -650,8 +1596,56 @@ declare module "zapatos/schema" {
         | db.Parameter<string>
         | db.SQLFragment
         | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **user.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+       * **user.email_verified_at**
+       * - `timestamptz` in database
+       * - Nullable, no default
+       */
+      email_verified_at?:
+        | (db.TimestampTzString | Date)
+        | db.Parameter<db.TimestampTzString | Date>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | (db.TimestampTzString | Date)
+            | db.Parameter<db.TimestampTzString | Date>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
+      /**
+       * **user.image_url**
+       * - `text` in database
+       * - Nullable, no default
+       */
+      image_url?:
+        | string
+        | db.Parameter<string>
+        | null
+        | db.DefaultType
+        | db.SQLFragment
+        | db.SQLFragment<
+            any,
+            | string
+            | db.Parameter<string>
+            | null
+            | db.DefaultType
+            | db.SQLFragment
+          >;
     }
-    export type UniqueIndex = "user_pkey";
+    export type UniqueIndex = "user_email_key" | "user_pkey";
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<
       Selectable,
@@ -671,39 +1665,69 @@ declare module "zapatos/schema" {
   /* --- aggregate types --- */
 
   export namespace public {
-    export type Table = migrations.Table | student.Table | user.Table;
+    export type Table =
+      | account.Table
+      | migrations.Table
+      | session.Table
+      | student.Table
+      | user.Table;
     export type Selectable =
+      | account.Selectable
       | migrations.Selectable
+      | session.Selectable
       | student.Selectable
       | user.Selectable;
     export type JSONSelectable =
+      | account.JSONSelectable
       | migrations.JSONSelectable
+      | session.JSONSelectable
       | student.JSONSelectable
       | user.JSONSelectable;
     export type Whereable =
+      | account.Whereable
       | migrations.Whereable
+      | session.Whereable
       | student.Whereable
       | user.Whereable;
     export type Insertable =
+      | account.Insertable
       | migrations.Insertable
+      | session.Insertable
       | student.Insertable
       | user.Insertable;
     export type Updatable =
+      | account.Updatable
       | migrations.Updatable
+      | session.Updatable
       | student.Updatable
       | user.Updatable;
     export type UniqueIndex =
+      | account.UniqueIndex
       | migrations.UniqueIndex
+      | session.UniqueIndex
       | student.UniqueIndex
       | user.UniqueIndex;
-    export type Column = migrations.Column | student.Column | user.Column;
+    export type Column =
+      | account.Column
+      | migrations.Column
+      | session.Column
+      | student.Column
+      | user.Column;
 
-    export type AllBaseTables = [migrations.Table, student.Table, user.Table];
+    export type AllBaseTables = [
+      account.Table,
+      migrations.Table,
+      session.Table,
+      student.Table,
+      user.Table
+    ];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
     export type AllTablesAndViews = [
+      account.Table,
       migrations.Table,
+      session.Table,
       student.Table,
       user.Table
     ];
@@ -731,49 +1755,65 @@ declare module "zapatos/schema" {
   /* === lookups === */
 
   export type SelectableForTable<T extends Table> = {
+    account: account.Selectable;
     migrations: migrations.Selectable;
+    session: session.Selectable;
     student: student.Selectable;
     user: user.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
+    account: account.JSONSelectable;
     migrations: migrations.JSONSelectable;
+    session: session.JSONSelectable;
     student: student.JSONSelectable;
     user: user.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
+    account: account.Whereable;
     migrations: migrations.Whereable;
+    session: session.Whereable;
     student: student.Whereable;
     user: user.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
+    account: account.Insertable;
     migrations: migrations.Insertable;
+    session: session.Insertable;
     student: student.Insertable;
     user: user.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
+    account: account.Updatable;
     migrations: migrations.Updatable;
+    session: session.Updatable;
     student: student.Updatable;
     user: user.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
+    account: account.UniqueIndex;
     migrations: migrations.UniqueIndex;
+    session: session.UniqueIndex;
     student: student.UniqueIndex;
     user: user.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
+    account: account.Column;
     migrations: migrations.Column;
+    session: session.Column;
     student: student.Column;
     user: user.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
+    account: account.SQL;
     migrations: migrations.SQL;
+    session: session.SQL;
     student: student.SQL;
     user: user.SQL;
   }[T];
