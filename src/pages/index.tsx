@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import logo from "../styles/img/compass-logo.png";
+import logo from "../public/img/compass-logo.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
