@@ -4,7 +4,7 @@ Compass is a tool to help educators create and manage Individualized Education P
 
 Useful resources:
 
-- [Notion wiki](https://www.notion.so/Compass-source-of-truth-9a02b2ee92144ef99d51999e74ccde1c)
+- [Notion wiki](https://www.notion.so/sfbrigade/Compass-source-of-truth-db118a6d51344dccadc49d1988662d66)
 - [Slack channel](https://sfbrigade.slack.com/archives/C01R8E75N1K)
 
 ## Contributing to our code base
@@ -41,13 +41,7 @@ There are three ways to run Compass locally:
 
 **Option 2: Run client and server locally, and database in Docker**
 
-1. Install node dependencies, starting in the `project-compass` directory
-
-   ```sh
-   npm install           # install dependencies
-   ```
-
-2. Start Postgres inside a Docker container
+1. Start Postgres inside a Docker container
 
    ```sh
    cd docker/postgres
@@ -56,7 +50,7 @@ There are three ways to run Compass locally:
    npm run db:reset      # reset and migrate the database
    ```
 
-3. Start the server
+2. Start the server
 
    ```sh
    npm run dev           # start the server in development mode
@@ -77,13 +71,7 @@ There are three ways to run Compass locally:
 
 1. Launch your local Postgres instance
 
-2. Install node dependencies, starting in the `project-compass` directory
-
-   ```sh
-   npm install           # install dependencies
-   ```
-
-3. Reset the database and bring up the server
+2. Reset the database and bring up the server
 
    ```sh
    npm run db:reset      # reset and migrate the database
