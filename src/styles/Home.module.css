@@ -23,7 +23,7 @@
 .signin {
   height: 40px;
   padding: 0px 24px;
-  background-color: #5347D7;
+  background-color: #5347d7;
   border-radius: 5px;
   border: none;
   color: white;
@@ -35,7 +35,7 @@
 }
 
 .signin:active {
-  background-color: #3023B8;
+  background-color: #3023b8;
 }
 
 /* SESSION USER PAGE */
@@ -57,7 +57,7 @@
   height: 40px;
   width: 100px;
   padding: 0px 24px;
-  background-color: #5347D7;
+  background-color: #5347d7;
   border-radius: 5px;
   border: none;
   color: white;
@@ -69,17 +69,17 @@
 }
 
 .signout:active {
-  background-color: #3023B8;
+  background-color: #3023b8;
 }
 
-
-
-
 /* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {}
+@media (hover: hover) and (pointer: fine) {
+}
 
 /* Mobile */
-@media (max-width: 700px) {}
+@media (max-width: 700px) {
+}
 
 /* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {}
+@media (min-width: 701px) and (max-width: 1120px) {
+}
