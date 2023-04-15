@@ -16,9 +16,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div>
+        <div className={styles.userinfowrap}>
           {session && session.user ? (
-            <div className={styles.card}>
+            <div className={styles.userinfo}>
               <Image
                 src={session.user.image || ""}
                 alt="Profile picture"
@@ -26,21 +26,24 @@ const Home: NextPage = () => {
                 height={50}
                 referrerPolicy="no-referrer"
               />
+              <h1>Welcome {session.user.name}</h1>
               {JSON.stringify(session)}
-              user.name: {session.user.name}
-              <button onClick={() => signOut()}>Sign out</button>
+              <button className={styles.signout} onClick={() => signOut()}>
+                Sign out
+              </button>
             </div>
           ) : (
-            <div className={styles.greet}>
-              <Image src={logo} alt="logo" />
-              <div>Welcome to Project Compass</div>
-              <div>You need to sign in to access Compass</div>
-              <div className={styles.navbar}>
-                <div className={styles.signin}>
-                  <button onClick={() => signIn("google")}>
-                    Sign in with Google
-                  </button>
-                </div>
+            <div className={styles.greetwrap}>
+              <div className={styles.greet}>
+                <Image src={logo} alt="logo" />
+                <div>Welcome to Project Compass</div>
+                <div>Log in with your Google account to continue</div>
+                <button
+                  className={styles.signin}
+                  onClick={() => signIn("google")}
+                >
+                  Sign in with Google
+                </button>
               </div>
             </div>
           )}
