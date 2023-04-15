@@ -12,15 +12,6 @@ const nextConfig = {
       },
     ],
   },
-  async redirects() {
-    return [
-      {
-        source: "/para/:path*",
-        destination: "/cmDashboard",
-        permanent: true,
-      },
-    ];
-  },
 };
 
 module.exports = {

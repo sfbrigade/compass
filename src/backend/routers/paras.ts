@@ -33,7 +33,6 @@ export const paraProcedures = {
         .values({ first_name, last_name })
         .returningAll()
         .execute();
-
       return result;
     }),
 
@@ -45,8 +44,8 @@ export const paraProcedures = {
       const result = await req.ctx.db
         .deleteFrom("para")
         .where("para_id", "=", para_id)
+        .returningAll()
         .execute();
-
       return result;
     }),
 };
