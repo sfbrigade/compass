@@ -1103,6 +1103,12 @@ declare module "zapatos/schema" {
        */
       last_name: string;
       /**
+       * **student.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string;
+      /**
        * **student.assigned_case_manager_id**
        * - `uuid` in database
        * - Nullable, no default
@@ -1128,6 +1134,12 @@ declare module "zapatos/schema" {
        * - `NOT NULL`, no default
        */
       last_name: string;
+      /**
+       * **student.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string;
       /**
        * **student.assigned_case_manager_id**
        * - `uuid` in database
@@ -1179,6 +1191,20 @@ declare module "zapatos/schema" {
             string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
           >;
       /**
+       * **student.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.ParentColumn
+        | db.SQLFragment<
+            any,
+            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
+          >;
+      /**
        * **student.assigned_case_manager_id**
        * - `uuid` in database
        * - Nullable, no default
@@ -1216,6 +1242,12 @@ declare module "zapatos/schema" {
        * - `NOT NULL`, no default
        */
       last_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+       * **student.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email: string | db.Parameter<string> | db.SQLFragment;
       /**
        * **student.assigned_case_manager_id**
        * - `uuid` in database
@@ -1264,6 +1296,16 @@ declare module "zapatos/schema" {
         | db.SQLFragment
         | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
+       * **student.email**
+       * - `text` in database
+       * - `NOT NULL`, no default
+       */
+      email?:
+        | string
+        | db.Parameter<string>
+        | db.SQLFragment
+        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
        * **student.assigned_case_manager_id**
        * - `uuid` in database
        * - Nullable, no default
@@ -1283,7 +1325,7 @@ declare module "zapatos/schema" {
             | db.SQLFragment
           >;
     }
-    export type UniqueIndex = "student_pkey";
+    export type UniqueIndex = "student_email_key" | "student_pkey";
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<
       Selectable,

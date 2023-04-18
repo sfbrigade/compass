@@ -16,6 +16,7 @@ const AllStudentsPage = () => {
     mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
+      email: data.get("email") as string,
     });
   };
 
@@ -25,7 +26,7 @@ const AllStudentsPage = () => {
 
   return (
     <div>
-      <h2>Create a student</h2>
+      <h2>Add New Student</h2>
 
       <form onSubmit={handleSubmit}>
         <input
@@ -35,10 +36,16 @@ const AllStudentsPage = () => {
           required
         />
         <input type="text" name="last_name" placeholder="Last name" required />
+        <input
+          type="email"
+          name="email"
+          placeholder="first.last@email.com"
+          required
+        />
         <button type="submit">Create</button>
       </form>
 
-      <h2>All students</h2>
+      <h2>All Students</h2>
       <ul>
         {students?.map((student) => (
           <li key={student.student_id}>
