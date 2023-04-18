@@ -1,7 +1,6 @@
 import { trpc } from "client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import React from "react";
 
 const ViewParaPage = () => {
   const router = useRouter();
@@ -21,7 +20,7 @@ const ViewParaPage = () => {
   const handleRemovePara = (paraId?: string) => {
     if (paraId) {
       mutate({
-        para_id: paraId ,
+        para_id: paraId,
       });
     }
     router.push("../cmDashboard").catch((err) => console.log(err));
