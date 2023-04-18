@@ -3,9 +3,11 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { useSession, signIn, signOut } from "next-auth/react";
+import { trpc } from "client/lib/trpc";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
+  const { data: me } = trpc.getMe.useQuery();
   return (
     <div className={styles.container}>
       <Head>
@@ -24,17 +26,17 @@ const Home: NextPage = () => {
       </nav>
       <main className={styles.main}>
         <div>
-          {session && session.user ? (
+          {me ? (
             <div className={styles.card}>
               <Image
-                src={session.user.image || ""}
+                src={me.image_url ?? ""}
                 alt="Profile picture"
                 width={50}
                 height={50}
                 referrerPolicy="no-referrer"
               />
-              {JSON.stringify(session)}
-              user.name: {session.user.name}
+              {JSON.stringify(me)}
+              user.name: {me.first_name} {me.last_name}
             </div>
           ) : (
             <p>You need to sign in to access Compass</p>
