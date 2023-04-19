@@ -4,11 +4,11 @@ import Link from "next/link";
 
 const ViewParaPage = () => {
   const router = useRouter();
-  const { para_id } = router.query;
+  const { user_id } = router.query;
 
   const { data: para, isLoading } = trpc.getParaById.useQuery(
-    { para_id: para_id as string },
-    { enabled: Boolean(para_id) }
+    { user_id: user_id as string },
+    { enabled: Boolean(user_id) }
   );
 
   const utils = trpc.useContext();
@@ -20,7 +20,7 @@ const ViewParaPage = () => {
   const handleRemovePara = (paraId?: string) => {
     if (paraId) {
       mutate({
-        para_id: paraId,
+        user_id: paraId,
       });
     }
     router.push("../cmDashboard").catch((err) => console.log(err));
@@ -35,11 +35,11 @@ const ViewParaPage = () => {
       <Link href={`/cmDashboard`}>
         <p>CM Dashboard</p>
       </Link>
-      <h1>Para {para?.para_id}</h1>
+      <h1>Para {para?.user_id}</h1>
       <button
         type="button"
         onClick={() => {
-          handleRemovePara(para?.para_id);
+          handleRemovePara(para?.user_id);
         }}
         style={{
           backgroundColor: "#5347D7",

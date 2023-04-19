@@ -16,6 +16,8 @@ const AllParasPage = () => {
     mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
+      email: data.get("email") as string,
+      role: "para",
     });
   };
 
@@ -37,14 +39,15 @@ const AllParasPage = () => {
           required
         />
         <input type="text" name="last_name" placeholder="Last name" required />
+        <input type="email" name="email" placeholder="Email" required />
         <button type="submit">Create</button>
       </form>
 
       <h2>All Paras</h2>
       <ul>
         {paras?.map((para) => (
-          <li key={para.para_id}>
-            <Link href={`/paras/${para.para_id}`}>
+          <li key={para.user_id}>
+            <Link href={`/paras/${para.user_id}`}>
               {para.first_name} {para.last_name}
             </Link>
           </li>
