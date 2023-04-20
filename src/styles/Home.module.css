@@ -2,6 +2,11 @@
   background-color: #f6f5ff;
 }
 
+.logo{
+  width: 60px;
+  height: 60px;
+}
+
 /* NON SESSION USER HOMEPAGE */
 .greet_wrap {
   display: flex;
@@ -19,6 +24,10 @@
   gap: 15px;
 }
 
+.bold{
+  font-weight: bold;
+}
+
 /* SIGN IN BUTTON */
 .sign_in {
   height: 40px;
@@ -28,6 +37,7 @@
   border: none;
   color: white;
   cursor: pointer;
+  font-size: 16px;
 }
 
 .sign_in:hover {

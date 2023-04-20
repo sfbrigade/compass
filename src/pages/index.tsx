@@ -35,11 +35,11 @@ const Home: NextPage = () => {
           ) : (
             <div className={styles.greet_wrap}>
               <div className={styles.greet}>
-                <Image src={logo} alt="logo" />
-                <div>Welcome to Project Compass</div>
+                <Image src={logo} className={styles.logo} alt="logo" />
+                <h1 className={styles.bold}>Welcome to Project Compass</h1>
                 <div>Log in with your Google account to continue</div>
                 <button
-                  className={styles.sign_in}
+                  className={`${styles.sign_in} ${styles.bold}`}
                   onClick={() => signIn("google")}
                 >
                   Sign in with Google
