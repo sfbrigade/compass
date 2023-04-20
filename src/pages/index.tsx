@@ -2,7 +2,6 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import logo from "../public/img/compass-logo.png";
 import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
@@ -13,7 +12,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Compass</title>
         <meta name="description" content="Make IEPs easier" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/img/favicon.png" />
       </Head>
       <main className={styles.main}>
         <div className={styles.user_info_wrap}>
@@ -35,7 +34,13 @@ const Home: NextPage = () => {
           ) : (
             <div className={styles.greet_wrap}>
               <div className={styles.greet}>
-                <Image src={logo} className={styles.logo} alt="logo" />
+                <Image
+                  src="/img/compass-logo.svg"
+                  alt="logo"
+                  width={60}
+                  height={60}
+                  priority
+                />
                 <h1 className={styles.bold}>Welcome to Project Compass</h1>
                 <div>Log in with your Google account to continue</div>
                 <button

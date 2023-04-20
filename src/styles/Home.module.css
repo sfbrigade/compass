@@ -2,11 +2,6 @@
   background-color: #f6f5ff;
 }
 
-.logo{
-  width: 60px;
-  height: 60px;
-}
-
 /* NON SESSION USER HOMEPAGE */
 .greet_wrap {
   display: flex;
@@ -24,7 +19,7 @@
   gap: 15px;
 }
 
-.bold{
+.bold {
   font-weight: bold;
 }
 
