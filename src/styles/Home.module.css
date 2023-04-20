@@ -3,7 +3,7 @@
 }
 
 /* NON SESSION USER HOMEPAGE */
-.greetwrap {
+.greet_wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -20,7 +20,7 @@
 }
 
 /* SIGN IN BUTTON */
-.signin {
+.sign_in {
   height: 40px;
   padding: 0px 24px;
   background-color: #5347d7;
@@ -30,16 +30,16 @@
   cursor: pointer;
 }
 
-.signin:hover {
+.sign_in:hover {
   box-shadow: 1px 1px 2px gray;
 }
 
-.signin:active {
+.sign_in:active {
   background-color: #3023b8;
 }
 
 /* SESSION USER PAGE */
-.userinfowrap {
+.user_info_wrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,13 +47,15 @@
   min-height: 100vh;
 }
 
-.userinfo {
+.user_info {
   display: flex;
   flex-direction: column;
 }
 
-/* SIGN OUT BUTTON (TEMP) */
-.signout {
+/* SIGN OUT BUTTON
+(TODO: MOVE TO DROP DOWN CONTAINER ON NAV WITH USER PROFILE)
+*/
+.sign_out {
   height: 40px;
   width: 100px;
   padding: 0px 24px;
@@ -64,11 +66,11 @@
   cursor: pointer;
 }
 
-.signout:hover {
+.sign_out:hover {
   box-shadow: 1px 1px 2px gray;
 }
 
-.signout:active {
+.sign_out:active {
   background-color: #3023b8;
 }
 

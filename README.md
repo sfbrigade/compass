@@ -14,7 +14,7 @@ Useful resources:
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Clone the github repo:
    ```sh
-   cd <parent folder of project compass>
+   cd <parent folder of compass>
    git clone https://github.com/sfbrigade/compass.git
    cd project-compass
    ```

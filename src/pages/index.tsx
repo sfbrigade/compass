@@ -16,9 +16,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.userinfowrap}>
+        <div className={styles.user_info_wrap}>
           {session && session.user ? (
-            <div className={styles.userinfo}>
+            <div className={styles.user_info}>
               <Image
                 src={session.user.image || ""}
                 alt="Profile picture"
@@ -28,18 +28,18 @@ const Home: NextPage = () => {
               />
               <h1>Welcome {session.user.name}</h1>
               {JSON.stringify(session)}
-              <button className={styles.signout} onClick={() => signOut()}>
+              <button className={styles.sign_out} onClick={() => signOut()}>
                 Sign out
               </button>
             </div>
           ) : (
-            <div className={styles.greetwrap}>
+            <div className={styles.greet_wrap}>
               <div className={styles.greet}>
                 <Image src={logo} alt="logo" />
                 <div>Welcome to Project Compass</div>
                 <div>Log in with your Google account to continue</div>
                 <button
-                  className={styles.signin}
+                  className={styles.sign_in}
                   onClick={() => signIn("google")}
                 >
                   Sign in with Google
