@@ -76,9 +76,9 @@
 
 /* CM DASHBOARD */
 .cmContainer {
-  background-color: "#f6f5ff";
-  min-height: "100vh";
-  color: "#080155";
+  background-color: #f6f5ff;
+  min-height: 100vh;
+  color: #080155;
   font-family: "Quicksand", sans-serif;
 }
 
