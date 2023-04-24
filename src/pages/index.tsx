@@ -6,26 +6,18 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 const Home: NextPage = () => {
   const { data: session } = useSession();
+
   return (
     <div className={styles.container}>
       <Head>
         <title>Compass</title>
         <meta name="description" content="Make IEPs easier" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/img/favicon.png" />
       </Head>
-      <nav className={styles.navbar}>
-        <div className={styles.signup}>
-          {session && session.user ? (
-            <button onClick={() => signOut()}>Sign out</button>
-          ) : (
-            <button onClick={() => signIn()}>Sign in</button>
-          )}
-        </div>
-      </nav>
       <main className={styles.main}>
-        <div>
+        <div className={styles.userinfowrap}>
           {session && session.user ? (
-            <div className={styles.card}>
+            <div className={styles.userinfo}>
               <Image
                 src={session.user.image || ""}
                 alt="Profile picture"
@@ -33,11 +25,32 @@ const Home: NextPage = () => {
                 height={50}
                 referrerPolicy="no-referrer"
               />
+              <h1>Welcome {session.user.name}</h1>
               {JSON.stringify(session)}
-              user.name: {session.user.name}
+              <button className={styles.signout} onClick={() => signOut()}>
+                Sign out
+              </button>
             </div>
           ) : (
-            <p>You need to sign in to access Compass</p>
+            <div className={styles.greetwrap}>
+              <div className={styles.greet}>
+                <Image
+                  src="/img/compass-logo.svg"
+                  alt="logo"
+                  width={100}
+                  height={100}
+                  priority
+                />
+                <div>Welcome to Project Compass</div>
+                <div>Log in with your Google account to continue</div>
+                <button
+                  className={styles.signin}
+                  onClick={() => signIn("google")}
+                >
+                  Sign in with Google
+                </button>
+              </div>
+            </div>
           )}
         </div>
       </main>

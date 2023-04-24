@@ -5,6 +5,7 @@ import { trpc } from "client/lib/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
+import "../styles/globals.css";
 
 interface CustomPageProps {
   session: Session;
