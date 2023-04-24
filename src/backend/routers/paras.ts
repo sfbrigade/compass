@@ -44,16 +44,5 @@ export const paraProcedures = {
       return result;
     }),
 
-  deletePara: procedure
-    .input(z.object({ user_id: z.string() }))
-    .mutation(async (req) => {
-      const { user_id } = req.input;
-
-      const result = await req.ctx.db
-        .deleteFrom("user")
-        .where("user_id", "=", user_id)
-        .returningAll()
-        .execute();
-      return result;
-    }),
+  //this is a placeholder for the archive-para action that will be covered in a future PR
 };

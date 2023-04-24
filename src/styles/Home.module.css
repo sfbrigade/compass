@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Quicksand:wght@600&display=swap');
+
 .container {
   background-color: #f6f5ff;
 }
@@ -57,7 +59,7 @@
   height: 40px;
   width: 100px;
   padding: 0px 24px;
-  background-color: #5347d7;
+  background-color: #5347d7; 
   border-radius: 5px;
   border: none;
   color: white;
@@ -71,6 +73,42 @@
 .signout:active {
   background-color: #3023b8;
 }
+
+/* CM DASHBOARD */
+.cmContainer {
+  background-color: "#f6f5ff";
+  min-height: "100vh";
+  color: "#080155";
+  font-family: 'Quicksand', sans-serif;
+}
+
+/* STUDENT/PARA LISTS */
+.createButton {
+  height: 24px;
+  width: auto;
+  padding: 0px 20px;
+  background-color: #5347d7; 
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-family: 'Quicksand', sans-serif;
+}
+
+.createInput input {
+  border-radius: 2px;
+  border: none;
+  margin: 2px 4px;
+  padding: 4px 2px;
+  font-family: 'Inter', sans-serif;
+}
+
+.listNames {
+  list-style-type: none;
+  margin: 10px;
+  font-family: 'Inter', sans-serif;
+}
+
 
 /* Enable hover only on non-touch devices */
 @media (hover: hover) and (pointer: fine) {
