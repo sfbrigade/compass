@@ -28,7 +28,6 @@ const AllStudentsPage = () => {
     <div>
       <div
         style={{
-          /*border: "1px solid black",*/
           border: "none",
           borderRadius: "5px",
           padding: "10px",
