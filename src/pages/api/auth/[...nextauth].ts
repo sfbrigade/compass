@@ -1,25 +1,16 @@
-import { createPersistedAuthAdapter } from "@/backend/auth/adapter";
+import { getNextAuthOptions } from "backend/auth/options";
 import { createContext } from "backend/context";
 import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 
-const handler: NextApiHandler = (req, res) => {
-  const { db } = createContext({
+const handler: NextApiHandler = async (req, res) => {
+  const { db } = await createContext({
     req,
     res,
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  return NextAuth({
-    providers: [
-      GoogleProvider({
-        clientId: process.env.GOOGLE_CLIENT_ID as string,
-        clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
-      }),
-    ],
-    adapter: createPersistedAuthAdapter(db),
-  })(req, res);
+  return NextAuth(getNextAuthOptions(db))(req, res);
 };
 
 export default handler;
