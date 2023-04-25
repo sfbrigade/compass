@@ -53,3 +53,28 @@ test("createStudent", async (t) => {
       .executeTakeFirst()
   );
 });
+
+test("doNotAddDuplicateEmails", async (t) => {
+  const { trpc, db } = await getTestServer(t);
+
+  await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  await t.throwsAsync(() => {
+    return trpc.createStudent.mutate({
+      first_name: "Foos",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+    });
+  });
+
+  const students = await trpc.getAllStudents.query();
+  t.is(students.length, 1);
+});
