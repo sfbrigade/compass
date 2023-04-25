@@ -1,7 +1,7 @@
 import React from "react";
 import AllParasPage from "../components/case_manager/AllParas";
 import AllStudentsPage from "../components/case_manager/AllStudents";
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Dashboard.module.css";
 import Head from "next/head";
 import Image from "next/image";
 

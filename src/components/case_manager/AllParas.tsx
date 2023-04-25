@@ -1,7 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
-import styles from "../../styles/Home.module.css";
+import styles from "../../styles/Dashboard.module.css";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
@@ -28,18 +28,8 @@ const AllParasPage = () => {
 
   return (
     <div>
-      <div
-        style={{
-          border: "none",
-          borderRadius: "5px",
-          padding: "10px",
-          marginRight: "10px",
-          marginLeft: "10px",
-          backgroundColor: "#C2BDF9",
-          marginBottom: "15px",
-        }}
-      >
-        <h2 style={{ marginBottom: "10px" }}>Create a Para</h2>
+      <div className={styles.createContainer}>
+        <h2 className={styles.createTitle}>Create a Para</h2>
 
         <form onSubmit={handleSubmit} className={styles.createInput}>
           <input

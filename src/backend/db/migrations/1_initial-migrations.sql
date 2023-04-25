@@ -1,6 +1,5 @@
 CREATE EXTENSION "uuid-ossp";
 
--- We think there should be a field for para's tables to hold CM id's
 CREATE TABLE "user" (
   user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   first_name TEXT NOT NULL,
