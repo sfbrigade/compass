@@ -22,5 +22,4 @@ yarn-error.log*
 
 .next
 next-env.d.ts
-.env.local
 .history
