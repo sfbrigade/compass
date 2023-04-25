@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { signIn, signOut } from "next-auth/react";
+import { trpc } from "client/lib/trpc";
 
 const Home: NextPage = () => {
-  const { data: session } = useSession();
-
+  const { data: me } = trpc.getMe.useQuery();
   return (
     <div className={styles.container}>
       <Head>
@@ -16,17 +16,19 @@ const Home: NextPage = () => {
       </Head>
       <main className={styles.main}>
         <div className={styles.userinfowrap}>
-          {session && session.user ? (
+          {me ? (
             <div className={styles.userinfo}>
               <Image
-                src={session.user.image || ""}
+                src={me?.image_url ?? ""}
                 alt="Profile picture"
                 width={50}
                 height={50}
                 referrerPolicy="no-referrer"
               />
-              <h1>Welcome {session.user.name}</h1>
-              {JSON.stringify(session)}
+              <h1>
+                Welcome {me?.first_name} {me?.last_name}
+              </h1>
+              {JSON.stringify(me)}
               <button className={styles.signout} onClick={() => signOut()}>
                 Sign out
               </button>
