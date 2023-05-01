@@ -1,6 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
+import styles from "../../styles/Dashboard.module.css";
 
 const AllStudentsPage = () => {
   const utils = trpc.useContext();
@@ -26,27 +27,36 @@ const AllStudentsPage = () => {
 
   return (
     <div>
-      <h2>Add New Student</h2>
+      <div className={styles.createContainer}>
+        <h2 className={styles.createTitle}>Create a student</h2>
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="first_name"
-          placeholder="First name"
-          required
-        />
-        <input type="text" name="last_name" placeholder="Last name" required />
-        <input
-          type="email"
-          name="email"
-          placeholder="first.last@email.com"
-          required
-        />
-        <button type="submit">Create</button>
-      </form>
+        <form onSubmit={handleSubmit} className={styles.createInput}>
+          <input
+            type="text"
+            name="first_name"
+            placeholder="First name"
+            required
+          />
+          <input
+            type="text"
+            name="last_name"
+            placeholder="Last name"
+            required
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="first.last@email.com"
+            required
+          />
+          <button type="submit" className={styles.createButton}>
+            Create
+          </button>
+        </form>
+      </div>
 
-      <h2>All Students</h2>
-      <ul>
+      <h2>All students</h2>
+      <ul className={styles.listNames}>
         {students?.map((student) => (
           <li key={student.student_id}>
             <Link href={`/students/${student.student_id}`}>
