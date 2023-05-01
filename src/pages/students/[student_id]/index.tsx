@@ -28,7 +28,7 @@ const ViewStudentPage = () => {
       </p>
 
       <div>
-        <Link href={`/students/`}>Return to Student List</Link>
+        <Link href={`/cmDashboard`}>Return to Student List</Link>
       </div>
     </div>
   );

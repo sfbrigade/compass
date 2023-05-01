@@ -745,19 +745,17 @@ declare module 'zapatos/schema' {
       */
       first_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-       * **student.last_name**
-       * - `text` in database
-       * - `NOT NULL`, no default
-       */
-      last_name?:
-        | string
-        | db.Parameter<string>
-        | db.SQLFragment
-        | db.ParentColumn
-        | db.SQLFragment<
-            any,
-            string | db.Parameter<string> | db.SQLFragment | db.ParentColumn
-          >;
+      * **student.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **student.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **student.assigned_case_manager_id**
       * - `uuid` in database
@@ -811,15 +809,17 @@ declare module 'zapatos/schema' {
       */
       first_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
-       * **student.last_name**
-       * - `text` in database
-       * - `NOT NULL`, no default
-       */
-      last_name?:
-        | string
-        | db.Parameter<string>
-        | db.SQLFragment
-        | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      * **student.last_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **student.email**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      email?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **student.assigned_case_manager_id**
       * - `uuid` in database
@@ -827,7 +827,7 @@ declare module 'zapatos/schema' {
       */
       assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
     }
-    export type UniqueIndex = "student_pkey";
+    export type UniqueIndex = 'student_email_key' | 'student_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
@@ -1069,7 +1069,7 @@ declare module 'zapatos/schema' {
 
   /* --- aggregate types --- */
 
-  export namespace public {
+  export namespace public {  
     export type Table = account.Table | migrations.Table | session.Table | student.Table | user.Table;
     export type Selectable = account.Selectable | migrations.Selectable | session.Selectable | student.Selectable | user.Selectable;
     export type JSONSelectable = account.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
@@ -1078,7 +1078,7 @@ declare module 'zapatos/schema' {
     export type Updatable = account.Updatable | migrations.Updatable | session.Updatable | student.Updatable | user.Updatable;
     export type UniqueIndex = account.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
     export type Column = account.Column | migrations.Column | session.Column | student.Column | user.Column;
-
+  
     export type AllBaseTables = [account.Table, migrations.Table, session.Table, student.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
