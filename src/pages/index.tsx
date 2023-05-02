@@ -30,7 +30,7 @@ const Home: NextPage = () => {
                 Welcome {me?.first_name} {me?.last_name}
               </h1>
               {JSON.stringify(me)}
-              <Link href={`/cmDashboard`}>
+              <Link href="/cmDashboard">
                 <p>CM Dashboard</p>
               </Link>
               <button className={styles.signout} onClick={() => signOut()}>
