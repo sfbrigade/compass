@@ -4,6 +4,7 @@ import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { signIn, signOut } from "next-auth/react";
 import { trpc } from "client/lib/trpc";
+import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: me } = trpc.getMe.useQuery();
@@ -29,6 +30,9 @@ const Home: NextPage = () => {
                 Welcome {me?.first_name} {me?.last_name}
               </h1>
               {JSON.stringify(me)}
+              <Link href="/cmDashboard">
+                <p>CM Dashboard</p>
+              </Link>
               <button className={styles.signout} onClick={() => signOut()}>
                 Sign out
               </button>
