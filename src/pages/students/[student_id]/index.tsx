@@ -17,13 +17,19 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <Link href={`/cmDashboard`}>
-        <p>CM Dashboard</p>
-      </Link>
-      <h1>Student {student?.student_id}</h1>
-      <p>
+      <h1>
         {student?.first_name} {student?.last_name}
+      </h1>
+      <p>
+        <b>Student ID:</b> {student?.student_id}
       </p>
+      <p>
+        <b>Student Email:</b> {student?.email}
+      </p>
+
+      <div>
+        <Link href={`/cmDashboard`}>Return to Student List</Link>
+      </div>
     </div>
   );
 };

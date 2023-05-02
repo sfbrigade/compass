@@ -25,14 +25,19 @@ export const studentProcedures = {
   }),
 
   createStudent: procedure
-    .input(z.object({ first_name: z.string(), last_name: z.string() }))
+    .input(
+      z.object({
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string(),
+      })
+    )
     .mutation(async (req) => {
-      const { first_name, last_name } = req.input;
+      const { first_name, last_name, email } = req.input;
 
-      // todo: add a unique constraint to prevent duplicate students
       const result = await req.ctx.db
         .insertInto("student")
-        .values({ first_name, last_name })
+        .values({ first_name, last_name, email })
         .returningAll()
         .execute();
 
