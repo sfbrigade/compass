@@ -30,10 +30,11 @@ export const studentProcedures = {
         first_name: z.string(),
         last_name: z.string(),
         email: z.string(),
+        cm_id: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { first_name, last_name, email, cm_id } = req.input;
 
       const result = await req.ctx.db
         .insertInto("student")
@@ -41,6 +42,10 @@ export const studentProcedures = {
         .returningAll()
         .execute();
 
+      console.log("result~ ", result[0].student_id); //reveal recently added
+      console.log("cm_id ~ ", cm_id);
       return result;
     }),
+
+  //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
 };

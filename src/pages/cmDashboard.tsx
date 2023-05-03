@@ -5,6 +5,19 @@ import styles from "../styles/Dashboard.module.css";
 import Head from "next/head";
 import Image from "next/image";
 
+//this is a placeholder object for testing the archive flow
+const cmUser: {
+  user_id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+} = {
+  user_id: "d760acbf-c661-4806-a502-677d22652715",
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@example.com",
+};
+
 function cmDashboard() {
   return (
     <div className={styles.cmContainer}>
@@ -36,7 +49,7 @@ function cmDashboard() {
               justifyContent: "center",
             }}
           >
-            <AllStudentsPage />
+            <AllStudentsPage user_id={cmUser.user_id} />
             <AllParasPage />
           </div>
         </div>
