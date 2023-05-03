@@ -2,9 +2,8 @@ import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
-import StudentParaForm from "./StudentParaForm";
 
-const AllParasPage = () => {
+const StudentParaForm = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.getAllParas.useQuery();
   const { mutate } = trpc.createPara.useMutation({
@@ -29,27 +28,7 @@ const AllParasPage = () => {
 
   return (
     <div>
-      <>
-        <StudentParaForm />
-      </>
-
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-export default AllParasPage;
-
-/*     {/* <div className={styles.createContainer}>
+      <div className={styles.createContainer}>
         <h2 className={styles.createTitle}>Create a Para</h2>
 
         <form onSubmit={handleSubmit} className={styles.createInput}>
@@ -70,4 +49,20 @@ export default AllParasPage;
             Create
           </button>
         </form>
-      </div> */
+      </div>
+
+      <h2>All Paras</h2>
+      <ul className={styles.listNames}>
+        {paras?.map((para) => (
+          <li key={para.user_id}>
+            <Link href={`/paras/${para.user_id}`}>
+              {para.first_name} {para.last_name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default StudentParaForm;
