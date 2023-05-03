@@ -1,8 +1,5 @@
 import { trpc } from "client/lib/trpc";
-import { ST } from "next/dist/shared/lib/utils";
-import Link from "next/link";
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
 import StudentParaForm from "./StudentParaForm";
 
 const AllParasPage = () => {
@@ -11,10 +8,6 @@ const AllParasPage = () => {
   const { mutate } = trpc.createPara.useMutation({
     onSuccess: () => utils.getAllParas.invalidate(),
   });
-
-  // return (
-  // <StudentParaForm entities={paras} endPoint={'/paras/'} mutate={mutate}/>
-  // )
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -31,67 +24,16 @@ const AllParasPage = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-
+  //this works to pass in the para form, and return the data from the form, but typescript is not happy with it even though it works.
   return (
-    <div>
-      <div className={styles.createContainer}>
-        <h2 className={styles.createTitle}>Create a Para</h2>
-
-        <form onSubmit={handleSubmit} className={styles.createInput}>
-          <input
-            type="text"
-            name="first_name"
-            placeholder="First name"
-            required
-          />
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Last name"
-            required
-          />
-          <input type="email" name="email" placeholder="Email" required />
-          <button type="submit" className={styles.createButton}>
-            Create
-          </button>
-        </form>
-      </div>
-
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <StudentParaForm
+      title={"Create a Para"}
+      endpoint={"/paras/"}
+      handleSubmit={handleSubmit}
+      listTitle={"All Paras"}
+      entities={paras}
+    />
   );
 };
 
 export default AllParasPage;
-
-/*     {/* <div className={styles.createContainer}>
-        <h2 className={styles.createTitle}>Create a Para</h2>
-
-        <form onSubmit={handleSubmit} className={styles.createInput}>
-          <input
-            type="text"
-            name="first_name"
-            placeholder="First name"
-            required
-          />
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Last name"
-            required
-          />
-          <input type="email" name="email" placeholder="Email" required />
-          <button type="submit" className={styles.createButton}>
-            Create
-          </button>
-        </form>
-      </div> */

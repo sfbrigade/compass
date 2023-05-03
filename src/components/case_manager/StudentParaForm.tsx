@@ -1,37 +1,26 @@
-import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 
-const StudentParaForm = () => {
-  const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.getAllParas.useQuery();
-  const { mutate } = trpc.createPara.useMutation({
-    onSuccess: () => utils.getAllParas.invalidate(),
-  });
+interface Props {
+  title: string;
+  endpoint: string;
+  listTitle: string;
+  //I need a little assistance/time to learn this typescript for "typing an array of objects and a function
+  // // eslint-disable-next-line
+  // handleSubmit: any,
+  // // eslint-disable-next-line
+  // entities: any
+}
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
-    mutate({
-      first_name: data.get("first_name") as string,
-      last_name: data.get("last_name") as string,
-      email: data.get("email") as string,
-      role: "para",
-    });
-  };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
+const StudentParaForm = ({ title, endpoint, listTitle }: Props) => {
+  //check need to reinsert handle submit into form and props
   return (
     <div>
       <div className={styles.createContainer}>
-        <h2 className={styles.createTitle}>Create a Para</h2>
+        <h2 className={styles.createTitle}>{title}</h2>
 
-        <form onSubmit={handleSubmit} className={styles.createInput}>
+        <form className={styles.createInput}>
           <input
             type="text"
             name="first_name"
@@ -51,16 +40,16 @@ const StudentParaForm = () => {
         </form>
       </div>
 
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
+      <h2>{listTitle}</h2>
+      {/* <ul className={styles.listNames}>
+        {entities?.map((entity) => (
+          <li key={entity.user_id}>
+            <Link href={`${endpoint}${entity.user_id}`}>
+              {entity.first_name} {entity.last_name}
             </Link>
           </li>
         ))}
-      </ul>
+      </ul> */}
     </div>
   );
 };
