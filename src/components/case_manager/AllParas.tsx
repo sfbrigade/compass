@@ -1,5 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import React from "react";
+import styles from "../../styles/Dashboard.module.css";
+import Link from "next/link";
 import StudentParaForm from "./StudentParaForm";
 
 const AllParasPage = () => {
@@ -24,15 +26,22 @@ const AllParasPage = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
-  //this works to pass in the para form, and return the data from the form, but typescript is not happy with it even though it works.
+
+  // reusable Functional component can be used for both Para form and Student form
   return (
-    <StudentParaForm
-      title={"Create a Para"}
-      endpoint={"/paras/"}
-      handleSubmit={handleSubmit}
-      listTitle={"All Paras"}
-      entities={paras}
-    />
+    <div>
+      <StudentParaForm title={"Create a Para"} handleSubmit={handleSubmit} />
+      <h2>All Paras</h2>
+      <ul className={styles.listNames}>
+        {paras?.map((para) => (
+          <li key={para.user_id}>
+            <Link href={`/paras/${para.user_id}`}>
+              {para.first_name} {para.last_name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 };
 
