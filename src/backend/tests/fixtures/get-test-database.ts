@@ -1,5 +1,8 @@
+import { KyselySchema } from "backend/lib";
 import { getTestPostgresDatabaseFactory } from "ava-postgres";
-import { migrate } from "backend/db";
+import { migrate, seed } from "backend/db";
+import { Kysely, PostgresDialect } from "kysely";
+import { Pool } from "pg";
 
 export const getTestDatabase = getTestPostgresDatabaseFactory({
   postgresVersion: "15",
@@ -8,5 +11,16 @@ export const getTestDatabase = getTestPostgresDatabaseFactory({
       silent: true,
       shouldGenerateTypes: false,
     });
+
+    const db = new Kysely<KyselySchema>({
+      dialect: new PostgresDialect({
+        pool: new Pool({ connectionString }),
+      }),
+    });
+
+    const seedResult = await seed(db);
+
+    await db.destroy();
+    return seedResult;
   },
 });

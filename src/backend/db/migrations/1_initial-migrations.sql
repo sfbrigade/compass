@@ -10,6 +10,9 @@ CREATE TABLE "user" (
   image_url TEXT
 );
 
+-- table for CM's para list will go here 
+
+
 -- This table is managed by Auth.js via our adapter at backend/auth/adapter.ts
 -- See https://authjs.dev/reference/adapters#models for more details
 CREATE TABLE "account" (
@@ -38,5 +41,6 @@ CREATE TABLE "student" (
   student_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
   assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
 );

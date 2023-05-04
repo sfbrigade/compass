@@ -46,7 +46,7 @@ export const createPersistedAuthAdapter = (
         last_name,
         email: user.email,
         email_verified_at: user.emailVerified,
-        // todo: this should be pulled from an invite or something else instead of defaulting to a para
+        // todo: this should be pulled from an invite or something else instead of defaulting to a para - currently devs signing in are being assigned as paras
         role: "para",
         image_url: user.image,
       })
