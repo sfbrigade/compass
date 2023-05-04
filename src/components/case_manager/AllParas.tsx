@@ -27,10 +27,11 @@ const AllParasPage = () => {
     return <div>Loading...</div>;
   }
 
-  // reusable Functional component can be used for both Para form and Student form
+  // reusable Functional component for form only
   return (
     <div>
       <StudentParaForm title={"Create a Para"} handleSubmit={handleSubmit} />
+
       <h2>All Paras</h2>
       <ul className={styles.listNames}>
         {paras?.map((para) => (
