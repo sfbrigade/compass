@@ -3,7 +3,7 @@
 }
 
 /* NON SESSION USER HOMEPAGE */
-.greet_wrap {
+.greetWrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -24,7 +24,7 @@
 }
 
 /* SIGN IN BUTTON */
-.sign_in {
+.signIn {
   height: 40px;
   padding: 0px 24px;
   background-color: #5347d7;
@@ -35,16 +35,16 @@
   font-size: 16px;
 }
 
-.sign_in:hover {
+.signIn:hover {
   box-shadow: 1px 1px 2px gray;
 }
 
-.sign_in:active {
+.signIn:active {
   background-color: #3023b8;
 }
 
 /* SESSION USER PAGE */
-.user_info_wrap {
+.userInfoWrap {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -52,7 +52,7 @@
   min-height: 100vh;
 }
 
-.user_info {
+.userInfo {
   display: flex;
   flex-direction: column;
 }
@@ -60,7 +60,7 @@
 /* SIGN OUT BUTTON
 (TODO: MOVE TO DROP DOWN CONTAINER ON NAV WITH USER PROFILE)
 */
-.sign_out {
+.signOut {
   height: 40px;
   width: 100px;
   padding: 0px 24px;
@@ -71,11 +71,11 @@
   cursor: pointer;
 }
 
-.sign_out:hover {
+.signOut:hover {
   box-shadow: 1px 1px 2px gray;
 }
 
-.sign_out:active {
+.signOut:active {
   background-color: #3023b8;
 }
 

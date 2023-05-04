@@ -16,9 +16,9 @@ const Home: NextPage = () => {
         <link rel="icon" href="/img/favicon.png" />
       </Head>
       <main className={styles.main}>
-        <div className={styles.user_info_wrap}>
+        <div className={styles.userInfoWrap}>
           {me ? (
-            <div className={styles.user_info}>
+            <div className={styles.userInfo}>
               <Image
                 src={me?.image_url ?? ""}
                 alt="Profile picture"
@@ -33,12 +33,12 @@ const Home: NextPage = () => {
               <Link href="/cmDashboard">
                 <p>CM Dashboard</p>
               </Link>
-              <button className={styles.signout} onClick={() => signOut()}>
+              <button className={styles.signOut} onClick={() => signOut()}>
                 Sign out
               </button>
             </div>
           ) : (
-            <div className={styles.greet_wrap}>
+            <div className={styles.greetWrap}>
               <div className={styles.greet}>
                 <Image
                   src="/img/compass-logo.svg"
@@ -50,7 +50,7 @@ const Home: NextPage = () => {
                 <h1 className={styles.bold}>Welcome to Project Compass</h1>
                 <div>Log in with your Google account to continue</div>
                 <button
-                  className={`${styles.sign_in} ${styles.bold}`}
+                  className={`${styles.signIn} ${styles.bold}`}
                   onClick={() => signIn("google")}
                 >
                   Sign in with Google
