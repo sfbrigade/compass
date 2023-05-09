@@ -13,15 +13,16 @@ Useful resources:
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Clone the github repo:
+
    - _Windows users (do this first before checkout)_ : make sure to run git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`  
-  <br>  
-  
+     <br>
+
    ```sh
    cd <parent folder of compass>
    git clone https://github.com/sfbrigade/compass.git
    cd project-compass
    ```
-   
+
 3. Create the local server env file:
    ```sh
    cp .env.example .env.local
