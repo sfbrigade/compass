@@ -3,13 +3,15 @@ import Link from "next/link";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 
-export interface Props {
-  user_id: string;
-}
+const AllStudentsPage = () => {
+  const { data: me } = trpc.getMe.useQuery(); //adds user_id
+  const user_id = me?.user_id || ""; //temp solution due to typing errors
 
-const AllStudentsPage = ({ user_id }: Props) => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.getAllStudents.useQuery();
+  const { data: students, isLoading } = trpc.getAllStudents.useQuery({
+    assigned_case_manager_id: user_id,
+  });
+
   const { mutate } = trpc.createStudent.useMutation({
     onSuccess: () => utils.getAllStudents.invalidate(),
   });
@@ -22,7 +24,7 @@ const AllStudentsPage = ({ user_id }: Props) => {
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
-      cm_id: user_id,
+      assigned_case_manager_id: user_id,
     });
   };
 

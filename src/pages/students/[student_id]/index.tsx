@@ -1,6 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import styles from "../../../styles/Home.module.css";
 
 const ViewStudentPage = () => {
   const router = useRouter();
@@ -10,6 +11,17 @@ const ViewStudentPage = () => {
     { student_id: student_id as string },
     { enabled: Boolean(student_id) }
   );
+
+  const { mutate } = trpc.archiveStudent.useMutation();
+
+  // TODO: complete this function to archive student and redirect user back to cmDashboard
+  const archiveStudent = () => {
+    // event.preventDefault();
+
+    mutate({
+      student_id: student?.student_id || "",
+    });
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -26,7 +38,12 @@ const ViewStudentPage = () => {
       <p>
         <b>Student Email:</b> {student?.email}
       </p>
-
+      <button
+        className={`${styles.signIn} ${styles.bold}`}
+        onClick={() => archiveStudent()}
+      >
+        Archive Student
+      </button>
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>
       </div>

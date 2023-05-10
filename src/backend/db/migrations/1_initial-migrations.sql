@@ -44,9 +44,3 @@ CREATE TABLE "student" (
   email TEXT NOT NULL UNIQUE,
   assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
 );
-
-CREATE TABLE "cm_to_student" (
-  relation_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
-  student_id UUID REFERENCES "student" (student_id) ON DELETE SET NULL
-);
