@@ -2,7 +2,7 @@ import { trpc } from "client/lib/trpc";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 import Link from "next/link";
-import StudentParaForm from "./StudentParaForm";
+import PersonCreationForm from "./PersonCreationForm";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
@@ -27,10 +27,9 @@ const AllParasPage = () => {
     return <div>Loading...</div>;
   }
 
-  // reusable Functional component for form only
   return (
     <div>
-      <StudentParaForm title={"Create a Para"} handleSubmit={handleSubmit} />
+      <PersonCreationForm title={"Create a Para"} onSubmit={handleSubmit} />
 
       <h2>All Paras</h2>
       <ul className={styles.listNames}>

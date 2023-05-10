@@ -6,15 +6,15 @@ import styles from "../../styles/Dashboard.module.css";
 
 interface Props {
   title: string;
-  handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
-const StudentParaForm = ({ title, handleSubmit }: Props) => {
+const PersonCreationForm = ({ title, onSubmit }: Props) => {
   return (
     <div>
       <div className={styles.createContainer}>
         <h2 className={styles.createTitle}>{title}</h2>
-        <form onSubmit={handleSubmit} className={styles.createInput}>
+        <form onSubmit={onSubmit} className={styles.createInput}>
           <input
             type="text"
             name="first_name"
@@ -42,4 +42,4 @@ const StudentParaForm = ({ title, handleSubmit }: Props) => {
   );
 };
 
-export default StudentParaForm;
+export default PersonCreationForm;
