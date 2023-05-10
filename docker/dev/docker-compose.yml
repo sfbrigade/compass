@@ -13,6 +13,7 @@ services:
     build:
       context: ./../..
       dockerfile: ./docker/dev/Dockerfile
+    image: unsynced/compass:latest
     command: bash -l -c "./docker/dev/init.sh; npm run dev"
     volumes:
       - ./../..:/opt/node/app
