@@ -14,10 +14,7 @@ const ViewStudentPage = () => {
 
   const { mutate } = trpc.archiveStudent.useMutation();
 
-  // TODO: complete this function to archive student and redirect user back to cmDashboard
   const archiveStudent = () => {
-    // event.preventDefault();
-
     mutate({
       student_id: student?.student_id || "",
     });
@@ -42,7 +39,7 @@ const ViewStudentPage = () => {
         className={`${styles.signIn} ${styles.bold}`}
         onClick={() => archiveStudent()}
       >
-        Archive Student
+        <Link href={`/cmDashboard`}>Archive Student</Link>
       </button>
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>

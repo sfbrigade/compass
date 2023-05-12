@@ -25,13 +25,12 @@ export const studentProcedures = {
       const result = await req.ctx.db
         .selectFrom("student")
         .selectAll()
-        // .where("assigned_case_manager_id", "=", assigned_case_manager_id)
-        .where(
-          "assigned_case_manager_id",
-          "=",
-          "6e2b8fda-d24e-41d7-b8ec-8cb4258b103d"
-        ) //this is for testing archive prop
-
+        .where("assigned_case_manager_id", "=", assigned_case_manager_id)
+        // .where(
+        //   "assigned_case_manager_id",
+        //   "=",
+        //   "6e2b8fda-d24e-41d7-b8ec-8cb4258b103d"
+        // ) //this is for testing archive prop
         .execute();
 
       return result;
