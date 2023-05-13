@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { trpc } from "client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../../../styles/Home.module.css";
 
 const ViewStudentPage = () => {
+  const [archive, setArchive] = useState(false);
+
   const router = useRouter();
   const { student_id } = router.query;
 
@@ -14,10 +17,12 @@ const ViewStudentPage = () => {
 
   const { mutate } = trpc.archiveStudent.useMutation();
 
-  const archiveStudent = () => {
+  const archiveStudent = async () => {
     mutate({
       student_id: student?.student_id || "",
     });
+
+    await router.push(`/cmDashboard`);
   };
 
   if (isLoading) {
@@ -37,10 +42,32 @@ const ViewStudentPage = () => {
       </p>
       <button
         className={`${styles.signIn} ${styles.bold}`}
-        onClick={() => archiveStudent()}
+        onClick={() => setArchive(true)}
       >
-        <Link href={`/cmDashboard`}>Archive Student</Link>
+        Archive Student
       </button>
+
+      {archive ? (
+        <div>
+          <p>
+            Are you sure you want to archive {student?.first_name}{" "}
+            {student?.last_name}?
+          </p>
+          <button
+            className={`${styles.signIn} ${styles.bold}`}
+            onClick={() => archiveStudent()}
+          >
+            Yes
+          </button>
+          <button
+            className={`${styles.signIn} ${styles.bold}`}
+            onClick={() => setArchive(false)}
+          >
+            No
+          </button>
+        </div>
+      ) : null}
+
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>
       </div>
