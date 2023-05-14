@@ -14,7 +14,19 @@ export const seed = async (db: KyselyDatabaseInstance) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
+  const admin = await db
+    .insertInto("user")
+    .values({
+      first_name: "John",
+      last_name: "Doe",
+      email: "john@example.com",
+      role: "admin",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
   return {
     para,
+    admin,
   };
 };
