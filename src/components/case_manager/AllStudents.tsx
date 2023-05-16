@@ -14,6 +14,7 @@ const AllStudentsPage = () => {
 
   const { mutate } = trpc.createStudent.useMutation({
     onSuccess: () => utils.getAllStudents.invalidate(),
+    onError: (error) => alert(error.message),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

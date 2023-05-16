@@ -26,11 +26,6 @@ export const studentProcedures = {
         .selectFrom("student")
         .selectAll()
         .where("assigned_case_manager_id", "=", assigned_case_manager_id)
-        // .where(
-        //   "assigned_case_manager_id",
-        //   "=",
-        //   "6e2b8fda-d24e-41d7-b8ec-8cb4258b103d"
-        // ) //this is for testing archive prop
         .execute();
 
       return result;
@@ -49,13 +44,40 @@ export const studentProcedures = {
       const { first_name, last_name, email, assigned_case_manager_id } =
         req.input;
 
-      const result = await req.ctx.db
-        .insertInto("student")
-        .values({ first_name, last_name, email, assigned_case_manager_id })
-        .returningAll()
-        .execute();
+      const inDatabase = await req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .where("email", "=", email)
+        .executeTakeFirst();
 
-      return result;
+      // case 1: not in database, create new student in database
+      if (!inDatabase) {
+        await req.ctx.db
+          .insertInto("student")
+          .values({ first_name, last_name, email, assigned_case_manager_id })
+          .execute();
+        // case 2: in database, but no case manager associated
+      } else if (inDatabase?.assigned_case_manager_id === null) {
+        await req.ctx.db
+          .updateTable("student")
+          .set({ assigned_case_manager_id })
+          .where("email", "=", email)
+          .execute();
+        // case 3: in database, different case manager
+      } else if (
+        inDatabase?.assigned_case_manager_id !== assigned_case_manager_id
+        //! use the code below for testing the error message
+        // typeof inDatabase?.assigned_case_manager_id === "string"
+      ) {
+        throw new Error("This student already has a case manager!");
+        // Case 4: in database, adding same student email
+      } else if (
+        inDatabase?.assigned_case_manager_id === assigned_case_manager_id
+      ) {
+        throw new Error("You already added this student to your classroom.");
+      } else {
+        throw new Error("Error adding student. This is a database error.");
+      }
     }),
 
   archiveStudent: procedure
