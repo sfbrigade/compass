@@ -1,7 +1,8 @@
 import { trpc } from "client/lib/trpc";
-import Link from "next/link";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
+import Link from "next/link";
+import PersonCreationForm from "./PersonCreationForm";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
@@ -28,28 +29,7 @@ const AllParasPage = () => {
 
   return (
     <div>
-      <div className={styles.createContainer}>
-        <h2 className={styles.createTitle}>Create a Para</h2>
-
-        <form onSubmit={handleSubmit} className={styles.createInput}>
-          <input
-            type="text"
-            name="first_name"
-            placeholder="First name"
-            required
-          />
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Last name"
-            required
-          />
-          <input type="email" name="email" placeholder="Email" required />
-          <button type="submit" className={styles.createButton}>
-            Create
-          </button>
-        </form>
-      </div>
+      <PersonCreationForm title={"Create a Para"} onSubmit={handleSubmit} />
 
       <h2>All Paras</h2>
       <ul className={styles.listNames}>
