@@ -66,7 +66,7 @@ export const studentProcedures = {
         // case 3: in database, different case manager
       } else if (
         inDatabase?.assigned_case_manager_id !== assigned_case_manager_id
-        //! use the code below for testing the error message
+        //! comment the above line and uncomment the line below to test this error message
         // typeof inDatabase?.assigned_case_manager_id === "string"
       ) {
         throw new Error("This student already has a case manager!");

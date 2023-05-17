@@ -15,6 +15,7 @@ const AllStudentsPage = () => {
 
   const { mutate } = trpc.createStudent.useMutation({
     onSuccess: () => utils.getAllStudents.invalidate(),
+    //in future PR, we could change this to notification instead of browser alert [tessa]
     onError: (error) => alert(error.message),
   });
 

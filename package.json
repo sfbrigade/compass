@@ -30,6 +30,7 @@
     "pg": "^8.9.0",
     "pg-connection-string": "^2.5.0",
     "postgres-migrations": "^5.3.0",
+    "prettier": "^2.8.8",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "winston": "^3.8.2",
@@ -54,7 +55,6 @@
     "foreman": "^3.0.1",
     "husky": "^8.0.3",
     "lint-staged": "^13.1.0",
-    "prettier": "2.8.3",
     "tsx": "^3.12.6",
     "type-fest": "^3.5.4",
     "typescript": "^4.9.5"
