@@ -3,7 +3,7 @@ import { getTestServer } from "backend/tests";
 
 test("getMe", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "admin",
+    authenticateAs: "para",
   });
 
   const me = await trpc.getMe.query();
