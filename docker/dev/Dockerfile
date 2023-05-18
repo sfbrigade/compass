@@ -1,4 +1,4 @@
-# Start with the ltest Node.js LTS release
+# Start with the latest Node.js LTS release
 FROM node:18.14.0
 
 # Set an env variable for the location of the app files
