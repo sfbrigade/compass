@@ -3,7 +3,7 @@ import { getTestServer } from "backend/tests";
 import { string } from "zod";
 
 test("getStudentById", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   const { student_id } = await db
     .insertInto("student")
@@ -11,6 +11,7 @@ test("getStudentById", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -20,7 +21,7 @@ test("getStudentById", async (t) => {
 });
 
 test("getAllStudents", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   const { student_id } = await db
     .insertInto("student")
@@ -28,26 +29,26 @@ test("getAllStudents", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
   const students = await trpc.getAllStudents.query({
-    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+    assigned_case_manager_id: seed.para.user_id,
   });
   t.is(students.length, 1);
   t.is(students[0].student_id, student_id);
 });
 
 test("createStudent", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   await trpc.createStudent.mutate({
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+    assigned_case_manager_id: seed.para.user_id,
   });
 
   t.truthy(
@@ -60,7 +61,7 @@ test("createStudent", async (t) => {
 });
 
 test("doNotAddDuplicateEmails", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   await db
     .insertInto("student")
@@ -68,6 +69,7 @@ test("doNotAddDuplicateEmails", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -77,12 +79,12 @@ test("doNotAddDuplicateEmails", async (t) => {
       first_name: "Foos",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+      assigned_case_manager_id: seed.para.user_id,
     });
   });
 
   const students = await trpc.getAllStudents.query({
-    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+    assigned_case_manager_id: seed.para.user_id,
   });
   t.is(students.length, 1);
 });
