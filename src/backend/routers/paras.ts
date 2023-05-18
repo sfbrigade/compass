@@ -35,7 +35,7 @@ export const paraProcedures = {
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
 
-      // todo: add a unique constraint to prevent duplicate paras
+      // todo: add a unique constraint to prevent duplicate paras (already taken care of in SCHEMA - email is TEXT UNIQUE NOT NULL)
       const result = await req.ctx.db
         .insertInto("user")
         .values({ first_name, last_name, email, role })
