@@ -1,5 +1,6 @@
 import test from "ava";
 import { getTestServer } from "backend/tests";
+import { string } from "zod";
 
 test("getStudentById", async (t) => {
   const { trpc, db } = await getTestServer(t);
@@ -27,11 +28,14 @@ test("getAllStudents", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const students = await trpc.getAllStudents.query();
+  const students = await trpc.getAllStudents.query({
+    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+  });
   t.is(students.length, 1);
   t.is(students[0].student_id, student_id);
 });
@@ -43,6 +47,7 @@ test("createStudent", async (t) => {
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
+    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
   });
 
   t.truthy(
@@ -72,9 +77,12 @@ test("doNotAddDuplicateEmails", async (t) => {
       first_name: "Foos",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
     });
   });
 
-  const students = await trpc.getAllStudents.query();
+  const students = await trpc.getAllStudents.query({
+    assigned_case_manager_id: "db37712a-a047-405c-9243-302394c4372a",
+  });
   t.is(students.length, 1);
 });
