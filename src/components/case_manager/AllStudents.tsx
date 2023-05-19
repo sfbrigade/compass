@@ -9,12 +9,12 @@ const AllStudentsPage = () => {
   const user_id = me?.user_id || ""; //temp solution due to typing errors
 
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.getAllStudents.useQuery({
+  const { data: students, isLoading } = trpc.getMyStudents.useQuery({
     assigned_case_manager_id: user_id,
   });
 
   const { mutate } = trpc.createStudent.useMutation({
-    onSuccess: () => utils.getAllStudents.invalidate(),
+    onSuccess: () => utils.getMyStudents.invalidate(),
     //in future PR, we could change this to notification instead of browser alert [tessa]
     onError: (error) => alert(error.message),
   });

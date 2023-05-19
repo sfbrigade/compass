@@ -17,7 +17,7 @@ export const studentProcedures = {
       return result;
     }),
   //* this function gets students for the current logged in case manager
-  getAllStudents: procedure
+  getMyStudents: procedure
     .input(z.object({ assigned_case_manager_id: z.string().uuid() }))
     .query(async (req) => {
       const { assigned_case_manager_id } = req.input;

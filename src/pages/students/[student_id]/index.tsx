@@ -30,7 +30,7 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <div>
+    <div className={styles.person}>
       <h1>
         {student?.first_name} {student?.last_name}
       </h1>

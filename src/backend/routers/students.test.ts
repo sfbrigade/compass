@@ -1,6 +1,5 @@
 import test from "ava";
 import { getTestServer } from "backend/tests";
-import { string } from "zod";
 
 test("getStudentById", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
@@ -20,7 +19,7 @@ test("getStudentById", async (t) => {
   t.is(student.student_id, student_id);
 });
 
-test("getAllStudents", async (t) => {
+test("getMyStudents", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   const { student_id } = await db
@@ -34,7 +33,7 @@ test("getAllStudents", async (t) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const students = await trpc.getAllStudents.query({
+  const students = await trpc.getMyStudents.query({
     assigned_case_manager_id: seed.para.user_id,
   });
   t.is(students.length, 1);
@@ -83,7 +82,7 @@ test("doNotAddDuplicateEmails", async (t) => {
     });
   });
 
-  const students = await trpc.getAllStudents.query({
+  const students = await trpc.getMyStudents.query({
     assigned_case_manager_id: seed.para.user_id,
   });
   t.is(students.length, 1);
