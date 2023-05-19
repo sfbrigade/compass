@@ -1,0 +1,17 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./../..
+      dockerfile: ./docker/staging/Dockerfile
+    image: unsynced/compass:latest
+    command: bash -l -c "./docker/staging/init.sh; npm run dev"
+    volumes:
+      - ./../..:/opt/node/app
+      - /opt/node/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      # - DATABASE_URL=postgres://postgres@localhost:5432/compass
+      - DATABASE_URL=postgres://postgres:postgres@compass-staging.cakv96zyyhhj.us-west-1.rds.amazonaws.com:5432
