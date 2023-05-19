@@ -22,12 +22,19 @@ RUN echo "export PATH=./node_modules/.bin:\$PATH\n" >> /root/.bashrc
 # Create a directory for the server app to run from
 # RUN mkdir -p $APP_HOME
 
-# Copy the project files into the app directory
-COPY --chown=node:node . $APP_HOME
-
 # Set workdir and install dependencies
 USER node
 WORKDIR $APP_HOME
-RUN npm ci
-# TODO: figure out why this add --omit=dev doesn't work
 
+COPY package.json .
+COPY package-lock.json .
+
+# TODO: figure out why this add --omit=dev doesn't work
+RUN npm ci
+
+# Copy the project files into the app directory
+COPY --chown=node:node . $APP_HOME
+
+# Figure out how to get this to work with `command` in docker-compose.yml
+# RUN npm run build
+# CMD ["npm", "run", "start"]
