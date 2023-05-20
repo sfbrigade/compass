@@ -6,6 +6,7 @@ services:
       context: ./../..
       dockerfile: ./docker/staging/Dockerfile
     image: unsynced/compass:latest
+    platform: linux/amd64
     command: bash -l -c "./docker/staging/init.sh; npm run dev"
     volumes:
       - ./../..:/opt/node/app
