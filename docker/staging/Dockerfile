@@ -26,8 +26,7 @@ RUN echo "export PATH=./node_modules/.bin:\$PATH\n" >> /root/.bashrc
 USER node
 WORKDIR $APP_HOME
 
-COPY package.json .
-COPY package-lock.json .
+COPY package*.json .
 
 # TODO: figure out why this add --omit=dev doesn't work
 RUN npm ci
@@ -35,6 +34,8 @@ RUN npm ci
 # Copy the project files into the app directory
 COPY --chown=node:node . $APP_HOME
 
+EXPOSE 3000
+
 # Figure out how to get this to work with `command` in docker-compose.yml
 # RUN npm run build
-# CMD ["npm", "run", "start"]
+CMD ["npm", "run", "dev"]
