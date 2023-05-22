@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  server:
+    build:
+      context: ./../..
+      dockerfile: ./docker/production/Dockerfile
+    image: unsynced/compass:latest
+    platform: linux/amd64
+    command: bash -l -c "npm run start"
+    ports:
+      - "3000:3000"
+    environment:
+      # Create .env.production for local testing
