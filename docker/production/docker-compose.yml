@@ -5,7 +5,7 @@ services:
     build:
       context: ./../..
       dockerfile: ./docker/production/Dockerfile
-    image: unsynced/compass:latest  # TODO(amantri): Set this to a shared account
+    image: unsynced/compass:latest # TODO(amantri): Set this to a shared account
     platform: linux/amd64
     command: bash -l -c "npm run start"
     ports:
