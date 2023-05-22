@@ -1,7 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import StudentIEP from "./studentIEP";
+import StudentIEP from "./iep";
 
 const ViewStudentPage = () => {
   const router = useRouter();
@@ -28,7 +28,10 @@ const ViewStudentPage = () => {
         <b>Student Email:</b> {student?.email}
       </p>
 
-      <StudentIEP student={student} />
+      <StudentIEP
+        first_name={student?.first_name}
+        last_name={student?.last_name}
+      />
 
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>
