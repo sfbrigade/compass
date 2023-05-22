@@ -5,10 +5,8 @@ services:
     build:
       context: ./../..
       dockerfile: ./docker/production/Dockerfile
-    image: unsynced/compass:latest
+    image: unsynced/compass:latest  # TODO(amantri): Set this to a shared account
     platform: linux/amd64
     command: bash -l -c "npm run start"
     ports:
       - "3000:3000"
-    # environment:
-      # Create .env.production for local testing
