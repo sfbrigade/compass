@@ -9,9 +9,7 @@ const AllStudentsPage = () => {
   const user_id = me?.user_id || ""; //temp solution due to typing errors
 
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.getMyStudents.useQuery({
-    assigned_case_manager_id: user_id,
-  });
+  const { data: students, isLoading } = trpc.getMyStudents.useQuery();
 
   const { mutate } = trpc.createStudent.useMutation({
     onSuccess: () => utils.getMyStudents.invalidate(),
