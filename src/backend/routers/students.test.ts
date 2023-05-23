@@ -33,9 +33,7 @@ test("getMyStudents", async (t) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const students = await trpc.getMyStudents.query({
-    assigned_case_manager_id: seed.para.user_id,
-  });
+  const students = await trpc.getMyStudents.query();
   t.is(students.length, 1);
   t.is(students[0].student_id, student_id);
 });
@@ -82,8 +80,6 @@ test("doNotAddDuplicateEmails", async (t) => {
     });
   });
 
-  const students = await trpc.getMyStudents.query({
-    assigned_case_manager_id: seed.para.user_id,
-  });
+  const students = await trpc.getMyStudents.query();
   t.is(students.length, 1);
 });
