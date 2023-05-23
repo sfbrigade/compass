@@ -4,7 +4,8 @@ Compass is a tool to help educators create and manage Individualized Education P
 
 Useful resources:
 
-- [Notion wiki](https://www.notion.so/sfbrigade/Compass-source-of-truth-db118a6d51344dccadc49d1988662d66)
+- [Compass Overview - Notion wiki](https://www.notion.so/sfbrigade/Compass-Overview-7ccd59b1f0b447cdb44662b19010238f)
+- [Glossary Terms of Project Compass](https://www.notion.so/sfbrigade/9633788ecc4543c4a6257bd742d5260e?v=9e31c3c4a1b4468383d148850db40ad5)
 - [Slack channel](https://sfbrigade.slack.com/archives/C01R8E75N1K)
 
 ## Contributing to our code base
