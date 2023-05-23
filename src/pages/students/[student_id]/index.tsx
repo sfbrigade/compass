@@ -18,10 +18,10 @@ const ViewStudentPage = () => {
   const { mutate } = trpc.archiveStudent.useMutation();
 
   const archiveStudent = async () => {
-    mutate({
-      student_id: student?.student_id || "",
-    });
-
+    if (!student) {
+      return;
+    }
+    mutate({ student_id: student.student_id });
     await router.push(`/cmDashboard`);
   };
 
