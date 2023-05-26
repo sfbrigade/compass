@@ -56,7 +56,7 @@ export const studentProcedures = {
           oc
             .column("email")
             .doUpdateSet({ assigned_case_manager_id: userId })
-            .where("student.assigned_case_manager_id", "=", null)
+            .where("student.assigned_case_manager_id", "is", null)
         )
         .execute();
     }),

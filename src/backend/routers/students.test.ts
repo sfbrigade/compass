@@ -56,8 +56,6 @@ test("createStudent", async (t) => {
   );
 });
 
-// create test for reassigning case manager
-
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
@@ -84,6 +82,41 @@ test("doNotAddDuplicateEmails", async (t) => {
   });
 
   const students = await trpc.getMyStudents.query();
+  t.is(students.length, 1);
+});
+
+test("assignCaseManager", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
+    })
+    .execute();
+
+  let students = await trpc.getMyStudents.query();
+  t.is(students.length, 1);
+
+  await db
+    .updateTable("student")
+    .set({ assigned_case_manager_id: null })
+    .where("email", "=", "foo.bar@email.com")
+    .execute();
+
+  students = await trpc.getMyStudents.query();
+  t.is(students.length, 0);
+
+  await trpc.createStudentOrAssignManager.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
+
+  students = await trpc.getMyStudents.query();
   t.is(students.length, 1);
 });
 
