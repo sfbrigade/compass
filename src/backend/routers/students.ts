@@ -16,7 +16,10 @@ export const studentProcedures = {
 
       return result;
     }),
-  //* this function gets students for the current logged in case manager
+
+  /**
+   * Get all students assigned to the current user
+   */
   getMyStudents: protectedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
@@ -29,56 +32,39 @@ export const studentProcedures = {
     return result;
   }),
 
-  createStudent: procedure
+  createStudentOrAssignManager: protectedProcedure
     .input(
       z.object({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string(),
-        assigned_case_manager_id: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email, assigned_case_manager_id } =
-        req.input;
+      const { first_name, last_name, email } = req.input;
+      const { userId } = req.ctx.auth;
 
-      const inDatabase = await req.ctx.db
-        .selectFrom("student")
-        .selectAll()
-        .where("email", "=", email)
-        .executeTakeFirst();
-
-      // case 1: not in database, create new student in database
-      if (!inDatabase) {
-        await req.ctx.db
-          .insertInto("student")
-          .values({ first_name, last_name, email, assigned_case_manager_id })
-          .execute();
-        // case 2: in database, but no case manager associated
-      } else if (inDatabase?.assigned_case_manager_id === null) {
-        await req.ctx.db
-          .updateTable("student")
-          .set({ assigned_case_manager_id })
-          .where("email", "=", email)
-          .execute();
-        // case 3: in database, different case manager
-      } else if (
-        inDatabase?.assigned_case_manager_id !== assigned_case_manager_id
-        //! comment the above line and uncomment the line below to test this error message
-        // typeof inDatabase?.assigned_case_manager_id === "string"
-      ) {
-        throw new Error("This student already has a case manager!");
-        // Case 4: in database, adding same student email
-      } else if (
-        inDatabase?.assigned_case_manager_id === assigned_case_manager_id
-      ) {
-        throw new Error("You already added this student to your classroom.");
-      } else {
-        throw new Error("Error adding student. This is a database error.");
-      }
+      await req.ctx.db
+        .insertInto("student")
+        .values({
+          first_name,
+          last_name,
+          email,
+          assigned_case_manager_id: userId,
+        })
+        .onConflict((oc) =>
+          oc
+            .column("email")
+            .doUpdateSet({ assigned_case_manager_id: userId })
+            .where("student.assigned_case_manager_id", "=", null)
+        )
+        .execute();
     }),
 
-  archiveStudent: procedure
+  /**
+   * Removes the case manager associated with this student
+   */
+  unassignStudent: procedure
     .input(
       z.object({
         student_id: z.string(),

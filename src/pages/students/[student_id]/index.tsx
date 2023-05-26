@@ -15,7 +15,7 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { mutate } = trpc.archiveStudent.useMutation();
+  const { mutate } = trpc.unassignStudent.useMutation();
 
   const archiveStudent = async () => {
     if (!student) {
