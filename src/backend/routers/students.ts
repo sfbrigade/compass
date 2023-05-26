@@ -58,7 +58,8 @@ export const studentProcedures = {
             .doUpdateSet({ assigned_case_manager_id: userId })
             .where("student.assigned_case_manager_id", "is", null)
         )
-        .execute();
+        .returningAll()
+        .executeTakeFirstOrThrow();
     }),
 
   /**
