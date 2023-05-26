@@ -39,13 +39,12 @@ test("getMyStudents", async (t) => {
 });
 
 test("createStudent", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+  const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
 
-  await trpc.createStudent.mutate({
+  await trpc.createStudentOrAssignManager.mutate({
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    assigned_case_manager_id: seed.para.user_id,
   });
 
   t.truthy(
@@ -56,6 +55,8 @@ test("createStudent", async (t) => {
       .executeTakeFirst()
   );
 });
+
+// create test for reassigning case manager
 
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
@@ -68,18 +69,42 @@ test("doNotAddDuplicateEmails", async (t) => {
       email: "foo.bar@email.com",
       assigned_case_manager_id: seed.para.user_id,
     })
-    .returningAll()
-    .executeTakeFirstOrThrow();
+    .execute();
 
   await t.throwsAsync(() => {
-    return trpc.createStudent.mutate({
-      first_name: "Foos",
-      last_name: "Bar",
-      email: "foo.bar@email.com",
-      assigned_case_manager_id: seed.para.user_id,
-    });
+    return db
+      .insertInto("student")
+      .values({
+        first_name: "Foos",
+        last_name: "Bar",
+        email: "foo.bar@email.com",
+        assigned_case_manager_id: seed.para.user_id,
+      })
+      .execute();
   });
 
   const students = await trpc.getMyStudents.query();
   t.is(students.length, 1);
+});
+
+test("unassignStudent", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  const { student_id } = await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  await trpc.unassignStudent.mutate({
+    student_id,
+  });
+
+  const students = await trpc.getMyStudents.query();
+  t.is(students.length, 0);
 });
