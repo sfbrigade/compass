@@ -21,7 +21,7 @@ const AllParasPage = () => {
       email: data.get("email") as string,
       role: "para",
     });
-    // email invitation here
+    // email invitation here? Or should be in the backend as part of mutate?
   };
 
   if (isLoading) {
