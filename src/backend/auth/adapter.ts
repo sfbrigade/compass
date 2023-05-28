@@ -171,7 +171,7 @@ export const createPersistedAuthAdapter = (
       .innerJoin("user", "user.user_id", "session.user_id")
       .where("session_token", "=", sessionToken)
       .selectAll()
-      .executeTakeFirstOrThrow();
+      .executeTakeFirst();
 
     if (sessionAndUser) {
       return {
