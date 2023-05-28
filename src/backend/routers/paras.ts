@@ -36,8 +36,7 @@ export const paraProcedures = {
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
       // todo: add a unique constraint to prevent duplicate paras (already taken care of in SCHEMA - email is TEXT UNIQUE NOT NULL)
-      console.log(req.input);
-      transporter.sendMail({
+      await transporter.sendMail({
         ...mailOptions,
         subject: "test subject",
         text: "test text",
