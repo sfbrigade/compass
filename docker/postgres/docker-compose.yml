@@ -10,5 +10,20 @@ services:
     volumes:
       - postgres:/var/lib/postgresql/data
 
+  minio:
+    image: minio/minio:RELEASE.2023-05-18T00-05-36Z
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_SERVER_ACCESS_KEY: minio
+      MINIO_SERVER_SECRET_KEY: minio
+      MINIO_DEFAULT_BUCKETS: compass
+      MINIO_CONSOLE_PORT_NUMBER: 9002
+    command: 'server /data --console-address ":9001"'
+    volumes:
+      - minio:/data
+
 volumes:
   postgres:
+  minio:
