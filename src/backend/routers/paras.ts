@@ -38,9 +38,9 @@ export const paraProcedures = {
       // todo: add a unique constraint to prevent duplicate paras (already taken care of in SCHEMA - email is TEXT UNIQUE NOT NULL)
       await transporter.sendMail({
         ...mailOptions,
-        subject: "test subject",
-        text: "test text",
-        html: "<h1>Test Title</h1><p>this is body text</p>",
+        subject: "Para-professional email confirmation",
+        text: "Test text",
+        html: "<h1>Test Title</h1><p>Please confirm your email by going to the following link: <a></a></p>",
       });
 
       const result = await req.ctx.db
