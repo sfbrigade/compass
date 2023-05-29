@@ -26,6 +26,40 @@ test("can upload files", async (t) => {
   );
 });
 
+test("finishFileUpload throws if file already exists", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: "para" });
+
+  const { url, key } = await trpc.getPresignedUrlForFileUpload.mutate({
+    type: "image/png",
+  });
+
+  const file = await fs.readFile("public/img/favicon.png");
+  await axios.put(url, file);
+
+  await trpc.finishFileUpload.mutate({
+    key,
+    filename: "favicon.png",
+  });
+
+  await t.throwsAsync(async () => {
+    await trpc.finishFileUpload.mutate({
+      key,
+      filename: "favicon.png",
+    });
+  });
+});
+
+test("finishFileUpload throws if invalid key is provided", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: "para" });
+
+  await t.throwsAsync(async () => {
+    await trpc.finishFileUpload.mutate({
+      key: "unknown-key",
+      filename: "favicon.png",
+    });
+  });
+});
+
 test("can download files", async (t) => {
   const { trpc } = await getTestServer(t, { authenticateAs: "para" });
 

@@ -72,7 +72,6 @@ export const fileProcedures = {
         Bucket: req.ctx.env.S3_BUCKET_NAME,
         Key: req.input.key,
       });
-      // todo: what happens if file doesn't exist?
       const fileHead = await req.ctx.s3.send(command);
 
       const file = await req.ctx.db
