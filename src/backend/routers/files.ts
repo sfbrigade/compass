@@ -75,7 +75,7 @@ export const fileProcedures = {
       // todo: what happens if file doesn't exist?
       const fileHead = await req.ctx.s3.send(command);
 
-      await req.ctx.db
+      const file = await req.ctx.db
         .insertInto("file")
         .values({
           name: req.input.filename,
@@ -83,6 +83,9 @@ export const fileProcedures = {
           uploaded_by_user_id: req.ctx.auth.userId,
           ext_s3_path: req.input.key,
         })
-        .execute();
+        .returningAll()
+        .executeTakeFirstOrThrow();
+
+      return file;
     }),
 };
