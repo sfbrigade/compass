@@ -33,6 +33,7 @@ export const getTestServer = async (
   const env: Env = {
     DATABASE_URL: databaseConnectionString,
     S3_ENDPOINT: minio.endpoint,
+    S3_REGION: minio.region,
     S3_ACCESS_KEY_ID: minio.accessKey,
     S3_SECRET_ACCESS_KEY: minio.secretKey,
     S3_BUCKET_NAME: minio.bucket,

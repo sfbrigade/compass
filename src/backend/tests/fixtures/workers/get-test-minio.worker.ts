@@ -13,6 +13,7 @@ const startMinio = async () => {
 
   const params = {
     endpoint: `http://localhost:${container.getMappedPort(9000)}`,
+    region: "us-east-1",
     accessKey: "minioadmin",
     secretKey: "minioadmin",
     bucket: "compass",
@@ -20,6 +21,7 @@ const startMinio = async () => {
 
   const s3 = new S3Client({
     endpoint: params.endpoint,
+    region: params.region,
     credentials: {
       accessKeyId: params.accessKey,
       secretAccessKey: params.secretKey,

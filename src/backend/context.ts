@@ -25,8 +25,13 @@ export const createContext = async (
   options: CreateNextContextOptions
 ): Promise<Context> => {
   const env = (options.req.env as unknown as Env) ?? process.env;
-  const { DATABASE_URL, S3_ENDPOINT, S3_ACCESS_KEY_ID, S3_SECRET_ACCESS_KEY } =
-    env;
+  const {
+    DATABASE_URL,
+    S3_ENDPOINT,
+    S3_ACCESS_KEY_ID,
+    S3_SECRET_ACCESS_KEY,
+    S3_REGION,
+  } = env;
   const { db } = getDb(DATABASE_URL);
 
   let auth: Auth = { type: "none" };
@@ -54,6 +59,7 @@ export const createContext = async (
     auth,
     s3: new S3Client({
       endpoint: S3_ENDPOINT,
+      region: S3_REGION,
       credentials: {
         accessKeyId: S3_ACCESS_KEY_ID,
         secretAccessKey: S3_SECRET_ACCESS_KEY,
