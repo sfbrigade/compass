@@ -35,12 +35,15 @@ export const paraProcedures = {
     )
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
-      // todo: add a unique constraint to prevent duplicate paras (already taken care of in SCHEMA - email is TEXT UNIQUE NOT NULL)
+      // In the SCHEMA, email has the "unique" constraint TEXT UNIQUE NOT NULL, which will prevent duplicate paras from being inputted
+
+      // this is where Nodemailer will send an email to the email address of the para inputted by the cm
       await transporter.sendMail({
         ...mailOptions,
+        to: email,
         subject: "Para-professional email confirmation",
-        text: "Test text",
-        html: "<h1>Test Title</h1><p>Please confirm your email by going to the following link: <a></a></p>",
+        text: "Email confirmation",
+        html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
       });
 
       const result = await req.ctx.db
@@ -48,6 +51,7 @@ export const paraProcedures = {
         .values({ first_name, last_name, email, role })
         .returningAll()
         .execute();
+
       return result;
     }),
 
