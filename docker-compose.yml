@@ -1,3 +1,4 @@
+# A Compose stack for running supporting services locally during development.
 version: "3"
 
 services:

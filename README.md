@@ -12,7 +12,7 @@ Useful resources:
 ### One time setup
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-2. Clone the github repo:
+2. Clone the GitHub repo:
 
    - _Windows users (do this first before checkout)_ : make sure to run git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
      <br>
@@ -30,20 +30,9 @@ Useful resources:
 
 ### Running Compass
 
-There are three ways to run Compass locally:
+There are two ways to run Compass locally:
 
-**Option 1: Run client, server and database in docker (easiest to get started)**
-
-1. Bring up the server, client and database
-
-   ```sh
-   cd docker/dev
-   docker compose up
-   ```
-
-2. Wait a bit for the image to build, then visit http://localhost:3000
-
-**Option 2: Run client and server locally, and database in Docker**
+**Option 1: Run server locally, and supporting services in Docker**
 
 1. Install node dependencies, starting in the `project-compass` directory
 
@@ -51,12 +40,10 @@ There are three ways to run Compass locally:
    npm install           # install dependencies
    ```
 
-2. Start Postgres inside a Docker container
+2. Start services in Docker & reset the database
 
    ```sh
-   cd docker/postgres
-   docker compose up -d  # start the database
-   cd ../..              # return to the project-compass directory
+   docker compose up -d  # start the services in the background
    npm run db:reset      # reset and migrate the database
    ```
 
@@ -68,7 +55,7 @@ There are three ways to run Compass locally:
 
    Server URL: http://localhost:3000
 
-**Option 3: Run client, server and database locally**
+**Option 2: Run both server and supporting services locally**
 
 1. One time setup:
 
@@ -76,15 +63,15 @@ There are three ways to run Compass locally:
   - install using [pgAdmin 4](https://www.postgresql.org/download/), [Homebrew](https://wiki.postgresql.org/wiki/Homebrew), or any other method
   - create a username and password on the Postgres server
   - update the `DATABASE_URL` in _.env.local_ to include your actual `<username>` and `<password>`:
-      ```
-      DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
-      ```
+    ```
+    DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
+    ```
 - Install [MinIO](https://min.io), an open source S3-compatible storage server:
   - follow their guide for [macOS](https://min.io/docs/minio/macos/index.html) or [Windows](https://min.io/docs/minio/windows/index.html)
   - after installing and starting the MinIO server, make sure to create a new bucket and update the `S3_BUCKET_NAME` in _.env.local_ to match the name of the bucket you created:
-      ```
-      S3_BUCKET_NAME=<bucket-name>
-      ```
+    ```
+    S3_BUCKET_NAME=<bucket-name>
+    ```
 
 2. Install dependencies, starting in the `project-compass` directory
 
