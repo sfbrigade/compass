@@ -14,7 +14,7 @@ Useful resources:
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 2. Clone the github repo:
 
-   - _Windows users (do this first before checkout)_ : make sure to run git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`  
+   - _Windows users (do this first before checkout)_ : make sure to run git autocrlf setting is set to false so that carriage return characters are not inserted into files (which breaks them when they run inside the Linux container). To do so, open a Powershell and run: `git config --global core.autocrlf false`
      <br>
 
    ```sh
@@ -70,18 +70,23 @@ There are three ways to run Compass locally:
 
 **Option 3: Run client, server and database locally**
 
-0. One time setup:
+1. One time setup:
 
-- Install Postgres from your preferred source ([pgAdmin 4](https://www.postgresql.org/download/), [Homebrew](https://wiki.postgresql.org/wiki/Homebrew), ...)
-- Create a username and password on the Postgres server.
-- Update the `DATABASE_URL` in _server/.env.local_ to include your actual `<username>` and `<password>`:
-  ```
-  DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
-  ```
+- Install and configure Postgres:
+  - install using [pgAdmin 4](https://www.postgresql.org/download/), [Homebrew](https://wiki.postgresql.org/wiki/Homebrew), or any other method
+  - create a username and password on the Postgres server
+  - update the `DATABASE_URL` in _.env.local_ to include your actual `<username>` and `<password>`:
+      ```
+      DATABASE_URL=postgres://<username>:<password>@localhost:5432/compass
+      ```
+- Install [MinIO](https://min.io), an open source S3-compatible storage server:
+  - follow their guide for [macOS](https://min.io/docs/minio/macos/index.html) or [Windows](https://min.io/docs/minio/windows/index.html)
+  - after installing and starting the MinIO server, make sure to create a new bucket and update the `S3_BUCKET_NAME` in _.env.local_ to match the name of the bucket you created:
+      ```
+      S3_BUCKET_NAME=<bucket-name>
+      ```
 
-1. Launch your local Postgres instance
-
-2. Install node dependencies, starting in the `project-compass` directory
+2. Install dependencies, starting in the `project-compass` directory
 
    ```sh
    npm install           # install dependencies
