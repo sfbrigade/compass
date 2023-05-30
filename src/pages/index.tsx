@@ -8,6 +8,7 @@ import Link from "next/link";
 
 const Home: NextPage = () => {
   const { data: me } = trpc.getMe.useQuery();
+
   return (
     <div className={styles.container}>
       <Head>

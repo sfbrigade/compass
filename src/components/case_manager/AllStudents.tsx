@@ -6,9 +6,15 @@ import PersonCreationForm from "./PersonCreationForm";
 
 const AllStudentsPage = () => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.getAllStudents.useQuery();
-  const { mutate } = trpc.createStudent.useMutation({
-    onSuccess: () => utils.getAllStudents.invalidate(),
+  const { data: students, isLoading } = trpc.getMyStudents.useQuery();
+
+  const { mutate } = trpc.createStudentOrAssignManager.useMutation({
+    onSuccess: () => utils.getMyStudents.invalidate(),
+    //in future PR, we could change this to notification instead of browser alert [tessa]
+    onError: () =>
+      alert(
+        `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
+      ),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
