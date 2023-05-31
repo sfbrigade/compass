@@ -11,7 +11,7 @@ import { randomUUID } from "crypto";
 import ms from "ms";
 
 export interface GetTestServerOptions {
-  authenticateAs?: "para";
+  authenticateAs?: "para" | "admin";
 }
 
 export const getTestServer = async (
@@ -61,6 +61,20 @@ export const getTestServer = async (
       .values({
         session_token: sessionToken,
         user_id: seed.para.user_id,
+        expires_at: new Date(Date.now() + ms("1 hour")),
+      })
+      .execute();
+
+    trpcRequestHeaders = {
+      cookie: `next-auth.session-token=${sessionToken}`,
+    };
+  } else if (authenticateAs === "admin") {
+    const sessionToken = randomUUID();
+    await db
+      .insertInto("session")
+      .values({
+        session_token: sessionToken,
+        user_id: seed.admin.user_id,
         expires_at: new Date(Date.now() + ms("1 hour")),
       })
       .execute();

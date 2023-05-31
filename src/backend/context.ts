@@ -12,6 +12,7 @@ type Auth =
       type: "session";
       session: Session;
       userId: string;
+      role: string;
     };
 
 type Context = ReturnType<typeof getDb> & {
@@ -34,13 +35,14 @@ export const createContext = async (
   if (session && session.user?.email) {
     const user = await db
       .selectFrom("user")
-      .select("user_id")
+      .select(["user_id", "role"])
       .where("email", "=", session.user.email)
       .executeTakeFirstOrThrow();
     auth = {
       type: "session",
       session,
       userId: user.user_id,
+      role: user.role,
     };
   }
 
