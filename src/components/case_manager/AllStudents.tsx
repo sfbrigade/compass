@@ -2,12 +2,19 @@ import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
+import PersonCreationForm from "./PersonCreationForm";
 
 const AllStudentsPage = () => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.getAllStudents.useQuery();
-  const { mutate } = trpc.createStudent.useMutation({
-    onSuccess: () => utils.getAllStudents.invalidate(),
+  const { data: students, isLoading } = trpc.getMyStudents.useQuery();
+
+  const { mutate } = trpc.createStudentOrAssignManager.useMutation({
+    onSuccess: () => utils.getMyStudents.invalidate(),
+    //in future PR, we could change this to notification instead of browser alert [tessa]
+    onError: () =>
+      alert(
+        `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
+      ),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -27,33 +34,7 @@ const AllStudentsPage = () => {
 
   return (
     <div>
-      <div className={styles.createContainer}>
-        <h2 className={styles.createTitle}>Create a student</h2>
-
-        <form onSubmit={handleSubmit} className={styles.createInput}>
-          <input
-            type="text"
-            name="first_name"
-            placeholder="First name"
-            required
-          />
-          <input
-            type="text"
-            name="last_name"
-            placeholder="Last name"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="first.last@email.com"
-            required
-          />
-          <button type="submit" className={styles.createButton}>
-            Create
-          </button>
-        </form>
-      </div>
+      <PersonCreationForm title={"Create a Student"} onSubmit={handleSubmit} />
 
       <h2>All students</h2>
       <ul className={styles.listNames}>
