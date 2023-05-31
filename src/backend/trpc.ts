@@ -16,6 +16,20 @@ const isAuthenticated = t.middleware(({ next, ctx }) => {
   });
 });
 
+const isAdmin = t.middleware(({ next, ctx }) => {
+  if (ctx.auth.type !== "session" || ctx.auth.role !== "admin") {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      auth: ctx.auth,
+    },
+  });
+});
+
 export const router = t.router;
 export const procedure = t.procedure;
 export const protectedProcedure = t.procedure.use(isAuthenticated);
+export const adminProcedure = t.procedure.use(isAuthenticated).use(isAdmin);
