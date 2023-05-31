@@ -2,7 +2,7 @@ import test from "ava";
 import { getTestServer } from "backend/tests";
 
 test("getStudentById", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   const { student_id } = await db
     .insertInto("student")
@@ -10,6 +10,7 @@ test("getStudentById", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -18,8 +19,8 @@ test("getStudentById", async (t) => {
   t.is(student.student_id, student_id);
 });
 
-test("getAllStudents", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+test("getMyStudents", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   const { student_id } = await db
     .insertInto("student")
@@ -27,19 +28,20 @@ test("getAllStudents", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const students = await trpc.getAllStudents.query();
+  const students = await trpc.getMyStudents.query();
   t.is(students.length, 1);
   t.is(students[0].student_id, student_id);
 });
 
 test("createStudent", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
 
-  await trpc.createStudent.mutate({
+  await trpc.createStudentOrAssignManager.mutate({
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
@@ -55,7 +57,7 @@ test("createStudent", async (t) => {
 });
 
 test("doNotAddDuplicateEmails", async (t) => {
-  const { trpc, db } = await getTestServer(t);
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
 
   await db
     .insertInto("student")
@@ -63,18 +65,79 @@ test("doNotAddDuplicateEmails", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
+    })
+    .execute();
+
+  await t.throwsAsync(() => {
+    return db
+      .insertInto("student")
+      .values({
+        first_name: "Foos",
+        last_name: "Bar",
+        email: "foo.bar@email.com",
+        assigned_case_manager_id: seed.para.user_id,
+      })
+      .execute();
+  });
+
+  const students = await trpc.getMyStudents.query();
+  t.is(students.length, 1);
+});
+
+test("assignCaseManager", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
+    })
+    .execute();
+
+  let students = await trpc.getMyStudents.query();
+  t.is(students.length, 1);
+
+  await db
+    .updateTable("student")
+    .set({ assigned_case_manager_id: null })
+    .where("email", "=", "foo.bar@email.com")
+    .execute();
+
+  students = await trpc.getMyStudents.query();
+  t.is(students.length, 0);
+
+  await trpc.createStudentOrAssignManager.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
+
+  students = await trpc.getMyStudents.query();
+  t.is(students.length, 1);
+});
+
+test("unassignStudent", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  const { student_id } = await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      assigned_case_manager_id: seed.para.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  await t.throwsAsync(() => {
-    return trpc.createStudent.mutate({
-      first_name: "Foos",
-      last_name: "Bar",
-      email: "foo.bar@email.com",
-    });
+  await trpc.unassignStudent.mutate({
+    student_id,
   });
 
-  const students = await trpc.getAllStudents.query();
-  t.is(students.length, 1);
+  const students = await trpc.getMyStudents.query();
+  t.is(students.length, 0);
 });

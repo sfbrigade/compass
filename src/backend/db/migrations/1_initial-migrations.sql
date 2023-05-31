@@ -10,7 +10,7 @@ CREATE TABLE "user" (
   image_url TEXT
 );
 
--- table for CM's para list will go here 
+-- table for CM's para list will go here
 
 
 -- This table is managed by Auth.js via our adapter at backend/auth/adapter.ts

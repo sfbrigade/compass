@@ -23,9 +23,15 @@
   font-weight: bold;
 }
 
+/* INDIVIDUAL STUDENT/PARA PAGE */
+.person {
+  margin: 10px;
+}
+
 /* SIGN IN BUTTON */
 .signIn {
   height: 40px;
+  margin: 10px 0px;
   padding: 0px 24px;
   background-color: #5347d7;
   border-radius: 5px;
@@ -53,8 +59,10 @@
 }
 
 .userInfo {
+  width: 90%;
   display: flex;
   flex-direction: column;
+  word-wrap: break-word;
 }
 
 /* SIGN OUT BUTTON
@@ -63,6 +71,7 @@
 .signOut {
   height: 40px;
   width: 100px;
+  margin: 10px 0px;
   padding: 0px 24px;
   background-color: #5347d7;
   border-radius: 5px;
