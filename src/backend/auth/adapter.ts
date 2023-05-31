@@ -35,6 +35,15 @@ export const createPersistedAuthAdapter = (
   db: KyselyDatabaseInstance
 ): Adapter => ({
   async createUser(user) {
+    const numOfUsers = await db
+      .selectFrom("user")
+      .select((qb) => qb.fn.count("user_id").as("count"))
+      .executeTakeFirstOrThrow();
+
+    // First created user is an admin
+    // todo: this should be pulled from an invite or something else instead of defaulting to a para - currently devs signing in are being assigned as paras
+    const role = Number(numOfUsers.count) === 0 ? "admin" : "para";
+
     const [first_name, last_name] = user.name?.split(" ") ?? [
       user.email?.split("@")[0],
       "",
@@ -46,8 +55,7 @@ export const createPersistedAuthAdapter = (
         last_name,
         email: user.email,
         email_verified_at: user.emailVerified,
-        // todo: this should be pulled from an invite or something else instead of defaulting to a para - currently devs signing in are being assigned as paras
-        role: "para",
+        role,
         image_url: user.image,
       })
       .onConflict((b) => b.column("email").doNothing())
@@ -171,7 +179,7 @@ export const createPersistedAuthAdapter = (
       .innerJoin("user", "user.user_id", "session.user_id")
       .where("session_token", "=", sessionToken)
       .selectAll()
-      .executeTakeFirstOrThrow();
+      .executeTakeFirst();
 
     if (sessionAndUser) {
       return {
