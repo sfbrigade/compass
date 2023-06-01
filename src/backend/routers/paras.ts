@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { procedure } from "../trpc";
+import { protectedProcedure, procedure } from "../trpc";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -23,7 +23,7 @@ export const paraProcedures = {
     return result;
   }),
 
-  createPara: procedure
+  createPara: protectedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -35,14 +35,40 @@ export const paraProcedures = {
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
 
-      // todo: add a unique constraint to prevent duplicate paras
-      const result = await req.ctx.db
+      const insertedPara = await req.ctx.db
         .insertInto("user")
         .values({ first_name, last_name, email, role })
         .returningAll()
+        .executeTakeFirstOrThrow();
+
+      const { userId } = req.ctx.auth;
+      await req.ctx.db
+        .insertInto("cm_to_para")
+        .values({ case_manager_id: userId, para_id: insertedPara.user_id })
+        .returningAll()
         .execute();
-      return result;
     }),
+
+  // createPara: procedure
+  //   .input(
+  //     z.object({
+  //       first_name: z.string(),
+  //       last_name: z.string(),
+  //       email: z.string(),
+  //       role: z.string(),
+  //     })
+  //   )
+  //   .mutation(async (req) => {
+  //     const { first_name, last_name, email, role } = req.input;
+
+  //     // todo: add a unique constraint to prevent duplicate paras
+  //     const result = await req.ctx.db
+  //       .insertInto("user")
+  //       .values({ first_name, last_name, email, role })
+  //       .returningAll()
+  //       .execute();
+  //     return result;
+  //   }),
 
   //this is a placeholder for the archive-para action that will be covered in a future PR
 };

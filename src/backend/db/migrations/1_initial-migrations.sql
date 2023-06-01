@@ -11,7 +11,11 @@ CREATE TABLE "user" (
 );
 
 -- table for CM's para list will go here
-
+CREATE TABLE "cm_to_para" (
+  relation_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
+  para_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
+);
 
 -- This table is managed by Auth.js via our adapter at backend/auth/adapter.ts
 -- See https://authjs.dev/reference/adapters#models for more details
