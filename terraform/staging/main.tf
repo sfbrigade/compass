@@ -6,6 +6,6 @@ module "compass" {
   app_environment = "staging"
 
   aws_user           = "terraform-user"
-  aws_region         = "us-west-1"
-  availability_zones = ["us-west-1b", "us-west-1c"]
+  aws_region         = "us-west-2"
+  availability_zones = ["us-west-2b", "us-west-2c"]
 }
