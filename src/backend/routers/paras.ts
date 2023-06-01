@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { procedure } from "../trpc";
-import { mailOptions, transporter } from "../../config/nodemailer";
+import { mailOptions, transporter } from "../lib/nodemailer";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -37,6 +37,12 @@ export const paraProcedures = {
       const { first_name, last_name, email, role } = req.input;
       // In the SCHEMA, email has the "unique" constraint TEXT UNIQUE NOT NULL, which will prevent duplicate paras from being inputted
 
+      const result = await req.ctx.db
+        .insertInto("user")
+        .values({ first_name, last_name, email, role })
+        .returningAll()
+        .execute();
+
       // this is where Nodemailer will send an email to the email address of the para inputted by the cm
       await transporter.sendMail({
         ...mailOptions,
@@ -45,12 +51,8 @@ export const paraProcedures = {
         text: "Email confirmation",
         html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
       });
-
-      const result = await req.ctx.db
-        .insertInto("user")
-        .values({ first_name, last_name, email, role })
-        .returningAll()
-        .execute();
+      // to do here: when site is deployed, add url to html above
+      // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
 
       return result;
     }),
