@@ -34,7 +34,7 @@ export const fileProcedures = {
       });
 
       const url = await getSignedUrl(req.ctx.s3, command, {
-        expiresIn: 60 * 60,
+        expiresIn: 60 * 60, // 1 hour
       });
       return url;
     }),
