@@ -1,7 +1,7 @@
 import { trpc } from "client/lib/trpc";
 
 const FilesPage = () => {
-  const { data: files, refetch } = trpc.getAllFiles.useQuery();
+  const { data: files, refetch } = trpc.getMyFiles.useQuery();
   const getPresignedUrlForFileDownload =
     trpc.getPresignedUrlForFileDownload.useMutation();
   const getPresignedUrlForUpload =

@@ -9,8 +9,12 @@ import { protectedProcedure } from "../trpc";
 import { randomUUID } from "crypto";
 
 export const fileProcedures = {
-  getAllFiles: protectedProcedure.query(async (req) => {
-    return req.ctx.db.selectFrom("file").selectAll().execute();
+  getMyFiles: protectedProcedure.query(async (req) => {
+    return req.ctx.db
+      .selectFrom("file")
+      .selectAll()
+      .where("uploaded_by_user_id", "=", req.ctx.auth.userId)
+      .execute();
   }),
 
   getPresignedUrlForFileDownload: protectedProcedure
