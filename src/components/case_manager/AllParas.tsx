@@ -9,6 +9,7 @@ const AllParasPage = () => {
   const { data: paras, isLoading } = trpc.getMyParas.useQuery();
   const { mutate } = trpc.createPara.useMutation({
     onSuccess: () => utils.getMyParas.invalidate(),
+    onError: (error) => error.message,
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {

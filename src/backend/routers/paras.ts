@@ -52,15 +52,28 @@ export const paraProcedures = {
       const insertedPara = await req.ctx.db
         .insertInto("user")
         .values({ first_name, last_name, email, role })
+        //this currently overwrites/re-inserts the entry, which generates a new id.
+        .onConflict((oc) => oc.column("email").doUpdateSet({ email }))
         .returningAll()
         .executeTakeFirstOrThrow();
+
+      // console.log("inserted Para ~ ", insertedPara);
 
       const { userId } = req.ctx.auth;
       await req.ctx.db
         .insertInto("cm_to_para")
         .values({ case_manager_id: userId, para_id: insertedPara.user_id })
-        .returningAll()
         .execute();
+
+      // const relationTable = await req.ctx.db
+      //   .updateTable("cm_to_para")
+      //   .set({ case_manager_id: userId, para_id: insertedPara.user_id })
+      //   .where("case_manager_id", "!=", userId)
+      //   .where("para_id", "!=", insertedPara.user_id)
+      //   .returningAll()
+      //   .execute();
+
+      // console.log("relation table updated ~ ", relationTable);
     }),
 
   // createPara: procedure
