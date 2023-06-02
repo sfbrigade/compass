@@ -17,11 +17,25 @@ export const paraProcedures = {
       return result;
     }),
 
-  getAllParas: procedure.query(async (req) => {
-    const result = await req.ctx.db.selectFrom("user").selectAll().execute();
+  getMyParas: protectedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const result = await req.ctx.db
+      .selectFrom("user")
+      .innerJoin("cm_to_para", "user.user_id", "cm_to_para.para_id")
+      .where("role", "=", "para")
+      .where("cm_to_para.case_manager_id", "=", userId)
+      .selectAll()
+      .execute();
 
     return result;
   }),
+
+  // getAllParas: procedure.query(async (req) => {
+  //   const result = await req.ctx.db.selectFrom("user").selectAll().execute();
+
+  //   return result;
+  // }),
 
   createPara: protectedProcedure
     .input(

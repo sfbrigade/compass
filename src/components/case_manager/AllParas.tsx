@@ -6,9 +6,9 @@ import PersonCreationForm from "./PersonCreationForm";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.getAllParas.useQuery();
+  const { data: paras, isLoading } = trpc.getMyParas.useQuery();
   const { mutate } = trpc.createPara.useMutation({
-    onSuccess: () => utils.getAllParas.invalidate(),
+    onSuccess: () => utils.getMyParas.invalidate(),
   });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
