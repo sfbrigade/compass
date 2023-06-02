@@ -1,8 +1,8 @@
 name: PR
 on: [pull_request]
 jobs:
-  type-test:
-    name: Type test
+  type-check:
+    name: type-check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,7 +18,7 @@ jobs:
         run: npm run type-check
 
   lint:
-    name: Lint
+    name: lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
