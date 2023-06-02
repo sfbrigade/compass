@@ -52,12 +52,16 @@ export const paraProcedures = {
       const insertedPara = await req.ctx.db
         .insertInto("user")
         .values({ first_name, last_name, email, role })
-        //this currently overwrites/re-inserts the entry, which generates a new id.
         .onConflict((oc) => oc.column("email").doUpdateSet({ email }))
         .returningAll()
         .executeTakeFirstOrThrow();
 
       // console.log("inserted Para ~ ", insertedPara);
+
+      // Leaving off here on 6-2-23, goal is to make a query that inserts into the relational
+      // table IF there is no prior existing row that contains the same pair
+      // of case manager and para, and the goal is to do this all in one query
+      // rather than doing a lookahead, and then another query from the result
 
       const { userId } = req.ctx.auth;
       await req.ctx.db
