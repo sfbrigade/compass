@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { procedure } from "../trpc";
-import { mailOptions, transporter } from "../lib/nodemailer";
+import { transporter } from "../lib/nodemailer";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -35,7 +35,6 @@ export const paraProcedures = {
     )
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
-      // In the SCHEMA, email has the "unique" constraint TEXT UNIQUE NOT NULL, which will prevent duplicate paras from being inputted
 
       const result = await req.ctx.db
         .insertInto("user")
@@ -43,9 +42,8 @@ export const paraProcedures = {
         .returningAll()
         .execute();
 
-      // this is where Nodemailer will send an email to the email address of the para inputted by the cm
       await transporter.sendMail({
-        ...mailOptions,
+        from: process.env.EMAIL,
         to: email,
         subject: "Para-professional email confirmation",
         text: "Email confirmation",

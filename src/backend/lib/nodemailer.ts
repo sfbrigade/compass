@@ -10,9 +10,3 @@ export const transporter = createTransport({
     pass,
   },
 });
-
-// this just means we are sending an email from our own email for testing purposes. The "to" email will be changed in src/backend/routers/paras to the para email address entered into the db by the cm.
-export const mailOptions = {
-  from: email,
-  to: email,
-};
