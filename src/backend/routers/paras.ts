@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { procedure } from "../trpc";
+import { transporter } from "../lib/nodemailer";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -35,12 +36,22 @@ export const paraProcedures = {
     .mutation(async (req) => {
       const { first_name, last_name, email, role } = req.input;
 
-      // todo: add a unique constraint to prevent duplicate paras
       const result = await req.ctx.db
         .insertInto("user")
         .values({ first_name, last_name, email, role })
         .returningAll()
         .execute();
+
+      await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: "Para-professional email confirmation",
+        text: "Email confirmation",
+        html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
+      });
+      // to do here: when site is deployed, add url to html above
+      // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
+
       return result;
     }),
 

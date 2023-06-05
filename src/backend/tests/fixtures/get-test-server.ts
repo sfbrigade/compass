@@ -37,6 +37,8 @@ export const getTestServer = async (
     S3_ACCESS_KEY_ID: minio.accessKey,
     S3_SECRET_ACCESS_KEY: minio.secretKey,
     S3_BUCKET_NAME: minio.bucket,
+    EMAIL: "example string",
+    EMAIL_PASS: "example string",
   };
 
   const app = next({
