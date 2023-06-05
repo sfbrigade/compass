@@ -30,6 +30,8 @@ export const getTestServer = async (
 
   const env: Env = {
     DATABASE_URL: databaseConnectionString,
+    EMAIL: "example string",
+    EMAIL_PASS: "example string",
   };
 
   const app = next({
