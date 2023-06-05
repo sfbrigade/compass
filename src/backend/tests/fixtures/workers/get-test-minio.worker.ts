@@ -16,7 +16,7 @@ const startMinio = async () => {
     region: "us-east-1",
     accessKey: "minioadmin",
     secretKey: "minioadmin",
-    bucket: "compass",
+    bucket: "compass-files",
   };
 
   const s3 = new S3Client({

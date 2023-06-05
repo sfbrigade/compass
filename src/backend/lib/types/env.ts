@@ -1,10 +1,10 @@
 export interface Env {
   DATABASE_URL: string;
-  S3_ENDPOINT: string;
-  S3_REGION: string;
-  S3_ACCESS_KEY_ID: string;
-  S3_SECRET_ACCESS_KEY: string;
-  S3_BUCKET_NAME: string;
+  S3_USER_UPLOADS_ENDPOINT: string;
+  S3_USER_UPLOADS_REGION: string;
+  S3_USER_UPLOADS_ACCESS_KEY_ID: string;
+  S3_USER_UPLOADS_SECRET_ACCESS_KEY: string;
+  S3_USER_UPLOADS_BUCKET_NAME: string;
   EMAIL: string;
   EMAIL_PASS: string;
 }

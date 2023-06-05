@@ -28,10 +28,10 @@ export const createContext = async (
   const env = (options.req.env as unknown as Env) ?? process.env;
   const {
     DATABASE_URL,
-    S3_ENDPOINT,
-    S3_ACCESS_KEY_ID,
-    S3_SECRET_ACCESS_KEY,
-    S3_REGION,
+    S3_USER_UPLOADS_ENDPOINT,
+    S3_USER_UPLOADS_ACCESS_KEY_ID,
+    S3_USER_UPLOADS_SECRET_ACCESS_KEY,
+    S3_USER_UPLOADS_REGION,
   } = env;
   const { db } = getDb(DATABASE_URL);
 
@@ -60,11 +60,11 @@ export const createContext = async (
     ...getDb(DATABASE_URL),
     auth,
     s3: new S3Client({
-      endpoint: S3_ENDPOINT,
-      region: S3_REGION,
+      endpoint: S3_USER_UPLOADS_ENDPOINT,
+      region: S3_USER_UPLOADS_REGION,
       credentials: {
-        accessKeyId: S3_ACCESS_KEY_ID,
-        secretAccessKey: S3_SECRET_ACCESS_KEY,
+        accessKeyId: S3_USER_UPLOADS_ACCESS_KEY_ID,
+        secretAccessKey: S3_USER_UPLOADS_SECRET_ACCESS_KEY,
       },
       // todo: might need to disable in production
       forcePathStyle: true,

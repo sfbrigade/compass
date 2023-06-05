@@ -33,7 +33,7 @@ export const fileProcedures = {
         .executeTakeFirstOrThrow();
 
       const command = new GetObjectCommand({
-        Bucket: req.ctx.env.S3_BUCKET_NAME,
+        Bucket: req.ctx.env.S3_USER_UPLOADS_BUCKET_NAME,
         Key: file.ext_s3_path,
       });
 
@@ -53,7 +53,7 @@ export const fileProcedures = {
       const key = randomUUID();
 
       const command = new PutObjectCommand({
-        Bucket: req.ctx.env.S3_BUCKET_NAME,
+        Bucket: req.ctx.env.S3_USER_UPLOADS_BUCKET_NAME,
         Key: key,
         ContentType: req.input.type,
       });
@@ -73,7 +73,7 @@ export const fileProcedures = {
     )
     .mutation(async (req) => {
       const command = new HeadObjectCommand({
-        Bucket: req.ctx.env.S3_BUCKET_NAME,
+        Bucket: req.ctx.env.S3_USER_UPLOADS_BUCKET_NAME,
         Key: req.input.key,
       });
       const fileHead = await req.ctx.s3.send(command);

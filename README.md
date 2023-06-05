@@ -68,9 +68,9 @@ There are two ways to run Compass locally:
     ```
 - Install [MinIO](https://min.io), an open source S3-compatible storage server:
   - follow their guide for [macOS](https://min.io/docs/minio/macos/index.html) or [Windows](https://min.io/docs/minio/windows/index.html)
-  - after installing and starting the MinIO server, make sure to create a new bucket and update the `S3_BUCKET_NAME` in _.env.local_ to match the name of the bucket you created:
+  - after installing and starting the MinIO server, make sure to create a new bucket and update the `S3_USER_UPLOADS_BUCKET_NAME` in _.env.local_ to match the name of the bucket you created:
     ```
-    S3_BUCKET_NAME=<bucket-name>
+    S3_USER_UPLOADS_BUCKET_NAME=<bucket-name>
     ```
 
 2. Install dependencies, starting in the `project-compass` directory
