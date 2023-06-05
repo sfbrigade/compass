@@ -5,7 +5,7 @@ export const paraProcedures = {
   getParaById: procedure
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
-      console.log("req", req);
+      // console.log("req", req);
       const { user_id } = req.input;
 
       const result = await req.ctx.db
@@ -23,7 +23,6 @@ export const paraProcedures = {
     const result = await req.ctx.db
       .selectFrom("user")
       .innerJoin("cm_to_para", "user.user_id", "cm_to_para.para_id")
-      .where("role", "=", "para")
       .where("cm_to_para.case_manager_id", "=", userId)
       .selectAll()
       .execute();
@@ -37,7 +36,7 @@ export const paraProcedures = {
   //   return result;
   // }),
 
-  createPara: protectedProcedure
+  createParaAndAssignManager: protectedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -56,18 +55,30 @@ export const paraProcedures = {
         .returningAll()
         .executeTakeFirstOrThrow();
 
-      // console.log("inserted Para ~ ", insertedPara);
+      console.log("inserted Para ~ ", insertedPara);
 
       // Leaving off here on 6-2-23, goal is to make a query that inserts into the relational
       // table IF there is no prior existing row that contains the same pair
       // of case manager and para, and the goal is to do this all in one query
       // rather than doing a lookahead, and then another query from the result
-
       const { userId } = req.ctx.auth;
-      await req.ctx.db
-        .insertInto("cm_to_para")
-        .values({ case_manager_id: userId, para_id: insertedPara.user_id })
+
+      const inRelationalTable = await req.ctx.db
+        .selectFrom("user")
+        .innerJoin("cm_to_para", "user.user_id", "cm_to_para.para_id")
+        .where("cm_to_para.case_manager_id", "=", userId)
+        .where("cm_to_para.para_id", "=", insertedPara.user_id)
+        .selectAll()
         .execute();
+
+      console.log("in Relational Table ~~ ", inRelationalTable);
+
+      if (inRelationalTable.length === 0) {
+        await req.ctx.db
+          .insertInto("cm_to_para")
+          .values({ case_manager_id: userId, para_id: insertedPara.user_id })
+          .execute();
+      }
 
       // const relationTable = await req.ctx.db
       //   .updateTable("cm_to_para")
