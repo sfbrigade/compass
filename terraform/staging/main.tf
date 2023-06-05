@@ -1,3 +1,13 @@
+terraform {
+  backend "s3" {
+    bucket         = "compass-staging-tf-state" # Substitute environment as needed
+    key            = "terraform.tfstate"
+    region         = "us-west-2"
+    dynamodb_table = "compass-staging-tf-state-locking" # Substitute environment as needed
+    encrypt        = true
+  }
+}
+
 module "compass" {
   source = "../compass_module"
 
