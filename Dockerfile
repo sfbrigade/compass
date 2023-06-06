@@ -1,5 +1,5 @@
 # Start with the latest Node.js LTS release
-FROM node:18-bullseye-slim
+FROM --platform=linux/amd64 node:18-bullseye-slim
 
 # Set env variables
 ENV NODE_ENV production
@@ -20,4 +20,5 @@ COPY --chown=node:node . $APP_HOME
 
 # Build and run the optimized version of the app 
 RUN npm run build
-CMD ["npm", "run", "start"]
+CMD npm run db:migrate && npm run start
+# CMD npm run start
