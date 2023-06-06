@@ -376,6 +376,209 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **file**
+   * - Table in database
+   */
+  export namespace file {
+    export type Table = 'file';
+    export interface Selectable {
+      /**
+      * **file.file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      file_id: string;
+      /**
+      * **file.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **file.content_type**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      content_type: string;
+      /**
+      * **file.ext_s3_path**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      ext_s3_path: string;
+      /**
+      * **file.uploaded_by_user_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      uploaded_by_user_id: string | null;
+      /**
+      * **file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **file.file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      file_id: string;
+      /**
+      * **file.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string;
+      /**
+      * **file.content_type**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      content_type: string;
+      /**
+      * **file.ext_s3_path**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      ext_s3_path: string;
+      /**
+      * **file.uploaded_by_user_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      uploaded_by_user_id: string | null;
+      /**
+      * **file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
+    }
+    export interface Whereable {
+      /**
+      * **file.file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      file_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **file.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **file.content_type**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      content_type?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **file.ext_s3_path**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      ext_s3_path?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **file.uploaded_by_user_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      uploaded_by_user_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **file.file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      file_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **file.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **file.content_type**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      content_type: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **file.ext_s3_path**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      ext_s3_path: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **file.uploaded_by_user_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      uploaded_by_user_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **file.file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      file_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **file.name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **file.content_type**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      content_type?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **file.ext_s3_path**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      ext_s3_path?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **file.uploaded_by_user_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      uploaded_by_user_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'file_ext_s3_path_key' | 'file_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **migrations**
    * - Table in database
    */
@@ -1070,20 +1273,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | migrations.Table | session.Table | student.Table | user.Table;
-    export type Selectable = account.Selectable | migrations.Selectable | session.Selectable | student.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | migrations.Whereable | session.Whereable | student.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | migrations.Insertable | session.Insertable | student.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | migrations.Updatable | session.Updatable | student.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | migrations.Column | session.Column | student.Column | user.Column;
+    export type Table = account.Table | file.Table | migrations.Table | session.Table | student.Table | user.Table;
+    export type Selectable = account.Selectable | file.Selectable | migrations.Selectable | session.Selectable | student.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | file.Whereable | migrations.Whereable | session.Whereable | student.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | file.Insertable | migrations.Insertable | session.Insertable | student.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | file.Updatable | migrations.Updatable | session.Updatable | student.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | file.Column | migrations.Column | session.Column | student.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, migrations.Table, session.Table, student.Table, user.Table];
+    export type AllBaseTables = [account.Table, file.Table, migrations.Table, session.Table, student.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, migrations.Table, session.Table, student.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, file.Table, migrations.Table, session.Table, student.Table, user.Table];
   }
 
 
@@ -1112,6 +1315,7 @@ declare module 'zapatos/schema' {
 
   export type SelectableForTable<T extends Table> = {
     "account": account.Selectable;
+    "file": file.Selectable;
     "migrations": migrations.Selectable;
     "session": session.Selectable;
     "student": student.Selectable;
@@ -1120,6 +1324,7 @@ declare module 'zapatos/schema' {
 
   export type JSONSelectableForTable<T extends Table> = {
     "account": account.JSONSelectable;
+    "file": file.JSONSelectable;
     "migrations": migrations.JSONSelectable;
     "session": session.JSONSelectable;
     "student": student.JSONSelectable;
@@ -1128,6 +1333,7 @@ declare module 'zapatos/schema' {
 
   export type WhereableForTable<T extends Table> = {
     "account": account.Whereable;
+    "file": file.Whereable;
     "migrations": migrations.Whereable;
     "session": session.Whereable;
     "student": student.Whereable;
@@ -1136,6 +1342,7 @@ declare module 'zapatos/schema' {
 
   export type InsertableForTable<T extends Table> = {
     "account": account.Insertable;
+    "file": file.Insertable;
     "migrations": migrations.Insertable;
     "session": session.Insertable;
     "student": student.Insertable;
@@ -1144,6 +1351,7 @@ declare module 'zapatos/schema' {
 
   export type UpdatableForTable<T extends Table> = {
     "account": account.Updatable;
+    "file": file.Updatable;
     "migrations": migrations.Updatable;
     "session": session.Updatable;
     "student": student.Updatable;
@@ -1152,6 +1360,7 @@ declare module 'zapatos/schema' {
 
   export type UniqueIndexForTable<T extends Table> = {
     "account": account.UniqueIndex;
+    "file": file.UniqueIndex;
     "migrations": migrations.UniqueIndex;
     "session": session.UniqueIndex;
     "student": student.UniqueIndex;
@@ -1160,6 +1369,7 @@ declare module 'zapatos/schema' {
 
   export type ColumnForTable<T extends Table> = {
     "account": account.Column;
+    "file": file.Column;
     "migrations": migrations.Column;
     "session": session.Column;
     "student": student.Column;
@@ -1168,6 +1378,7 @@ declare module 'zapatos/schema' {
 
   export type SQLForTable<T extends Table> = {
     "account": account.SQL;
+    "file": file.SQL;
     "migrations": migrations.SQL;
     "session": session.SQL;
     "student": student.SQL;

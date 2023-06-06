@@ -44,3 +44,12 @@ CREATE TABLE "student" (
   email TEXT NOT NULL UNIQUE,
   assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
 );
+
+CREATE TABLE "file" (
+  file_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  name TEXT NOT NULL,
+  content_type TEXT NOT NULL,
+  ext_s3_path TEXT NOT NULL UNIQUE,
+  uploaded_by_user_id UUID REFERENCES "user" (user_id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
