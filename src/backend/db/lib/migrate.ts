@@ -1,4 +1,3 @@
-import { Client, Pool } from "pg";
 import { parse } from "pg-connection-string";
 import * as postgresMigrations from "postgres-migrations";
 import * as zg from "zapatos/generate";
@@ -24,47 +23,20 @@ export const migrate = async (
     logger.info("Migrating database...");
   }
 
-  // Create database if needed
-  // Connect to the postgres database so we can create the application db if needed
   const connectionConfig = parse(databaseUrl);
-  const client = new Client({
-    user: connectionConfig.user,
-    password: connectionConfig.password,
-    host: connectionConfig.host ?? undefined,
-    port: connectionConfig.port
-      ? parseInt(connectionConfig.port, 10)
-      : undefined,
-    database: "postgres",
-  });
+  const dbConfig = {
+    user: connectionConfig.user ?? "",
+    password: connectionConfig.password ?? "",
+    host: connectionConfig.host ?? "",
+    port: connectionConfig.port ? parseInt(connectionConfig.port, 10) : 5432,
 
-  await client.connect();
+    database: connectionConfig.database ?? "",
+    ensureDatabaseExists: true,
+    defaultDatabase: "postgres",
+  };
 
-  const targetDatabaseName = connectionConfig.database as string;
-
-  const databaseExistsQuery = `SELECT 1 FROM pg_database WHERE datname = '${targetDatabaseName}'`;
-  const { rows } = await client.query(databaseExistsQuery);
-
-  if (rows.length === 0) {
-    const createDatabaseQuery = `CREATE DATABASE ${targetDatabaseName}`;
-    await client.query(createDatabaseQuery);
-
-    console.log(`Database ${targetDatabaseName} created successfully`);
-  } else {
-    console.log(`Database ${targetDatabaseName} already exists`);
-  }
-  await client.end();
-
-  // Run migrations
-  const pool = new Pool({
-    connectionString: databaseUrl,
-  });
-  await postgresMigrations.migrate(
-    {
-      client: pool,
-    },
-    migrationsDirectory
-  );
-  await pool.end();
+  // Run migrations. Creates database if needed.
+  await postgresMigrations.migrate(dbConfig, migrationsDirectory);
 
   if (shouldGenerateTypes) {
     if (!silent) {
