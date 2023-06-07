@@ -5,7 +5,6 @@ export const paraProcedures = {
   getParaById: procedure
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
-      // console.log("req", req);
       const { user_id } = req.input;
 
       const result = await req.ctx.db
@@ -30,13 +29,7 @@ export const paraProcedures = {
     return result;
   }),
 
-  // getAllParas: procedure.query(async (req) => {
-  //   const result = await req.ctx.db.selectFrom("user").selectAll().execute();
-
-  //   return result;
-  // }),
-
-  createParaAndAssignManager: protectedProcedure
+  createParaAndAssignCaseManager: protectedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -50,17 +43,11 @@ export const paraProcedures = {
 
       const insertedPara = await req.ctx.db
         .insertInto("user")
-        .values({ first_name, last_name, email, role })
+        .values({ first_name, last_name, email: email.toLowerCase(), role })
         .onConflict((oc) => oc.column("email").doUpdateSet({ email }))
         .returningAll()
         .executeTakeFirstOrThrow();
 
-      console.log("inserted Para ~ ", insertedPara);
-
-      // Leaving off here on 6-2-23, goal is to make a query that inserts into the relational
-      // table IF there is no prior existing row that contains the same pair
-      // of case manager and para, and the goal is to do this all in one query
-      // rather than doing a lookahead, and then another query from the result
       const { userId } = req.ctx.auth;
 
       const inRelationalTable = await req.ctx.db
@@ -71,46 +58,28 @@ export const paraProcedures = {
         .selectAll()
         .execute();
 
-      console.log("in Relational Table ~~ ", inRelationalTable);
-
       if (inRelationalTable.length === 0) {
         await req.ctx.db
           .insertInto("cm_to_para")
           .values({ case_manager_id: userId, para_id: insertedPara.user_id })
           .execute();
       }
-
-      // const relationTable = await req.ctx.db
-      //   .updateTable("cm_to_para")
-      //   .set({ case_manager_id: userId, para_id: insertedPara.user_id })
-      //   .where("case_manager_id", "!=", userId)
-      //   .where("para_id", "!=", insertedPara.user_id)
-      //   .returningAll()
-      //   .execute();
-
-      // console.log("relation table updated ~ ", relationTable);
     }),
 
-  // createPara: procedure
-  //   .input(
-  //     z.object({
-  //       first_name: z.string(),
-  //       last_name: z.string(),
-  //       email: z.string(),
-  //       role: z.string(),
-  //     })
-  //   )
-  //   .mutation(async (req) => {
-  //     const { first_name, last_name, email, role } = req.input;
+  unassignPara: protectedProcedure
+    .input(
+      z.object({
+        para_id: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { userId } = req.ctx.auth;
+      const { para_id } = req.input;
 
-  //     // todo: add a unique constraint to prevent duplicate paras
-  //     const result = await req.ctx.db
-  //       .insertInto("user")
-  //       .values({ first_name, last_name, email, role })
-  //       .returningAll()
-  //       .execute();
-  //     return result;
-  //   }),
-
-  //this is a placeholder for the archive-para action that will be covered in a future PR
+      await req.ctx.db
+        .deleteFrom("cm_to_para")
+        .where("case_manager_id", "=", userId)
+        .where("para_id", "=", para_id)
+        .execute();
+    }),
 };

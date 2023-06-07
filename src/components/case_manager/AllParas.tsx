@@ -7,7 +7,7 @@ import PersonCreationForm from "./PersonCreationForm";
 const AllParasPage = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.getMyParas.useQuery();
-  const { mutate } = trpc.createParaAndAssignManager.useMutation({
+  const { mutate } = trpc.createParaAndAssignCaseManager.useMutation({
     onSuccess: () => utils.getMyParas.invalidate(),
     onError: (error) => error.message,
   });
