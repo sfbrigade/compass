@@ -7,9 +7,10 @@
 #  % docker build . -t compass && docker run -p=3000:3000 --name=compass --rm --env-file=.env.production compass
 #
 # NOTE: If you have the references to `localhost` in the .env file for other
-# services like postgres, replace `localhost` with the local IP address, e.g.
-# using `% ipconfig getifaddr en0`. This is needed as the docker image run in
-# its own VM and `localhost` resolves to to is own VM, not the host.
+# services like postgres, replace `localhost` with either `host.docker.internal`
+# or the local IP address (`% ipconfig getifaddr en0`). This is needed as the
+# docker image runs in its own VM and `localhost` resolves to is own VM, not
+# the host.
 
 # Start with the latest Node.js LTS release
 FROM --platform=linux/amd64 node:18-bullseye-slim
