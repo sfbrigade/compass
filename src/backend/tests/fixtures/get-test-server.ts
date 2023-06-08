@@ -4,11 +4,10 @@ import { getDb, type SeedResult } from "backend/db";
 import { Env } from "backend/lib";
 import { createTRPCProxyClient, httpBatchLink } from "@trpc/client";
 import { AppRouter } from "backend/routers/_app";
-import next from "next";
 import { ExecutionContext } from "ava";
-import { createServer, Server } from "http";
 import { randomUUID } from "crypto";
 import ms from "ms";
+import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
 
 export interface GetTestServerOptions {
@@ -41,24 +40,18 @@ export const getTestServer = async (
     EMAIL_PASS: "example string",
   };
 
-  const app = next({
-    dev: true,
-  });
-  const handle = app.getRequestHandler();
-
-  let server: Server;
-  await app.prepare().then(() => {
-    server = createServer(async (req, res) => {
-      (req as unknown as { env: Env }).env = env;
-      await handle(req, res);
-    });
-    server.listen(appPort);
+  const server = await builtNextJsFixture({
+    port: appPort,
+    middlewares: [
+      (next) => (req, res) => {
+        (req as unknown as { env: Env }).env = env;
+        return next(req, res);
+      },
+    ],
   });
 
   t.teardown(() => {
-    if (server) {
-      server.close();
-    }
+    server.close();
   });
 
   let trpcRequestHeaders = {};
