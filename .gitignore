@@ -8,6 +8,8 @@ coverage
 
 # production
 build
+.terraform*
+terraform.tfstate*
 
 # misc
 .DS_Store

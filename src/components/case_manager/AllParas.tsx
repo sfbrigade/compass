@@ -35,8 +35,8 @@ const AllParasPage = () => {
       <h2>All Paras</h2>
       <ul className={styles.listNames}>
         {paras?.map((para) => (
-          <li key={para.user_id }>
-            <Link href={`/paras/${para.user_id }`}>
+          <li key={para.user_id}>
+            <Link href={`/paras/${para.user_id}`}>
               {para.first_name} {para.last_name}
             </Link>
           </li>

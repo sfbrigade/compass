@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { protectedProcedure, procedure } from "../trpc";
+import { transporter } from "../lib/nodemailer";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -64,6 +65,16 @@ export const paraProcedures = {
           .values({ case_manager_id: userId, para_id: insertedPara.user_id })
           .execute();
       }
+
+      await transporter.sendMail({
+        from: process.env.EMAIL,
+        to: email,
+        subject: "Para-professional email confirmation",
+        text: "Email confirmation",
+        html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
+      });
+      // to do here: when site is deployed, add url to html above
+      // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
     }),
 
   unassignPara: protectedProcedure
