@@ -30,9 +30,14 @@ const ViewParaPage = () => {
 
   return (
     <div className={styles.person}>
-      <h1>Para {para?.user_id}</h1>
-      <p>
+      <h1>
         {para?.first_name} {para?.last_name}
+      </h1>
+      <p>
+        <b>Para ID:</b> {para?.user_id}
+      </p>
+      <p>
+        <b>Para Email:</b> {para?.email}
       </p>
       <button
         className={`${styles.signIn} ${styles.bold}`}

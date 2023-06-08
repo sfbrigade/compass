@@ -6,7 +6,6 @@ test("getParaById", async (t) => {
 
   const para = await trpc.getParaById.query({ user_id: seed.para.user_id });
   t.is(para.user_id, seed.para.user_id);
-  t.is(typeof para, "object");
 });
 
 test("getMyParas", async (t) => {
@@ -42,7 +41,6 @@ test("createParaAndAddToRelationalTable", async (t) => {
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    role: "para",
   });
 
   t.truthy(
@@ -75,7 +73,6 @@ test("assignParaAlreadyInDBToCaseManager", async (t) => {
     first_name: "Emily",
     last_name: "Smith",
     email: "emily@example.com",
-    role: "para",
   });
 
   myParas = await trpc.getMyParas.query();
@@ -109,14 +106,13 @@ test("unassignPara", async (t) => {
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    role: "para",
   });
 
   let myParas = await trpc.getMyParas.query();
   t.is(myParas.length, 1);
 
   await trpc.unassignPara.mutate({
-    para_id: myParas[0].user_id ,
+    para_id: myParas[0].user_id,
   });
 
   myParas = await trpc.getMyParas.query();

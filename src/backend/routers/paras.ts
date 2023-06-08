@@ -36,16 +36,22 @@ export const paraProcedures = {
         first_name: z.string(),
         last_name: z.string(),
         email: z.string(),
-        role: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email, role } = req.input;
+      const { first_name, last_name, email } = req.input;
 
       const insertedPara = await req.ctx.db
         .insertInto("user")
-        .values({ first_name, last_name, email: email.toLowerCase(), role })
-        .onConflict((oc) => oc.column("email").doUpdateSet({ email }))
+        .values({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+          role: "para",
+        })
+        .onConflict((oc) =>
+          oc.column("email").doUpdateSet({ email: email.toLowerCase() })
+        )
         .returningAll()
         .executeTakeFirstOrThrow();
 
