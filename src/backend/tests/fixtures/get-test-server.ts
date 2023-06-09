@@ -40,10 +40,13 @@ export const getTestServer = async (
     EMAIL_PASS: "example string",
   };
 
+  // Use statically-built Next.js fixture (if multiple instances of the built-in next() dev server are running, they try to concurrently mutate the same files).
   const server = await builtNextJsFixture({
     port: appPort,
     middlewares: [
       (next) => (req, res) => {
+        // Application code should always pull from req.env rather than process.env.
+        // This allows us to run multiple tests concurrently in the same process.
         (req as unknown as { env: Env }).env = env;
         return next(req, res);
       },
