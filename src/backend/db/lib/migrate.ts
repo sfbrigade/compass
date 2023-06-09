@@ -1,6 +1,6 @@
+import { parse } from "pg-connection-string";
 import * as postgresMigrations from "postgres-migrations";
 import * as zg from "zapatos/generate";
-import { Pool } from "pg";
 import path from "node:path";
 import { logger } from "backend/lib";
 
@@ -23,16 +23,20 @@ export const migrate = async (
     logger.info("Migrating database...");
   }
 
-  const pool = new Pool({
-    connectionString: databaseUrl,
-  });
-  await postgresMigrations.migrate(
-    {
-      client: pool,
-    },
-    migrationsDirectory
-  );
-  await pool.end();
+  const connectionConfig = parse(databaseUrl);
+  const dbConfig = {
+    user: connectionConfig.user ?? "",
+    password: connectionConfig.password ?? "",
+    host: connectionConfig.host ?? "",
+    port: connectionConfig.port ? parseInt(connectionConfig.port, 10) : 5432,
+
+    database: connectionConfig.database ?? "",
+    ensureDatabaseExists: true,
+    defaultDatabase: "postgres",
+  };
+
+  // Run migrations. Creates database if needed.
+  await postgresMigrations.migrate(dbConfig, migrationsDirectory);
 
   if (shouldGenerateTypes) {
     if (!silent) {

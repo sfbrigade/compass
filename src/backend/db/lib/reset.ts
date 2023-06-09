@@ -32,9 +32,6 @@ export const reset = async (databaseUrl: string) => {
 
       throw error;
     });
-
-  logger.info(`Creating database ${targetDatabaseName}...`);
-  await client.query(`CREATE DATABASE ${targetDatabaseName}`);
   await client.end();
 
   logger.info("Running migrations...");

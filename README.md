@@ -43,7 +43,7 @@ There are two ways to run Compass locally:
 2. Start services in Docker & reset the database
 
    ```sh
-   docker compose up -d  # start the services in the background
+   docker compose -f supporting_services/docker-compose.yml up -d  # start the services in the background
    npm run db:reset      # reset and migrate the database
    ```
 
