@@ -36,8 +36,9 @@ const AllParasPage = () => {
         {paras?.map((para) => (
           <li key={para.user_id}>
             <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
+              {para.first_name} {para.last_name}&nbsp;
             </Link>
+            {!para.email_verified_at ? ` - not verified` : null}
           </li>
         ))}
       </ul>
