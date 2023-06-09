@@ -8,7 +8,7 @@ import { ExecutionContext } from "ava";
 import { randomUUID } from "crypto";
 import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
-import { getTestMinio } from "./get-test-minio";
+// import { getTestMinio } from "./get-test-minio";
 
 export interface GetTestServerOptions {
   authenticateAs?: "para" | "admin";
@@ -22,8 +22,9 @@ export const getTestServer = async (
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     { connectionString: databaseConnectionString, beforeTemplateIsBakedResult },
     appPort,
-    minio,
-  ] = await Promise.all([getTestDatabase(), getPort(), getTestMinio()]);
+    // minio,
+    // ] = await Promise.all([getTestDatabase(), getPort(), getTestMinio()]);
+  ] = await Promise.all([getTestDatabase(), getPort()]);
 
   const seed = beforeTemplateIsBakedResult as SeedResult;
 
@@ -31,11 +32,11 @@ export const getTestServer = async (
 
   const env: Env = {
     DATABASE_URL: databaseConnectionString,
-    S3_USER_UPLOADS_ENDPOINT: minio.endpoint,
-    S3_USER_UPLOADS_REGION: minio.region,
-    S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
-    S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
-    S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
+    // S3_USER_UPLOADS_ENDPOINT: minio.endpoint,
+    // S3_USER_UPLOADS_REGION: minio.region,
+    // S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
+    // S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
+    // S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
     EMAIL: "example string",
     EMAIL_PASS: "example string",
   };
