@@ -12,6 +12,11 @@ const nextConfig = {
       },
     ],
   },
+
+  typescript: {
+    // Types are checked separately
+    ignoreBuildErrors: true,
+  },
 };
 
 module.exports = nextConfig;

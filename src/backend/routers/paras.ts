@@ -6,7 +6,6 @@ export const paraProcedures = {
   getParaById: procedure
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
-      console.log("req", req);
       const { user_id } = req.input;
 
       const result = await req.ctx.db
