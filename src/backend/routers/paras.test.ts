@@ -1,5 +1,7 @@
 import test from "ava";
 import { getTestServer } from "backend/tests";
+// import * as nodemailer from 'nodemailer';
+// const { mock } = nodemailer as unknown as NodemailerMock;
 
 test("getParaById", async (t) => {
   const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
@@ -17,4 +19,28 @@ test("getParaById", async (t) => {
 
   const para = await trpc.getParaById.query({ user_id });
   t.is(para.user_id, user_id);
+});
+
+test("createPara", async (t) => {
+  const { trpc, db, nodemailerMock } = await getTestServer(t, {
+    authenticateAs: "para",
+  });
+
+  await trpc.createPara.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+    role: "para",
+  });
+
+  t.truthy(
+    await db
+      .selectFrom("user")
+      .where("first_name", "=", "Foo")
+      .selectAll()
+      .executeTakeFirst()
+  );
+
+  nodemailerMock.mock.getSentMail();
+  console.log(nodemailerMock.mock.getSentMail());
 });

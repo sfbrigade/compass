@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { procedure } from "../trpc";
-import { transporter } from "../lib/nodemailer";
+import { getTransporter } from "../lib/nodemailer";
 
 export const paraProcedures = {
   getParaById: procedure
@@ -42,8 +42,8 @@ export const paraProcedures = {
         .returningAll()
         .execute();
 
-      await transporter.sendMail({
-        from: process.env.EMAIL,
+      await getTransporter(req.ctx.env).sendMail({
+        from: req.ctx.env.EMAIL,
         to: email,
         subject: "Para-professional email confirmation",
         text: "Email confirmation",

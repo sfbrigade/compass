@@ -1,3 +1,10 @@
+import mockery from "mockery";
+import * as nodemailerMock from "nodemailer-mock";
+mockery.enable({
+  warnOnUnregistered: false,
+});
+mockery.registerMock("nodemailer", nodemailerMock);
+
 import { getTestDatabase } from "./get-test-database";
 import getPort from "@ava/get-port";
 import { getDb, type SeedResult } from "backend/db";
@@ -105,5 +112,6 @@ export const getTestServer = async (
     db,
     seed,
     pool,
+    nodemailerMock,
   };
 };
