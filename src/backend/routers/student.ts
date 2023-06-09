@@ -81,5 +81,29 @@ export const student = router({
         .execute();
     }),
 
+  createIep: protectedProcedure
+    .input(
+      z.object({
+        student_id: z.string(),
+        start_date: z.string(),
+        end_date: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { student_id, start_date, end_date } = req.input;
+      const { userId } = req.ctx.auth;
+
+      await req.ctx.db
+        .insertInto("iep")
+        .values({
+          student_id,
+          case_manager_id: userId,
+          start_date,
+          end_date,
+        })
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
+
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
 });

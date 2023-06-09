@@ -579,6 +579,292 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **goal**
+   * - Table in database
+   */
+  export namespace goal {
+    export type Table = 'goal';
+    export interface Selectable {
+      /**
+      * **goal.goal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      goal_id: string;
+      /**
+      * **goal.iep**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      iep: string | null;
+      /**
+      * **goal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description: string | null;
+    }
+    export interface JSONSelectable {
+      /**
+      * **goal.goal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      goal_id: string;
+      /**
+      * **goal.iep**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      iep: string | null;
+      /**
+      * **goal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description: string | null;
+    }
+    export interface Whereable {
+      /**
+      * **goal.goal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **goal.iep**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      iep?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **goal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **goal.goal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      goal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **goal.iep**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      iep?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **goal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **goal.goal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      goal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **goal.iep**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      iep?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **goal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'goal_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
+   * **iep**
+   * - Table in database
+   */
+  export namespace iep {
+    export type Table = 'iep';
+    export interface Selectable {
+      /**
+      * **iep.iep_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      iep_id: string;
+      /**
+      * **iep.student_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      student_id: string | null;
+      /**
+      * **iep.case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      case_manager_id: string | null;
+      /**
+      * **iep.start_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      start_date: string | null;
+      /**
+      * **iep.end_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      end_date: string | null;
+    }
+    export interface JSONSelectable {
+      /**
+      * **iep.iep_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      iep_id: string;
+      /**
+      * **iep.student_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      student_id: string | null;
+      /**
+      * **iep.case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      case_manager_id: string | null;
+      /**
+      * **iep.start_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      start_date: string | null;
+      /**
+      * **iep.end_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      end_date: string | null;
+    }
+    export interface Whereable {
+      /**
+      * **iep.iep_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      iep_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.student_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      student_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.start_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      start_date?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.end_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      end_date?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **iep.iep_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      iep_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **iep.student_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      student_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **iep.case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **iep.start_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      start_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **iep.end_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      end_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **iep.iep_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      iep_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **iep.student_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      student_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **iep.case_manager_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **iep.start_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      start_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **iep.end_date**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      end_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'iep_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **migrations**
    * - Table in database
    */
@@ -715,89 +1001,6 @@ declare module 'zapatos/schema' {
       executed_at?: (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampString | Date) | db.Parameter<(db.TimestampString | Date)> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'migrations_name_key' | 'migrations_pkey';
-    export type Column = keyof Selectable;
-    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-    export type SQL = SQLExpression | SQLExpression[];
-  }
-
-  /**
-   * **paras_assigned_to_case_manager**
-   * - Table in database
-   */
-  export namespace paras_assigned_to_case_manager {
-    export type Table = 'paras_assigned_to_case_manager';
-    export interface Selectable {
-      /**
-      * **paras_assigned_to_case_manager.case_manager_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      case_manager_id: string;
-      /**
-      * **paras_assigned_to_case_manager.para_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      para_id: string;
-    }
-    export interface JSONSelectable {
-      /**
-      * **paras_assigned_to_case_manager.case_manager_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      case_manager_id: string;
-      /**
-      * **paras_assigned_to_case_manager.para_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      para_id: string;
-    }
-    export interface Whereable {
-      /**
-      * **paras_assigned_to_case_manager.case_manager_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **paras_assigned_to_case_manager.para_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      para_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-    }
-    export interface Insertable {
-      /**
-      * **paras_assigned_to_case_manager.case_manager_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      case_manager_id: string | db.Parameter<string> | db.SQLFragment;
-      /**
-      * **paras_assigned_to_case_manager.para_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      para_id: string | db.Parameter<string> | db.SQLFragment;
-    }
-    export interface Updatable {
-      /**
-      * **paras_assigned_to_case_manager.case_manager_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      /**
-      * **paras_assigned_to_case_manager.para_id**
-      * - `uuid` in database
-      * - `NOT NULL`, no default
-      */
-      para_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-    }
-    export type UniqueIndex = 'paras_assigned_to_case_manager_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
@@ -1121,6 +1324,119 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **subgoal**
+   * - Table in database
+   */
+  export namespace subgoal {
+    export type Table = 'subgoal';
+    export interface Selectable {
+      /**
+      * **subgoal.subgoal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      subgoal_id: string;
+      /**
+      * **subgoal.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id: string | null;
+      /**
+      * **subgoal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description: string | null;
+    }
+    export interface JSONSelectable {
+      /**
+      * **subgoal.subgoal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      subgoal_id: string;
+      /**
+      * **subgoal.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id: string | null;
+      /**
+      * **subgoal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description: string | null;
+    }
+    export interface Whereable {
+      /**
+      * **subgoal.subgoal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      subgoal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **subgoal.subgoal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      subgoal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **subgoal.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **subgoal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **subgoal.subgoal_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      subgoal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.description**
+      * - `text` in database
+      * - Nullable, no default
+      */
+      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'subgoal_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **user**
    * - Table in database
    */
@@ -1356,20 +1672,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | file.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | user.Table;
-    export type Selectable = account.Selectable | file.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | file.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | file.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | file.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | file.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | user.Column;
+    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | session.Table | student.Table | subgoal.Table | user.Table;
+    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | session.Column | student.Column | subgoal.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, file.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, user.Table];
+    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, session.Table, student.Table, subgoal.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, file.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, session.Table, student.Table, subgoal.Table, user.Table];
   }
 
 
@@ -1399,80 +1715,96 @@ declare module 'zapatos/schema' {
   export type SelectableForTable<T extends Table> = {
     "account": account.Selectable;
     "file": file.Selectable;
+    "goal": goal.Selectable;
+    "iep": iep.Selectable;
     "migrations": migrations.Selectable;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Selectable;
     "session": session.Selectable;
     "student": student.Selectable;
+    "subgoal": subgoal.Selectable;
     "user": user.Selectable;
   }[T];
 
   export type JSONSelectableForTable<T extends Table> = {
     "account": account.JSONSelectable;
     "file": file.JSONSelectable;
+    "goal": goal.JSONSelectable;
+    "iep": iep.JSONSelectable;
     "migrations": migrations.JSONSelectable;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.JSONSelectable;
     "session": session.JSONSelectable;
     "student": student.JSONSelectable;
+    "subgoal": subgoal.JSONSelectable;
     "user": user.JSONSelectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
     "account": account.Whereable;
     "file": file.Whereable;
+    "goal": goal.Whereable;
+    "iep": iep.Whereable;
     "migrations": migrations.Whereable;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Whereable;
     "session": session.Whereable;
     "student": student.Whereable;
+    "subgoal": subgoal.Whereable;
     "user": user.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
     "account": account.Insertable;
     "file": file.Insertable;
+    "goal": goal.Insertable;
+    "iep": iep.Insertable;
     "migrations": migrations.Insertable;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Insertable;
     "session": session.Insertable;
     "student": student.Insertable;
+    "subgoal": subgoal.Insertable;
     "user": user.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
     "account": account.Updatable;
     "file": file.Updatable;
+    "goal": goal.Updatable;
+    "iep": iep.Updatable;
     "migrations": migrations.Updatable;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Updatable;
     "session": session.Updatable;
     "student": student.Updatable;
+    "subgoal": subgoal.Updatable;
     "user": user.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
     "account": account.UniqueIndex;
     "file": file.UniqueIndex;
+    "goal": goal.UniqueIndex;
+    "iep": iep.UniqueIndex;
     "migrations": migrations.UniqueIndex;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.UniqueIndex;
     "session": session.UniqueIndex;
     "student": student.UniqueIndex;
+    "subgoal": subgoal.UniqueIndex;
     "user": user.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
     "account": account.Column;
     "file": file.Column;
+    "goal": goal.Column;
+    "iep": iep.Column;
     "migrations": migrations.Column;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Column;
     "session": session.Column;
     "student": student.Column;
+    "subgoal": subgoal.Column;
     "user": user.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
     "account": account.SQL;
     "file": file.SQL;
+    "goal": goal.SQL;
+    "iep": iep.SQL;
     "migrations": migrations.SQL;
-    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.SQL;
     "session": session.SQL;
     "student": student.SQL;
+    "subgoal": subgoal.SQL;
     "user": user.SQL;
   }[T];
 

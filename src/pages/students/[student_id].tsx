@@ -16,14 +16,28 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { mutate } = trpc.student.unassignStudent.useMutation();
-
   const archiveStudent = async () => {
     if (!student) {
       return;
     }
-    mutate({ student_id: student.student_id });
+    trpc.unassignStudent
+      .useMutation()
+      .mutate({ student_id: student.student_id });
     await router.push(`/cmDashboard`);
+  };
+
+  const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+
+    if (!student) {
+      return; // TODO: improve error handling
+    }
+    trpc.createIep.useMutation().mutate({
+      student_id: student.student_id,
+      start_date: data.get("start_date") as string,
+      end_date: data.get("end_date") as string,
+    });
   };
 
   if (isLoading) {
@@ -68,6 +82,27 @@ const ViewStudentPage = () => {
           </button>
         </div>
       ) : null}
+
+      <div>Create Student IEP</div>
+      <div>
+        <form onSubmit={handleIepSubmit} className={styles.createInput}>
+          <input
+            type="text"
+            name="start_date"
+            placeholder="IEP start date"
+            required
+          />
+          <input
+            type="text"
+            name="end_date"
+            placeholder="IEP end date"
+            required
+          />
+          <button type="submit" className={styles.createButton}>
+            Create IEP
+          </button>
+        </form>
+      </div>
 
       <StudentIEP
         first_name={student?.first_name}

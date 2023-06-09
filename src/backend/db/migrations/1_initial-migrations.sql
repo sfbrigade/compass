@@ -56,3 +56,23 @@ CREATE TABLE "file" (
   uploaded_by_user_id UUID REFERENCES "user" (user_id),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+CREATE TABLE "iep" (
+  iep_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  student_id UUID REFERENCES "student" (student_id),
+  case_manager_id UUID REFERENCES "user" (user_id),
+  start_date TEXT,  -- TODO: change the type back to date
+  end_date TEXT
+);
+
+CREATE TABLE "goal" (
+  goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  iep UUID REFERENCES "iep" (iep_id),
+  description TEXT
+);
+
+CREATE TABLE "subgoal" (
+  subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  goal_id UUID REFERENCES "goal" (goal_id),
+  description TEXT -- TODO: add more fields
+);
