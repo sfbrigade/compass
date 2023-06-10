@@ -66,7 +66,7 @@ CREATE TABLE "iep" (
 );
 
 CREATE TABLE "goal" (
-  goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID or counter
   iep UUID REFERENCES "iep" (iep_id),
   description TEXT
 );

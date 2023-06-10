@@ -16,6 +16,10 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
+  const { data: ieps } = trpc.getStudentIeps.useQuery({
+    student_id: student_id as string,
+  });
+
   const archiveStudent = async () => {
     if (!student) {
       return;
@@ -83,7 +87,9 @@ const ViewStudentPage = () => {
         </div>
       ) : null}
 
-      <div>Create Student IEP</div>
+      <div>
+        Create {student?.first_name} {student?.last_name} IEP:
+      </div>
       <div>
         <form onSubmit={handleIepSubmit} className={styles.createInput}>
           <input
@@ -104,10 +110,21 @@ const ViewStudentPage = () => {
         </form>
       </div>
 
-      <StudentIEP
-        first_name={student?.first_name}
-        last_name={student?.last_name}
-      />
+      <ul className={styles.listNames}>
+        {ieps?.map((iep) => (
+          <li key={iep.iep_id}>
+            {/* <StudentIEP
+              start_date={iep.start_date}
+              end_date={iep.end_date}
+            /> */}
+            <p>IEP ID: {iep.iep_id}</p>
+            <p>Start Date: {iep.start_date}</p>
+            <p>End Date: {iep.end_date}</p>
+            <p>case manager ID: {iep.case_manager_id}</p>
+            <br />
+          </li>
+        ))}
+      </ul>
 
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>
