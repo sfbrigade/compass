@@ -39,8 +39,6 @@ test("createPara", async (t) => {
       .executeTakeFirst()
   );
 
-  nodemailerMock.mock.getSentMail();
-  console.log(nodemailerMock.mock.getSentMail());
   t.true(
     nodemailerMock.mock
       .getSentMail()
