@@ -1,4 +1,4 @@
-import nodemailerMock from "./mocks";
+import { nodemailerMock } from "./mocks";
 
 import { getTestDatabase } from "./get-test-database";
 import getPort from "@ava/get-port";

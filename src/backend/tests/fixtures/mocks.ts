@@ -5,4 +5,4 @@ mockery.enable({
 });
 mockery.registerMock("nodemailer", nodemailerMock);
 
-export default nodemailerMock;
+export { nodemailerMock };
