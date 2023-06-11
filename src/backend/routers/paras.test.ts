@@ -1,7 +1,5 @@
 import test from "ava";
 import { getTestServer } from "backend/tests";
-// import * as nodemailer from 'nodemailer';
-// const { mock } = nodemailer as unknown as NodemailerMock;
 
 test("getParaById", async (t) => {
   const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
@@ -43,4 +41,9 @@ test("createPara", async (t) => {
 
   nodemailerMock.mock.getSentMail();
   console.log(nodemailerMock.mock.getSentMail());
+  t.true(
+    nodemailerMock.mock
+      .getSentMail()
+      .some((mail) => mail.subject.includes("confirmation"))
+  );
 });
