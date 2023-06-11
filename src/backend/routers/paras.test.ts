@@ -10,7 +10,7 @@ test("getParaById", async (t) => {
       first_name: "John",
       last_name: "Doe",
       email: "john.doe@example.com",
-      role: "para",
+      role: "staff",
     })
     .returningAll()
     .executeTakeFirstOrThrow();

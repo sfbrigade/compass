@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { protectedProcedure, procedure } from "../trpc";
+import { authenticatedProcedure } from "../trpc";
 
 // todo: define .output() schemas for all procedures
 export const studentProcedures = {
-  getStudentById: procedure
+  getStudentById: authenticatedProcedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
       const { student_id } = req.input;
@@ -20,7 +20,7 @@ export const studentProcedures = {
   /**
    * Get all students assigned to the current user
    */
-  getMyStudents: protectedProcedure.query(async (req) => {
+  getMyStudents: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -32,7 +32,7 @@ export const studentProcedures = {
     return result;
   }),
 
-  createStudentOrAssignManager: protectedProcedure
+  createStudentOrAssignManager: authenticatedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -65,7 +65,7 @@ export const studentProcedures = {
   /**
    * Removes the case manager associated with this student
    */
-  unassignStudent: procedure
+  unassignStudent: authenticatedProcedure
     .input(
       z.object({
         student_id: z.string(),

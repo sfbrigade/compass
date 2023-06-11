@@ -42,7 +42,7 @@ export const createPersistedAuthAdapter = (
 
     // First created user is an admin
     // todo: this should be pulled from an invite or something else instead of defaulting to a para - currently devs signing in are being assigned as paras
-    const role = Number(numOfUsers.count) === 0 ? "admin" : "para";
+    const role = Number(numOfUsers.count) === 0 ? "admin" : "staff";
 
     const [first_name, last_name] = user.name?.split(" ") ?? [
       user.email?.split("@")[0],
