@@ -1,6 +1,6 @@
-import { authenticatedProcedure } from "../trpc";
+import { authenticatedProcedure, router } from "../trpc";
 
-export const userProcedures = {
+export const user = router({
   getMe: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
@@ -19,4 +19,4 @@ export const userProcedures = {
 
     return user;
   }),
-};
+});

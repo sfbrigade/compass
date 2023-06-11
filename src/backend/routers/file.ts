@@ -5,10 +5,10 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { authenticatedProcedure } from "../trpc";
+import { authenticatedProcedure, router } from "../trpc";
 import { randomUUID } from "crypto";
 
-export const fileProcedures = {
+export const file = router({
   getMyFiles: authenticatedProcedure.query(async (req) => {
     return req.ctx.db
       .selectFrom("file")
@@ -91,4 +91,4 @@ export const fileProcedures = {
 
       return file;
     }),
-};
+});

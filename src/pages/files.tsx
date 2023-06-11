@@ -1,12 +1,12 @@
 import { trpc } from "client/lib/trpc";
 
 const FilesPage = () => {
-  const { data: files, refetch } = trpc.getMyFiles.useQuery();
+  const { data: files, refetch } = trpc.file.getMyFiles.useQuery();
   const getPresignedUrlForFileDownload =
-    trpc.getPresignedUrlForFileDownload.useMutation();
+    trpc.file.getPresignedUrlForFileDownload.useMutation();
   const getPresignedUrlForUpload =
-    trpc.getPresignedUrlForFileUpload.useMutation();
-  const finishFileUpload = trpc.finishFileUpload.useMutation();
+    trpc.file.getPresignedUrlForFileUpload.useMutation();
+  const finishFileUpload = trpc.file.finishFileUpload.useMutation();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

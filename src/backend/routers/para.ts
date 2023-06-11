@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { authenticatedProcedure } from "../trpc";
+import { authenticatedProcedure, router } from "../trpc";
 import { transporter } from "../lib/nodemailer";
 
-export const paraProcedures = {
+export const para = router({
   getParaById: authenticatedProcedure
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
@@ -55,4 +55,4 @@ export const paraProcedures = {
     }),
 
   //this is a placeholder for the archive-para action that will be covered in a future PR
-};
+});

@@ -3,7 +3,7 @@ import { trpc } from "@/client/lib/trpc";
 import Link from "next/link";
 
 const AdminPostgresInfo = () => {
-  const { data: postgresInfo } = trpc.getPostgresInfo.useQuery();
+  const { data: postgresInfo } = trpc.admin.getPostgresInfo.useQuery();
 
   return (
     <div>
