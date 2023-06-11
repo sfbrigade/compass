@@ -1,5 +1,5 @@
 module.exports = {
-  timeout: "1m",
+  timeout: "90s",
   files: ["src/**/*.test.ts"],
   extensions: ["ts"],
   require: ["esbuild-register"],
