@@ -1,7 +1,7 @@
-import { protectedProcedure } from "../trpc";
+import { authenticatedProcedure } from "../trpc";
 
 export const userProcedures = {
-  getMe: protectedProcedure.query(async (req) => {
+  getMe: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const user = await req.ctx.db

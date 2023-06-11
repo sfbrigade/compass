@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { protectedProcedure, procedure } from "../trpc";
+import { authenticatedProcedure, procedure } from "../trpc";
 
 // todo: define .output() schemas for all procedures
 export const studentProcedures = {
@@ -20,7 +20,7 @@ export const studentProcedures = {
   /**
    * Get all students assigned to the current user
    */
-  getMyStudents: protectedProcedure.query(async (req) => {
+  getMyStudents: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -32,7 +32,7 @@ export const studentProcedures = {
     return result;
   }),
 
-  createStudentOrAssignManager: protectedProcedure
+  createStudentOrAssignManager: authenticatedProcedure
     .input(
       z.object({
         first_name: z.string(),

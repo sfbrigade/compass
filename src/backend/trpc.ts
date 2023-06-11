@@ -31,5 +31,5 @@ const isAdmin = t.middleware(({ next, ctx }) => {
 
 export const router = t.router;
 export const procedure = t.procedure;
-export const protectedProcedure = t.procedure.use(isAuthenticated);
+export const authenticatedProcedure = t.procedure.use(isAuthenticated);
 export const adminProcedure = t.procedure.use(isAuthenticated).use(isAdmin);
