@@ -1,9 +1,9 @@
 import { router } from "../trpc";
-import { file } from "./files";
-import { admin } from "./admins";
-import { para } from "./paras";
-import { student } from "./students";
-import { user } from "./users";
+import { file } from "./file";
+import { admin } from "./admin";
+import { para } from "./para";
+import { student } from "./student";
+import { user } from "./user";
 
 export const trpcRouter = router({
   file,
