@@ -15,6 +15,6 @@ test("getParaById", async (t) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const para = await trpc.getParaById.query({ user_id });
+  const para = await trpc.para.getParaById.query({ user_id });
   t.is(para.user_id, user_id);
 });

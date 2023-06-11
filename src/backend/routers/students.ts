@@ -1,8 +1,8 @@
 import { z } from "zod";
-import { authenticatedProcedure } from "../trpc";
+import { authenticatedProcedure, router } from "../trpc";
 
 // todo: define .output() schemas for all procedures
-export const studentProcedures = {
+export const student = router({
   getStudentById: authenticatedProcedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
@@ -82,4 +82,4 @@ export const studentProcedures = {
     }),
 
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
-};
+});
