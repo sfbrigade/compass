@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { authenticatedProcedure, procedure } from "../trpc";
+import { authenticatedProcedure } from "../trpc";
 
 // todo: define .output() schemas for all procedures
 export const studentProcedures = {
-  getStudentById: procedure
+  getStudentById: authenticatedProcedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
       const { student_id } = req.input;
@@ -65,7 +65,7 @@ export const studentProcedures = {
   /**
    * Removes the case manager associated with this student
    */
-  unassignStudent: procedure
+  unassignStudent: authenticatedProcedure
     .input(
       z.object({
         student_id: z.string(),
