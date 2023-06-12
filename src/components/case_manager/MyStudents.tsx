@@ -4,7 +4,7 @@ import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 import PersonCreationForm from "./PersonCreationForm";
 
-const AllStudentsPage = () => {
+const MyStudentsPage = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
 
@@ -34,9 +34,9 @@ const AllStudentsPage = () => {
 
   return (
     <div>
-      <PersonCreationForm title={"Create a Student"} onSubmit={handleSubmit} />
+      <PersonCreationForm title={"Add a Student"} onSubmit={handleSubmit} />
 
-      <h2>All students</h2>
+      <h2>My students</h2>
       <ul className={styles.listNames}>
         {students?.map((student) => (
           <li key={student.student_id}>
@@ -50,4 +50,4 @@ const AllStudentsPage = () => {
   );
 };
 
-export default AllStudentsPage;
+export default MyStudentsPage;
