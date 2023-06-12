@@ -28,13 +28,34 @@ const Timer = ({ timeInSec }: TimerProps) => {
     }
   };
 
+  const addZerosToTime = (num: number) => {
+    let output = "";
+    if (num < 10) {
+      output += "0";
+    }
+    output += num;
+    return output;
+  };
+
   return (
-    <div>
-      <button onClick={() => restartTimer(timeInSec)}>O</button>
-      <div className={styles.timerContainer}>
-        <span>{hours}</span> : <span>{minutes}</span> : <span>{seconds}</span>
+    <div className={styles.timerContainer}>
+      <button
+        className={styles.resetButton}
+        onClick={() => restartTimer(timeInSec)}
+      >
+        O
+      </button>
+      <div className={styles.timer}>
+        <span>{addZerosToTime(hours)}</span>:
+        <span>{addZerosToTime(minutes)}</span>:
+        <span>{addZerosToTime(seconds)}</span>
       </div>
-      <button onClick={() => handleStartStop(isRunning)}>start/stop</button>
+      <button
+        className={styles.startStopButton}
+        onClick={() => handleStartStop(isRunning)}
+      >
+        {isRunning ? "pause" : "play"}
+      </button>
     </div>
   );
 };
