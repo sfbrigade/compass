@@ -28,7 +28,7 @@ test("createPara", async (t) => {
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    role: "para",
+    role: "staff",
   });
 
   t.truthy(
