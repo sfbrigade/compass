@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { protectedProcedure, procedure } from "../trpc";
+import { authenticatedProcedure, router } from "../trpc";
 
 // todo: define .output() schemas for all procedures
-export const studentProcedures = {
-  getStudentById: procedure
+export const student = router({
+  getStudentById: authenticatedProcedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
       const { student_id } = req.input;
@@ -20,7 +20,7 @@ export const studentProcedures = {
   /**
    * Get all students assigned to the current user
    */
-  getMyStudents: protectedProcedure.query(async (req) => {
+  getMyStudents: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -32,7 +32,7 @@ export const studentProcedures = {
     return result;
   }),
 
-  createStudentOrAssignManager: protectedProcedure
+  createStudentOrAssignManager: authenticatedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -65,7 +65,7 @@ export const studentProcedures = {
   /**
    * Removes the case manager associated with this student
    */
-  unassignStudent: procedure
+  unassignStudent: authenticatedProcedure
     .input(
       z.object({
         student_id: z.string(),
@@ -82,4 +82,4 @@ export const studentProcedures = {
     }),
 
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
-};
+});

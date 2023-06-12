@@ -11,12 +11,12 @@ const ViewStudentPage = () => {
   const router = useRouter();
   const { student_id } = router.query;
 
-  const { data: student, isLoading } = trpc.getStudentById.useQuery(
+  const { data: student, isLoading } = trpc.student.getStudentById.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id) }
   );
 
-  const { mutate } = trpc.unassignStudent.useMutation();
+  const { mutate } = trpc.student.unassignStudent.useMutation();
 
   const archiveStudent = async () => {
     if (!student) {

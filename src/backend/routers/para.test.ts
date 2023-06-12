@@ -10,11 +10,11 @@ test("getParaById", async (t) => {
       first_name: "John",
       last_name: "Doe",
       email: "john.doe@example.com",
-      role: "para",
+      role: "staff",
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const para = await trpc.getParaById.query({ user_id });
+  const para = await trpc.para.getParaById.query({ user_id });
   t.is(para.user_id, user_id);
 });
