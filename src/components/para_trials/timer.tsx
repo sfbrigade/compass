@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useTimer } from "react-timer-hook";
-import styles from "../../../styles/Paraflow.module.css";
+import styles from "../../styles/Paraflow.module.css";
 
 interface TimerProps {
   timeInSec: number;
 }
 
 const Timer = ({ timeInSec }: TimerProps) => {
-  const { seconds, minutes, hours, isRunning, start, pause, resume, restart } =
+  const { seconds, minutes, hours, days, isRunning, pause, resume, restart } =
     useTimer({ expiryTimestamp: new Date(), autoStart: false });
 
   useEffect(() => {
@@ -15,9 +15,9 @@ const Timer = ({ timeInSec }: TimerProps) => {
   }, [timeInSec]);
 
   const restartTimer = (inputTime: number) => {
-    const time = new Date();
-    time.setSeconds(time.getSeconds() + inputTime);
-    restart(time, false);
+    const dateTimeObject = new Date();
+    dateTimeObject.setSeconds(dateTimeObject.getSeconds() + inputTime);
+    restart(dateTimeObject, false);
   };
 
   const handleStartStop = (timerIsRunning: boolean) => {
@@ -37,6 +37,7 @@ const Timer = ({ timeInSec }: TimerProps) => {
     return output;
   };
 
+  // Need to replace buttons with symbols
   return (
     <div className={styles.timerContainer}>
       <button
@@ -46,7 +47,7 @@ const Timer = ({ timeInSec }: TimerProps) => {
         O
       </button>
       <div className={styles.timer}>
-        <span>{addZerosToTime(hours)}</span>:
+        <span>{addZerosToTime(hours + days * 24)}</span>:
         <span>{addZerosToTime(minutes)}</span>:
         <span>{addZerosToTime(seconds)}</span>
       </div>

@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import styles from "../../../styles/Paraflow.module.css";
+import React, { useState } from "react";
+import styles from "../../styles/Paraflow.module.css";
 
 interface CounterProps {
   title: string;
@@ -9,11 +9,8 @@ interface CounterProps {
 }
 
 const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
+  // Count variable may need to become a prop, depending on how we implement
   const [count, setCount] = useState(0);
-
-  // useEffect(() => {
-  //   return
-  // }, []);
 
   const incrementCount = () => {
     if (count === maxCount) {

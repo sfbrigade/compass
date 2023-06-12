@@ -1,28 +1,25 @@
 import React, { useState } from "react";
-import Counter from "./counter";
-import Timer from "./timer";
-import TimerInput from "./timerInput";
+import Counter from "../../../components/para_trials/counter";
+import Timer from "../../../components/para_trials/timer";
+import TimerInput from "../../../components/para_trials/timerInput";
 
 const TrialPage = () => {
   const [timerTimeInSec, setTimerTimeInSec] = useState(0);
 
   const handleStartTimer = (inputTimeInStandard: string) => {
-    console.log(inputTimeInStandard);
     const zerosToAdd = 6 - inputTimeInStandard.length;
 
     const zeroTime = "0".repeat(zerosToAdd) + inputTimeInStandard;
     const [hours, minutes, seconds] =
       zeroTime.match(/.{1,2}/g)?.map((time) => Number(time)) || [];
-    console.log(hours, minutes, seconds);
 
-    let totalTimeInMs = 0;
+    let totalTimeInSec = 0;
 
-    totalTimeInMs += seconds;
-    totalTimeInMs += minutes * 60;
-    totalTimeInMs += hours * 60 * 60;
-    console.log(totalTimeInMs);
+    totalTimeInSec += seconds;
+    totalTimeInSec += minutes * 60;
+    totalTimeInSec += hours * 60 * 60;
 
-    setTimerTimeInSec(totalTimeInMs);
+    setTimerTimeInSec(totalTimeInSec);
   };
   return (
     <div>

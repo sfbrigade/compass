@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../../styles/Paraflow.module.css";
+import styles from "../../styles/Paraflow.module.css";
 
 interface TimerInput {
   onStartTimer: (inputTimeInStandard) => void;
@@ -16,10 +16,12 @@ const TimerInput = ({ onStartTimer }: TimerInput) => {
       setInputTime(inputTime + num);
     }
   };
+
   const delNumber = () => {
     const newTime = inputTime.slice(0, -1);
     setInputTime(newTime);
   };
+
   const displayTime = () => {
     const zerosToAdd = 6 - inputTime.length;
 
@@ -45,6 +47,7 @@ const TimerInput = ({ onStartTimer }: TimerInput) => {
       </div>
     );
   };
+
   return (
     <div className={styles.numPadContainer}>
       <h2>Timer</h2>
