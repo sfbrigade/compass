@@ -9,7 +9,7 @@ export const seed = async (db: KyselyDatabaseInstance) => {
       first_name: "Emily",
       last_name: "Smith",
       email: "emily@example.com",
-      role: "para",
+      role: "staff",
     })
     .returningAll()
     .executeTakeFirstOrThrow();

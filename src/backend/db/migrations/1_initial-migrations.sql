@@ -4,7 +4,7 @@ CREATE TABLE "user" (
   user_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
-  role TEXT NOT NULL CHECK (role IN ('para', 'case_manager', 'admin')),
+  role TEXT NOT NULL CHECK (role IN ('staff', 'admin')),
   email TEXT UNIQUE NOT NULL,
   email_verified_at TIMESTAMPTZ,
   image_url TEXT

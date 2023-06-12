@@ -7,7 +7,7 @@ export const requiresAdminAuth =
   // eslint-disable-next-line react/display-name
   (props: Props) => {
     const router = useRouter();
-    const { data: me, error } = trpc.getMe.useQuery();
+    const { data: me, error } = trpc.user.getMe.useQuery();
 
     useEffect(() => {
       if ((me && me.role !== "admin") || error) {
