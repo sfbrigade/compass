@@ -29,20 +29,28 @@ const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
   };
 
   return (
-    <div style={{ width: "100vw" }}>
+    <div className={styles.counterContainer}>
       <div className={styles.counterButtonContainer}>
         <button
           onClick={decrementCount}
-          className={styles.counterButton}
-          style={{ backgroundColor: color }}
+          className={`${styles.counterButton} ${
+            styles[`counterButton-${color}`]
+          }`}
         >
           -
         </button>
-        <p className={styles.counterNumberDisplay}>{count}</p>
+        <p
+          className={`${styles.counterNumberDisplay} ${
+            styles[`counterNumberDisplay-${color}`]
+          }`}
+        >
+          {count}
+        </p>
         <button
           onClick={incrementCount}
-          className={styles.counterButton}
-          style={{ backgroundColor: color }}
+          className={`${styles.counterButton} ${
+            styles[`counterButton-${color}`]
+          }`}
         >
           +
         </button>

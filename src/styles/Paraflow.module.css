@@ -1,8 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter&family=Quicksand:wght@600&display=swap");
+
+.counterContainer {
+  margin: 10px 0;
+  width: 100vw;
+  font-family: "Quicksand", sans-serif;
+}
+
 .counterButtonContainer {
   display: grid;
   grid-template-columns: 30% 40% 30%;
-  width: 90%;
+  width: 80%;
+  height: 50px;
   margin: 0 auto;
+  border-radius: 4px;
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 40px;
 }
 
 .counterButton {
@@ -10,11 +23,11 @@
   font-size: 2rem;
   width: 100%;
   height: 100%;
+  border: none;
 }
 
 .counterNumberDisplay {
   color: black;
-  font-size: 1.5rem;
   width: 100%;
   height: 100%;
   display: flex;
@@ -22,9 +35,29 @@
   align-items: center;
 }
 
+.counterButton-blue {
+  background-color: #1680A1;
+}
+.counterNumberDisplay-blue {
+  background-color: #1680A133;
+}
+.counterButton-green {
+  background-color: #167841;
+}
+.counterNumberDisplay-green {
+  background-color: #16784133;
+}
+.counterButton-yellow {
+  background-color: #FFAA44;
+}
+.counterNumberDisplay-yellow {
+  background-color: #FFAA4433;
+}
+
 .counterTitle {
-  font-size: 1rem;
-  color: gray;
+  font-size: 20px;
+  font-weight: 600;
+  color: #A2ACB3;
   width: 100%;
   text-align: center;
 }
@@ -33,3 +66,10 @@
 .timerContainer {
 
 }
+
+.numberPad {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: repeat(4, minmax(0, 1fr));
+}
+
