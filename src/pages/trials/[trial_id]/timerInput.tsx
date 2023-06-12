@@ -27,29 +27,70 @@ const TimerInput = ({ onStartTimer }: TimerInput) => {
     const [hours, minutes, seconds] = zeroTime.match(/.{1,2}/g) || [];
 
     return (
-      <div className={styles.timerContainer}>
-        <span>{hours}</span> : <span>{minutes}</span> : <span>{seconds}</span>
+      <div className={styles.timer}>
+        <span>
+          <div>{hours}</div>
+          <p>H</p>
+        </span>
+        :
+        <span>
+          <div>{minutes}</div>
+          <p>M</p>
+        </span>
+        :
+        <span>
+          <div>{seconds}</div>
+          <p>S</p>
+        </span>
       </div>
     );
   };
   return (
-    <div>
+    <div className={styles.numPadContainer}>
+      <h2>Timer</h2>
       <>{displayTime()}</>
-      <div className={styles.numberPad}>
-        <button onClick={() => addNumber("1")}>1</button>
-        <button onClick={() => addNumber("2")}>2</button>
-        <button onClick={() => addNumber("3")}>3</button>
-        <button onClick={() => addNumber("4")}>4</button>
-        <button onClick={() => addNumber("5")}>5</button>
-        <button onClick={() => addNumber("6")}>6</button>
-        <button onClick={() => addNumber("7")}>7</button>
-        <button onClick={() => addNumber("8")}>8</button>
-        <button onClick={() => addNumber("9")}>9</button>
+      <div className={styles.numPad}>
+        <button className={styles.numPadButton} onClick={() => addNumber("1")}>
+          1
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("2")}>
+          2
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("3")}>
+          3
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("4")}>
+          4
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("5")}>
+          5
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("6")}>
+          6
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("7")}>
+          7
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("8")}>
+          8
+        </button>
+        <button className={styles.numPadButton} onClick={() => addNumber("9")}>
+          9
+        </button>
         <div></div>
-        <button onClick={() => addNumber("0")}>0</button>
-        <button onClick={() => delNumber()}>Del</button>
+        <button className={styles.numPadButton} onClick={() => addNumber("0")}>
+          0
+        </button>
+        <button className={styles.numPadButton} onClick={() => delNumber()}>
+          Del
+        </button>
       </div>
-      <button onClick={() => onStartTimer(inputTime)}>Start</button>
+      <button
+        className={styles.startButton}
+        onClick={() => onStartTimer(inputTime)}
+      >
+        Start
+      </button>
     </div>
   );
 };
