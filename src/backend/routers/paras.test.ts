@@ -17,7 +17,7 @@ test("getMyParas", async (t) => {
   t.is(myParas.length, 0);
 
   await db
-    .insertInto("cm_to_para")
+    .insertInto("paras_assigned_to_case_manager")
     .values({ case_manager_id: seed.admin.user_id, para_id: seed.para.user_id })
     .execute();
 

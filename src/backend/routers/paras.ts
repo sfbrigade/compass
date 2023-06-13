@@ -22,8 +22,12 @@ export const paraProcedures = {
 
     const result = await req.ctx.db
       .selectFrom("user")
-      .innerJoin("cm_to_para", "user.user_id", "cm_to_para.para_id")
-      .where("cm_to_para.case_manager_id", "=", userId)
+      .innerJoin(
+        "paras_assigned_to_case_manager",
+        "user.user_id",
+        "paras_assigned_to_case_manager.para_id"
+      )
+      .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
       .selectAll()
       .execute();
 
@@ -59,15 +63,23 @@ export const paraProcedures = {
 
       const inRelationalTable = await req.ctx.db
         .selectFrom("user")
-        .innerJoin("cm_to_para", "user.user_id", "cm_to_para.para_id")
-        .where("cm_to_para.case_manager_id", "=", userId)
-        .where("cm_to_para.para_id", "=", insertedPara.user_id)
+        .innerJoin(
+          "paras_assigned_to_case_manager",
+          "user.user_id",
+          "paras_assigned_to_case_manager.para_id"
+        )
+        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId) //can make this better with lookup on new primary key
+        .where(
+          "paras_assigned_to_case_manager.para_id",
+          "=",
+          insertedPara.user_id
+        )
         .selectAll()
         .execute();
 
       if (inRelationalTable.length === 0) {
         await req.ctx.db
-          .insertInto("cm_to_para")
+          .insertInto("paras_assigned_to_case_manager")
           .values({ case_manager_id: userId, para_id: insertedPara.user_id })
           .execute();
       }
@@ -94,7 +106,7 @@ export const paraProcedures = {
       const { para_id } = req.input;
 
       await req.ctx.db
-        .deleteFrom("cm_to_para")
+        .deleteFrom("paras_assigned_to_case_manager")
         .where("case_manager_id", "=", userId)
         .where("para_id", "=", para_id)
         .execute();
