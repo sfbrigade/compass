@@ -1,6 +1,6 @@
 import React from "react";
 import AllParasPage from "../components/case_manager/AllParas";
-import AllStudentsPage from "../components/case_manager/AllStudents";
+import MyStudentsPage from "../components/case_manager/MyStudents";
 import styles from "../styles/Dashboard.module.css";
 import Head from "next/head";
 import Image from "next/image";
@@ -36,7 +36,7 @@ function cmDashboard() {
               justifyContent: "center",
             }}
           >
-            <AllStudentsPage />
+            <MyStudentsPage />
             <AllParasPage />
           </div>
         </div>
