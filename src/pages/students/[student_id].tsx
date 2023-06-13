@@ -7,6 +7,7 @@ import styles from "@/styles/Home.module.css";
 
 const ViewStudentPage = () => {
   const [archive, setArchive] = useState(false);
+  const utils = trpc.useContext();
 
   const router = useRouter();
   const { student_id } = router.query;
@@ -16,20 +17,22 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { data: ieps } = trpc.getStudentIeps.useQuery({
+  const { data: ieps } = trpc.student.getStudentIeps.useQuery({
     student_id: student_id as string,
   });
 
+  const archiveMutation = trpc.student.unassignStudent.useMutation();
   const archiveStudent = async () => {
     if (!student) {
       return;
     }
-    trpc.unassignStudent
-      .useMutation()
-      .mutate({ student_id: student.student_id });
+    archiveMutation.mutate({ student_id: student.student_id });
     await router.push(`/cmDashboard`);
   };
 
+  const iepMutation = trpc.student.createIep.useMutation({
+    onSuccess: () => utils.student.getStudentIeps.invalidate(),
+  });
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,7 +40,7 @@ const ViewStudentPage = () => {
     if (!student) {
       return; // TODO: improve error handling
     }
-    trpc.createIep.useMutation().mutate({
+    iepMutation.mutate({
       student_id: student.student_id,
       start_date: data.get("start_date") as string,
       end_date: data.get("end_date") as string,
@@ -87,9 +90,7 @@ const ViewStudentPage = () => {
         </div>
       ) : null}
 
-      <div>
-        Create {student?.first_name} {student?.last_name} IEP:
-      </div>
+      <div>Create IEP:</div>
       <div>
         <form onSubmit={handleIepSubmit} className={styles.createInput}>
           <input
@@ -110,17 +111,12 @@ const ViewStudentPage = () => {
         </form>
       </div>
 
+      <br />
       <ul className={styles.listNames}>
         {ieps?.map((iep) => (
           <li key={iep.iep_id}>
-            {/* <StudentIEP
-              start_date={iep.start_date}
-              end_date={iep.end_date}
-            /> */}
-            <p>IEP ID: {iep.iep_id}</p>
-            <p>Start Date: {iep.start_date}</p>
-            <p>End Date: {iep.end_date}</p>
-            <p>case manager ID: {iep.case_manager_id}</p>
+            <p>IEP ID: {iep.iep_id}</p>- Start Date: {iep.start_date} <br />-
+            End Date: {iep.end_date} <br />- CM: {iep.case_manager_id} <br />
             <br />
           </li>
         ))}

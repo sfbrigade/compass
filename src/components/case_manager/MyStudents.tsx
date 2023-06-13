@@ -9,7 +9,7 @@ const MyStudentsPage = () => {
 
   const { mutate } = trpc.student.createStudentOrAssignManager.useMutation({
     onSuccess: () => utils.student.getMyStudents.invalidate(),
-    //in future PR, we could change this to notification instead of browser alert [tessa]
+    // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
     onError: () =>
       alert(
         `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
