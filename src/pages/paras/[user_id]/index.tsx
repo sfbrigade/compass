@@ -9,12 +9,12 @@ const ViewParaPage = () => {
   const router = useRouter();
   const { user_id } = router.query;
 
-  const { data: para, isLoading } = trpc.getParaById.useQuery(
+  const { data: para, isLoading } = trpc.para.getParaById.useQuery(
     { user_id: user_id as string },
     { enabled: Boolean(user_id) }
   );
 
-  const { mutate } = trpc.unassignPara.useMutation();
+  const { mutate } = trpc.para.unassignPara.useMutation();
 
   const archivePara = async () => {
     if (!para) {

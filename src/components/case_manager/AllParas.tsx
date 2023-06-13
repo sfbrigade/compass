@@ -6,9 +6,11 @@ import PersonCreationForm from "./PersonCreationForm";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.getMyParas.useQuery();
-  const { mutate } = trpc.createParaAndAssignCaseManager.useMutation({
-    onSuccess: () => utils.getMyParas.invalidate(),
+  const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
+  const { mutate } = trpc.para.createParaAndAssignCaseManager.useMutation({
+    onSuccess: () => {
+      return utils.para.getMyParas.invalidate();
+    },
     onError: (error) => error.message,
   });
 
@@ -29,7 +31,7 @@ const AllParasPage = () => {
 
   return (
     <div>
-      <PersonCreationForm title={"Create a Para"} onSubmit={handleSubmit} />
+      <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
 
       <h2>All Paras</h2>
       <ul className={styles.listNames}>

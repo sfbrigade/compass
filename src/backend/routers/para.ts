@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { protectedProcedure, procedure } from "../trpc";
-import { transporter } from "../lib/nodemailer";
+import { getTransporter } from "../lib/nodemailer";
+import { authenticatedProcedure, router } from "../trpc";
 
-export const paraProcedures = {
-  getParaById: procedure
+export const para = router({
+  getParaById: authenticatedProcedure
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
       const { user_id } = req.input;
@@ -17,7 +17,7 @@ export const paraProcedures = {
       return result;
     }),
 
-  getMyParas: protectedProcedure.query(async (req) => {
+  getMyParas: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -34,7 +34,8 @@ export const paraProcedures = {
     return result;
   }),
 
-  createParaAndAssignCaseManager: protectedProcedure
+  createParaAndAssignCaseManager: authenticatedProcedure
+    // createPara: authenticatedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -51,7 +52,7 @@ export const paraProcedures = {
           first_name,
           last_name,
           email: email.toLowerCase(),
-          role: "para",
+          role: "staff",
         })
         .onConflict((oc) =>
           oc.column("email").doUpdateSet({ email: email.toLowerCase() })
@@ -84,8 +85,10 @@ export const paraProcedures = {
           .execute();
       }
 
-      await transporter.sendMail({
-        from: process.env.EMAIL,
+      // await transporter.sendMail({
+      //   from: process.env.EMAIL,
+      await getTransporter(req.ctx.env).sendMail({
+        from: req.ctx.env.EMAIL,
         to: email,
         subject: "Para-professional email confirmation",
         text: "Email confirmation",
@@ -95,7 +98,7 @@ export const paraProcedures = {
       // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
     }),
 
-  unassignPara: protectedProcedure
+  unassignPara: authenticatedProcedure
     .input(
       z.object({
         para_id: z.string(),
@@ -111,4 +114,6 @@ export const paraProcedures = {
         .where("para_id", "=", para_id)
         .execute();
     }),
-};
+
+  //this is a placeholder for the archive-para action that will be covered in a future PR
+});

@@ -1,12 +1,11 @@
 import { createTransport } from "nodemailer";
+import { Env } from "./types";
 
-const email: string | undefined = process.env.EMAIL;
-const pass: string | undefined = process.env.EMAIL_PASS;
-
-export const transporter = createTransport({
-  service: "gmail",
-  auth: {
-    user: email,
-    pass,
-  },
-});
+export const getTransporter = (environment: Env) =>
+  createTransport({
+    service: "gmail",
+    auth: {
+      user: environment.EMAIL,
+      pass: environment.EMAIL_PASS,
+    },
+  });

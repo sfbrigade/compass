@@ -1,5 +1,6 @@
-.env
+.env*
 .git
 node_modules
 .next
-.env.local
+.nsm
+**/.terraform

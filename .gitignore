@@ -11,9 +11,12 @@ build
 .terraform*
 terraform.tfstate*
 
+# Ignore all .env files except .env.example
+.env*
+!.env.example
+
 # misc
 .DS_Store
-.env*.local
 .vscode
 
 npm-debug.log*
@@ -25,3 +28,5 @@ yarn-error.log*
 .next
 next-env.d.ts
 .history
+
+.nsm

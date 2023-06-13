@@ -7,7 +7,7 @@ import { trpc } from "client/lib/trpc";
 import Link from "next/link";
 
 const Home: NextPage = () => {
-  const { data: me } = trpc.getMe.useQuery();
+  const { data: me } = trpc.user.getMe.useQuery();
 
   return (
     <div className={styles.container}>
