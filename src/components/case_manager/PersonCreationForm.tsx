@@ -34,7 +34,7 @@ const PersonCreationForm = ({ title, onSubmit }: Props) => {
             required
           />
           <button type="submit" className={styles.createButton}>
-            Create
+            Add
           </button>
         </form>
       </div>
