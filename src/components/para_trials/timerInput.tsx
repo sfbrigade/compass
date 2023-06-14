@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../../styles/Paraflow.module.css";
+import styles from "./styles/Paratrials.module.css";
 
 interface TimerInput {
   onStartTimer: (inputTimeInStandard) => void;
