@@ -592,11 +592,11 @@ declare module 'zapatos/schema' {
       */
       goal_id: string;
       /**
-      * **goal.iep**
+      * **goal.iep_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      iep: string | null;
+      iep_id: string | null;
       /**
       * **goal.description**
       * - `text` in database
@@ -612,11 +612,11 @@ declare module 'zapatos/schema' {
       */
       goal_id: string;
       /**
-      * **goal.iep**
+      * **goal.iep_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      iep: string | null;
+      iep_id: string | null;
       /**
       * **goal.description**
       * - `text` in database
@@ -632,11 +632,11 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **goal.iep**
+      * **goal.iep_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      iep?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      iep_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **goal.description**
       * - `text` in database
@@ -652,11 +652,11 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
-      * **goal.iep**
+      * **goal.iep_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      iep?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      iep_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
       * **goal.description**
       * - `text` in database
@@ -672,11 +672,11 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
-      * **goal.iep**
+      * **goal.iep_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      iep?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      iep_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **goal.description**
       * - `text` in database

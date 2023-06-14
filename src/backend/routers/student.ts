@@ -124,5 +124,82 @@ export const student = router({
       return result;
     }),
 
+  // TODO: move to iep BE route
+  addGoal: authenticatedProcedure
+    .input(
+      z.object({
+        iep_id: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { iep_id, description } = req.input;
+
+      const goal = await req.ctx.db
+        .insertInto("goal")
+        .values({
+          iep_id,
+          description,
+        })
+        .returningAll()
+        .executeTakeFirst();
+    }),
+
+  addSubgoal: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { goal_id, description } = req.input;
+
+      const goal = await req.ctx.db
+        .insertInto("subgoal")
+        .values({
+          goal_id,
+          description,
+        })
+        .returningAll()
+        .executeTakeFirst();
+    }),
+
+  getGoalsFromIep: authenticatedProcedure
+    .input(
+      z.object({
+        iep_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { iep_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("goal")
+        .where("iep_id", "=", iep_id)
+        .selectAll()
+        .execute();
+
+      return result;
+    }),
+
+  getSubgoals: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { goal_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .where("goal_id", "=", goal_id)
+        .selectAll()
+        .execute();
+
+      return result;
+    }),
+
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
 });

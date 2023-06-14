@@ -115,13 +115,13 @@ const ViewStudentPage = () => {
       <ul className={styles.listNames}>
         {ieps?.map((iep) => (
           <li key={iep.iep_id}>
+            <Link href={`/iep/${iep.iep_id}`}>IEP</Link>
             <p>IEP ID: {iep.iep_id}</p>- Start Date: {iep.start_date} <br />-
             End Date: {iep.end_date} <br />- CM: {iep.case_manager_id} <br />
             <br />
           </li>
         ))}
       </ul>
-
       <div>
         <Link href={`/cmDashboard`}>Return to Student List</Link>
       </div>
