@@ -1,0 +1,50 @@
+.container {
+  position: relative;
+  width: 90%;
+  background-color: #F6F8F9;
+  margin: 10px auto;
+  border-radius: 8px;
+  border: 1px solid #D6DDE1;
+  padding: 15px;
+  font-size: 14px;
+
+}
+
+.container strong {
+  font-weight: 800;
+}
+
+.dateFloater {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 12px;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.image {
+  border-radius: 50%;
+  background-color: cadetblue;
+}
+
+.button {
+  composes: primaryBg from '@/styles/colors.module.css';
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  padding: 5px;
+  margin-top: 10px;
+}
+
+.progressBar {
+  font-size: 10px;
+  color: #586874;
+}

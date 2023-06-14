@@ -75,7 +75,7 @@
   border: none;
   border-radius: 50%;
   color: white;
-  background-color: #5347D7;
+  composes: primaryBg from '@/styles/colors.module.css';
   height: 50px;
   width: 50px;
   cursor: pointer;
@@ -93,7 +93,7 @@
   font-size: 40px;
   font-weight: 600;
   display: flex;
-  color: #5347D7;
+  composes: primaryColor from '@/styles/colors.module.css';
 }
 
 .timer span {
@@ -108,7 +108,7 @@
 }
 
 .numPadContainer {
-  color: #5347D7;
+  composes: primaryColor from '@/styles/colors.module.css';
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -142,7 +142,7 @@
   border-radius: 50%;
   height: 100px;
   width: 100px;
-  background-color: #5347D7;
+  composes: primaryBg from '@/styles/colors.module.css';
   color: white;
   cursor: pointer;
 }
