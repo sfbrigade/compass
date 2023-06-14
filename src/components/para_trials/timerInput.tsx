@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import styles from "./styles/Paratrials.module.css";
 
-interface TimerInput {
-  onStartTimer: (inputTimeInStandard) => void;
+interface TimerInputProps {
+  onStartTimer: (inputTimeInStandard: string) => void;
 }
 
-const TimerInput = ({ onStartTimer }: TimerInput) => {
+const TimerInput = ({ onStartTimer }: TimerInputProps) => {
   const [inputTime, setInputTime] = useState<string>("");
 
   const addNumber = (num: string) => {
