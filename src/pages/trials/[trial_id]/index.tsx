@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Counter from "../../../components/para_trials/counter";
 import Timer from "../../../components/para_trials/timer";
-import TimerInput from "../../../components/para_trials/timerInput";
+import TimerInput from "../../../components/para_trials/timerInputPad";
 import styles from "../../../styles/Paraflow.module.css";
 
 const TrialPage = () => {
@@ -22,6 +22,7 @@ const TrialPage = () => {
     totalTimeInSec += hours * 60 * 60;
 
     setTimerTimeInSec(totalTimeInSec);
+    setTimerInputIsOn(false);
   };
   const handleSetTimer = () => {
     setTimerInputIsOn(!timerInputIsOn);

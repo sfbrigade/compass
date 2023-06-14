@@ -6,7 +6,7 @@ interface TimerProps {
   timeInSec: number;
 }
 
-const Timer = ({ timeInSec }: TimerProps) => {
+const Timer: React.FC<TimerProps> = ({ timeInSec }) => {
   const { seconds, minutes, hours, days, isRunning, pause, resume, restart } =
     useTimer({ expiryTimestamp: new Date(), autoStart: false });
 

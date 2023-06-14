@@ -8,7 +8,12 @@ interface CounterProps {
   color: "blue" | "green" | "yellow";
 }
 
-const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
+const Counter: React.FC<CounterProps> = ({
+  title,
+  maxCount,
+  minCount,
+  color,
+}) => {
   // Count variable may need to become a prop, depending on how we implement
   const [count, setCount] = useState(0);
 
