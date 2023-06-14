@@ -1,0 +1,11 @@
+/*
+  Use `composes: primaryBg from '@/styles/colors.module.css'` to import colors into another css file;
+*/
+.primaryBg {
+  background-color: #5347d7;
+}
+
+.primaryColor {
+  color: #5347d7;
+}
+
