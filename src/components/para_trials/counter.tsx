@@ -5,7 +5,7 @@ interface CounterProps {
   title: string;
   maxCount: number;
   minCount: number;
-  color: string;
+  color: "blue" | "green" | "yellow";
 }
 
 const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
@@ -13,16 +13,10 @@ const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
   const [count, setCount] = useState(0);
 
   const incrementCount = () => {
-    if (count === maxCount) {
-      return;
-    }
-    setCount(count + 1);
+    setCount(Math.min(count + 1, maxCount));
   };
   const decrementCount = () => {
-    if (count === minCount) {
-      return;
-    }
-    setCount(count - 1);
+    setCount(Math.max(count - 1, minCount));
   };
 
   return (

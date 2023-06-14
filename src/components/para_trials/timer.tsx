@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTimer } from "react-timer-hook";
 import styles from "./styles/Paratrials.module.css";
 
