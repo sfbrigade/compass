@@ -1,19 +1,19 @@
 .container {
   position: relative;
   width: 90%;
-  background-color: #F6F8F9;
+  background-color: #f6f8f9;
   margin: 10px auto;
   border-radius: 8px;
-  border: 1px solid #D6DDE1;
+  border: 1px solid #d6dde1;
   padding: 15px;
   font-size: 14px;
 }
 
 .containerDone {
   composes: container;
-  background-color: #F4F6F7;
+  background-color: #f4f6f7;
   border: none;
-  color: #A2ACB3;
+  color: #a2acb3;
 }
 
 .container p {
@@ -35,7 +35,7 @@
 
 .dateFloaterRed {
   composes: dateFloater;
-  color: #B3261E;
+  color: #b3261e;
 }
 
 .dateFloaterGreen {
@@ -54,8 +54,7 @@
 
 .profileDone {
   composes: profile;
-  color: #A2ACB3;
-
+  color: #a2acb3;
 }
 
 /* This will need to change once a real image is in place */
@@ -87,8 +86,8 @@
 
 .buttonDone {
   composes: button;
-  background-color: #D6DDE1;
-  color: #A2ACB3;
+  background-color: #d6dde1;
+  color: #a2acb3;
 }
 
 .progressBar {
