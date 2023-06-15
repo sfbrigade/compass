@@ -8,22 +8,11 @@ const TrialPage = () => {
   const [timerTimeInSec, setTimerTimeInSec] = useState(0);
   const [timerInputIsOn, setTimerInputIsOn] = useState(false);
 
-  const handleStartTimer = (inputTimeInStandard: string) => {
-    const zerosToAdd = 6 - inputTimeInStandard.length;
-
-    const zeroTime = "0".repeat(zerosToAdd) + inputTimeInStandard;
-    const [hours, minutes, seconds] =
-      zeroTime.match(/.{1,2}/g)?.map((time) => Number(time)) || [];
-
-    let totalTimeInSec = 0;
-
-    totalTimeInSec += seconds;
-    totalTimeInSec += minutes * 60;
-    totalTimeInSec += hours * 60 * 60;
-
-    setTimerTimeInSec(totalTimeInSec);
+  const handleStartTimer = (inputTimeInSec: number) => {
+    setTimerTimeInSec(inputTimeInSec);
     setTimerInputIsOn(false);
   };
+
   const handleSetTimer = () => {
     setTimerInputIsOn(!timerInputIsOn);
   };

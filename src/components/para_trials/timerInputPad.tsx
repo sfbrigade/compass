@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./styles/Paratrials.module.css";
 
 interface TimerInputProps {
-  onStartTimer: (inputTimeInStandard: string) => void;
+  onStartTimer: (inputTimeInSec: number) => void;
 }
 
 const TimerInput: React.FC<TimerInputProps> = ({ onStartTimer }) => {
@@ -20,6 +20,22 @@ const TimerInput: React.FC<TimerInputProps> = ({ onStartTimer }) => {
   const delNumber = () => {
     const newTime = inputTime.slice(0, -1);
     setInputTime(newTime);
+  };
+
+  const convertToSeconds = (input: string) => {
+    const zerosToAdd = 6 - input.length;
+
+    const zeroTime = "0".repeat(zerosToAdd) + input;
+    const [hours, minutes, seconds] =
+      zeroTime.match(/.{1,2}/g)?.map((time) => Number(time)) || [];
+
+    let totalTimeInSec = 0;
+
+    totalTimeInSec += seconds;
+    totalTimeInSec += minutes * 60;
+    totalTimeInSec += hours * 60 * 60;
+
+    return totalTimeInSec;
   };
 
   const displayTime = () => {
@@ -90,7 +106,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onStartTimer }) => {
       </div>
       <button
         className={styles.startButton}
-        onClick={() => onStartTimer(inputTime)}
+        onClick={() => onStartTimer(convertToSeconds(inputTime))}
       >
         Start
       </button>
