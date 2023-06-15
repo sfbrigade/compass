@@ -1,12 +1,14 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 import styles from "./styles/TaskCard.module.css";
+import Link from "next/link";
+import ProgressBar from "./progressBar";
 
 interface TaskCardProps {
   task: {
     student_name: string;
     profile_img: string;
-    // goal_id: number;
+    goal_id: number;
     goal_description: string;
     goal_type: string;
     due_date: string;
@@ -15,12 +17,39 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+  const getDateStyle = () => {
+    //New or done should be green
+    if (task.completion_rate === 0 || task.completion_rate === 100) {
+      return styles.dateFloaterGreen;
+    }
+    //Not sure if this should be due soon, or past due?
+    else if (task.due_date < "") {
+      return styles.dateFloaterRed;
+    } else {
+      return styles.dateFloater;
+    }
+  };
+
   return (
-    <div className={styles.container}>
-      <div className={styles.dateFloater}>{task.due_date}</div>
+    <div
+      className={
+        task.completion_rate === 100 ? styles.containerDone : styles.container
+      }
+    >
+      <div className={getDateStyle()}>
+        {task.completion_rate === 0
+          ? "NEW"
+          : task.completion_rate === 100
+          ? "DONE"
+          : `DUE: ${task.due_date}`}
+      </div>
       <div className={styles.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
-        <div className={styles.image}>pic</div>
+        <div
+          className={
+            task.completion_rate === 100 ? styles.imageDone : styles.image
+          }
+        ></div>
         <div>{task.student_name}</div>
       </div>
       <div>
@@ -30,9 +59,19 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       </div>
 
       {/* Will be a progress bar */}
-      <div className={styles.progressBar}>{task.completion_rate}% complete</div>
+      <div className={styles.progressBar}>
+        {task.completion_rate}% complete
+        <ProgressBar fillPercent={task.completion_rate} />
+      </div>
 
-      <button className={styles.button}>Collect data</button>
+      <Link
+        href={`/trials/${task.goal_id}`}
+        className={
+          task.completion_rate === 100 ? styles.buttonDone : styles.button
+        }
+      >
+        Collect data
+      </Link>
     </div>
   );
 };

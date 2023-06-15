@@ -75,7 +75,7 @@
   border: none;
   border-radius: 50%;
   color: white;
-  composes: primaryBg from '@/styles/colors.module.css';
+  background-color: var(--primary-purple);
   height: 50px;
   width: 50px;
   cursor: pointer;
@@ -93,7 +93,7 @@
   font-size: 40px;
   font-weight: 600;
   display: flex;
-  composes: primaryColor from '@/styles/colors.module.css';
+  color: var(--primary-purple);
 }
 
 .timer span {
@@ -108,7 +108,7 @@
 }
 
 .numPadContainer {
-  composes: primaryColor from '@/styles/colors.module.css';
+  color: var(--primary-purple);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -142,7 +142,7 @@
   border-radius: 50%;
   height: 100px;
   width: 100px;
-  composes: primaryBg from '@/styles/colors.module.css';
+  background-color: var(--primary-purple);
   color: white;
   cursor: pointer;
 }

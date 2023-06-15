@@ -7,11 +7,20 @@
   border: 1px solid #D6DDE1;
   padding: 15px;
   font-size: 14px;
-
 }
 
+.containerDone {
+  composes: container;
+  background-color: #F4F6F7;
+  border: none;
+  color: #A2ACB3;
+}
+
+.container p {
+  font-family: "Inter", sans-serif;
+}
 .container strong {
-  font-weight: 800;
+  font-weight: 700;
 }
 
 .dateFloater {
@@ -19,6 +28,19 @@
   top: 15px;
   right: 15px;
   font-size: 12px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  color: #586874;
+}
+
+.dateFloaterRed {
+  composes: dateFloater;
+  color: #B3261E;
+}
+
+.dateFloaterGreen {
+  composes: dateFloater;
+  color: #167841;
 }
 
 .profile {
@@ -30,21 +52,51 @@
   margin-bottom: 10px;
 }
 
+.profileDone {
+  composes: profile;
+  color: #A2ACB3;
+
+}
+
+/* This will need to change once a real image is in place */
 .image {
   border-radius: 50%;
+  height: 50px;
+  width: 50px;
   background-color: cadetblue;
 }
 
+.imageDone {
+  composes: image;
+  opacity: 0.5;
+}
+
 .button {
-  composes: primaryBg from '@/styles/colors.module.css';
+  display: block;
+  background-color: var(--primary-purple);
   width: 100%;
   border: none;
   border-radius: 4px;
   padding: 5px;
   margin-top: 10px;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+}
+
+.buttonDone {
+  composes: button;
+  background-color: #D6DDE1;
+  color: #A2ACB3;
 }
 
 .progressBar {
   font-size: 10px;
   color: #586874;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  margin: 3px 0;
 }

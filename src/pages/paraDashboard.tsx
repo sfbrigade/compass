@@ -12,6 +12,7 @@ const tempGoals = [
     goal_type: "Writing goal",
     due_date: "01-08-2023",
     completion_rate: 80,
+    goal_id: 1,
   },
   {
     student_name: "New Name",
@@ -21,6 +22,7 @@ const tempGoals = [
     goal_type: "Writing goal",
     due_date: "10-15-2023",
     completion_rate: 0,
+    goal_id: 2,
   },
   {
     student_name: "Kate Doe",
@@ -30,6 +32,7 @@ const tempGoals = [
     goal_type: "Writing goal",
     due_date: "05-20-2023",
     completion_rate: 100,
+    goal_id: 3,
   },
 ];
 
