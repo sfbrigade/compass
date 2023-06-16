@@ -17,7 +17,7 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { data: ieps } = trpc.student.getStudentIeps.useQuery({
+  const { data: ieps } = trpc.student.getIeps.useQuery({
     student_id: student_id as string,
   });
 
@@ -30,8 +30,8 @@ const ViewStudentPage = () => {
     await router.push(`/cmDashboard`);
   };
 
-  const iepMutation = trpc.student.createIep.useMutation({
-    onSuccess: () => utils.student.getStudentIeps.invalidate(),
+  const iepMutation = trpc.student.addIep.useMutation({
+    onSuccess: () => utils.student.getIeps.invalidate(),
   });
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();

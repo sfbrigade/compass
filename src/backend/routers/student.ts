@@ -63,7 +63,7 @@ export const student = router({
     }),
 
   /**
-   * Removes the case manager associated with this student
+   * Removes the case manager associated with this student.
    */
   unassignStudent: authenticatedProcedure
     .input(
@@ -81,7 +81,10 @@ export const student = router({
         .execute();
     }),
 
-  createIep: authenticatedProcedure
+  /**
+   * Adds a new IEP for the given student.
+   */
+  addIep: authenticatedProcedure
     .input(
       z.object({
         student_id: z.string(),
@@ -105,7 +108,10 @@ export const student = router({
         .executeTakeFirstOrThrow();
     }),
 
-  getStudentIeps: authenticatedProcedure
+  /**
+   * Returns all the IEPs associated with the given student.
+   */
+  getIeps: authenticatedProcedure
     .input(
       z.object({
         student_id: z.string(),

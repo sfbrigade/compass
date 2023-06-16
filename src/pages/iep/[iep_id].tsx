@@ -4,12 +4,12 @@ import Link from "next/link";
 import styles from "../../styles/Home.module.css";
 import Goals from "../../components/Goal";
 
-interface StudentIEPProps {
+interface IepProps {
   first_name: string | undefined;
   last_name: string | undefined;
 }
 
-const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
+const Iep: React.FC<IepProps> = ({ first_name, last_name }) => {
   const router = useRouter();
   const utils = trpc.useContext();
 
@@ -23,7 +23,7 @@ const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
   });
 
   const goalMutation = trpc.student.addGoal.useMutation({
-    onSuccess: () => utils.student.getStudentIeps.invalidate(),
+    onSuccess: () => utils.student.getIeps.invalidate(),
   });
 
   const handleGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -45,7 +45,7 @@ const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
           <input
             type="text"
             name="description"
-            placeholder="description stuff"
+            placeholder="description"
             required
           />
           <button type="submit" className={styles.createButton}>
@@ -55,18 +55,21 @@ const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
       </div>
 
       <h3>Goals section</h3>
-      {goals?.map((goal) => (
-        <li key={goal.goal_id}>
-          <h2>Goal</h2>
-          <div>Goal ID: {goal.goal_id}</div>
-          <p>{goal.description}</p>
-          <Goals goal={goal} />
-        </li>
-      ))}
+      <ul>
+        {goals?.map((goal) => (
+          <li key={goal.goal_id}>
+            <h2>Goal</h2>
+            <div>Goal ID: {goal.goal_id}</div>
+            <p>{goal.description}</p>
+            <Goals goal={goal} />
+            <br />
+          </li>
+        ))}
+      </ul>
 
       <br />
       <Link href={`/cmDashboard`}>Back to My Students Page</Link>
     </div>
   );
 };
-export default StudentIEP;
+export default Iep;
