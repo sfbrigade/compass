@@ -18,6 +18,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx", "src/components/para_trials/timerInputPad.tsx"],
   "exclude": ["node_modules"]
 }
