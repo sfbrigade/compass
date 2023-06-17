@@ -6,6 +6,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
+import Head from "next/head";
 
 interface CustomPageProps {
   session: Session;
@@ -44,12 +45,19 @@ export default function App({
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} />
-        </SessionProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <>
+      <Head>
+        <title>Compass</title>
+        <meta name="description" content="Make IEPs easier" />
+        <link rel="icon" href="/img/favicon.png" />
+      </Head>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider session={pageProps.session}>
+            <Component {...pageProps} />
+          </SessionProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </>
   );
 }

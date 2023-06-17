@@ -2,17 +2,11 @@ import React from "react";
 import AllParasPage from "../components/case_manager/AllParas";
 import MyStudentsPage from "../components/case_manager/MyStudents";
 import styles from "../styles/Dashboard.module.css";
-import Head from "next/head";
 import Image from "next/image";
 
 function cmDashboard() {
   return (
     <div className={styles.cmContainer}>
-      <Head>
-        <title>Compass</title>
-        <meta name="description" content="Make IEPs easier" />
-        <link rel="icon" href="/img/favicon.png" />
-      </Head>
       <nav style={{ padding: "2%" }}>
         <Image
           src="/img/compass-logo.svg"
