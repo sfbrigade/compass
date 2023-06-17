@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTimer } from "react-timer-hook";
 import styles from "./styles/Paratrials.module.css";
 
@@ -10,15 +10,18 @@ const Timer: React.FC<TimerProps> = ({ timeInSec }) => {
   const { seconds, minutes, hours, days, isRunning, pause, resume, restart } =
     useTimer({ expiryTimestamp: new Date(), autoStart: false });
 
+  const restartTimer = useCallback(
+    (inputTime: number) => {
+      const dateTimeObject = new Date();
+      dateTimeObject.setSeconds(dateTimeObject.getSeconds() + inputTime);
+      restart(dateTimeObject, false);
+    },
+    [restart]
+  );
+
   useEffect(() => {
     restartTimer(timeInSec);
-  }, [timeInSec]);
-
-  const restartTimer = (inputTime: number) => {
-    const dateTimeObject = new Date();
-    dateTimeObject.setSeconds(dateTimeObject.getSeconds() + inputTime);
-    restart(dateTimeObject, false);
-  };
+  }, [timeInSec, restartTimer]);
 
   const handleStartStop = (timerIsRunning: boolean) => {
     if (timerIsRunning) {

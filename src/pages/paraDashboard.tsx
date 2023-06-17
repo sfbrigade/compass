@@ -1,7 +1,7 @@
 //this will be the mobile-first web view of the para data collection app
 import React from "react";
 import TaskCard from "@/components/para_trials/taskCard";
-import styles from "@/styles/Paraflow.module.css";
+// import styles from "@/styles/Paraflow.module.css";
 
 const tempGoals = [
   {
