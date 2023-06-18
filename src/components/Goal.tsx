@@ -15,12 +15,12 @@ interface Goal {
 
 const Goals: React.FC<GoalProps> = ({ goal }) => {
   const utils = trpc.useContext();
-  const { data: subgoals, isLoading } = trpc.student.getSubgoals.useQuery({
+  const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
     goal_id: goal.goal_id,
   });
 
-  const subgoal = trpc.student.addSubgoal.useMutation({
-    onSuccess: () => utils.student.getGoalsFromIep.invalidate(),
+  const subgoal = trpc.iep.addSubgoal.useMutation({
+    onSuccess: () => utils.iep.getGoalsFromIep.invalidate(),
   });
 
   const handleSubGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {

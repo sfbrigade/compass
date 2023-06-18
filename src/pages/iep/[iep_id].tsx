@@ -19,11 +19,11 @@ const Iep: React.FC<IepProps> = ({ iep_id }) => {
   // TODO: When doing a full page reload ignoring cache, two trpc calls are issued - one with empty
   // "iep_id" and a second with the param populated. Figure out how to avoid the error.
   // https://github.com/vercel/next.js/discussions/11484
-  const { data: goals, isLoading } = trpc.student.getGoalsFromIep.useQuery({
+  const { data: goals, isLoading } = trpc.iep.getGoalsFromIep.useQuery({
     iep_id: iep_id as string,
   });
 
-  const goalMutation = trpc.student.addGoal.useMutation({
+  const goalMutation = trpc.iep.addGoal.useMutation({
     onSuccess: () => utils.student.getIeps.invalidate(),
   });
 
