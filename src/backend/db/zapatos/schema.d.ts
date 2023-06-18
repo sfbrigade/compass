@@ -718,16 +718,16 @@ declare module 'zapatos/schema' {
       case_manager_id: string | null;
       /**
       * **iep.start_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      start_date: string | null;
+      start_date: Date | null;
       /**
       * **iep.end_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      end_date: string | null;
+      end_date: Date | null;
     }
     export interface JSONSelectable {
       /**
@@ -750,16 +750,16 @@ declare module 'zapatos/schema' {
       case_manager_id: string | null;
       /**
       * **iep.start_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      start_date: string | null;
+      start_date: db.DateString | null;
       /**
       * **iep.end_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      end_date: string | null;
+      end_date: db.DateString | null;
     }
     export interface Whereable {
       /**
@@ -782,16 +782,16 @@ declare module 'zapatos/schema' {
       case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **iep.start_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      start_date?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
       * **iep.end_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      end_date?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -814,16 +814,16 @@ declare module 'zapatos/schema' {
       case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
       * **iep.start_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      start_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment;
       /**
       * **iep.end_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      end_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -846,16 +846,16 @@ declare module 'zapatos/schema' {
       case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **iep.start_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      start_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **iep.end_date**
-      * - `text` in database
+      * - `date` in database
       * - Nullable, no default
       */
-      end_date?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'iep_pkey';
     export type Column = keyof Selectable;

@@ -61,8 +61,8 @@ CREATE TABLE "iep" (
   iep_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
   student_id UUID REFERENCES "student" (student_id),
   case_manager_id UUID REFERENCES "user" (user_id),
-  start_date TEXT,  -- TODO: change the type back to date
-  end_date TEXT
+  start_date DATE,
+  end_date DATE
 );
 
 CREATE TABLE "goal" (

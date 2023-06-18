@@ -94,13 +94,13 @@ const ViewStudentPage = () => {
       <div>
         <form onSubmit={handleIepSubmit} className={styles.createInput}>
           <input
-            type="text"
+            type="date"
             name="start_date"
             placeholder="IEP start date"
             required
           />
           <input
-            type="text"
+            type="date"
             name="end_date"
             placeholder="IEP end date"
             required
@@ -116,8 +116,10 @@ const ViewStudentPage = () => {
         {ieps?.map((iep) => (
           <li key={iep.iep_id}>
             <Link href={`/iep/${iep.iep_id}`}>IEP</Link>
-            <p>IEP ID: {iep.iep_id}</p>- Start Date: {iep.start_date} <br />-
-            End Date: {iep.end_date} <br />- CM: {iep.case_manager_id} <br />
+            <p>IEP ID: {iep.iep_id}</p>- Start Date:{" "}
+            {new Date(iep.start_date ?? "").toLocaleDateString()} <br />- End
+            Date: {new Date(iep.end_date ?? "").toLocaleDateString()} <br />-
+            CM: {iep.case_manager_id} <br />
             <br />
           </li>
         ))}
