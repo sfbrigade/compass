@@ -10,6 +10,7 @@ import { randomUUID } from "crypto";
 import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
+import superjson from "superjson";
 
 export interface GetTestServerOptions {
   authenticateAs?: "case_manager" | "para" | "admin";
@@ -93,6 +94,7 @@ export const getTestServer = async (
 
   return {
     trpc: createTRPCProxyClient<AppRouter>({
+      transformer: superjson,
       links: [
         httpBatchLink({
           url: `http://localhost:${appPort}/api/trpc`,

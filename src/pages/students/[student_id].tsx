@@ -2,7 +2,6 @@ import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import StudentIEP from "./iep";
 import styles from "@/styles/Home.module.css";
 
 const ViewStudentPage = () => {
@@ -42,8 +41,8 @@ const ViewStudentPage = () => {
     }
     iepMutation.mutate({
       student_id: student.student_id,
-      start_date: data.get("start_date") as string,
-      end_date: data.get("end_date") as string,
+      start_date: new Date(data.get("start_date") as string),
+      end_date: new Date(data.get("end_date") as string),
     });
   };
 

@@ -42,6 +42,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-timer-hook": "^3.0.6",
+    "superjson": "^1.12.3",
     "winston": "^3.8.2",
     "zapatos": "^6.1.4",
     "zod": "^3.21.4"

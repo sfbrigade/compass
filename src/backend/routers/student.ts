@@ -88,8 +88,8 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string(),
-        start_date: z.string(),
-        end_date: z.string(),
+        start_date: z.date(),
+        end_date: z.date(),
       })
     )
     .mutation(async (req) => {
