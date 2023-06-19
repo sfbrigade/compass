@@ -1,6 +1,9 @@
 import React, { useCallback, useEffect } from "react";
 import { useTimer } from "react-timer-hook";
 import styles from "./styles/Paratrials.module.css";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import PauseIcon from "@mui/icons-material/Pause";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 interface TimerProps {
   timeInSec: number;
@@ -47,7 +50,7 @@ const Timer: React.FC<TimerProps> = ({ timeInSec }) => {
         className={styles.resetButton}
         onClick={() => restartTimer(timeInSec)}
       >
-        O
+        <RefreshIcon />
       </button>
       <div className={styles.timer}>
         <span>{addZerosToTime(hours + days * 24)}</span>:
@@ -58,7 +61,7 @@ const Timer: React.FC<TimerProps> = ({ timeInSec }) => {
         className={styles.startStopButton}
         onClick={() => handleStartStop(isRunning)}
       >
-        {isRunning ? "pause" : "play"}
+        {isRunning ? <PauseIcon /> : <PlayArrowIcon />}
       </button>
     </div>
   );

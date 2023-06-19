@@ -78,6 +78,9 @@
   height: 50px;
   width: 50px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .resetButton {
