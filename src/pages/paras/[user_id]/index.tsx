@@ -5,7 +5,7 @@ import styles from "../../../styles/Home.module.css";
 import { useState } from "react";
 
 const ViewParaPage = () => {
-  const [archive, setArchive] = useState(false);
+  const [unassignPrompt, setUnassignPrompt] = useState(false);
   const router = useRouter();
   const { user_id } = router.query;
 
@@ -14,13 +14,13 @@ const ViewParaPage = () => {
     { enabled: Boolean(user_id) }
   );
 
-  const { mutate } = trpc.para.unassignPara.useMutation();
+  const unassignPara = trpc.para.unassignPara.useMutation();
 
-  const archivePara = async () => {
+  const unassignParaFromCaseManager = async () => {
     if (!para) {
       return;
     }
-    mutate({ para_id: para.user_id });
+    unassignPara.mutate({ para_id: para.user_id });
     await router.push(`/cmDashboard`);
   };
 
@@ -41,27 +41,26 @@ const ViewParaPage = () => {
       </p>
       <button
         className={`${styles.signIn} ${styles.bold}`}
-        onClick={() => setArchive(true)}
+        onClick={() => setUnassignPrompt(true)}
       >
-        {" "}
-        Archive Para
+        Unassign Para
       </button>
 
-      {archive ? (
+      {unassignPrompt ? (
         <div>
           <p>
-            Are you sure you want to archive {para?.first_name}&nbsp;
-            {para?.last_name}?
+            Are you sure you want to unassign {para?.first_name}&nbsp;
+            {para?.last_name} from your staff list?
           </p>
           <button
             className={`${styles.signIn} ${styles.bold}`}
-            onClick={() => archivePara()}
+            onClick={() => unassignParaFromCaseManager()}
           >
             Yes
           </button>
           <button
             className={`${styles.signIn} ${styles.bold}`}
-            onClick={() => setArchive(false)}
+            onClick={() => setUnassignPrompt(false)}
           >
             No
           </button>
