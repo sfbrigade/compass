@@ -18,11 +18,11 @@ function cmDashboard() {
       </nav>
       <main>
         <div style={{ padding: "20px", textAlign: "center" }}>
-          <p
+          {/* <p
             style={{ marginBottom: "3%", fontWeight: "bold", fontSize: "2rem" }}
           >
             Welcome to the CM Dashboard
-          </p>
+          </p> */}
           <div
             style={{
               display: "flex",
@@ -31,7 +31,7 @@ function cmDashboard() {
             }}
           >
             <MyStudentsPage />
-            <AllParasPage />
+            {/* <AllParasPage /> */}
           </div>
         </div>
       </main>
