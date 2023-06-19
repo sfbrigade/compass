@@ -34,8 +34,7 @@ export const para = router({
     return result;
   }),
 
-  createParaAndAssignCaseManager: authenticatedProcedure
-    // createPara: authenticatedProcedure
+  createPara: authenticatedProcedure
     .input(
       z.object({
         first_name: z.string(),
@@ -46,7 +45,7 @@ export const para = router({
     .mutation(async (req) => {
       const { first_name, last_name, email } = req.input;
 
-      const insertedPara = await req.ctx.db
+      const newPara = await req.ctx.db
         .insertInto("user")
         .values({
           first_name,
@@ -54,48 +53,46 @@ export const para = router({
           email: email.toLowerCase(),
           role: "staff",
         })
-        .onConflict((oc) =>
-          oc.column("email").doUpdateSet({ email: email.toLowerCase() })
-        )
         .returningAll()
-        .executeTakeFirstOrThrow();
+        .executeTakeFirst();
 
+      if (newPara) {
+        // await transporter.sendMail({
+        //   from: process.env.EMAIL,
+        await getTransporter(req.ctx.env).sendMail({
+          from: req.ctx.env.EMAIL,
+          to: email,
+          subject: "Para-professional email confirmation",
+          text: "Email confirmation",
+          html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
+        });
+        // to do here: when site is deployed, add url to html above
+        // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
+      }
+    }),
+
+  assignParaToCaseManager: authenticatedProcedure
+    .input(
+      z.object({
+        email: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { email } = req.input;
       const { userId } = req.ctx.auth;
 
-      const inRelationalTable = await req.ctx.db
+      const paraObj = await req.ctx.db
         .selectFrom("user")
-        .innerJoin(
-          "paras_assigned_to_case_manager",
-          "user.user_id",
-          "paras_assigned_to_case_manager.para_id"
-        )
-        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId) //can make this better with lookup on new primary key
-        .where(
-          "paras_assigned_to_case_manager.para_id",
-          "=",
-          insertedPara.user_id
-        )
-        .selectAll()
-        .execute();
+        .select("user_id")
+        .where("email", "=", email.toLowerCase())
+        .executeTakeFirst();
 
-      if (inRelationalTable.length === 0) {
+      if (paraObj) {
         await req.ctx.db
           .insertInto("paras_assigned_to_case_manager")
-          .values({ case_manager_id: userId, para_id: insertedPara.user_id })
+          .values({ case_manager_id: userId, para_id: paraObj.user_id })
           .execute();
       }
-
-      // await transporter.sendMail({
-      //   from: process.env.EMAIL,
-      await getTransporter(req.ctx.env).sendMail({
-        from: req.ctx.env.EMAIL,
-        to: email,
-        subject: "Para-professional email confirmation",
-        text: "Email confirmation",
-        html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
-      });
-      // to do here: when site is deployed, add url to html above
-      // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
     }),
 
   unassignPara: authenticatedProcedure
@@ -114,6 +111,4 @@ export const para = router({
         .where("para_id", "=", para_id)
         .execute();
     }),
-
-  //this is a placeholder for the archive-para action that will be covered in a future PR
 });
