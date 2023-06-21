@@ -1,0 +1,10 @@
+/* Styles for trials page (Could end up somewhere else) */
+.setTimerButton {
+  border-radius: 20px;
+  background: none;
+  padding: 5px 10px;
+  border: 1px solid black;
+  cursor: pointer;
+}
+
+/* Styles for paraDashboard */
