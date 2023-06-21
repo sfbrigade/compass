@@ -17,8 +17,19 @@ export const para = router({
       return result;
     }),
 
-  getAllParas: authenticatedProcedure.query(async (req) => {
-    const result = await req.ctx.db.selectFrom("user").selectAll().execute();
+  getMyParas: authenticatedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const result = await req.ctx.db
+      .selectFrom("user")
+      .innerJoin(
+        "paras_assigned_to_case_manager",
+        "user.user_id",
+        "paras_assigned_to_case_manager.para_id"
+      )
+      .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
+      .selectAll()
+      .execute();
 
     return result;
   }),

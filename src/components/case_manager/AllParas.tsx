@@ -6,13 +6,11 @@ import PersonCreationForm from "./PersonCreationForm";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.para.getAllParas.useQuery();
+  const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
 
   const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
     {
-      onSuccess: () => {
-        return utils.para.getAllParas.invalidate();
-      },
+      onSuccess: () => utils.para.getMyParas.invalidate(),
       onError: (error) => alert(error.message),
     }
   );
