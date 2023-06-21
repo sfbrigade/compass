@@ -2,6 +2,8 @@ interface StudentIEPProps {
   first_name: string | undefined;
   last_name: string | undefined;
 }
+
+// TODO: Move this to the components directory
 const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
   return (
     <div>
