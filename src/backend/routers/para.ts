@@ -29,17 +29,21 @@ export const para = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string(),
-        role: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email, role } = req.input;
+      const { first_name, last_name, email } = req.input;
 
       const result = await req.ctx.db
         .insertInto("user")
-        .values({ first_name, last_name, email, role })
+        .values({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+          role: "staff",
+        })
         .returningAll()
-        .execute();
+        .executeTakeFirst();
 
       await getTransporter(req.ctx.env).sendMail({
         from: req.ctx.env.EMAIL,
@@ -52,6 +56,42 @@ export const para = router({
       // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
 
       return result;
+    }),
+
+  /**
+   * The function called in the frontend.
+   * Checks if para exists and finds it. If it doesn't we create one using createPara(). Then we assign the para to CM.
+   * Sends email only if createPara() is called. Not sure if this needs to be changed.
+   */
+  assignParaToCaseManager: authenticatedProcedure
+    .input(
+      z.object({
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { first_name, last_name, email } = req.input;
+      const { userId } = req.ctx.auth;
+
+      let paraObj = await req.ctx.db
+        .selectFrom("user")
+        .selectAll()
+        .where("email", "=", email.toLowerCase())
+        .executeTakeFirst();
+
+      if (!paraObj) {
+        const caller = para.createCaller(req.ctx);
+        paraObj = await caller.createPara({ first_name, last_name, email });
+      }
+
+      if (paraObj) {
+        await req.ctx.db
+          .insertInto("paras_assigned_to_case_manager")
+          .values({ case_manager_id: userId, para_id: paraObj.user_id })
+          .execute();
+      }
     }),
 
   //this is a placeholder for the archive-para action that will be covered in a future PR

@@ -7,21 +7,24 @@ import PersonCreationForm from "./PersonCreationForm";
 const AllParasPage = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.para.getAllParas.useQuery();
-  const { mutate } = trpc.para.createPara.useMutation({
-    onSuccess: () => {
-      return utils.para.getAllParas.invalidate();
-    },
-  });
+
+  const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
+    {
+      onSuccess: () => {
+        return utils.para.getAllParas.invalidate();
+      },
+      onError: (error) => alert(error.message),
+    }
+  );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    mutate({
+    assignParaToCaseManager.mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
-      role: "staff",
     });
   };
 
