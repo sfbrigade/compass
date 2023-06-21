@@ -10,8 +10,11 @@ CREATE TABLE "user" (
   image_url TEXT
 );
 
--- table for CM's para list will go here
-
+CREATE TABLE "paras_assigned_to_case_manager" (
+  case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
+  para_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
+  PRIMARY KEY (case_manager_id, para_id)
+);
 
 -- This table is managed by Auth.js via our adapter at backend/auth/adapter.ts
 -- See https://authjs.dev/reference/adapters#models for more details

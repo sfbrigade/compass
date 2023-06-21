@@ -722,6 +722,89 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **paras_assigned_to_case_manager**
+   * - Table in database
+   */
+  export namespace paras_assigned_to_case_manager {
+    export type Table = 'paras_assigned_to_case_manager';
+    export interface Selectable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string;
+    }
+    export interface Whereable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'paras_assigned_to_case_manager_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **session**
    * - Table in database
    */
@@ -1273,20 +1356,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | file.Table | migrations.Table | session.Table | student.Table | user.Table;
-    export type Selectable = account.Selectable | file.Selectable | migrations.Selectable | session.Selectable | student.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | file.Whereable | migrations.Whereable | session.Whereable | student.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | file.Insertable | migrations.Insertable | session.Insertable | student.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | file.Updatable | migrations.Updatable | session.Updatable | student.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | file.Column | migrations.Column | session.Column | student.Column | user.Column;
+    export type Table = account.Table | file.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | user.Table;
+    export type Selectable = account.Selectable | file.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | file.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | file.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | file.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | file.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, file.Table, migrations.Table, session.Table, student.Table, user.Table];
+    export type AllBaseTables = [account.Table, file.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, file.Table, migrations.Table, session.Table, student.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, file.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, user.Table];
   }
 
 
@@ -1317,6 +1400,7 @@ declare module 'zapatos/schema' {
     "account": account.Selectable;
     "file": file.Selectable;
     "migrations": migrations.Selectable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Selectable;
     "session": session.Selectable;
     "student": student.Selectable;
     "user": user.Selectable;
@@ -1326,6 +1410,7 @@ declare module 'zapatos/schema' {
     "account": account.JSONSelectable;
     "file": file.JSONSelectable;
     "migrations": migrations.JSONSelectable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.JSONSelectable;
     "session": session.JSONSelectable;
     "student": student.JSONSelectable;
     "user": user.JSONSelectable;
@@ -1335,6 +1420,7 @@ declare module 'zapatos/schema' {
     "account": account.Whereable;
     "file": file.Whereable;
     "migrations": migrations.Whereable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Whereable;
     "session": session.Whereable;
     "student": student.Whereable;
     "user": user.Whereable;
@@ -1344,6 +1430,7 @@ declare module 'zapatos/schema' {
     "account": account.Insertable;
     "file": file.Insertable;
     "migrations": migrations.Insertable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Insertable;
     "session": session.Insertable;
     "student": student.Insertable;
     "user": user.Insertable;
@@ -1353,6 +1440,7 @@ declare module 'zapatos/schema' {
     "account": account.Updatable;
     "file": file.Updatable;
     "migrations": migrations.Updatable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Updatable;
     "session": session.Updatable;
     "student": student.Updatable;
     "user": user.Updatable;
@@ -1362,6 +1450,7 @@ declare module 'zapatos/schema' {
     "account": account.UniqueIndex;
     "file": file.UniqueIndex;
     "migrations": migrations.UniqueIndex;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.UniqueIndex;
     "session": session.UniqueIndex;
     "student": student.UniqueIndex;
     "user": user.UniqueIndex;
@@ -1371,6 +1460,7 @@ declare module 'zapatos/schema' {
     "account": account.Column;
     "file": file.Column;
     "migrations": migrations.Column;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Column;
     "session": session.Column;
     "student": student.Column;
     "user": user.Column;
@@ -1380,6 +1470,7 @@ declare module 'zapatos/schema' {
     "account": account.SQL;
     "file": file.SQL;
     "migrations": migrations.SQL;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.SQL;
     "session": session.SQL;
     "student": student.SQL;
     "user": user.SQL;
