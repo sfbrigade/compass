@@ -17,6 +17,20 @@ export const para = router({
       return result;
     }),
 
+  getParaByEmail: authenticatedProcedure
+    .input(z.object({ email: z.string() }))
+    .query(async (req) => {
+      const { email } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("user")
+        .where("email", "=", email.toLowerCase())
+        .selectAll()
+        .executeTakeFirst();
+
+      return result;
+    }),
+
   getMyParas: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
@@ -53,9 +67,14 @@ export const para = router({
           email: email.toLowerCase(),
           role: "staff",
         })
+        // TODO: make a better way to handle email conflict when adding staff that is already in db.
+        .onConflict((oc) =>
+          oc.column("email").doUpdateSet({ email: email.toLowerCase() })
+        )
         .returningAll()
         .executeTakeFirst();
 
+      // TODO: Logic for sending email to staff. Should email be sent everytime or only first time? Should staff be notified that they are added to a certain case manager's list?
       await getTransporter(req.ctx.env).sendMail({
         from: req.ctx.env.EMAIL,
         to: email,
@@ -63,46 +82,26 @@ export const para = router({
         text: "Email confirmation",
         html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
       });
-      // to do here: when site is deployed, add url to html above
+      // TODO: when site is deployed, add url to html above
       // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
 
       return result;
     }),
 
-  /**
-   * The function called in the frontend.
-   * Checks if para exists and finds it. If it doesn't we create one using createPara(). Then we assign the para to CM.
-   * Sends email only if createPara() is called. Not sure if this needs to be changed.
-   */
   assignParaToCaseManager: authenticatedProcedure
     .input(
       z.object({
-        first_name: z.string(),
-        last_name: z.string(),
-        email: z.string(),
+        para_id: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { para_id } = req.input;
       const { userId } = req.ctx.auth;
 
-      let paraObj = await req.ctx.db
-        .selectFrom("user")
-        .selectAll()
-        .where("email", "=", email.toLowerCase())
-        .executeTakeFirst();
-
-      if (!paraObj) {
-        const caller = para.createCaller(req.ctx);
-        paraObj = await caller.createPara({ first_name, last_name, email });
-      }
-
-      if (paraObj) {
-        await req.ctx.db
-          .insertInto("paras_assigned_to_case_manager")
-          .values({ case_manager_id: userId, para_id: paraObj.user_id })
-          .execute();
-      }
+      await req.ctx.db
+        .insertInto("paras_assigned_to_case_manager")
+        .values({ case_manager_id: userId, para_id })
+        .execute();
     }),
 
   //this is a placeholder for the archive-para action that will be covered in a future PR
