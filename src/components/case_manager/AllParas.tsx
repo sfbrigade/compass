@@ -4,7 +4,7 @@ import styles from "../../styles/Dashboard.module.css";
 import Link from "next/link";
 import PersonCreationForm from "./PersonCreationForm";
 
-const AllParasPage = () => {
+const MyParasPage = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
 
@@ -48,4 +48,4 @@ const AllParasPage = () => {
   );
 };
 
-export default AllParasPage;
+export default MyParasPage;

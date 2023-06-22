@@ -11,8 +11,8 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "paras_assigned_to_case_manager" (
-  case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
-  para_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
+  case_manager_id UUID REFERENCES "user" (user_id),
+  para_id UUID REFERENCES "user" (user_id),
   PRIMARY KEY (case_manager_id, para_id)
 );
 
