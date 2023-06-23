@@ -59,33 +59,37 @@ export const para = router({
     .mutation(async (req) => {
       const { first_name, last_name, email } = req.input;
 
-      const result = await req.ctx.db
-        .insertInto("user")
-        .values({
-          first_name,
-          last_name,
-          email: email.toLowerCase(),
-          role: "staff",
-        })
-        // TODO: make a better way to handle email conflict when adding staff that is already in db.
-        .onConflict((oc) =>
-          oc.column("email").doUpdateSet({ email: email.toLowerCase() })
-        )
-        .returningAll()
+      let paraData = await req.ctx.db
+        .selectFrom("user")
+        .where("email", "=", email.toLowerCase())
+        .selectAll()
         .executeTakeFirst();
 
-      // TODO: Logic for sending email to staff. Should email be sent everytime or only first time? Should staff be notified that they are added to a certain case manager's list?
-      await getTransporter(req.ctx.env).sendMail({
-        from: req.ctx.env.EMAIL,
-        to: email,
-        subject: "Para-professional email confirmation",
-        text: "Email confirmation",
-        html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
-      });
-      // TODO: when site is deployed, add url to html above
-      // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
+      if (!paraData) {
+        paraData = await req.ctx.db
+          .insertInto("user")
+          .values({
+            first_name,
+            last_name,
+            email: email.toLowerCase(),
+            role: "staff",
+          })
+          .returningAll()
+          .executeTakeFirst();
 
-      return result;
+        // TODO: Logic for sending email to staff. Should email be sent everytime or only first time? Should staff be notified that they are added to a certain case manager's list?
+        await getTransporter(req.ctx.env).sendMail({
+          from: req.ctx.env.EMAIL,
+          to: email,
+          subject: "Para-professional email confirmation",
+          text: "Email confirmation",
+          html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
+        });
+        // TODO: when site is deployed, add url to html above
+        // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
+      }
+
+      return paraData;
     }),
 
   assignParaToCaseManager: authenticatedProcedure

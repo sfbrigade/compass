@@ -11,9 +11,7 @@ const MyParas = () => {
   const createPara = trpc.para.createPara.useMutation({
     onSuccess: () => utils.para.getMyParas.invalidate(),
     onSettled: (data, error) => {
-      if (error) {
-        return alert(error.message);
-      }
+      if (error) console.log(error.message);
 
       assignParaToCaseManager.mutate({
         para_id: data?.user_id as string,
@@ -24,7 +22,7 @@ const MyParas = () => {
   const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
     {
       onSuccess: () => utils.para.getMyParas.invalidate(),
-      onError: (error) => alert(error.message),
+      onError: (error) => console.log(error.message),
     }
   );
 
