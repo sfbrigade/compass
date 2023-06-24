@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -18,43 +18,14 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import { trpc } from "client/lib/trpc";
 
 interface Data {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   dateAdded: string;
 }
-
-function createData(
-  firstName: string,
-  lastName: string,
-  email: string,
-  dateAdded: string
-): Data {
-  return {
-    firstName,
-    lastName,
-    email,
-    dateAdded,
-  };
-}
-
-const rows = [
-  createData("Cupcake", "Frost", "email1@email.com", "01/01/2003"),
-  createData("Donut", "Cream", "email2@email.com", "01/01/2001"),
-  createData("Eclair", "Cream", "email3@email.com", "01/01/2001"),
-  createData("Frozen", "Ice", "email4@email.com", "01/01/2001"),
-  createData("Gingerbread", "Button", "email5@email.com", "01/01/2001"),
-  createData("Honeycomb", "Bee", "email6@email.com", "01/01/2001"),
-  createData("Ice cream", "Sandwich", "email7@email.com", "01/01/2001"),
-  createData("Jelly Bean", "Booger", "email8@email.com", "01/01/2001"),
-  createData("KitKat", "Choco", "email9@email.com", "01/01/2001"),
-  createData("Lollipop", "Stick", "email10@email.com", "01/01/2001"),
-  createData("Marshmallow", "Cocoa", "email11@email.com", "01/01/2001"),
-  createData("Nougat", "Huh", "email12@email.com", "01/01/2001"),
-  createData("Oreo", "Cookie", "email13@email.com", "01/01/2001"),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -84,10 +55,7 @@ function getComparator<Key extends keyof any>(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(
-  array: readonly T[],
-  comparator: (a: T, b: T) => number
-) {
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -106,11 +74,11 @@ interface HeadCell {
 
 const headCells: readonly HeadCell[] = [
   {
-    id: "firstName",
+    id: "first_name",
     label: "First Name",
   },
   {
-    id: "lastName",
+    id: "last_name",
     label: "Last Name",
   },
   {
@@ -263,6 +231,7 @@ function EnhancedTableToolbar({
 
 interface EnhancedTableInputProps {
   inputCells: readonly HeadCell[];
+  // onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
 }
 
 function EnhancedTableInput({ inputCells }: EnhancedTableInputProps) {
@@ -278,11 +247,17 @@ function EnhancedTableInput({ inputCells }: EnhancedTableInputProps) {
             autoFocus={idx === 0}
             required
             size="small"
+            inputProps={{
+              form: "table_input_form",
+              name: inputCell.id,
+            }}
           />
         </TableCell>
       ))}
       <TableCell>
-        <button>Add student</button>
+        <button type="submit" form="table_input_form">
+          Add student
+        </button>
       </TableCell>
     </TableRow>
   );
@@ -302,11 +277,34 @@ const StyledTableRow = styled(TableRow)(() => ({
 
 export default function EnhancedTable() {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("firstName");
+  const [orderBy, setOrderBy] = React.useState<keyof Data>("first_name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const utils = trpc.useContext();
+  const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
+  const { mutate } = trpc.student.createStudentOrAssignManager.useMutation({
+    onSuccess: () => {
+      return utils.student.getMyStudents.invalidate();
+    },
+  });
+
+  useEffect(() => {
+    console.log("-->", students);
+  }, [students]);
+
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    // console.log('Form Ran!: ', data)
+
+    mutate({
+      first_name: data.get("first_name") as string,
+      last_name: data.get("last_name") as string,
+      email: data.get("email") as string,
+    });
+  };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
@@ -319,7 +317,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.email);
+      const newSelected = students.map((n) => n.email);
       setSelected(newSelected);
       return;
     }
@@ -366,19 +364,24 @@ export default function EnhancedTable() {
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
-    () => stableSort(rows, getComparator(order, orderBy)),
+    () => stableSort(students, getComparator(order, orderBy)),
     // .slice(
     //   page * rowsPerPage,
     //   page * rowsPerPage + rowsPerPage,
     // ),
-    [order, orderBy]
+    [order, orderBy, students]
   );
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Box sx={{ width: "75%" }}>
+      <form onSubmit={handleSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
         numSelected={selected.length}
-        totalRows={rows.length}
+        totalRows={students.length}
       />
       <TableContainer>
         <Table
@@ -391,10 +394,13 @@ export default function EnhancedTable() {
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={rows.length}
+            rowCount={students.length}
           />
           <TableBody>
-            <EnhancedTableInput inputCells={headCells.slice(0, -1)} />
+            <EnhancedTableInput
+              inputCells={headCells.slice(0, -1)}
+              // onSubmit={handleSubmit}
+            />
             {visibleRows.map((row, index) => {
               const isItemSelected = isSelected(row.email);
               const labelId = `enhanced-table-checkbox-${index}`;
@@ -420,11 +426,11 @@ export default function EnhancedTable() {
                     />
                   </TableCell>
                   <TableCell component="th" id={labelId} scope="row">
-                    {row.firstName}
+                    {row.first_name}
                   </TableCell>
-                  <TableCell align={"left"}>{row.lastName}</TableCell>
+                  <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
-                  <TableCell align={"left"}>{row.dateAdded}</TableCell>
+                  <TableCell align={"left"}>{"temp date"}</TableCell>
                 </StyledTableRow>
               );
             })}
