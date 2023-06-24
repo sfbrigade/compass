@@ -29,29 +29,35 @@ const MyStudentsPage = () => {
     });
   };
 
+  const headCells = [
+    {
+      id: "first_name",
+      label: "First Name",
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+    },
+    {
+      id: "email",
+      label: "Email",
+    },
+    {
+      id: "dateAdded",
+      label: "Date Added",
+    },
+  ];
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    // <div>
-    //   {/* <PersonCreationForm title={"Add a Student"} onSubmit={handleSubmit} />
-
-    //   <h2>My students</h2>
-    //   <ul className={styles.listNames}>
-    //     {students?.map((student) => (
-    //       <li key={student.student_id}>
-    //         <Link href={`/students/${student.student_id}`}>
-    //           {student.first_name} {student.last_name}
-    //         </Link>
-    //       </li>
-    //     ))}
-    //   </ul> */}
-    //   <div>
-    //     <PersonTable />
-    //   </div>
-    // </div>
-    <PersonTable />
+    <PersonTable
+      people={students}
+      onSubmit={handleSubmit}
+      headCells={headCells}
+    />
   );
 };
 

@@ -19,12 +19,22 @@ import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import { trpc } from "client/lib/trpc";
+import Link from "next/link";
 
-interface Data {
+// interface Student {
+//   first_name: string;
+//   last_name: string;
+//   email: string;
+//   dateAdded: string;
+// }
+interface Person {
   first_name: string;
   last_name: string;
   email: string;
-  dateAdded: string;
+  phone?: string;
+  // dateAdded: string;
+  student_id: string;
+  assigned_case_manager_id: string;
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -68,42 +78,44 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 interface HeadCell {
-  id: keyof Data;
+  id: keyof Person;
   label: string;
 }
 
-const headCells: readonly HeadCell[] = [
-  {
-    id: "first_name",
-    label: "First Name",
-  },
-  {
-    id: "last_name",
-    label: "Last Name",
-  },
-  {
-    id: "email",
-    label: "Email",
-  },
-  {
-    id: "dateAdded",
-    label: "Date Added",
-  },
-];
+// const headCells: readonly HeadCell[] = [
+//   {
+//     id: "first_name",
+//     label: "First Name",
+//   },
+//   {
+//     id: "last_name",
+//     label: "Last Name",
+//   },
+//   {
+//     id: "email",
+//     label: "Email",
+//   },
+//   {
+//     id: "dateAdded",
+//     label: "Date Added",
+//   },
+// ];
 
 interface EnhancedTableHeadProps {
   numSelected: number;
   onRequestSort: (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof Person
   ) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
+  headCells: HeadCell[];
 }
 
 function EnhancedTableHead({
+  headCells,
   onSelectAllClick,
   order,
   orderBy,
@@ -112,7 +124,7 @@ function EnhancedTableHead({
   onRequestSort,
 }: EnhancedTableHeadProps) {
   const createSortHandler =
-    (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+    (property: keyof Person) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -230,8 +242,7 @@ function EnhancedTableToolbar({
 }
 
 interface EnhancedTableInputProps {
-  inputCells: readonly HeadCell[];
-  // onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  inputCells: HeadCell[];
 }
 
 function EnhancedTableInput({ inputCells }: EnhancedTableInputProps) {
@@ -275,40 +286,32 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export default function EnhancedTable() {
+interface EnhancedTableProps {
+  people: Person[];
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  headCells: HeadCell[];
+}
+
+/**
+ * exported table component built with MUI displaying either the CM's paras or students, depending on input.
+ * @param people - Array of either paras or student objects
+ * @param onSubmit - function ran when submitting the person creation form.
+ */
+export default function EnhancedTable({
+  people,
+  onSubmit,
+  headCells,
+}: EnhancedTableProps) {
   const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Data>("first_name");
+  const [orderBy, setOrderBy] = React.useState<keyof Person>("first_name");
   const [selected, setSelected] = React.useState<readonly string[]>([]);
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
-  const { mutate } = trpc.student.createStudentOrAssignManager.useMutation({
-    onSuccess: () => {
-      return utils.student.getMyStudents.invalidate();
-    },
-  });
-
-  useEffect(() => {
-    console.log("-->", students);
-  }, [students]);
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // console.log('Form Ran!: ', data)
-
-    mutate({
-      first_name: data.get("first_name") as string,
-      last_name: data.get("last_name") as string,
-      email: data.get("email") as string,
-    });
-  };
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Data
+    property: keyof Person
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -317,7 +320,7 @@ export default function EnhancedTable() {
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = students.map((n) => n.email);
+      const newSelected = people.map((n) => n.email);
       setSelected(newSelected);
       return;
     }
@@ -364,24 +367,20 @@ export default function EnhancedTable() {
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
   const visibleRows = React.useMemo(
-    () => stableSort(students, getComparator(order, orderBy)),
+    () => stableSort(people, getComparator(order, orderBy)),
     // .slice(
     //   page * rowsPerPage,
     //   page * rowsPerPage + rowsPerPage,
     // ),
-    [order, orderBy, students]
+    [order, orderBy, people]
   );
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <Box sx={{ width: "75%" }}>
-      <form onSubmit={handleSubmit} id="table_input_form"></form>
+      <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
         numSelected={selected.length}
-        totalRows={students.length}
+        totalRows={people.length}
       />
       <TableContainer>
         <Table
@@ -389,12 +388,13 @@ export default function EnhancedTable() {
           aria-labelledby={`Table of ${"students/paras"}`}
         >
           <EnhancedTableHead
+            headCells={headCells}
             numSelected={selected.length}
             order={order}
             orderBy={orderBy}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={students.length}
+            rowCount={people.length}
           />
           <TableBody>
             <EnhancedTableInput
@@ -408,7 +408,6 @@ export default function EnhancedTable() {
               return (
                 <StyledTableRow
                   hover
-                  onClick={(event) => handleClick(event, row.email)}
                   role="checkbox"
                   aria-checked={isItemSelected}
                   tabIndex={-1}
@@ -423,13 +422,17 @@ export default function EnhancedTable() {
                       inputProps={{
                         "aria-labelledby": labelId,
                       }}
+                      onClick={(event) => handleClick(event, row.email)}
                     />
                   </TableCell>
                   <TableCell component="th" id={labelId} scope="row">
-                    {row.first_name}
+                    <Link href={`../students/${row.student_id}`}>
+                      {row.first_name}
+                    </Link>
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
+
                   <TableCell align={"left"}>{"temp date"}</TableCell>
                 </StyledTableRow>
               );

@@ -3,6 +3,7 @@ import React from "react";
 import styles from "@/styles/Dashboard.module.css";
 import Link from "next/link";
 import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
 
 const MyParas = () => {
   const utils = trpc.useContext();
@@ -40,6 +41,37 @@ const MyParas = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  const headCells = [
+    {
+      id: "first_name",
+      label: "First Name",
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+    },
+    {
+      id: "active_benchmarks",
+      label: "# Active Benchmarks",
+    },
+    {
+      id: "last_update",
+      label: "Last Update",
+    },
+    {
+      id: "email",
+      label: "Email",
+    },
+    {
+      id: "phone",
+      label: "Phone number",
+    },
+    {
+      id: "dateAdded",
+      label: "Date Added",
+    },
+  ];
 
   return (
     <div>
