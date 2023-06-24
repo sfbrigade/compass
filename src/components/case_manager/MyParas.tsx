@@ -52,6 +52,9 @@ const MyParas = () => {
             <Link href={`/paras/${para.user_id}`}>
               {para.first_name} {para.last_name}
             </Link>
+            {!para.email_verified_at ? (
+              <span>&nbsp;- Not Verified </span>
+            ) : null}
           </li>
         ))}
       </ul>
