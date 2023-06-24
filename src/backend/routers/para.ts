@@ -1,7 +1,6 @@
 import { z } from "zod";
 import { getTransporter } from "../lib/nodemailer";
 import { authenticatedProcedure, router } from "../trpc";
-import { useId } from "react";
 
 export const para = router({
   getParaById: authenticatedProcedure
