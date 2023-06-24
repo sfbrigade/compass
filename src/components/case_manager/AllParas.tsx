@@ -3,6 +3,7 @@ import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 import Link from "next/link";
 import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
@@ -29,21 +30,59 @@ const AllParasPage = () => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <div>
-      <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
+  const headCells = [
+    {
+      id: "first_name",
+      label: "First Name",
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+    },
+    {
+      id: "active_benchmarks",
+      label: "# Active Benchmarks",
+    },
+    {
+      id: "last_update",
+      label: "Last Update",
+    },
+    {
+      id: "email",
+      label: "Email",
+    },
+    {
+      id: "phone",
+      label: "Phone number",
+    },
+    {
+      id: "dateAdded",
+      label: "Date Added",
+    },
+  ];
 
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+  return (
+    // <div>
+    //   <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
+
+    //   <h2>All Paras</h2>
+    //   <ul className={styles.listNames}>
+    //     {paras?.map((para) => (
+    //       <li key={para.user_id}>
+    //         <Link href={`/paras/${para.user_id}`}>
+    //           {para.first_name} {para.last_name}
+    //         </Link>
+    //       </li>
+    //     ))}
+    //   </ul>
+    // </div>
+    <>
+      <PersonTable
+        people={paras}
+        onSubmit={handleSubmit}
+        headCells={headCells}
+      />
+    </>
   );
 };
 

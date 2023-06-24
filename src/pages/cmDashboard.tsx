@@ -31,7 +31,7 @@ function cmDashboard() {
             }}
           >
             <MyStudentsPage />
-            {/* <AllParasPage /> */}
+            <AllParasPage />
           </div>
         </div>
       </main>
