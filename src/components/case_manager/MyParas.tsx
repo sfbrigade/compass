@@ -1,6 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
+import styles from "@/styles/Dashboard.module.css";
 import Link from "next/link";
 import PersonCreationForm from "./PersonCreationForm";
 
