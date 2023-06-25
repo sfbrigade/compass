@@ -3,7 +3,7 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import { signIn, signOut } from "next-auth/react";
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import Link from "next/link";
 
 const Home: NextPage = () => {
