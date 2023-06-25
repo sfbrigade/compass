@@ -20,6 +20,7 @@ export const student = router({
   /**
    * Get all students assigned to the current user
    */
+  // TODO: move this to case_manager.ts?
   getMyStudents: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
@@ -32,6 +33,7 @@ export const student = router({
     return result;
   }),
 
+  // TODO: move this to case_manager.ts?
   createStudentOrAssignManager: authenticatedProcedure
     .input(
       z.object({
@@ -65,6 +67,7 @@ export const student = router({
   /**
    * Removes the case manager associated with this student.
    */
+  // TODO: move this to case_manager.ts?
   unassignStudent: authenticatedProcedure
     .input(
       z.object({
