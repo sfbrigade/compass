@@ -1,6 +1,6 @@
-import { KyselySchema } from "backend/lib";
+import { KyselySchema } from "@/backend/lib";
 import { getTestPostgresDatabaseFactory } from "ava-postgres";
-import { migrate, seed } from "backend/db";
+import { migrate, seed } from "@/backend/db";
 import { Kysely, PostgresDialect } from "kysely";
 import { Pool } from "pg";
 

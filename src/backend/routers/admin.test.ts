@@ -1,5 +1,5 @@
 import test from "ava";
-import { getTestServer } from "backend/tests";
+import { getTestServer } from "@/backend/tests";
 
 test("getPostgresInfo", async (t) => {
   const { trpc } = await getTestServer(t, { authenticateAs: "admin" });

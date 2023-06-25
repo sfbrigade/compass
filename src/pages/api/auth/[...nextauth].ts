@@ -1,5 +1,5 @@
-import { getNextAuthOptions } from "backend/auth/options";
-import { createContext } from "backend/context";
+import { getNextAuthOptions } from "@/backend/auth/options";
+import { createContext } from "@/backend/context";
 import { NextApiHandler } from "next";
 import NextAuth from "next-auth";
 

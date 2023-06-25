@@ -1,5 +1,5 @@
 import { CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { getDb } from "backend/db/lib/get-db";
+import { getDb } from "@/backend/db/lib/get-db";
 import { S3Client } from "@aws-sdk/client-s3";
 import { Session, getServerSession } from "next-auth";
 import { Env } from "./lib/types";

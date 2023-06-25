@@ -1,4 +1,4 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
