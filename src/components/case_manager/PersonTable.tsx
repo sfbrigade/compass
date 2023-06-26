@@ -18,6 +18,7 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
 import { HeadCell, Para, Student, UserKeys } from "./types/table";
 import styles from "./styles/Table.module.css";
@@ -84,11 +85,7 @@ function EnhancedTableHead({
     };
 
   return (
-    <TableHead
-      sx={{
-        backgroundColor: "lightgray",
-      }}
-    >
+    <TableHead className={styles.header}>
       <TableRow>
         <TableCell padding="checkbox">
           <Checkbox
@@ -112,6 +109,7 @@ function EnhancedTableHead({
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
+              className={styles.headerLabel}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -159,8 +157,10 @@ function EnhancedTableToolbar({
           width: "100%",
         }}
       >
-        <h2>{type}</h2>
-        <button onClick={onOpenInput}>Add {type}</button>
+        <h2 className={styles.tableTitle}>{type}</h2>
+        <button onClick={onOpenInput} className={styles.addButton}>
+          Add {type}
+        </button>
       </div>
       <div
         style={{
@@ -213,12 +213,14 @@ function EnhancedTableInput({
 }: EnhancedTableInputProps) {
   return (
     <TableRow>
-      <TableCell padding="checkbox">
-        <button onClick={onCloseInput}>x</button>
+      <TableCell padding="checkbox" align="center">
+        <button onClick={onCloseInput} className={styles.closeButton}>
+          <CloseIcon />
+        </button>
       </TableCell>
       {inputCells.map((inputCell, idx) => {
         return inputCell.hasInput ? (
-          <TableCell key={inputCell.id} align={"left"}>
+          <TableCell key={inputCell.id} align={"left"} padding="checkbox">
             <TextField
               label={inputCell.label}
               autoFocus={idx === 0}
@@ -233,7 +235,11 @@ function EnhancedTableInput({
         ) : null;
       })}
       <TableCell>
-        <button type="submit" form="table_input_form">
+        <button
+          type="submit"
+          form="table_input_form"
+          className={styles.addButton}
+        >
           Add {type}
         </button>
       </TableCell>
@@ -243,7 +249,7 @@ function EnhancedTableInput({
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: "gray",
+    backgroundColor: "#F8F9FA",
   },
   "&.MuiTableRow-hover:hover": {
     backgroundColor: "lightgray",
