@@ -1,9 +1,10 @@
 import { trpc } from "client/lib/trpc";
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
-import Link from "next/link";
-import PersonCreationForm from "./PersonCreationForm";
+// import styles from "../../styles/Dashboard.module.css";
+// import Link from "next/link";
+// import PersonCreationForm from "./PersonCreationForm";
 import PersonTable from "./PersonTable";
+import { HeadCell, Para } from "./types/table";
 
 const AllParasPage = () => {
   const utils = trpc.useContext();
@@ -30,34 +31,41 @@ const AllParasPage = () => {
     return <div>Loading...</div>;
   }
 
-  const headCells = [
+  const headCells: HeadCell[] = [
     {
       id: "first_name",
       label: "First Name",
+      hasInput: true,
     },
     {
       id: "last_name",
       label: "Last Name",
-    },
-    {
-      id: "active_benchmarks",
-      label: "# Active Benchmarks",
-    },
-    {
-      id: "last_update",
-      label: "Last Update",
+      hasInput: true,
     },
     {
       id: "email",
       label: "Email",
+      hasInput: true,
     },
     {
       id: "phone",
       label: "Phone number",
+      hasInput: true,
+    },
+    {
+      id: "active_benchmarks",
+      label: "# Active Benchmarks",
+      hasInput: false,
+    },
+    {
+      id: "last_update",
+      label: "Last Update",
+      hasInput: false,
     },
     {
       id: "dateAdded",
       label: "Date Added",
+      hasInput: false,
     },
   ];
 
@@ -78,9 +86,10 @@ const AllParasPage = () => {
     // </div>
     <>
       <PersonTable
-        people={paras}
+        people={paras as Para[]}
         onSubmit={handleSubmit}
         headCells={headCells}
+        type="Staff"
       />
     </>
   );

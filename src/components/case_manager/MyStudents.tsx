@@ -1,6 +1,7 @@
 import { trpc } from "client/lib/trpc";
 import React from "react";
 import PersonTable from "./PersonTable";
+import { Student, HeadCell } from "./types/table";
 
 const MyStudentsPage = () => {
   const utils = trpc.useContext();
@@ -26,22 +27,26 @@ const MyStudentsPage = () => {
     });
   };
 
-  const headCells = [
+  const headCells: HeadCell[] = [
     {
       id: "first_name",
       label: "First Name",
+      hasInput: true,
     },
     {
       id: "last_name",
       label: "Last Name",
+      hasInput: true,
     },
     {
       id: "email",
       label: "Email",
+      hasInput: true,
     },
     {
       id: "dateAdded",
       label: "Date Added",
+      hasInput: false,
     },
   ];
 
@@ -51,9 +56,10 @@ const MyStudentsPage = () => {
 
   return (
     <PersonTable
-      people={students}
+      people={students as Student[]}
       onSubmit={handleSubmit}
       headCells={headCells}
+      type="Student"
     />
   );
 };

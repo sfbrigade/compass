@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -18,24 +18,9 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
-import { trpc } from "client/lib/trpc";
 import Link from "next/link";
-
-// interface Student {
-//   first_name: string;
-//   last_name: string;
-//   email: string;
-//   dateAdded: string;
-// }
-interface Person {
-  first_name: string;
-  last_name: string;
-  email: string;
-  phone?: string;
-  // dateAdded: string;
-  student_id: string;
-  assigned_case_manager_id: string;
-}
+import { HeadCell, Para, Student, UserKeys } from "./types/table";
+import styles from "./styles/Table.module.css";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -49,13 +34,10 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 type Order = "asc" | "desc";
 
-function getComparator<Key extends keyof any>(
+function getComparator(
   order: Order,
-  orderBy: Key
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string }
-) => number {
+  orderBy: UserKeys
+): (a: Student | Para, b: Student | Para) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -77,36 +59,9 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-interface HeadCell {
-  id: keyof Person;
-  label: string;
-}
-
-// const headCells: readonly HeadCell[] = [
-//   {
-//     id: "first_name",
-//     label: "First Name",
-//   },
-//   {
-//     id: "last_name",
-//     label: "Last Name",
-//   },
-//   {
-//     id: "email",
-//     label: "Email",
-//   },
-//   {
-//     id: "dateAdded",
-//     label: "Date Added",
-//   },
-// ];
-
 interface EnhancedTableHeadProps {
   numSelected: number;
-  onRequestSort: (
-    event: React.MouseEvent<unknown>,
-    property: keyof Person
-  ) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: UserKeys) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
@@ -124,7 +79,7 @@ function EnhancedTableHead({
   onRequestSort,
 }: EnhancedTableHeadProps) {
   const createSortHandler =
-    (property: keyof Person) => (event: React.MouseEvent<unknown>) => {
+    (property: UserKeys) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -175,11 +130,15 @@ function EnhancedTableHead({
 interface EnhancedTableToolbarProps {
   numSelected: number;
   totalRows: number;
+  type: "Student" | "Staff";
+  onOpenInput: () => void;
 }
 
 function EnhancedTableToolbar({
   numSelected,
   totalRows,
+  type,
+  onOpenInput,
 }: EnhancedTableToolbarProps) {
   return (
     <Toolbar
@@ -200,8 +159,8 @@ function EnhancedTableToolbar({
           width: "100%",
         }}
       >
-        <h2>Students</h2>
-        <button>Add students</button>
+        <h2>{type}</h2>
+        <button onClick={onOpenInput}>Add {type}</button>
       </div>
       <div
         style={{
@@ -243,31 +202,39 @@ function EnhancedTableToolbar({
 
 interface EnhancedTableInputProps {
   inputCells: HeadCell[];
+  type: "Student" | "Staff";
+  onCloseInput: () => void;
 }
 
-function EnhancedTableInput({ inputCells }: EnhancedTableInputProps) {
+function EnhancedTableInput({
+  inputCells,
+  type,
+  onCloseInput,
+}: EnhancedTableInputProps) {
   return (
     <TableRow>
       <TableCell padding="checkbox">
-        <button>x</button>
+        <button onClick={onCloseInput}>x</button>
       </TableCell>
-      {inputCells.map((inputCell, idx) => (
-        <TableCell key={inputCell.id} align={"left"}>
-          <TextField
-            label={inputCell.label}
-            autoFocus={idx === 0}
-            required
-            size="small"
-            inputProps={{
-              form: "table_input_form",
-              name: inputCell.id,
-            }}
-          />
-        </TableCell>
-      ))}
+      {inputCells.map((inputCell, idx) => {
+        return inputCell.hasInput ? (
+          <TableCell key={inputCell.id} align={"left"}>
+            <TextField
+              label={inputCell.label}
+              autoFocus={idx === 0}
+              required
+              size="small"
+              inputProps={{
+                form: "table_input_form",
+                name: inputCell.id,
+              }}
+            />
+          </TableCell>
+        ) : null;
+      })}
       <TableCell>
         <button type="submit" form="table_input_form">
-          Add student
+          Add {type}
         </button>
       </TableCell>
     </TableRow>
@@ -287,9 +254,10 @@ const StyledTableRow = styled(TableRow)(() => ({
 }));
 
 interface EnhancedTableProps {
-  people: Person[];
+  people: Student[] | Para[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   headCells: HeadCell[];
+  type: "Student" | "Staff";
 }
 
 /**
@@ -301,17 +269,27 @@ export default function EnhancedTable({
   people,
   onSubmit,
   headCells,
+  type,
 }: EnhancedTableProps) {
-  const [order, setOrder] = React.useState<Order>("asc");
-  const [orderBy, setOrderBy] = React.useState<keyof Person>("first_name");
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  const [order, setOrder] = useState<Order>("asc");
+  const [orderBy, setOrderBy] = useState<UserKeys>("first_name");
+  const [selected, setSelected] = useState<readonly string[]>([]);
+  const [showInput, setShowInput] = useState<boolean>(false);
   // const [page, setPage] = React.useState(0);
   // const [dense, setDense] = React.useState(false);
   // const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
+  const handleOpenInput = () => {
+    setShowInput(true);
+  };
+
+  const handleCloseInput = () => {
+    setShowInput(false);
+  };
+
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: keyof Person
+    property: UserKeys
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -368,10 +346,6 @@ export default function EnhancedTable({
 
   const visibleRows = React.useMemo(
     () => stableSort(people, getComparator(order, orderBy)),
-    // .slice(
-    //   page * rowsPerPage,
-    //   page * rowsPerPage + rowsPerPage,
-    // ),
     [order, orderBy, people]
   );
 
@@ -381,6 +355,8 @@ export default function EnhancedTable({
       <EnhancedTableToolbar
         numSelected={selected.length}
         totalRows={people.length}
+        type={type}
+        onOpenInput={handleOpenInput}
       />
       <TableContainer>
         <Table
@@ -397,10 +373,13 @@ export default function EnhancedTable({
             rowCount={people.length}
           />
           <TableBody>
-            <EnhancedTableInput
-              inputCells={headCells.slice(0, -1)}
-              // onSubmit={handleSubmit}
-            />
+            {showInput && (
+              <EnhancedTableInput
+                inputCells={headCells.slice(0, -1)}
+                type={type}
+                onCloseInput={handleCloseInput}
+              />
+            )}
             {visibleRows.map((row, index) => {
               const isItemSelected = isSelected(row.email);
               const labelId = `enhanced-table-checkbox-${index}`;
@@ -426,7 +405,13 @@ export default function EnhancedTable({
                     />
                   </TableCell>
                   <TableCell component="th" id={labelId} scope="row">
-                    <Link href={`../students/${row.student_id}`}>
+                    <Link
+                      href={
+                        type === "Student"
+                          ? `../students/${row.student_id || ""}`
+                          : `../paras/${row.user_id || ""}`
+                      }
+                    >
                       {row.first_name}
                     </Link>
                   </TableCell>
@@ -434,6 +419,19 @@ export default function EnhancedTable({
                   <TableCell align={"left"}>{row.email}</TableCell>
 
                   <TableCell align={"left"}>{"temp date"}</TableCell>
+                  {type === "Staff" && (
+                    <>
+                      <TableCell align={"left"}>
+                        {row.active_benchmarks || "temp"}
+                      </TableCell>
+                      <TableCell align={"left"}>
+                        {row.last_update || "temp2"}
+                      </TableCell>
+                      <TableCell align={"left"}>
+                        {row.dateAdded || "temp3"}
+                      </TableCell>
+                    </>
+                  )}
                 </StyledTableRow>
               );
             })}
