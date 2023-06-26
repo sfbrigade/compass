@@ -6,10 +6,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import { CacheProvider, EmotionCache } from "@emotion/react";
+import theme from "../config/theme";
+import createEmotionCache from "../config/createEmotionCache";
 
 interface CustomPageProps {
   session: Session;
 }
+
+const clientSideEmotionCache = createEmotionCache();
 
 function getBaseUrl() {
   if (typeof window !== "undefined") {
@@ -25,6 +32,7 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
+  const emotionCache = clientSideEmotionCache;
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
@@ -37,12 +45,18 @@ export default function App({
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} />
-        </SessionProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <Component {...pageProps} />
+        <trpc.Provider client={trpcClient} queryClient={queryClient}>
+          <QueryClientProvider client={queryClient}>
+            <SessionProvider session={pageProps.session}>
+              <Component {...pageProps} />
+            </SessionProvider>
+          </QueryClientProvider>
+        </trpc.Provider>
+      </ThemeProvider>
+    </CacheProvider>
   );
 }
