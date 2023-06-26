@@ -15,14 +15,14 @@ const ViewParaPage = () => {
   );
 
   const unassignPara = trpc.para.unassignPara.useMutation({
-    onSuccess: () => router.push(`/cmDashboard`),
     onError: (error) => console.log(error.message),
   });
 
-  const handleUnassignPara = () => {
+  const handleUnassignPara = async () => {
     if (!para) return;
 
-    unassignPara.mutate({ para_id: para.user_id });
+    await unassignPara.mutateAsync({ para_id: para.user_id });
+    await router.push(`/cmDashboard`);
   };
 
   if (isLoading) {

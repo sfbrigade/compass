@@ -25,13 +25,13 @@ export const seed = async (db: KyselyDatabaseInstance) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  //! For tests, is it better to insert into database this para or have a seed of this para already in the db?
-  const paraJohn = await db
+  //* reusable para seed for testing
+  const para2 = await db
     .insertInto("user")
     .values({
-      first_name: "John",
-      last_name: "Doe",
-      email: "John@example.com",
+      first_name: "Alexander",
+      last_name: "Maximus",
+      email: "alexander@example.com",
       role: "staff",
     })
     .returningAll()
@@ -40,6 +40,6 @@ export const seed = async (db: KyselyDatabaseInstance) => {
   return {
     para,
     admin,
-    paraJohn,
+    para2,
   };
 };
