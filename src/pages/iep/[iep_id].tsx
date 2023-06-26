@@ -1,4 +1,4 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "../../styles/Home.module.css";
@@ -16,15 +16,15 @@ const Iep: React.FC<IepProps> = ({ iep_id }) => {
     iep_id = router.query.iep_id;
   }
 
-  // TODO: When doing a full page reload ignoring cache, two trpc calls are issued - one with empty
+  // TODO: When doing a full page reload ignoring cache (cmd+shift+r), two trpc calls are issued - one with empty
   // "iep_id" and a second with the param populated. Figure out how to avoid the error.
   // https://github.com/vercel/next.js/discussions/11484
-  const { data: goals, isLoading } = trpc.iep.getGoalsFromIep.useQuery({
+  const { data: goals, isLoading } = trpc.iep.getGoals.useQuery({
     iep_id: iep_id as string,
   });
 
   const goalMutation = trpc.iep.addGoal.useMutation({
-    onSuccess: () => utils.student.getIeps.invalidate(),
+    onSuccess: () => utils.iep.getGoals.invalidate(),
   });
 
   const handleGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -55,11 +55,11 @@ const Iep: React.FC<IepProps> = ({ iep_id }) => {
         </form>
       </div>
 
-      <h3>Goals section</h3>
+      <h2>Goals section</h2>
       <ul>
         {goals?.map((goal) => (
           <li key={goal.goal_id}>
-            <h2>Goal</h2>
+            <h3>Goal</h3>
             <div>Goal ID: {goal.goal_id}</div>
             <p>{goal.description}</p>
             <Goals goal={goal} />

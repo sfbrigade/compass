@@ -10,8 +10,6 @@ const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
       <h1>
         {first_name} {last_name}&apos;s IEP:
       </h1>
-      <h3>Goals section</h3>
-      <h3>Subgoals section</h3>
       <ul></ul>
     </div>
   );

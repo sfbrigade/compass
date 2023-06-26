@@ -1008,6 +1008,89 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **paras_assigned_to_case_manager**
+   * - Table in database
+   */
+  export namespace paras_assigned_to_case_manager {
+    export type Table = 'paras_assigned_to_case_manager';
+    export interface Selectable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string;
+    }
+    export interface JSONSelectable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string;
+    }
+    export interface Whereable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **paras_assigned_to_case_manager.case_manager_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **paras_assigned_to_case_manager.para_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      para_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'paras_assigned_to_case_manager_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **session**
    * - Table in database
    */
@@ -1672,20 +1755,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | session.Table | student.Table | subgoal.Table | user.Table;
-    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | session.Column | student.Column | subgoal.Column | user.Column;
+    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | subgoal.Table | user.Table;
+    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | subgoal.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, session.Table, student.Table, subgoal.Table, user.Table];
+    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, session.Table, student.Table, subgoal.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, user.Table];
   }
 
 
@@ -1718,6 +1801,7 @@ declare module 'zapatos/schema' {
     "goal": goal.Selectable;
     "iep": iep.Selectable;
     "migrations": migrations.Selectable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Selectable;
     "session": session.Selectable;
     "student": student.Selectable;
     "subgoal": subgoal.Selectable;
@@ -1730,6 +1814,7 @@ declare module 'zapatos/schema' {
     "goal": goal.JSONSelectable;
     "iep": iep.JSONSelectable;
     "migrations": migrations.JSONSelectable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.JSONSelectable;
     "session": session.JSONSelectable;
     "student": student.JSONSelectable;
     "subgoal": subgoal.JSONSelectable;
@@ -1742,6 +1827,7 @@ declare module 'zapatos/schema' {
     "goal": goal.Whereable;
     "iep": iep.Whereable;
     "migrations": migrations.Whereable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Whereable;
     "session": session.Whereable;
     "student": student.Whereable;
     "subgoal": subgoal.Whereable;
@@ -1754,6 +1840,7 @@ declare module 'zapatos/schema' {
     "goal": goal.Insertable;
     "iep": iep.Insertable;
     "migrations": migrations.Insertable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Insertable;
     "session": session.Insertable;
     "student": student.Insertable;
     "subgoal": subgoal.Insertable;
@@ -1766,6 +1853,7 @@ declare module 'zapatos/schema' {
     "goal": goal.Updatable;
     "iep": iep.Updatable;
     "migrations": migrations.Updatable;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Updatable;
     "session": session.Updatable;
     "student": student.Updatable;
     "subgoal": subgoal.Updatable;
@@ -1778,6 +1866,7 @@ declare module 'zapatos/schema' {
     "goal": goal.UniqueIndex;
     "iep": iep.UniqueIndex;
     "migrations": migrations.UniqueIndex;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.UniqueIndex;
     "session": session.UniqueIndex;
     "student": student.UniqueIndex;
     "subgoal": subgoal.UniqueIndex;
@@ -1790,6 +1879,7 @@ declare module 'zapatos/schema' {
     "goal": goal.Column;
     "iep": iep.Column;
     "migrations": migrations.Column;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Column;
     "session": session.Column;
     "student": student.Column;
     "subgoal": subgoal.Column;
@@ -1802,6 +1892,7 @@ declare module 'zapatos/schema' {
     "goal": goal.SQL;
     "iep": iep.SQL;
     "migrations": migrations.SQL;
+    "paras_assigned_to_case_manager": paras_assigned_to_case_manager.SQL;
     "session": session.SQL;
     "student": student.SQL;
     "subgoal": subgoal.SQL;

@@ -18,7 +18,7 @@ test("getStudentById", async (t) => {
     .executeTakeFirstOrThrow();
 
   const student = await trpc.student.getStudentById.query({ student_id });
-  t.is(student.student_id, student_id);
+  t.is(student?.student_id, student_id);
 });
 
 test("getMyStudents", async (t) => {

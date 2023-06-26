@@ -1,6 +1,6 @@
 import React from "react";
 import Subgoals from "./Subgoal";
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import Link from "next/link";
 import styles from "../styles/Home.module.css";
 
@@ -20,7 +20,7 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
   });
 
   const subgoal = trpc.iep.addSubgoal.useMutation({
-    onSuccess: () => utils.iep.getGoalsFromIep.invalidate(),
+    onSuccess: () => utils.iep.getSubgoals.invalidate(),
   });
 
   const handleSubGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {

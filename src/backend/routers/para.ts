@@ -49,8 +49,6 @@ export const para = router({
     return result;
   }),
 
-  // TODO: move this to case_manager.ts?
-  // TODO: rename to addPara?
   createPara: authenticatedProcedure
     .input(
       z.object({
@@ -96,6 +94,7 @@ export const para = router({
     }),
 
   // TODO: move this to case_manager.ts?
+  // TODO: rename to addPara?
   assignParaToCaseManager: authenticatedProcedure
     .input(
       z.object({

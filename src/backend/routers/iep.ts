@@ -43,7 +43,7 @@ export const iep = router({
         .executeTakeFirst();
     }),
 
-  getGoalsFromIep: authenticatedProcedure
+  getGoals: authenticatedProcedure
     .input(
       z.object({
         iep_id: z.string(),
