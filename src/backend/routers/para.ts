@@ -108,5 +108,20 @@ export const para = router({
         .execute();
     }),
 
-  //this is a placeholder for the archive-para action that will be covered in a future PR
+  unassignPara: authenticatedProcedure
+    .input(
+      z.object({
+        para_id: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { para_id } = req.input;
+      const { userId } = req.ctx.auth;
+
+      await req.ctx.db
+        .deleteFrom("paras_assigned_to_case_manager")
+        .where("case_manager_id", "=", userId)
+        .where("para_id", "=", para_id)
+        .execute();
+    }),
 });

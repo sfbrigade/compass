@@ -25,8 +25,21 @@ export const seed = async (db: KyselyDatabaseInstance) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
+  //* reusable para seed for testing
+  const para2 = await db
+    .insertInto("user")
+    .values({
+      first_name: "Alexander",
+      last_name: "Maximus",
+      email: "alexander@example.com",
+      role: "staff",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
   return {
     para,
     admin,
+    para2,
   };
 };
