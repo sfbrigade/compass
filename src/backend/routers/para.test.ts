@@ -81,7 +81,7 @@ test("createPara", async (t) => {
   );
 });
 
-test("doNotAddDuplicateEmail", async (t) => {
+test("paras are de-duped by email", async (t) => {
   const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
 
   t.falsy(await trpc.para.getParaByEmail.query({ email: "foo.bar@email.com" }));
