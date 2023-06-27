@@ -32,7 +32,6 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
-  const emotionCache = clientSideEmotionCache;
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
