@@ -220,7 +220,7 @@ function EnhancedTableInput({
       </TableCell>
       {inputCells.map((inputCell, idx) => {
         return inputCell.hasInput ? (
-          <TableCell key={inputCell.id} align={"left"} padding="checkbox">
+          <TableCell key={inputCell.id} align={"left"}>
             <TextField
               label={inputCell.label}
               autoFocus={idx === 0}
@@ -357,6 +357,7 @@ export default function EnhancedTable({
 
   return (
     <Box sx={{ width: "75%" }}>
+      {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
         numSelected={selected.length}
