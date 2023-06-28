@@ -48,6 +48,7 @@
   },
   "devDependencies": {
     "@ava/get-port": "^2.0.0",
+    "@esbuild-kit/cjs-loader": "^2.4.2",
     "@trpc/client": "^10.16.0",
     "@types/mockery": "^1.4.30",
     "@types/ms": "^0.7.31",
@@ -59,9 +60,7 @@
     "@typescript-eslint/parser": "^5.53.0",
     "ava": "^5.1.1",
     "ava-postgres": "^3.0.0",
-    "ava-typescript-worker": "^1.1.0",
-    "esbuild": "^0.17.5",
-    "esbuild-register": "^3.4.2",
+    "ava-typescript-worker": "^2.0.0",
     "eslint": "^8.34.0",
     "eslint-config-next": "13.1.6",
     "foreman": "^3.0.1",
@@ -72,7 +71,6 @@
     "nodemailer-mock": "^2.0.1",
     "prettier": "^2.8.8",
     "testcontainers": "^9.8.0",
-    "tsx": "^3.12.6",
     "type-fest": "^3.5.4",
     "typescript": "^4.9.5"
   },

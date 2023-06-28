@@ -1,4 +1,4 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import PersonTable from "./PersonTable";
 import { Student, HeadCell } from "./types/table";

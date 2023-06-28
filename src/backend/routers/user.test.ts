@@ -1,5 +1,5 @@
 import test from "ava";
-import { getTestServer } from "backend/tests";
+import { getTestServer } from "@/backend/tests";
 
 test("getMe", async (t) => {
   const { trpc, seed } = await getTestServer(t, {

@@ -1,7 +1,7 @@
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import type { AppProps } from "next/app";
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";

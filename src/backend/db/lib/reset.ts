@@ -1,6 +1,6 @@
 import { Client } from "pg";
 import { parse } from "pg-connection-string";
-import { logger } from "backend/lib";
+import { logger } from "@/backend/lib";
 import { migrate } from "./migrate";
 
 export const reset = async (databaseUrl: string) => {

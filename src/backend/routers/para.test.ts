@@ -1,5 +1,5 @@
 import test from "ava";
-import { getTestServer } from "backend/tests";
+import { getTestServer } from "@/backend/tests";
 
 test("getParaById", async (t) => {
   const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
@@ -7,9 +7,9 @@ test("getParaById", async (t) => {
   const { user_id } = await db
     .insertInto("user")
     .values({
-      first_name: "John",
-      last_name: "Doe",
-      email: "john.doe@example.com",
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
       role: "staff",
     })
     .returningAll()
@@ -17,6 +17,42 @@ test("getParaById", async (t) => {
 
   const para = await trpc.para.getParaById.query({ user_id });
   t.is(para.user_id, user_id);
+});
+
+test("getParaByEmail", async (t) => {
+  const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
+
+  const { email } = await db
+    .insertInto("user")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      role: "staff",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const para = await trpc.para.getParaByEmail.query({ email });
+  t.is(para.email, email);
+});
+
+test("getMyParas", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  let myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 0);
+
+  await db
+    .insertInto("paras_assigned_to_case_manager")
+    .values({
+      case_manager_id: seed.para.user_id,
+      para_id: seed.para2.user_id,
+    })
+    .execute();
+
+  myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 1);
 });
 
 test("createPara", async (t) => {
@@ -28,7 +64,6 @@ test("createPara", async (t) => {
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
-    role: "staff",
   });
 
   t.truthy(
@@ -44,4 +79,66 @@ test("createPara", async (t) => {
       .getSentMail()
       .some((mail) => mail.subject?.includes("confirmation"))
   );
+});
+
+test("paras are deduped by email", async (t) => {
+  const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
+
+  t.falsy(await trpc.para.getParaByEmail.query({ email: "foo.bar@email.com" }));
+
+  await trpc.para.createPara.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
+
+  await trpc.para.createPara.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
+
+  const para = await db
+    .selectFrom("user")
+    .where("email", "=", "foo.bar@email.com")
+    .selectAll()
+    .execute();
+
+  t.is(para.length, 1);
+});
+
+test("assignParaToCaseManager", async (t) => {
+  const { trpc, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  let myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 0);
+
+  await trpc.para.assignParaToCaseManager.mutate({
+    para_id: seed.para2.user_id,
+  });
+
+  myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 1);
+});
+
+test("unassignPara", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  await db
+    .insertInto("paras_assigned_to_case_manager")
+    .values({
+      case_manager_id: seed.para.user_id,
+      para_id: seed.para2.user_id,
+    })
+    .execute();
+
+  let myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 1);
+
+  await trpc.para.unassignPara.mutate({
+    para_id: seed.para2.user_id,
+  });
+
+  myParas = await trpc.para.getMyParas.query();
+  t.is(myParas.length, 0);
 });

@@ -1,5 +1,5 @@
 import { Kysely, PostgresDialect } from "kysely";
-import { KyselyDatabaseInstance, KyselySchema } from "backend/lib";
+import { KyselyDatabaseInstance, KyselySchema } from "@/backend/lib";
 import { Pool } from "pg";
 
 type DatabaseInstanceAndPool = { db: KyselyDatabaseInstance; pool: Pool };
