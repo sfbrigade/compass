@@ -1,9 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import Link from "next/link";
-import PersonCreationForm from "./PersonCreationForm";
 import PersonTable from "./PersonTable";
+import { HeadCell, Para } from "./types/table";
 
 const MyParas = () => {
   const utils = trpc.useContext();
@@ -42,55 +40,68 @@ const MyParas = () => {
     return <div>Loading...</div>;
   }
 
-  const headCells = [
+  const headCells: HeadCell[] = [
     {
       id: "first_name",
       label: "First Name",
+      hasInput: true,
     },
     {
       id: "last_name",
       label: "Last Name",
-    },
-    {
-      id: "active_benchmarks",
-      label: "# Active Benchmarks",
-    },
-    {
-      id: "last_update",
-      label: "Last Update",
+      hasInput: true,
     },
     {
       id: "email",
       label: "Email",
+      hasInput: true,
     },
     {
       id: "phone",
       label: "Phone number",
+      hasInput: true,
+    },
+    {
+      id: "active_benchmarks",
+      label: "# Active Benchmarks",
+      hasInput: false,
+    },
+    {
+      id: "last_update",
+      label: "Last Update",
+      hasInput: false,
     },
     {
       id: "dateAdded",
       label: "Date Added",
+      hasInput: false,
     },
   ];
 
   return (
-    <div>
-      <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
-
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-            {!para.email_verified_at ? (
-              <span>&nbsp;- Not Verified </span>
-            ) : null}
-          </li>
-        ))}
-      </ul>
-    </div>
+    <>
+      <PersonTable
+        people={paras as Para[]}
+        onSubmit={handleSubmit}
+        headCells={headCells}
+        type="Staff"
+      />
+    </>
+    // <div>
+    //   <h2>All Paras</h2>
+    //   <ul className={styles.listNames}>
+    //     {paras?.map((para) => (
+    //       <li key={para.user_id}>
+    //         <Link href={`/paras/${para.user_id}`}>
+    //           {para.first_name} {para.last_name}
+    //         </Link>
+    //         {!para.email_verified_at ? (
+    //           <span>&nbsp;- Not Verified </span>
+    //         ) : null}
+    //       </li>
+    //     ))}
+    //   </ul>
+    // </div>
   );
 };
 

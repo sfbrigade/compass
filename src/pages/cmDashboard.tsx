@@ -1,5 +1,5 @@
 import React from "react";
-import MyParas from "../components/case_manager/MyParas";
+// import MyParas from "../components/case_manager/MyParas";
 import MyStudentsPage from "../components/case_manager/MyStudents";
 import styles from "../styles/Dashboard.module.css";
 import Image from "next/image";
@@ -31,7 +31,7 @@ function cmDashboard() {
             }}
           >
             <MyStudentsPage />
-            <MyParas />
+            {/* <MyParas /> */}
           </div>
         </div>
       </main>

@@ -1,8 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import Link from "next/link";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import PersonCreationForm from "./PersonCreationForm";
 import PersonTable from "./PersonTable";
 import { Student, HeadCell } from "./types/table";
 

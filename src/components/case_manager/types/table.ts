@@ -8,6 +8,13 @@ export interface Person {
 
 export interface Para extends Person {
   user_id: string;
+  para_id: string;
+  case_manager_id: string;
+  email_verified_at: string | null;
+  image_url: string;
+  role: "admin" | "staff";
+
+  // Need to update backend for these:
   last_update: string;
   active_benchmarks: number;
 
@@ -20,6 +27,11 @@ export interface Student extends Person {
   assigned_case_manager_id: string;
 
   user_id?: never;
+  para_id?: never;
+  case_manager_id?: never;
+  email_verified_at?: never;
+  image_url?: never;
+  role?: never;
   last_update?: never;
   active_benchmarks?: never;
 }
