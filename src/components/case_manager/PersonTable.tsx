@@ -48,8 +48,11 @@ function getComparator(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+function stableSort<T extends Student[] | Para[], K extends Student | Para>(
+  array: T,
+  comparator: (a: K, b: K) => number
+): K[] {
+  const stabilizedThis = array.map((el, index) => [el, index] as [K, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
