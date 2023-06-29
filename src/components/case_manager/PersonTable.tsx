@@ -38,7 +38,7 @@ type Order = "asc" | "desc";
 function getComparator(
   order: Order,
   orderBy: UserKeys
-): (a: Student | Para, b: Student | Para) => number {
+): <T extends Student | Para>(a: T, b: T) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -48,11 +48,8 @@ function getComparator(
 // stableSort() brings sort stability to non-modern browsers (notably IE11). If you
 // only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
 // with exampleArray.slice().sort(exampleComparator)
-function stableSort<T extends Student[] | Para[], K extends Student | Para>(
-  array: T,
-  comparator: (a: K, b: K) => number
-): K[] {
-  const stabilizedThis = array.map((el, index) => [el, index] as [K, number]);
+function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
+  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) {
@@ -62,6 +59,14 @@ function stableSort<T extends Student[] | Para[], K extends Student | Para>(
   });
   return stabilizedThis.map((el) => el[0]);
 }
+
+function isStudent(person: Student | Para): person is Student {
+  return person.student_id !== undefined;
+}
+
+// function isPara(person: any): person is Para {
+//   return person.user_id !== undefined;
+// }
 
 interface EnhancedTableHeadProps {
   numSelected: number;
@@ -353,10 +358,12 @@ export default function EnhancedTable({
   // const emptyRows =
   //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () => stableSort(people, getComparator(order, orderBy)),
-    [order, orderBy, people]
-  );
+  const visibleRows = React.useMemo(() => {
+    if (isStudent(people[0])) {
+      return stableSort(people as Student[], getComparator(order, orderBy));
+    }
+    return stableSort(people as Para[], getComparator(order, orderBy));
+  }, [order, orderBy, people]);
 
   return (
     <Box sx={{ width: "75%" }}>
