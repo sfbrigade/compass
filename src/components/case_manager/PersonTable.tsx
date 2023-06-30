@@ -434,21 +434,6 @@ export default function EnhancedTable({
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
-
-                  <TableCell align={"left"}>{"temp date"}</TableCell>
-                  {type === "Staff" && (
-                    <>
-                      <TableCell align={"left"}>
-                        {row.active_benchmarks || "temp"}
-                      </TableCell>
-                      <TableCell align={"left"}>
-                        {row.last_update || "temp2"}
-                      </TableCell>
-                      <TableCell align={"left"}>
-                        {row.dateAdded || "temp3"}
-                      </TableCell>
-                    </>
-                  )}
                 </StyledTableRow>
               );
             })}

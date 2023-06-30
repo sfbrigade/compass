@@ -43,11 +43,6 @@ const MyStudentsPage = () => {
       label: "Email",
       hasInput: true,
     },
-    {
-      id: "dateAdded",
-      label: "Date Added",
-      hasInput: false,
-    },
   ];
 
   if (isLoading) {

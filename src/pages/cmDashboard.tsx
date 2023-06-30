@@ -18,11 +18,6 @@ function cmDashboard() {
       </nav>
       <main>
         <div style={{ padding: "20px", textAlign: "center" }}>
-          {/* <p
-            style={{ marginBottom: "3%", fontWeight: "bold", fontSize: "2rem" }}
-          >
-            Welcome to the CM Dashboard
-          </p> */}
           <div
             style={{
               display: "flex",
