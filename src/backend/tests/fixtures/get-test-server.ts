@@ -12,7 +12,7 @@ import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
 
 export interface GetTestServerOptions {
-  authenticateAs?: "para" | "admin";
+  authenticateAs?: "case_manager" | "para" | "admin";
 }
 
 export const getTestServer = async (
@@ -60,27 +60,28 @@ export const getTestServer = async (
 
   let trpcRequestHeaders = {};
 
-  if (authenticateAs === "para") {
-    const sessionToken = randomUUID();
-    await db
-      .insertInto("session")
-      .values({
-        session_token: sessionToken,
-        user_id: seed.para.user_id,
-        expires_at: new Date(Date.now() + ms("1 hour")),
-      })
-      .execute();
+  let user = null;
+  switch (authenticateAs) {
+    case "admin":
+      user = seed.admin;
+      break;
 
-    trpcRequestHeaders = {
-      cookie: `next-auth.session-token=${sessionToken}`,
-    };
-  } else if (authenticateAs === "admin") {
+    case "case_manager":
+      user = seed.case_manager;
+      break;
+
+    case "para":
+      user = seed.para;
+      break;
+  }
+
+  if (user) {
     const sessionToken = randomUUID();
     await db
       .insertInto("session")
       .values({
         session_token: sessionToken,
-        user_id: seed.admin.user_id,
+        user_id: user.user_id,
         expires_at: new Date(Date.now() + ms("1 hour")),
       })
       .execute();
