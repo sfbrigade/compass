@@ -46,8 +46,6 @@ export default function App({
 
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <Toast />
-
       <QueryClientProvider client={queryClient}>
         <SessionProvider session={pageProps.session}>
           <Component {...pageProps} />
