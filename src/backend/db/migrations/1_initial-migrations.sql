@@ -58,7 +58,7 @@ CREATE TABLE "file" (
 );
 
 CREATE TABLE "iep" (
-  iep_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  iep_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   student_id UUID REFERENCES "student" (student_id),
   case_manager_id UUID REFERENCES "user" (user_id),
   start_date DATE,
@@ -66,13 +66,13 @@ CREATE TABLE "iep" (
 );
 
 CREATE TABLE "goal" (
-  goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID or counter
+  goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   iep_id UUID REFERENCES "iep" (iep_id),
   description TEXT
 );
 
 CREATE TABLE "subgoal" (
-  subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: use composite ID?
+  subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT -- TODO: add more fields
 );

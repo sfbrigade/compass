@@ -13,7 +13,7 @@ export const iep = router({
     .mutation(async (req) => {
       const { iep_id, description } = req.input;
 
-      const goal = await req.ctx.db
+      const result = await req.ctx.db
         .insertInto("goal")
         .values({
           iep_id,
@@ -21,6 +21,8 @@ export const iep = router({
         })
         .returningAll()
         .executeTakeFirst();
+
+      return result;
     }),
 
   addSubgoal: authenticatedProcedure
@@ -33,7 +35,7 @@ export const iep = router({
     .mutation(async (req) => {
       const { goal_id, description } = req.input;
 
-      const goal = await req.ctx.db
+      const result = await req.ctx.db
         .insertInto("subgoal")
         .values({
           goal_id,
@@ -41,6 +43,8 @@ export const iep = router({
         })
         .returningAll()
         .executeTakeFirst();
+
+      return result;
     }),
 
   getGoals: authenticatedProcedure

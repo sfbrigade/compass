@@ -154,20 +154,26 @@ test("unassignStudent", async (t) => {
   t.is(students.length, 0);
 });
 
-test("addIep", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
-
-  const tf = await trpc.student.addIep.mutate({
-    student_id: seed.student.student_id,
-    start_date: new Date("2023-01-01"),
-    end_date: new Date("2023-12-31"),
+test("addIep and getIep", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
   });
 
-  t.truthy(
-    await db
-      .selectFrom("iep")
-      .where("student_id", "=", seed.student.student_id)
-      .selectAll()
-      .executeTakeFirst()
-  );
+  const start_date = new Date("2023-01-01");
+  const end_date = new Date("2023-12-31");
+
+  const added = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: start_date,
+    end_date: end_date,
+  });
+
+  const got = await trpc.student.getIeps.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.is(got.length, 1);
+  t.is(got[0].student_id, seed.student.student_id);
+  t.deepEqual(got[0].start_date, added.start_date);
+  t.deepEqual(got[0].end_date, added.end_date);
 });
