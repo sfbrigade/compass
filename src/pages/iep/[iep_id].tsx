@@ -41,25 +41,11 @@ const Iep: React.FC<IepProps> = ({ iep_id }) => {
     <div>
       <h1>IEP ID: {iep_id}</h1>
 
-      <div>
-        <form onSubmit={handleGoalSubmit} className={styles.createInput}>
-          <input
-            type="text"
-            name="description"
-            placeholder="description"
-            required
-          />
-          <button type="submit" className={styles.createButton}>
-            Add Goal
-          </button>
-        </form>
-      </div>
-
-      <h2>Goals section</h2>
+      <h2>Goals</h2>
       <ul>
-        {goals?.map((goal) => (
+        {goals?.map((goal, idx) => (
           <li key={goal.goal_id}>
-            <h3>Goal</h3>
+            <h3>Goal {idx + 1}</h3>
             <div>Goal ID: {goal.goal_id}</div>
             <p>{goal.description}</p>
             <Goals goal={goal} />
@@ -67,6 +53,20 @@ const Iep: React.FC<IepProps> = ({ iep_id }) => {
           </li>
         ))}
       </ul>
+
+      <div>
+        <form onSubmit={handleGoalSubmit} className={styles.createInput}>
+          <input
+            type="text"
+            name="description"
+            placeholder="goal description"
+            required
+          />
+          <button type="submit" className={styles.createButton}>
+            Add Goal
+          </button>
+        </form>
+      </div>
 
       <br />
       <Link href={`/cmDashboard`}>Back to My Students Page</Link>

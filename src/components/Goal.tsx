@@ -41,14 +41,20 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
 
   return (
     <div>
-      {/* <div>Individual Goal Page</div> */}
-
+      <ul className={styles.listNames}>
+        {subgoals?.map((subgoal) => (
+          <li key={subgoal.subgoal_id}>
+            <Subgoals subgoal={subgoal} />
+            <br />
+          </li>
+        ))}
+      </ul>
       <div>
         <form onSubmit={handleSubGoalSubmit} className={styles.createInput}>
           <input
             type="text"
             name="description"
-            placeholder="description stuff"
+            placeholder="subgoal description"
             required
           />
           <button type="submit" className={styles.createButton}>
@@ -56,14 +62,6 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
           </button>
         </form>
       </div>
-
-      <ul className={styles.listNames}>
-        {subgoals?.map((subgoal) => (
-          <li key={subgoal.subgoal_id}>
-            <Subgoals subgoal={subgoal} />
-          </li>
-        ))}
-      </ul>
     </div>
     // <SubGoals />
   );

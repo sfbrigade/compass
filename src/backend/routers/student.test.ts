@@ -153,3 +153,21 @@ test("unassignStudent", async (t) => {
   const students = await trpc.student.getMyStudents.query();
   t.is(students.length, 0);
 });
+
+test("addIep", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, { authenticateAs: "para" });
+
+  const tf = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  t.truthy(
+    await db
+      .selectFrom("iep")
+      .where("student_id", "=", seed.student.student_id)
+      .selectAll()
+      .executeTakeFirst()
+  );
+});

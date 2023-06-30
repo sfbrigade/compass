@@ -99,7 +99,7 @@ export const student = router({
       const { student_id, start_date, end_date } = req.input;
       const { userId } = req.ctx.auth;
 
-      await req.ctx.db
+      const result = await req.ctx.db
         .insertInto("iep")
         .values({
           student_id,
@@ -109,6 +109,8 @@ export const student = router({
         })
         .returningAll()
         .executeTakeFirstOrThrow();
+
+      return result;
     }),
 
   /**

@@ -12,7 +12,7 @@ interface Subgoal {
 const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
   return (
     <div>
-      <h3>Subgoal</h3>
+      <h4>Subgoal</h4>
       <div>Subgoal ID: {subgoal.subgoal_id}</div>
       <p>{subgoal.description}</p>
     </div>
