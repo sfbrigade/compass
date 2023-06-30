@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import styles from "./styles/Paratrials.module.css";
-import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 
 interface TimerInputProps {
   onStartTimer: (inputTimeInSec: number) => void;
@@ -109,7 +108,7 @@ const TimerInput: React.FC<TimerInputProps> = ({ onStartTimer }) => {
         className={styles.startButton}
         onClick={() => onStartTimer(convertToSeconds(inputTime))}
       >
-        <PlayArrowIcon />
+        Start
       </button>
     </div>
   );
