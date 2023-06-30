@@ -6,7 +6,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
-import Toast from "@/components/toast";
 
 interface CustomPageProps {
   session: Session;
