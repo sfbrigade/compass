@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import PersonTable from "./PersonTable";
-import { HeadCell, Para } from "./types/table";
+import { Para, ParaHeadCell } from "./types/table";
 
 const MyParas = () => {
   const utils = trpc.useContext();
@@ -40,7 +40,7 @@ const MyParas = () => {
     return <div>Loading...</div>;
   }
 
-  const headCells: HeadCell[] = [
+  const headCells: ParaHeadCell[] = [
     {
       id: "first_name",
       label: "First Name",

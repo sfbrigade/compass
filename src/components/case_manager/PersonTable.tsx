@@ -19,9 +19,9 @@ import { visuallyHidden } from "@mui/utils";
 import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import Link from "next/link";
-import { HeadCell, Para, Student, UserKeys, isStudent } from "./types/table";
+import { isStudent, HeadCell, Student, Para } from "./types/table";
 import styles from "./styles/Table.module.css";
+import Link from "next/link";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -44,17 +44,17 @@ function getComparator<T>(
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
 
-interface EnhancedTableHeadProps {
+interface EnhancedTableHeadProps<Column> {
   numSelected: number;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: UserKeys) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
   onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
-  headCells: HeadCell[];
+  headCells: Column[];
 }
 
-function EnhancedTableHead({
+function EnhancedTableHead<Column extends HeadCell>({
   headCells,
   onSelectAllClick,
   order,
@@ -62,9 +62,9 @@ function EnhancedTableHead({
   numSelected,
   rowCount,
   onRequestSort,
-}: EnhancedTableHeadProps) {
+}: EnhancedTableHeadProps<Column>) {
   const createSortHandler =
-    (property: UserKeys) => (event: React.MouseEvent<unknown>) => {
+    (property: string) => (event: React.MouseEvent<unknown>) => {
       onRequestSort(event, property);
     };
 
@@ -184,17 +184,17 @@ function EnhancedTableToolbar({
   );
 }
 
-interface EnhancedTableInputProps {
-  inputCells: HeadCell[];
+interface EnhancedTableInputProps<Column> {
+  inputCells: Column[];
   type: "Student" | "Staff";
   onCloseInput: () => void;
 }
 
-function EnhancedTableInput({
+function EnhancedTableInput<Column extends HeadCell>({
   inputCells,
   type,
   onCloseInput,
-}: EnhancedTableInputProps) {
+}: EnhancedTableInputProps<Column>) {
   return (
     <TableRow>
       <TableCell padding="checkbox" align="center">
@@ -243,10 +243,10 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-interface EnhancedTableProps {
-  people: Student[] | Para[];
+interface EnhancedTableProps<Person, Column> {
+  people: Person[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-  headCells: HeadCell[];
+  headCells: Column[];
   type: "Student" | "Staff";
 }
 
@@ -254,15 +254,15 @@ interface EnhancedTableProps {
  * exported table component built with MUI displaying either the CM's paras or students, depending on input.
  * @param people - Array of either paras or student objects
  * @param onSubmit - function ran when submitting the person creation form.
+ * @param headCells - Array of headCell objects, defining columns
+ * @param type - type of table: either student or staff
  */
-export default function EnhancedTable({
-  people,
-  onSubmit,
-  headCells,
-  type,
-}: EnhancedTableProps) {
+export default function EnhancedTable<
+  Person extends Student | Para,
+  Column extends HeadCell
+>({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const [order, setOrder] = useState<Order>("asc");
-  const [orderBy, setOrderBy] = useState<UserKeys>("first_name");
+  const [orderBy, setOrderBy] = useState<keyof Person>("first_name");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [showInput, setShowInput] = useState<boolean>(false);
 
@@ -276,11 +276,11 @@ export default function EnhancedTable({
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: UserKeys
+    property: string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
-    setOrderBy(property);
+    setOrderBy(property as keyof Person);
   };
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -337,7 +337,7 @@ export default function EnhancedTable({
             headCells={headCells}
             numSelected={selected.length}
             order={order}
-            orderBy={orderBy}
+            orderBy={orderBy as string}
             onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
             rowCount={people.length}
@@ -345,7 +345,7 @@ export default function EnhancedTable({
           <TableBody>
             {showInput && (
               <EnhancedTableInput
-                inputCells={headCells.slice(0, -1)}
+                inputCells={headCells}
                 type={type}
                 onCloseInput={handleCloseInput}
               />

@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import PersonTable from "./PersonTable";
-import { Student, HeadCell } from "./types/table";
+import { Student, StudentHeadCell } from "./types/table";
 
 const MyStudentsPage = () => {
   const utils = trpc.useContext();
@@ -27,7 +27,7 @@ const MyStudentsPage = () => {
     });
   };
 
-  const headCells: HeadCell[] = [
+  const headCells: StudentHeadCell[] = [
     {
       id: "first_name",
       label: "First Name",
