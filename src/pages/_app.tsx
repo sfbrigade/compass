@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
+import { QueryCache } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 interface CustomPageProps {
   session: Session;
@@ -25,7 +27,15 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => toast.error(`Something went wrong`),
+        }),
+      })
+  );
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [

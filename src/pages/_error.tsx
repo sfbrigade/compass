@@ -32,7 +32,7 @@ const CustomError: NextPage<ErrorProps> = ({ statusCode }) => {
     );
   }
 
-  return <>GENERIC ERROR MSG HERE</>;
+  return <>We encountered an error</>;
 };
 
 CustomError.getInitialProps = ({ res, err }: NextPageContext) => {
