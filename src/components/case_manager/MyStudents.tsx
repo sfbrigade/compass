@@ -3,7 +3,7 @@ import React from "react";
 import PersonTable from "./PersonTable";
 import { Student, StudentHeadCell } from "./types/table";
 
-const MyStudentsPage = () => {
+const MyStudents = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
 
@@ -59,4 +59,4 @@ const MyStudentsPage = () => {
   );
 };
 
-export default MyStudentsPage;
+export default MyStudents;
