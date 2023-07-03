@@ -1,27 +1,39 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
+import styles from "@/styles/Dashboard.module.css";
 import Link from "next/link";
 import PersonCreationForm from "./PersonCreationForm";
 
-const AllParasPage = () => {
+const MyParas = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.para.getAllParas.useQuery();
-  const { mutate } = trpc.para.createPara.useMutation({
-    onSuccess: () => {
-      return utils.para.getAllParas.invalidate();
+  const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
+
+  const createPara = trpc.para.createPara.useMutation({
+    onSuccess: () => utils.para.getMyParas.invalidate(),
+    onSettled: (data, error) => {
+      if (error) console.log(error.message);
+
+      assignParaToCaseManager.mutate({
+        para_id: data?.user_id as string,
+      });
     },
   });
+
+  const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
+    {
+      onSuccess: () => utils.para.getMyParas.invalidate(),
+      onError: (error) => console.log(error.message),
+    }
+  );
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    mutate({
+    createPara.mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
-      role: "staff",
     });
   };
 
@@ -40,6 +52,9 @@ const AllParasPage = () => {
             <Link href={`/paras/${para.user_id}`}>
               {para.first_name} {para.last_name}
             </Link>
+            {!para.email_verified_at ? (
+              <span>&nbsp;- Not Verified </span>
+            ) : null}
           </li>
         ))}
       </ul>
@@ -47,4 +62,4 @@ const AllParasPage = () => {
   );
 };
 
-export default AllParasPage;
+export default MyParas;

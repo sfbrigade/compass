@@ -2,7 +2,7 @@
 NOTE: Subsequent list rendering and trpc calls would be challenging to reuse, but this form element can be used successfully in the front end for users to create or add students or paras to their caseloads, populating both lists. */
 
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
+import styles from "@/styles/Dashboard.module.css";
 
 interface Props {
   title: string;

@@ -1,7 +1,7 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 import Link from "next/link";
 import React from "react";
-import styles from "../../styles/Dashboard.module.css";
+import styles from "@/styles/Dashboard.module.css";
 import PersonCreationForm from "./PersonCreationForm";
 
 const MyStudentsPage = () => {

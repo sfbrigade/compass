@@ -1,4 +1,4 @@
-import { trpc } from "client/lib/trpc";
+import { trpc } from "@/client/lib/trpc";
 
 const FilesPage = () => {
   const { data: files, refetch } = trpc.file.getMyFiles.useQuery();
