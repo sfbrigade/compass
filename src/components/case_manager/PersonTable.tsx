@@ -20,7 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import Link from "next/link";
-import { HeadCell, Para, Student, UserKeys } from "./types/table";
+import { HeadCell, Para, Student, UserKeys, isStudent } from "./types/table";
 import styles from "./styles/Table.module.css";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -35,38 +35,14 @@ function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
 
 type Order = "asc" | "desc";
 
-function getComparator(
+function getComparator<T>(
   order: Order,
-  orderBy: UserKeys
-): <T extends Student | Para>(a: T, b: T) => number {
+  orderBy: keyof T
+): (a: T, b: T) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-function isStudent(person: Student | Para): person is Student {
-  return person.student_id !== undefined;
-}
-
-// function isPara(person: any): person is Para {
-//   return person.user_id !== undefined;
-// }
 
 interface EnhancedTableHeadProps {
   numSelected: number;
@@ -289,9 +265,6 @@ export default function EnhancedTable({
   const [orderBy, setOrderBy] = useState<UserKeys>("first_name");
   const [selected, setSelected] = useState<readonly string[]>([]);
   const [showInput, setShowInput] = useState<boolean>(false);
-  // const [page, setPage] = React.useState(0);
-  // const [dense, setDense] = React.useState(false);
-  // const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const handleOpenInput = () => {
     setShowInput(true);
@@ -339,30 +312,10 @@ export default function EnhancedTable({
     setSelected(newSelected);
   };
 
-  // const handleChangePage = (event: unknown, newPage: number) => {
-  //   setPage(newPage);
-  // };
-
-  // const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
-
-  // const handleChangeDense = (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   setDense(event.target.checked);
-  // };
-
   const isSelected = (name: string) => selected.indexOf(name) !== -1;
 
-  // Avoid a layout jump when reaching the last page with empty rows.
-  // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   const visibleRows = React.useMemo(() => {
-    if (isStudent(people[0])) {
-      return stableSort(people as Student[], getComparator(order, orderBy));
-    }
-    return stableSort(people as Para[], getComparator(order, orderBy));
+    return people.slice().sort(getComparator(order, orderBy));
   }, [order, orderBy, people]);
 
   return (
@@ -424,7 +377,7 @@ export default function EnhancedTable({
                   <TableCell component="th" id={labelId} scope="row">
                     <Link
                       href={
-                        type === "Student"
+                        isStudent(row)
                           ? `../students/${row.student_id || ""}`
                           : `../paras/${row.user_id || ""}`
                       }
