@@ -155,7 +155,7 @@ test("unassignStudent", async (t) => {
 });
 
 test("addIep and getIep", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
+  const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 

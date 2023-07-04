@@ -1,8 +1,7 @@
 import React from "react";
 import Subgoals from "./Subgoal";
 import { trpc } from "@/client/lib/trpc";
-import Link from "next/link";
-import styles from "../styles/Home.module.css";
+import styles from "@/styles/Goal.module.css";
 
 interface GoalProps {
   goal: Goal;
@@ -27,8 +26,6 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    //Possible future error handling here
-
     subgoal.mutate({
       goal_id: goal.goal_id,
       description: data.get("description") as string,
@@ -41,20 +38,21 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
 
   return (
     <div>
-      <ul className={styles.listNames}>
-        {subgoals?.map((subgoal) => (
-          <li key={subgoal.subgoal_id}>
-            <Subgoals subgoal={subgoal} />
-            <br />
-          </li>
-        ))}
-      </ul>
-      <div>
+      <div className={styles.tab}>
+        <ul className={styles.listNames}>
+          {subgoals?.map((subgoal) => (
+            <li key={subgoal.subgoal_id}>
+              <br />
+              <Subgoals subgoal={subgoal} />
+            </li>
+          ))}
+        </ul>
+        <br />
         <form onSubmit={handleSubGoalSubmit} className={styles.createInput}>
           <input
             type="text"
             name="description"
-            placeholder="subgoal description"
+            placeholder="Subgoal description"
             required
           />
           <button type="submit" className={styles.createButton}>
@@ -63,7 +61,6 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
         </form>
       </div>
     </div>
-    // <SubGoals />
   );
 };
 

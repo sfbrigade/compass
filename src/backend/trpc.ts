@@ -3,6 +3,8 @@ import { createContext } from "./context";
 import superjson from "superjson";
 
 export const t = initTRPC.context<typeof createContext>().create({
+  // SuperJSON allows us to transparently use, e.g., standard Date/Map/Sets
+  // over the wire between the server and client.
   transformer: superjson,
 });
 

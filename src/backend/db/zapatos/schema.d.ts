@@ -600,9 +600,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description: string | null;
+      description: string;
+      /**
+      * **goal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
     }
     export interface JSONSelectable {
       /**
@@ -620,9 +626,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description: string | null;
+      description: string;
+      /**
+      * **goal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
     }
     export interface Whereable {
       /**
@@ -640,9 +652,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **goal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -660,9 +678,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **goal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -680,9 +704,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **goal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'goal_pkey';
     export type Column = keyof Selectable;
@@ -719,15 +749,21 @@ declare module 'zapatos/schema' {
       /**
       * **iep.start_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      start_date: Date | null;
+      start_date: Date;
       /**
       * **iep.end_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      end_date: Date | null;
+      end_date: Date;
+      /**
+      * **iep.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
     }
     export interface JSONSelectable {
       /**
@@ -751,15 +787,21 @@ declare module 'zapatos/schema' {
       /**
       * **iep.start_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      start_date: db.DateString | null;
+      start_date: db.DateString;
       /**
       * **iep.end_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      end_date: db.DateString | null;
+      end_date: db.DateString;
+      /**
+      * **iep.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
     }
     export interface Whereable {
       /**
@@ -783,15 +825,21 @@ declare module 'zapatos/schema' {
       /**
       * **iep.start_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
       * **iep.end_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -815,15 +863,21 @@ declare module 'zapatos/schema' {
       /**
       * **iep.start_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment;
+      start_date: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment;
       /**
       * **iep.end_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment;
+      end_date: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment;
+      /**
+      * **iep.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -847,15 +901,21 @@ declare module 'zapatos/schema' {
       /**
       * **iep.start_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment>;
+      start_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment>;
       /**
       * **iep.end_date**
       * - `date` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | null | db.DefaultType | db.SQLFragment>;
+      end_date?: (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.DateString | Date) | db.Parameter<(db.DateString | Date)> | db.SQLFragment>;
+      /**
+      * **iep.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'iep_pkey';
     export type Column = keyof Selectable;
@@ -1428,9 +1488,15 @@ declare module 'zapatos/schema' {
       /**
       * **subgoal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description: string | null;
+      description: string;
+      /**
+      * **subgoal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
     }
     export interface JSONSelectable {
       /**
@@ -1448,9 +1514,15 @@ declare module 'zapatos/schema' {
       /**
       * **subgoal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description: string | null;
+      description: string;
+      /**
+      * **subgoal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
     }
     export interface Whereable {
       /**
@@ -1468,9 +1540,15 @@ declare module 'zapatos/schema' {
       /**
       * **subgoal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1488,9 +1566,15 @@ declare module 'zapatos/schema' {
       /**
       * **subgoal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **subgoal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1508,9 +1592,15 @@ declare module 'zapatos/schema' {
       /**
       * **subgoal.description**
       * - `text` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      description?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **subgoal.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'subgoal_pkey';
     export type Column = keyof Selectable;

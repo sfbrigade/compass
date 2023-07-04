@@ -16,16 +16,21 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { data: ieps } = trpc.student.getIeps.useQuery({
-    student_id: student_id as string,
-  });
+  const { data: ieps } = trpc.student.getIeps.useQuery(
+    {
+      student_id: student_id as string,
+    },
+    {
+      enabled: Boolean(student_id),
+    }
+  );
 
   const archiveMutation = trpc.student.unassignStudent.useMutation();
   const archiveStudent = async () => {
     if (!student) {
       return;
     }
-    archiveMutation.mutate({ student_id: student.student_id });
+    await archiveMutation.mutateAsync({ student_id: student.student_id });
     await router.push(`/cmDashboard`);
   };
 

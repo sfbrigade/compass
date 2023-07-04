@@ -2,7 +2,7 @@ import test from "ava";
 import { getTestServer } from "@/backend/tests";
 
 test("basic flow - add/get goals and subgoals", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
+  const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
@@ -16,11 +16,11 @@ test("basic flow - add/get goals and subgoals", async (t) => {
     iep_id: iep.iep_id,
     description: "goal 1",
   });
-  const subgoal1 = await trpc.iep.addSubgoal.mutate({
+  await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 1",
   });
-  const subgoal2 = await trpc.iep.addSubgoal.mutate({
+  await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 2",
   });

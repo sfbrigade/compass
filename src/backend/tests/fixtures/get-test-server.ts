@@ -61,22 +61,8 @@ export const getTestServer = async (
 
   let trpcRequestHeaders = {};
 
-  let user = null;
-  switch (authenticateAs) {
-    case "admin":
-      user = seed.admin;
-      break;
-
-    case "case_manager":
-      user = seed.case_manager;
-      break;
-
-    case "para":
-      user = seed.para;
-      break;
-  }
-
-  if (user) {
+  if (authenticateAs) {
+    const user = seed[authenticateAs];
     const sessionToken = randomUUID();
     await db
       .insertInto("session")
