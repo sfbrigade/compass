@@ -10,6 +10,7 @@ import { randomUUID } from "crypto";
 import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
+import superjson from "superjson";
 
 export interface GetTestServerOptions {
   authenticateAs?: "case_manager" | "para" | "admin";
@@ -60,22 +61,8 @@ export const getTestServer = async (
 
   let trpcRequestHeaders = {};
 
-  let user = null;
-  switch (authenticateAs) {
-    case "admin":
-      user = seed.admin;
-      break;
-
-    case "case_manager":
-      user = seed.case_manager;
-      break;
-
-    case "para":
-      user = seed.para;
-      break;
-  }
-
-  if (user) {
+  if (authenticateAs) {
+    const user = seed[authenticateAs];
     const sessionToken = randomUUID();
     await db
       .insertInto("session")
@@ -93,6 +80,7 @@ export const getTestServer = async (
 
   return {
     trpc: createTRPCProxyClient<AppRouter>({
+      transformer: superjson,
       links: [
         httpBatchLink({
           url: `http://localhost:${appPort}/api/trpc`,

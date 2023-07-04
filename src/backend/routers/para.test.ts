@@ -18,7 +18,7 @@ test("getParaById", async (t) => {
     .executeTakeFirstOrThrow();
 
   const para = await trpc.para.getParaById.query({ user_id });
-  t.is(para.user_id, user_id);
+  t.is(para?.user_id, user_id);
 });
 
 test("getParaByEmail", async (t) => {
@@ -38,7 +38,7 @@ test("getParaByEmail", async (t) => {
     .executeTakeFirstOrThrow();
 
   const para = await trpc.para.getParaByEmail.query({ email });
-  t.is(para.email, email);
+  t.is(para?.email, email);
 });
 
 test("getMyParas", async (t) => {

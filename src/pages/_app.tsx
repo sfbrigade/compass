@@ -7,6 +7,7 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
 import Head from "next/head";
+import superjson from "superjson";
 
 interface CustomPageProps {
   session: Session;
@@ -29,6 +30,7 @@ export default function App({
   const [queryClient] = useState(() => new QueryClient());
   const [trpcClient] = useState(() =>
     trpc.createClient({
+      transformer: superjson,
       links: [
         // Log in development and only log errors in production
         loggerLink({
