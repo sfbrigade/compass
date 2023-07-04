@@ -1,8 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
-import Link from "next/link";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
+import { Student, StudentHeadCell } from "./types/table";
 
 const MyStudentsPage = () => {
   const utils = trpc.useContext();
@@ -28,25 +27,35 @@ const MyStudentsPage = () => {
     });
   };
 
+  const headCells: StudentHeadCell[] = [
+    {
+      id: "first_name",
+      label: "First Name",
+      hasInput: true,
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      hasInput: true,
+    },
+    {
+      id: "email",
+      label: "Email",
+      hasInput: true,
+    },
+  ];
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <PersonCreationForm title={"Add a Student"} onSubmit={handleSubmit} />
-
-      <h2>My students</h2>
-      <ul className={styles.listNames}>
-        {students?.map((student) => (
-          <li key={student.student_id}>
-            <Link href={`/students/${student.student_id}`}>
-              {student.first_name} {student.last_name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <PersonTable
+      people={students as Student[]}
+      onSubmit={handleSubmit}
+      headCells={headCells}
+      type="Student"
+    />
   );
 };
 
