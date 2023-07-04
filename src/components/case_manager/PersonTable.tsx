@@ -329,10 +329,7 @@ export default function EnhancedTable<
         onOpenInput={handleOpenInput}
       />
       <TableContainer>
-        <Table
-          sx={{ minWidth: 750 }}
-          aria-labelledby={`Table of ${"students/paras"}`}
-        >
+        <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
           <EnhancedTableHead
             headCells={headCells}
             numSelected={selected.length}
@@ -350,9 +347,9 @@ export default function EnhancedTable<
                 onCloseInput={handleCloseInput}
               />
             )}
-            {visibleRows.map((row, index) => {
+            {visibleRows.map((row) => {
               const isItemSelected = isSelected(row.email);
-              const labelId = `enhanced-table-checkbox-${index}`;
+              const labelId = row.email;
 
               return (
                 <StyledTableRow
