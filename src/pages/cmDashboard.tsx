@@ -2,7 +2,7 @@ import React from "react";
 import MyStudents from "../components/case_manager/MyStudents";
 import styles from "../styles/Dashboard.module.css";
 import Image from "next/image";
-import UploadPicture from "@/components/uploadPicture/uploadPicture";
+import UploadImageComponent from "@/components/uploadImage/uploadImage";
 
 function cmDashboard() {
   return (
@@ -29,7 +29,10 @@ function cmDashboard() {
           </div>
         </div>
       </main>
-      <UploadPicture title="Take a picture of student's work" />
+      <UploadImageComponent
+        title="Take a picture of student's work"
+        fileName="ImageName"
+      />
     </div>
   );
 }
