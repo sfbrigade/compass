@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -7,21 +7,17 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
-import Checkbox from "@mui/material/Checkbox";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import Tooltip from "@mui/material/Tooltip";
-import IconButton from "@mui/material/IconButton";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
-import DeleteIcon from "@mui/icons-material/Delete";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { isStudent, HeadCell, Student, Para } from "./types/table";
 import styles from "./styles/Table.module.css";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -45,22 +41,16 @@ function getComparator<T>(
 }
 
 interface EnhancedTableHeadProps<Column> {
-  numSelected: number;
   onRequestSort: (event: React.MouseEvent<unknown>, property: string) => void;
-  onSelectAllClick: (event: React.ChangeEvent<HTMLInputElement>) => void;
   order: Order;
   orderBy: string;
-  rowCount: number;
   headCells: Column[];
 }
 
 function EnhancedTableHead<Column extends HeadCell>({
   headCells,
-  onSelectAllClick,
   order,
   orderBy,
-  numSelected,
-  rowCount,
   onRequestSort,
 }: EnhancedTableHeadProps<Column>) {
   const createSortHandler =
@@ -71,22 +61,10 @@ function EnhancedTableHead<Column extends HeadCell>({
   return (
     <TableHead className={styles.header}>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
-            inputProps={{
-              "aria-label": "select all desserts",
-            }}
-          />
-        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
             align={"left"}
-            // possible 'none' for padding
             sortDirection={orderBy === headCell.id ? order : false}
           >
             <TableSortLabel
@@ -110,17 +88,19 @@ function EnhancedTableHead<Column extends HeadCell>({
 }
 
 interface EnhancedTableToolbarProps {
-  numSelected: number;
   totalRows: number;
   type: "Student" | "Staff";
   onOpenInput: () => void;
+  searchParam: string;
+  onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function EnhancedTableToolbar({
-  numSelected,
   totalRows,
   type,
   onOpenInput,
+  searchParam,
+  onSearch,
 }: EnhancedTableToolbarProps) {
   return (
     <Toolbar
@@ -128,10 +108,6 @@ function EnhancedTableToolbar({
         pl: { sm: 0 },
         pr: { xs: 0, sm: 0 },
         flexDirection: "column",
-        ...(numSelected > 0 && {
-          // Change this later
-          bgcolor: "pink",
-        }),
       }}
     >
       <div
@@ -154,31 +130,22 @@ function EnhancedTableToolbar({
         }}
       >
         <Typography color="inherit" variant="subtitle1" component="div">
-          {numSelected > 0
-            ? `Selected: ${numSelected}/${totalRows}`
-            : `Total: ${totalRows}`}
+          {`Total: ${totalRows}`}
         </Typography>
-
-        {numSelected > 0 ? (
-          <Tooltip title="Delete">
-            <IconButton>
-              <DeleteIcon />
-            </IconButton>
-          </Tooltip>
-        ) : (
-          <TextField
-            id="search-input"
-            placeholder="Search"
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-            variant="standard"
-          />
-        )}
+        <TextField
+          id="search-input"
+          placeholder="Search"
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon />
+              </InputAdornment>
+            ),
+          }}
+          variant="standard"
+          value={searchParam}
+          onChange={onSearch}
+        />
       </div>
     </Toolbar>
   );
@@ -197,11 +164,6 @@ function EnhancedTableInput<Column extends HeadCell>({
 }: EnhancedTableInputProps<Column>) {
   return (
     <TableRow>
-      <TableCell padding="checkbox" align="center">
-        <button onClick={onCloseInput} className={styles.closeButton}>
-          <CloseIcon />
-        </button>
-      </TableCell>
       {inputCells.map((inputCell, idx) => {
         return inputCell.hasInput ? (
           <TableCell key={inputCell.id} align={"left"}>
@@ -225,6 +187,11 @@ function EnhancedTableInput<Column extends HeadCell>({
           className={styles.addButton}
         >
           Add {type}
+        </button>
+      </TableCell>
+      <TableCell padding="checkbox" align="center">
+        <button onClick={onCloseInput} className={styles.closeButton}>
+          <CloseIcon />
         </button>
       </TableCell>
     </TableRow>
@@ -261,10 +228,13 @@ export default function EnhancedTable<
   Person extends Student | Para,
   Column extends HeadCell
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
+  const router = useRouter();
+
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Person>("first_name");
-  const [selected, setSelected] = useState<readonly string[]>([]);
   const [showInput, setShowInput] = useState<boolean>(false);
+
+  const [searchParam, setSearchParam] = useState<string>("");
 
   const handleOpenInput = () => {
     setShowInput(true);
@@ -272,6 +242,10 @@ export default function EnhancedTable<
 
   const handleCloseInput = () => {
     setShowInput(false);
+  };
+
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchParam(event.target.value);
   };
 
   const handleRequestSort = (
@@ -283,61 +257,55 @@ export default function EnhancedTable<
     setOrderBy(property as keyof Person);
   };
 
-  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.checked) {
-      const newSelected = people.map((n) => n.email);
-      setSelected(newSelected);
-      return;
-    }
-    setSelected([]);
+  const handleLinkToPage = async (link: string) => {
+    await router.push(link);
   };
 
-  const handleClick = (event: React.MouseEvent<unknown>, email: string) => {
-    const selectedIndex = selected.indexOf(email);
-    let newSelected: readonly string[] = [];
+  const filterList = useCallback(
+    (list: Person[], searchTerm: string) => {
+      const filteredList = list.filter((person) => {
+        for (const headCell of headCells) {
+          if (
+            headCell.id in person &&
+            person[headCell.id as keyof Person]?.toString().includes(searchTerm)
+          ) {
+            return true;
+          }
+        }
+        return false;
+      });
 
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, email);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
-
-  const isSelected = (name: string) => selected.indexOf(name) !== -1;
+      return filteredList;
+    },
+    [headCells]
+  );
 
   const visibleRows = React.useMemo(() => {
-    return people.slice().sort(getComparator(order, orderBy));
-  }, [order, orderBy, people]);
+    const filteredList = filterList(people, searchParam);
+    if (filteredList.length === 0) {
+      return [];
+    }
+    return filteredList.slice().sort(getComparator(order, orderBy));
+  }, [order, orderBy, people, searchParam, filterList]);
 
   return (
     <Box sx={{ width: "75%" }}>
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
-        numSelected={selected.length}
         totalRows={people.length}
         type={type}
         onOpenInput={handleOpenInput}
+        searchParam={searchParam}
+        onSearch={handleSearch}
       />
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
           <EnhancedTableHead
             headCells={headCells}
-            numSelected={selected.length}
             order={order}
             orderBy={orderBy as string}
-            onSelectAllClick={handleSelectAllClick}
             onRequestSort={handleRequestSort}
-            rowCount={people.length}
           />
           <TableBody>
             {showInput && (
@@ -348,39 +316,25 @@ export default function EnhancedTable<
               />
             )}
             {visibleRows.map((row) => {
-              const isItemSelected = isSelected(row.email);
               const labelId = row.email;
 
               return (
                 <StyledTableRow
                   hover
-                  role="checkbox"
-                  aria-checked={isItemSelected}
+                  role="link"
                   tabIndex={-1}
                   key={row.email}
-                  selected={isItemSelected}
                   sx={{ cursor: "pointer" }}
+                  onClick={() =>
+                    handleLinkToPage(
+                      isStudent(row)
+                        ? `../students/${row.student_id || ""}`
+                        : `../paras/${row.user_id || ""}`
+                    )
+                  }
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox
-                      color="primary"
-                      checked={isItemSelected}
-                      inputProps={{
-                        "aria-labelledby": labelId,
-                      }}
-                      onClick={(event) => handleClick(event, row.email)}
-                    />
-                  </TableCell>
                   <TableCell component="th" id={labelId} scope="row">
-                    <Link
-                      href={
-                        isStudent(row)
-                          ? `../students/${row.student_id || ""}`
-                          : `../paras/${row.user_id || ""}`
-                      }
-                    >
-                      {row.first_name}
-                    </Link>
+                    {row.first_name}
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
