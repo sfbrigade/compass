@@ -5,10 +5,11 @@ import { Student, StudentHeadCell } from "./types/table";
 
 const MyStudentsPage = () => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
+  const { data: students, isLoading } =
+    trpc.case_manager.getMyStudents.useQuery();
 
-  const { mutate } = trpc.student.createStudentOrAssignManager.useMutation({
-    onSuccess: () => utils.student.getMyStudents.invalidate(),
+  const { mutate } = trpc.case_manager.addStudent.useMutation({
+    onSuccess: () => utils.case_manager.getMyStudents.invalidate(),
     // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
     onError: () =>
       alert(

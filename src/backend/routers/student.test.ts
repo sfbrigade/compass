@@ -21,61 +21,8 @@ test("getStudentById", async (t) => {
   t.is(student?.student_id, student_id);
 });
 
-test("getMyStudents", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  const { student_id } = await db
-    .insertInto("student")
-    .values({
-      first_name: "Foo",
-      last_name: "Bar",
-      email: "foo.bar@email.com",
-      assigned_case_manager_id: seed.case_manager.user_id,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow();
-
-  const students = await trpc.student.getMyStudents.query();
-  t.is(students.length, 1);
-  t.is(students[0].student_id, student_id);
-});
-
-test("createStudent", async (t) => {
-  const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  await trpc.student.createStudentOrAssignManager.mutate({
-    first_name: "Foo",
-    last_name: "Bar",
-    email: "foo.bar@email.com",
-  });
-
-  t.truthy(
-    await db
-      .selectFrom("student")
-      .where("first_name", "=", "Foo")
-      .selectAll()
-      .executeTakeFirst()
-  );
-});
-
-test("createStudent - invalid email", async (t) => {
-  const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  await t.throwsAsync(
-    trpc.student.createStudentOrAssignManager.mutate({
-      first_name: "Foo",
-      last_name: "Bar",
-      email: "invalid-email",
-    })
-  );
-});
-
+// TODO: This test looks to be testing the `UNIQUE` constraing on the schema.
+// Improve this test
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
@@ -103,69 +50,8 @@ test("doNotAddDuplicateEmails", async (t) => {
       .execute();
   });
 
-  const students = await trpc.student.getMyStudents.query();
+  const students = await trpc.case_manager.getMyStudents.query();
   t.is(students.length, 1);
-});
-
-test("assignCaseManager", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  await db
-    .insertInto("student")
-    .values({
-      first_name: "Foo",
-      last_name: "Bar",
-      email: "foo.bar@email.com",
-      assigned_case_manager_id: seed.case_manager.user_id,
-    })
-    .execute();
-
-  let students = await trpc.student.getMyStudents.query();
-  t.is(students.length, 1);
-
-  await db
-    .updateTable("student")
-    .set({ assigned_case_manager_id: null })
-    .where("email", "=", "foo.bar@email.com")
-    .execute();
-
-  students = await trpc.student.getMyStudents.query();
-  t.is(students.length, 0);
-
-  await trpc.student.createStudentOrAssignManager.mutate({
-    first_name: "Foo",
-    last_name: "Bar",
-    email: "foo.bar@email.com",
-  });
-
-  students = await trpc.student.getMyStudents.query();
-  t.is(students.length, 1);
-});
-
-test("unassignStudent", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  const { student_id } = await db
-    .insertInto("student")
-    .values({
-      first_name: "Foo",
-      last_name: "Bar",
-      email: "foo.bar@email.com",
-      assigned_case_manager_id: seed.case_manager.user_id,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow();
-
-  await trpc.student.unassignStudent.mutate({
-    student_id,
-  });
-
-  const students = await trpc.student.getMyStudents.query();
-  t.is(students.length, 0);
 });
 
 test("addIep and getIep", async (t) => {

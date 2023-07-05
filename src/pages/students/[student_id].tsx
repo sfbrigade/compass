@@ -25,7 +25,7 @@ const ViewStudentPage = () => {
     }
   );
 
-  const archiveMutation = trpc.student.unassignStudent.useMutation();
+  const archiveMutation = trpc.case_manager.removeStudent.useMutation();
   const archiveStudent = async () => {
     if (!student) {
       return;
