@@ -115,6 +115,20 @@ test("paras are deduped by email", async (t) => {
   t.is(para.length, 1);
 });
 
+test("createPara - invalid email", async (t) => {
+  const { trpc, db } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  await t.throwsAsync(
+    trpc.para.createPara.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "invalid-email",
+    })
+  );
+});
+
 test("assignParaToCaseManager", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",

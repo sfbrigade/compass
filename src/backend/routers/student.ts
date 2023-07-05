@@ -39,7 +39,7 @@ export const student = router({
       z.object({
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string(),
+        email: z.string().email(),
       })
     )
     .mutation(async (req) => {
