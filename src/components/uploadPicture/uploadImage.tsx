@@ -47,6 +47,19 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     setShowTakePicture(true);
   };
 
+  const stopCameraStream = () => {
+    const video = videoRef.current;
+
+    if (video !== null) {
+      const stream = video.srcObject as MediaStream;
+      const tracks = stream.getTracks();
+
+      tracks.forEach((track) => {
+        track.stop();
+      });
+    }
+  };
+
   const captureImage = () => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
@@ -63,6 +76,8 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       const dataURL = canvas.toDataURL("image/png");
       setCapturedImage(dataURL);
 
+      stopCameraStream();
+
       setShowTakePicture(false);
       setShowUploadPicture(true);
     }
@@ -71,11 +86,13 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   const onCancelTakePicture = () => {
     setShowStart(true);
     setShowTakePicture(false);
+    stopCameraStream();
   };
 
   const onCancelCaptureImage = () => {
     setShowTakePicture(true);
     setShowUploadPicture(false);
+    stopCameraStream();
   };
 
   const onClickUploadPicture = () => {
@@ -83,6 +100,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     setShowStart(true);
     setStartButtonDisabled(true);
     setUploading(true);
+    stopCameraStream();
   };
 
   const getPresignedUrlForUpload =
