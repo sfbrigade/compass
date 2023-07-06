@@ -32,7 +32,18 @@ export default function App({
       new QueryClient({
         queryCache: new QueryCache({
           onError: (error) => {
-            toast.error(`Something went wrong`);
+            if (error instanceof Error) {
+              const errorMessages: { [key: string]: string } = {
+                BAD_REQUEST: "400: Bad request, please try again",
+                UNAUTHORIZED: "401: Unauthorized Error",
+                NOT_FOUND: "404: Page not found",
+              };
+
+              const defaultMessage = "An error occured. Please try again";
+              const errorMessage =
+                errorMessages[error.message] || defaultMessage;
+              toast.error(errorMessage);
+            }
           },
         }),
       })
