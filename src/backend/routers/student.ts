@@ -51,7 +51,7 @@ export const student = router({
         .values({
           first_name,
           last_name,
-          email,
+          email: email.toLowerCase(),
           assigned_case_manager_id: userId,
         })
         .onConflict((oc) =>

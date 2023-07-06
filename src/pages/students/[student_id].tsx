@@ -5,9 +5,8 @@ import Link from "next/link";
 import styles from "@/styles/Home.module.css";
 
 const ViewStudentPage = () => {
-  const [archive, setArchive] = useState(false);
+  const [archivePrompt, setArchivePrompt] = useState(false);
   const utils = trpc.useContext();
-
   const router = useRouter();
   const { student_id } = router.query;
 
@@ -17,16 +16,12 @@ const ViewStudentPage = () => {
   );
 
   const { data: ieps } = trpc.student.getIeps.useQuery(
-    {
-      student_id: student_id as string,
-    },
-    {
-      enabled: Boolean(student_id),
-    }
+    { student_id: student_id as string },
+    { enabled: Boolean(student_id) }
   );
 
   const archiveMutation = trpc.student.unassignStudent.useMutation();
-  const archiveStudent = async () => {
+  const handleArchiveStudent = async () => {
     if (!student) {
       return;
     }
@@ -68,26 +63,26 @@ const ViewStudentPage = () => {
       </p>
       <button
         className={`${styles.signIn} ${styles.bold}`}
-        onClick={() => setArchive(true)}
+        onClick={() => setArchivePrompt(true)}
       >
         Archive Student
       </button>
 
-      {archive ? (
+      {archivePrompt ? (
         <div>
           <p>
-            Are you sure you want to archive {student?.first_name}{" "}
+            Are you sure you want to archive {student?.first_name}&nbsp;
             {student?.last_name}?
           </p>
           <button
             className={`${styles.signIn} ${styles.bold}`}
-            onClick={() => archiveStudent()}
+            onClick={() => handleArchiveStudent()}
           >
             Yes
           </button>
           <button
             className={`${styles.signIn} ${styles.bold}`}
-            onClick={() => setArchive(false)}
+            onClick={() => setArchivePrompt(false)}
           >
             No
           </button>
