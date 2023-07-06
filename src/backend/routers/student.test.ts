@@ -62,6 +62,20 @@ test("createStudent", async (t) => {
   );
 });
 
+test("createStudent - invalid email", async (t) => {
+  const { trpc, db } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  await t.throwsAsync(
+    trpc.student.createStudentOrAssignManager.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "invalid-email",
+    })
+  );
+});
+
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
