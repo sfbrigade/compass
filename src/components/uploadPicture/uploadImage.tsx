@@ -149,7 +149,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   }, [uploadSuccess]);
 
   return (
-    //<divclassName={styles.video-feed-container}>
     <div>
       {showStart && (
         <button
