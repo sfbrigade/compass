@@ -5,10 +5,10 @@ import { Para, ParaHeadCell } from "./types/table";
 
 const MyParas = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
+  const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
 
   const createPara = trpc.para.createPara.useMutation({
-    onSuccess: () => utils.para.getMyParas.invalidate(),
+    onSuccess: () => utils.case_manager.getMyParas.invalidate(),
     onSettled: (data, error) => {
       if (error) console.log(error.message);
 
@@ -18,12 +18,10 @@ const MyParas = () => {
     },
   });
 
-  const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
-    {
-      onSuccess: () => utils.para.getMyParas.invalidate(),
-      onError: (error) => console.log(error.message),
-    }
-  );
+  const assignParaToCaseManager = trpc.case_manager.addPara.useMutation({
+    onSuccess: () => utils.case_manager.getMyParas.invalidate(),
+    onError: (error) => console.log(error.message),
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
