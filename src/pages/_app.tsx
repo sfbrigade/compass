@@ -8,6 +8,8 @@ import { useState } from "react";
 import "../styles/globals.css";
 import { QueryCache } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
+import Head from "next/head";
+import superjson from "superjson";
 
 interface CustomPageProps {
   session: Session;
@@ -51,6 +53,7 @@ export default function App({
 
   const [trpcClient] = useState(() =>
     trpc.createClient({
+      transformer: superjson,
       links: [
         // Log in development and only log errors in production
         loggerLink({
@@ -67,13 +70,20 @@ export default function App({
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} showErrorToast={toast.error} />
-          <Toaster position="bottom-right" />
-        </SessionProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <>
+      <Head>
+        <title>Compass</title>
+        <meta name="description" content="Make IEPs easier" />
+        <link rel="icon" href="/img/favicon.png" />
+      </Head>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider session={pageProps.session}>
+            <Component {...pageProps} showErrorToast={toast.error} />
+            <Toaster position="bottom-right" />
+          </SessionProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </>
   );
 }

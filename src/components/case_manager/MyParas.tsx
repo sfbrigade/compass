@@ -1,8 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import Link from "next/link";
-import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
+import { Para, ParaHeadCell } from "./types/table";
 
 const MyParas = () => {
   const utils = trpc.useContext();
@@ -41,24 +40,33 @@ const MyParas = () => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <div>
-      <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
+  const headCells: ParaHeadCell[] = [
+    {
+      id: "first_name",
+      label: "First Name",
+      hasInput: true,
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      hasInput: true,
+    },
+    {
+      id: "email",
+      label: "Email",
+      hasInput: true,
+    },
+  ];
 
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-            {!para.email_verified_at ? (
-              <span>&nbsp;- Not Verified </span>
-            ) : null}
-          </li>
-        ))}
-      </ul>
-    </div>
+  return (
+    <>
+      <PersonTable
+        people={paras as Para[]}
+        onSubmit={handleSubmit}
+        headCells={headCells}
+        type="Staff"
+      />
+    </>
   );
 };
 

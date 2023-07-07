@@ -7,7 +7,7 @@ test("getMe", async (t) => {
   });
 
   const me = await trpc.user.getMe.query();
-  t.is(me.user_id, seed.para.user_id);
+  t.is(me?.user_id, seed.para.user_id);
 });
 
 test("getMe (throws if missing auth)", async (t) => {

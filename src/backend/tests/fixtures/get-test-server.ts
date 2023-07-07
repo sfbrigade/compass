@@ -10,9 +10,10 @@ import { randomUUID } from "crypto";
 import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
+import superjson from "superjson";
 
 export interface GetTestServerOptions {
-  authenticateAs?: "para" | "admin";
+  authenticateAs?: "case_manager" | "para" | "admin";
 }
 
 export const getTestServer = async (
@@ -60,27 +61,14 @@ export const getTestServer = async (
 
   let trpcRequestHeaders = {};
 
-  if (authenticateAs === "para") {
+  if (authenticateAs) {
+    const user = seed[authenticateAs];
     const sessionToken = randomUUID();
     await db
       .insertInto("session")
       .values({
         session_token: sessionToken,
-        user_id: seed.para.user_id,
-        expires_at: new Date(Date.now() + ms("1 hour")),
-      })
-      .execute();
-
-    trpcRequestHeaders = {
-      cookie: `next-auth.session-token=${sessionToken}`,
-    };
-  } else if (authenticateAs === "admin") {
-    const sessionToken = randomUUID();
-    await db
-      .insertInto("session")
-      .values({
-        session_token: sessionToken,
-        user_id: seed.admin.user_id,
+        user_id: user.user_id,
         expires_at: new Date(Date.now() + ms("1 hour")),
       })
       .execute();
@@ -92,6 +80,7 @@ export const getTestServer = async (
 
   return {
     trpc: createTRPCProxyClient<AppRouter>({
+      transformer: superjson,
       links: [
         httpBatchLink({
           url: `http://localhost:${appPort}/api/trpc`,

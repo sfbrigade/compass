@@ -31,6 +31,7 @@ export const para = router({
       return result;
     }),
 
+  // TODO: move this to case_manager.ts?
   getMyParas: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
@@ -53,7 +54,7 @@ export const para = router({
       z.object({
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string(),
+        email: z.string().email(),
       })
     )
     .mutation(async (req) => {
@@ -92,6 +93,8 @@ export const para = router({
       return paraData;
     }),
 
+  // TODO: move this to case_manager.ts?
+  // TODO: rename to addPara?
   assignParaToCaseManager: authenticatedProcedure
     .input(
       z.object({
