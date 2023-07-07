@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
+import { QueryCache } from "@tanstack/react-query";
+import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
 
@@ -27,7 +29,28 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => {
+            if (error instanceof Error) {
+              const errorMessages: { [key: string]: string } = {
+                BAD_REQUEST: "400: Bad request, please try again",
+                UNAUTHORIZED: "401: Unauthorized Error",
+                NOT_FOUND: "404: Page not found",
+              };
+
+              const defaultMessage = "An error occured. Please try again";
+              const errorMessage =
+                errorMessages[error.message] || defaultMessage;
+              toast.error(errorMessage);
+            }
+          },
+        }),
+      })
+  );
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
       transformer: superjson,
@@ -56,7 +79,8 @@ export default function App({
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
-            <Component {...pageProps} />
+            <Component {...pageProps} showErrorToast={toast.error} />
+            <Toaster position="bottom-right" />
           </SessionProvider>
         </QueryClientProvider>
       </trpc.Provider>
