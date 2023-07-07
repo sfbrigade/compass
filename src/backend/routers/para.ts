@@ -31,24 +31,6 @@ export const para = router({
       return result;
     }),
 
-  // TODO: move this to case_manager.ts?
-  getMyParas: authenticatedProcedure.query(async (req) => {
-    const { userId } = req.ctx.auth;
-
-    const result = await req.ctx.db
-      .selectFrom("user")
-      .innerJoin(
-        "paras_assigned_to_case_manager",
-        "user.user_id",
-        "paras_assigned_to_case_manager.para_id"
-      )
-      .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
-      .selectAll()
-      .execute();
-
-    return result;
-  }),
-
   createPara: authenticatedProcedure
     .input(
       z.object({
@@ -91,40 +73,5 @@ export const para = router({
       }
 
       return paraData;
-    }),
-
-  // TODO: move this to case_manager.ts?
-  // TODO: rename to addPara?
-  assignParaToCaseManager: authenticatedProcedure
-    .input(
-      z.object({
-        para_id: z.string(),
-      })
-    )
-    .mutation(async (req) => {
-      const { para_id } = req.input;
-      const { userId } = req.ctx.auth;
-
-      await req.ctx.db
-        .insertInto("paras_assigned_to_case_manager")
-        .values({ case_manager_id: userId, para_id })
-        .execute();
-    }),
-
-  unassignPara: authenticatedProcedure
-    .input(
-      z.object({
-        para_id: z.string(),
-      })
-    )
-    .mutation(async (req) => {
-      const { para_id } = req.input;
-      const { userId } = req.ctx.auth;
-
-      await req.ctx.db
-        .deleteFrom("paras_assigned_to_case_manager")
-        .where("case_manager_id", "=", userId)
-        .where("para_id", "=", para_id)
-        .execute();
     }),
 });

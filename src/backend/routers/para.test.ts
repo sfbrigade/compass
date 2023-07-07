@@ -41,26 +41,6 @@ test("getParaByEmail", async (t) => {
   t.is(para?.email, email);
 });
 
-test("getMyParas", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  let myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 0);
-
-  await db
-    .insertInto("paras_assigned_to_case_manager")
-    .values({
-      case_manager_id: seed.case_manager.user_id,
-      para_id: seed.para.user_id,
-    })
-    .execute();
-
-  myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 1);
-});
-
 test("createPara", async (t) => {
   const { trpc, db, nodemailerMock } = await getTestServer(t, {
     authenticateAs: "case_manager",
@@ -116,7 +96,7 @@ test("paras are deduped by email", async (t) => {
 });
 
 test("createPara - invalid email", async (t) => {
-  const { trpc, db } = await getTestServer(t, {
+  const { trpc } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
@@ -127,44 +107,4 @@ test("createPara - invalid email", async (t) => {
       email: "invalid-email",
     })
   );
-});
-
-test("assignParaToCaseManager", async (t) => {
-  const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  let myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 0);
-
-  await trpc.para.assignParaToCaseManager.mutate({
-    para_id: seed.para.user_id,
-  });
-
-  myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 1);
-});
-
-test("unassignPara", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
-  });
-
-  await db
-    .insertInto("paras_assigned_to_case_manager")
-    .values({
-      case_manager_id: seed.case_manager.user_id,
-      para_id: seed.para.user_id,
-    })
-    .execute();
-
-  let myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 1);
-
-  await trpc.para.unassignPara.mutate({
-    para_id: seed.para.user_id,
-  });
-
-  myParas = await trpc.para.getMyParas.query();
-  t.is(myParas.length, 0);
 });
