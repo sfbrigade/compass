@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -280,11 +280,9 @@ export default function EnhancedTable<
     [headCells]
   );
 
-  const visibleRows = React.useMemo(() => {
+  const visibleRows = useMemo(() => {
     const filteredList = filterList(people, searchParam);
-    if (filteredList.length === 0) {
-      return [];
-    }
+
     return filteredList.slice().sort(getComparator(order, orderBy));
   }, [order, orderBy, people, searchParam, filterList]);
 
