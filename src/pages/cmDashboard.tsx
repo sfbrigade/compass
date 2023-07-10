@@ -4,6 +4,7 @@ import MyStudentsPage from "../components/case_manager/MyStudents";
 import styles from "../styles/Dashboard.module.css";
 import Head from "next/head";
 import Image from "next/image";
+import UploadImageComponent from "@/components/uploadPicture/uploadImage";
 
 function cmDashboard() {
   return (
@@ -41,6 +42,10 @@ function cmDashboard() {
           </div>
         </div>
       </main>
+      <UploadImageComponent
+        title="Take a picture of student's work"
+        fileName="newFile"
+      />
     </div>
   );
 }
