@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./uploadImage.module.css";
 import { trpc } from "@/client/lib/trpc";
 import axios from "axios";
@@ -21,62 +21,23 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   const [uploading, setUploading] = useState<boolean>(false);
   const [uploadSuccess, setUploadSuccess] = useState<boolean>(false);
 
-  const [constraints] = useState({ width: 300, height: 300 });
   const [capturedImage, setCapturedImage] = useState<string>("");
-
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-
-  const openUserMedia = async () => {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    const video = videoRef.current;
-    if (video !== null) {
-      video.srcObject = stream;
-      await video.play();
-    }
-  };
-
-  useEffect(() => {
-    if (showTakePicture) {
-      void openUserMedia();
-    }
-  }, [showTakePicture]);
 
   const onClickStartButton = () => {
     setShowStart(false);
     setShowTakePicture(true);
   };
 
-  const stopCameraStream = () => {
-    const video = videoRef.current;
-
-    if (video !== null) {
-      const stream = video.srcObject as MediaStream;
-      const tracks = stream.getTracks();
-
-      tracks.forEach((track) => {
-        track.stop();
-      });
-    }
-  };
-
-  const captureImage = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-
-    if (canvas !== null && video !== null) {
-      canvas.width = constraints.width;
-      canvas.height = constraints.height;
-
-      const context = canvas.getContext("2d");
-      if (context !== null) {
-        context.drawImage(video, 0, 0, constraints.width, constraints.height);
-      }
-
-      const dataURL = canvas.toDataURL("image/png");
-      setCapturedImage(dataURL);
-
-      stopCameraStream();
+  const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (typeof reader.result === "string") {
+          setCapturedImage(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
 
       setShowTakePicture(false);
       setShowUploadPicture(true);
@@ -86,13 +47,11 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   const onCancelTakePicture = () => {
     setShowStart(true);
     setShowTakePicture(false);
-    stopCameraStream();
   };
 
   const onCancelCaptureImage = () => {
     setShowTakePicture(true);
     setShowUploadPicture(false);
-    stopCameraStream();
   };
 
   const onClickUploadPicture = () => {
@@ -100,7 +59,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     setShowStart(true);
     setStartButtonDisabled(true);
     setUploading(true);
-    stopCameraStream();
   };
 
   const getPresignedUrlForUpload =
@@ -166,15 +124,13 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       )}
       {showTakePicture && (
         <>
-          <video
-            className={styles.video}
-            autoPlay={true}
-            ref={videoRef}
-            id="video"
-          ></video>
-          <button className={styles.startButton} onClick={captureImage}>
-            Capture
-          </button>
+          <input
+            type="file"
+            accept="image/*;capture=camera"
+            capture="environment"
+            onChange={handleFile}
+            className={styles.startButton}
+          />
           <button
             className={styles.startButton}
             id="cancel-button"
@@ -195,15 +151,11 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
             id="cancel-button"
             onClick={onCancelCaptureImage}
           >
-            Cancel Image
+            Cancel
           </button>
         </>
       )}
-      <canvas
-        ref={canvasRef}
-        className={styles.canvas}
-        style={{ display: "none" }}
-      ></canvas>
+
       {uploading && <p id="uploading">Uploading.......</p>}
       {uploadSuccess && (
         <div className={styles.uploadSuccessContainer}>
