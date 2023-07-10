@@ -1,16 +1,16 @@
 import { trpc } from "@/client/lib/trpc";
-import Link from "next/link";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
+import { Student, StudentHeadCell } from "./types/table";
 
-const MyStudentsPage = () => {
+const MyStudents = () => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } = trpc.student.getMyStudents.useQuery();
+  const { data: students, isLoading } =
+    trpc.case_manager.getMyStudents.useQuery();
 
-  const { mutate } = trpc.student.createStudentOrAssignManager.useMutation({
-    onSuccess: () => utils.student.getMyStudents.invalidate(),
-    //in future PR, we could change this to notification instead of browser alert [tessa]
+  const { mutate } = trpc.case_manager.addStudent.useMutation({
+    onSuccess: () => utils.case_manager.getMyStudents.invalidate(),
+    // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
     onError: () =>
       alert(
         `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
@@ -28,26 +28,36 @@ const MyStudentsPage = () => {
     });
   };
 
+  const headCells: StudentHeadCell[] = [
+    {
+      id: "first_name",
+      label: "First Name",
+      hasInput: true,
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      hasInput: true,
+    },
+    {
+      id: "email",
+      label: "Email",
+      hasInput: true,
+    },
+  ];
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      <PersonCreationForm title={"Add a Student"} onSubmit={handleSubmit} />
-
-      <h2>My students</h2>
-      <ul className={styles.listNames}>
-        {students?.map((student) => (
-          <li key={student.student_id}>
-            <Link href={`/students/${student.student_id}`}>
-              {student.first_name} {student.last_name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <PersonTable
+      people={students as Student[]}
+      onSubmit={handleSubmit}
+      headCells={headCells}
+      type="Student"
+    />
   );
 };
 
-export default MyStudentsPage;
+export default MyStudents;

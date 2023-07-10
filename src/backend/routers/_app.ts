@@ -1,16 +1,20 @@
 import { router } from "../trpc";
-import { file } from "./file";
 import { admin } from "./admin";
+import { case_manager } from "./case_manager";
+import { file } from "./file";
+import { iep } from "./iep";
 import { para } from "./para";
 import { student } from "./student";
 import { user } from "./user";
 
 export const trpcRouter = router({
-  file,
   admin,
+  case_manager,
+  file,
+  iep,
+  para,
   student,
   user,
-  para,
 });
 
 export type AppRouter = typeof trpcRouter;

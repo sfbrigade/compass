@@ -1,0 +1,28 @@
+.tab {
+  margin-left: 40px;
+}
+
+.listNames {
+  list-style-type: none;
+  font-family: "Quicksand", sans-serif;
+}
+
+.createButton {
+  height: 24px;
+  width: auto;
+  padding: 0px 20px;
+  background-color: #5347d7;
+  border-radius: 5px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-family: "Quicksand", sans-serif;
+}
+
+.createInput input {
+  border-radius: 2px;
+  border: 1px solid #ccc;
+  margin: 2px 4px;
+  padding: 4px 2px;
+  font-family: "Quicksand", sans-serif;
+}

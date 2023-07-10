@@ -1,15 +1,14 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import styles from "@/styles/Dashboard.module.css";
-import Link from "next/link";
-import PersonCreationForm from "./PersonCreationForm";
+import PersonTable from "./PersonTable";
+import { Para, ParaHeadCell } from "./types/table";
 
 const MyParas = () => {
   const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.para.getMyParas.useQuery();
+  const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
 
   const createPara = trpc.para.createPara.useMutation({
-    onSuccess: () => utils.para.getMyParas.invalidate(),
+    onSuccess: () => utils.case_manager.getMyParas.invalidate(),
     onSettled: (data, error) => {
       if (error) console.log(error.message);
 
@@ -19,12 +18,10 @@ const MyParas = () => {
     },
   });
 
-  const assignParaToCaseManager = trpc.para.assignParaToCaseManager.useMutation(
-    {
-      onSuccess: () => utils.para.getMyParas.invalidate(),
-      onError: (error) => console.log(error.message),
-    }
-  );
+  const assignParaToCaseManager = trpc.case_manager.addPara.useMutation({
+    onSuccess: () => utils.case_manager.getMyParas.invalidate(),
+    onError: (error) => console.log(error.message),
+  });
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -41,24 +38,33 @@ const MyParas = () => {
     return <div>Loading...</div>;
   }
 
-  return (
-    <div>
-      <PersonCreationForm title={"Add a Para"} onSubmit={handleSubmit} />
+  const headCells: ParaHeadCell[] = [
+    {
+      id: "first_name",
+      label: "First Name",
+      hasInput: true,
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      hasInput: true,
+    },
+    {
+      id: "email",
+      label: "Email",
+      hasInput: true,
+    },
+  ];
 
-      <h2>All Paras</h2>
-      <ul className={styles.listNames}>
-        {paras?.map((para) => (
-          <li key={para.user_id}>
-            <Link href={`/paras/${para.user_id}`}>
-              {para.first_name} {para.last_name}
-            </Link>
-            {!para.email_verified_at ? (
-              <span>&nbsp;- Not Verified </span>
-            ) : null}
-          </li>
-        ))}
-      </ul>
-    </div>
+  return (
+    <>
+      <PersonTable
+        people={paras as Para[]}
+        onSubmit={handleSubmit}
+        headCells={headCells}
+        type="Staff"
+      />
+    </>
   );
 };
 

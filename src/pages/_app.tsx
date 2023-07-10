@@ -6,6 +6,10 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
+import { QueryCache } from "@tanstack/react-query";
+import toast, { Toaster } from "react-hot-toast";
+import Head from "next/head";
+import superjson from "superjson";
 
 interface CustomPageProps {
   session: Session;
@@ -25,9 +29,31 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
-  const [queryClient] = useState(() => new QueryClient());
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        queryCache: new QueryCache({
+          onError: (error) => {
+            if (error instanceof Error) {
+              const errorMessages: { [key: string]: string } = {
+                BAD_REQUEST: "400: Bad request, please try again",
+                UNAUTHORIZED: "401: Unauthorized Error",
+                NOT_FOUND: "404: Page not found",
+              };
+
+              const defaultMessage = "An error occured. Please try again";
+              const errorMessage =
+                errorMessages[error.message] || defaultMessage;
+              toast.error(errorMessage);
+            }
+          },
+        }),
+      })
+  );
+
   const [trpcClient] = useState(() =>
     trpc.createClient({
+      transformer: superjson,
       links: [
         // Log in development and only log errors in production
         loggerLink({
@@ -44,12 +70,20 @@ export default function App({
   );
 
   return (
-    <trpc.Provider client={trpcClient} queryClient={queryClient}>
-      <QueryClientProvider client={queryClient}>
-        <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} />
-        </SessionProvider>
-      </QueryClientProvider>
-    </trpc.Provider>
+    <>
+      <Head>
+        <title>Compass</title>
+        <meta name="description" content="Make IEPs easier" />
+        <link rel="icon" href="/img/favicon.png" />
+      </Head>
+      <trpc.Provider client={trpcClient} queryClient={queryClient}>
+        <QueryClientProvider client={queryClient}>
+          <SessionProvider session={pageProps.session}>
+            <Component {...pageProps} showErrorToast={toast.error} />
+            <Toaster position="bottom-right" />
+          </SessionProvider>
+        </QueryClientProvider>
+      </trpc.Provider>
+    </>
   );
 }

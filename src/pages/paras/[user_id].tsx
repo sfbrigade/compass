@@ -14,7 +14,7 @@ const ViewParaPage = () => {
     { enabled: Boolean(user_id) }
   );
 
-  const unassignPara = trpc.para.unassignPara.useMutation({
+  const unassignPara = trpc.case_manager.removePara.useMutation({
     onError: (error) => console.log(error.message),
   });
 
