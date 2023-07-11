@@ -1,5 +1,3 @@
-
-
 .startButton {
   padding: 10px;
   display: block;
@@ -12,7 +10,6 @@
   font-family: "Lucida Grande", "Arial", sans-serif;
   color: rgb(131, 23, 202);
 }
-
 
 .uploadSuccessIcon {
   color: green;
