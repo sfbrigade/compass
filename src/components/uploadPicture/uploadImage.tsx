@@ -148,11 +148,13 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       {showUploadPicture && (
         <div className={styles.uploadedImageContainer}>
           {capturedImage && (
-            <img
-              src={URL.createObjectURL(capturedImage)}
-              alt="Captured"
-              className={styles.uploadedImage}
-            />
+            <svg>
+              <image
+                href={URL.createObjectURL(capturedImage)}
+                // alt="image"
+                className={styles.uploadedImage}
+              />
+            </svg>
           )}
           <div className={styles.buttonsContainer}>
             <button
