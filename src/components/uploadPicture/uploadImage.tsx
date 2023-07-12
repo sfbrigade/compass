@@ -148,7 +148,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
           </button>
           <button
             className={styles.startButton}
-            id="cancel-button"
             onClick={onCancelCaptureImage}
           >
             Cancel
