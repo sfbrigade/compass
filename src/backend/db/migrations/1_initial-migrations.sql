@@ -77,5 +77,55 @@ CREATE TABLE "subgoal" (
   subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  subgoal_type TEXT NOT NULL (subgoal_type IN ('writing', 'math')),
+  collection_type TEXT (collection_type IN ('attempt', 'behavioral')),
+  instructions TEXT,
+
 );
+
+CREATE TABLE "task" (
+  task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
+
+  assignee_id UUID REFERENCES "user" (user_id),
+  due_date TIMESTAMPTZ NOT NULL,
+
+);
+
+CREATE TABLE "trial_data" (
+  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
+  -- TODO: Possibly add optional reference to "task"
+
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW() NOT NULL
+
+  -- Optional depending on type of task
+  notes TEXT,
+  image_list TEXT[],
+
+
+  type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral')),
+  -- data jsonb,
+  attempts_with_prompt int,
+  attempts_without_prompt int,
+
+  -- behavioral_1
+  -- behavioral_2
+
+
+  -- enum - type of subgoal
+  -- jsonb for actual data, e.g. attempt_counts etc
+)
+
+
+-- message AttemptData {
+--     int attempts_with_prompt
+--     int attempts_without_prompt
+-- }
+-- message BehavioralData {
+--     int behavioral_1
+--     int behavioral_2
+--     int behavioral_3
+-- }
+
