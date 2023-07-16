@@ -78,19 +78,16 @@ CREATE TABLE "subgoal" (
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  subgoal_type TEXT NOT NULL (subgoal_type IN ('writing', 'math')),
-  collection_type TEXT (collection_type IN ('attempt', 'behavioral')),
-  instructions TEXT,
-
+  subgoal_type TEXT NOT NULL CHECK (subgoal_type IN ('writing', 'math')),
+  collection_type TEXT NOT NULL CHECK (collection_type IN ('attempt', 'behavioral')),
+  instructions TEXT
 );
 
 CREATE TABLE "task" (
   task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
-
   assignee_id UUID REFERENCES "user" (user_id),
-  due_date TIMESTAMPTZ NOT NULL,
-
+  due_date TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE "trial_data" (
@@ -98,7 +95,7 @@ CREATE TABLE "trial_data" (
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   -- TODO: Possibly add optional reference to "task"
 
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW() NOT NULL
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
 
   -- Optional depending on type of task
   notes TEXT,
@@ -108,7 +105,7 @@ CREATE TABLE "trial_data" (
   type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral')),
   -- data jsonb,
   attempts_with_prompt int,
-  attempts_without_prompt int,
+  attempts_without_prompt int
 
   -- behavioral_1
   -- behavioral_2
@@ -116,7 +113,7 @@ CREATE TABLE "trial_data" (
 
   -- enum - type of subgoal
   -- jsonb for actual data, e.g. attempt_counts etc
-)
+);
 
 
 -- message AttemptData {

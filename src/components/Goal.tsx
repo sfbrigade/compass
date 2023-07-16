@@ -29,6 +29,8 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
     subgoal.mutate({
       goal_id: goal.goal_id,
       description: data.get("description") as string,
+      subgoal_type: data.get("subgoal_type") as string,
+      collection_type: data.get("collection_type") as string,
     });
   };
 
@@ -55,6 +57,14 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
             placeholder="Subgoal description"
             required
           />
+          <select name="subgoal_type">
+            <option value="writing">writing</option>
+            <option value="math">math</option>
+          </select>
+          <select name="collection_type">
+            <option value="attempt">attempt</option>
+            <option value="behavioral">behavioral</option>
+          </select>
           <button type="submit" className={styles.createButton}>
             Add SubGoal
           </button>
