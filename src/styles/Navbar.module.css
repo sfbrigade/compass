@@ -1,47 +1,47 @@
 .container {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .sidebar {
-    flex: 2;
-    background-color: #080155;
-    min-height: 100vh;
+  flex: 2;
+  background-color: #080155;
+  min-height: 100vh;
 }
 
 .body {
-    flex: 10;
+  flex: 10;
 }
 
 .linkContainer {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 }
 
 .logo {
-    padding-left: 28px;
-    padding-top: 12px;
-    padding-bottom: 10px;
+  padding-left: 28px;
+  padding-top: 12px;
+  padding-bottom: 10px;
 }
 
 .link {
-    color: white;
-    padding-left: 30px;
-    padding-top: 12px;
-    padding-bottom: 12px;
-    display: flex;
-    align-items: center;
-    text-decoration: none;
+  color: white;
+  padding-left: 30px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .linkTitle {
-    padding-left: 8px;
+  padding-left: 8px;
 }
 
 .link:hover {
-    background-color: #383473;
+  background-color: #383473;
 }
 
 .icon {
-    color: white;
+  color: white;
 }
