@@ -4,6 +4,7 @@ import AllStudentsPage from "../components/case_manager/AllStudents";
 import styles from "../styles/Dashboard.module.css";
 import Head from "next/head";
 import Image from "next/image";
+// import NavBar from "@/components/layout/NavBar";
 
 function cmDashboard() {
   return (
@@ -13,15 +14,8 @@ function cmDashboard() {
         <meta name="description" content="Make IEPs easier" />
         <link rel="icon" href="/img/favicon.png" />
       </Head>
-      <nav style={{ padding: "2%" }}>
-        <Image
-          src="/img/compass-logo.svg"
-          alt="logo"
-          width={50}
-          height={50}
-          priority
-        />
-      </nav>
+      {/* <NavBar /> */}
+
       <main>
         <div style={{ padding: "20px", textAlign: "center" }}>
           <p

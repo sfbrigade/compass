@@ -5,6 +5,7 @@ import { trpc } from "client/lib/trpc";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { useState } from "react";
+import NavBar from "@/components/layout/NavBar";
 import "../styles/globals.css";
 
 interface CustomPageProps {
@@ -40,7 +41,9 @@ export default function App({
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <SessionProvider session={pageProps.session}>
-          <Component {...pageProps} />
+          <NavBar>
+            <Component {...pageProps} />
+          </NavBar>
         </SessionProvider>
       </QueryClientProvider>
     </trpc.Provider>
