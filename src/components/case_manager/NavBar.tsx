@@ -28,17 +28,17 @@ const NavBar = ({ children }) => {
 
           {me && (
             <div className={styles.linkContainer}>
-              <Link href="" className={styles.link}>
+              <Link href="/staff" className={styles.link}>
                 <BsPersonWorkspace className={styles.icon} />
                 <p className={styles.linkTitle}>Staff</p>
               </Link>
               <br />
-              <Link href="" className={styles.link}>
+              <Link href="/students" className={styles.link}>
                 <BsPeople className={styles.icon} />
                 <p className={styles.linkTitle}>Students</p>
               </Link>
               <br />
-              <Link href="" className={styles.link}>
+              <Link href="/settings" className={styles.link}>
                 <BsGear className={styles.icon} />
                 <p className={styles.linkTitle}>Settings</p>
               </Link>
