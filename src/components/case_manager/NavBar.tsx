@@ -7,7 +7,10 @@ import { FiLogOut } from "react-icons/fi";
 import { signOut } from "next-auth/react";
 import { trpc } from "@/client/lib/trpc";
 
-const NavBar = ({ children }) => {
+interface Props {
+  children: React.ReactNode;
+}
+const NavBar: React.FC<Props> = ({ children }) => {
   const { data: me } = trpc.user.getMe.useQuery();
 
   return (
