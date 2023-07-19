@@ -8,16 +8,18 @@ export const iep = router({
       z.object({
         iep_id: z.string(),
         description: z.string(),
+        category: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { iep_id, description } = req.input;
+      const { iep_id, description, category } = req.input;
 
       const result = await req.ctx.db
         .insertInto("goal")
         .values({
           iep_id,
           description,
+          category,
         })
         .returningAll()
         .executeTakeFirst();
@@ -30,19 +32,17 @@ export const iep = router({
       z.object({
         goal_id: z.string(),
         description: z.string(),
-        subgoal_type: z.string(),
         collection_type: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { goal_id, description, subgoal_type, collection_type } = req.input;
+      const { goal_id, description, collection_type } = req.input;
 
       const result = await req.ctx.db
         .insertInto("subgoal")
         .values({
           goal_id,
           description,
-          subgoal_type,
           collection_type,
         })
         .returningAll()
@@ -144,7 +144,7 @@ export const iep = router({
         "first_name",
         "last_name",
         "subgoal.description as description",
-        "subgoal_type",
+        "category",
         "due_date",
         "instructions",
         "task.task_id",
@@ -159,11 +159,10 @@ export const iep = router({
         subgoal_id: z.string(),
         notes: z.string(),
         image_list: z.array(z.string()),
-        type: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, notes, image_list, type } = req.input;
+      const { subgoal_id, notes, image_list } = req.input;
 
       const result = req.ctx.db
         .insertInto("trial_data")
@@ -171,7 +170,6 @@ export const iep = router({
           subgoal_id,
           notes,
           image_list,
-          type,
         })
         .returningAll()
         .executeTakeFirst();

@@ -289,7 +289,14 @@ export default function EnhancedTable<
   return (
     <Box sx={{ width: "75%" }}>
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
-      <form onSubmit={onSubmit} id="table_input_form"></form>
+      <form
+        onSubmit={(event: React.FormEvent<HTMLFormElement>) => {
+          onSubmit(event);
+          const form = document.getElementById("table_input_form");
+          (form as HTMLFormElement).reset();
+        }}
+        id="table_input_form"
+      ></form>
       <EnhancedTableToolbar
         totalRows={people.length}
         type={type}

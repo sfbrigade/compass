@@ -609,6 +609,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at: Date;
+      /**
+      * **goal.category**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      category: string;
     }
     export interface JSONSelectable {
       /**
@@ -635,6 +641,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at: db.TimestampTzString;
+      /**
+      * **goal.category**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      category: string;
     }
     export interface Whereable {
       /**
@@ -661,6 +673,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **goal.category**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      category?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -687,6 +705,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **goal.category**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      category: string | db.Parameter<string> | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -713,6 +737,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **goal.category**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      category?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
     }
     export type UniqueIndex = 'goal_pkey';
     export type Column = keyof Selectable;
@@ -1330,6 +1360,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       assigned_case_manager_id: string | null;
+      /**
+      * **student.grade**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      grade: number | null;
     }
     export interface JSONSelectable {
       /**
@@ -1362,6 +1398,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       assigned_case_manager_id: string | null;
+      /**
+      * **student.grade**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      grade: number | null;
     }
     export interface Whereable {
       /**
@@ -1394,6 +1436,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       assigned_case_manager_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **student.grade**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      grade?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1426,6 +1474,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **student.grade**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      grade?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1458,6 +1512,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       assigned_case_manager_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **student.grade**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      grade?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'student_email_key' | 'student_pkey';
     export type Column = keyof Selectable;
@@ -1498,12 +1558,6 @@ declare module 'zapatos/schema' {
       */
       created_at: Date;
       /**
-      * **subgoal.subgoal_type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      subgoal_type: string;
-      /**
       * **subgoal.collection_type**
       * - `text` in database
       * - `NOT NULL`, no default
@@ -1541,12 +1595,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at: db.TimestampTzString;
-      /**
-      * **subgoal.subgoal_type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      subgoal_type: string;
       /**
       * **subgoal.collection_type**
       * - `text` in database
@@ -1586,12 +1634,6 @@ declare module 'zapatos/schema' {
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **subgoal.subgoal_type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      subgoal_type?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
       * **subgoal.collection_type**
       * - `text` in database
       * - `NOT NULL`, no default
@@ -1630,12 +1672,6 @@ declare module 'zapatos/schema' {
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
       /**
-      * **subgoal.subgoal_type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      subgoal_type: string | db.Parameter<string> | db.SQLFragment;
-      /**
       * **subgoal.collection_type**
       * - `text` in database
       * - `NOT NULL`, no default
@@ -1673,12 +1709,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.subgoal_type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      subgoal_type?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **subgoal.collection_type**
       * - `text` in database
@@ -1730,6 +1760,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: Date;
+      /**
+      * **task.targetmaxattempts**
+      * - `int4` in database
+      * - `NOT NULL`, default: `1`
+      */
+      targetmaxattempts: number;
     }
     export interface JSONSelectable {
       /**
@@ -1756,6 +1792,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: db.TimestampTzString;
+      /**
+      * **task.targetmaxattempts**
+      * - `int4` in database
+      * - `NOT NULL`, default: `1`
+      */
+      targetmaxattempts: number;
     }
     export interface Whereable {
       /**
@@ -1782,6 +1824,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.targetmaxattempts**
+      * - `int4` in database
+      * - `NOT NULL`, default: `1`
+      */
+      targetmaxattempts?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1808,6 +1856,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+      /**
+      * **task.targetmaxattempts**
+      * - `int4` in database
+      * - `NOT NULL`, default: `1`
+      */
+      targetmaxattempts?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1834,6 +1888,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+      /**
+      * **task.targetmaxattempts**
+      * - `int4` in database
+      * - `NOT NULL`, default: `1`
+      */
+      targetmaxattempts?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'task_pkey';
     export type Column = keyof Selectable;
@@ -1879,24 +1939,6 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       image_list: string[] | null;
-      /**
-      * **trial_data.type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      type: string;
-      /**
-      * **trial_data.attempts_with_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_with_prompt: number | null;
-      /**
-      * **trial_data.attempts_without_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_without_prompt: number | null;
     }
     export interface JSONSelectable {
       /**
@@ -1929,24 +1971,6 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       image_list: string[] | null;
-      /**
-      * **trial_data.type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      type: string;
-      /**
-      * **trial_data.attempts_with_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_with_prompt: number | null;
-      /**
-      * **trial_data.attempts_without_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_without_prompt: number | null;
     }
     export interface Whereable {
       /**
@@ -1979,24 +2003,6 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       image_list?: string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string[] | db.Parameter<string[]> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **trial_data.type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      type?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **trial_data.attempts_with_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_with_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **trial_data.attempts_without_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -2029,24 +2035,6 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       image_list?: string[] | db.Parameter<string[]> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **trial_data.type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      type: string | db.Parameter<string> | db.SQLFragment;
-      /**
-      * **trial_data.attempts_with_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_with_prompt?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **trial_data.attempts_without_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_without_prompt?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -2079,24 +2067,6 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       image_list?: string[] | db.Parameter<string[]> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string[] | db.Parameter<string[]> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **trial_data.type**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      type?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      /**
-      * **trial_data.attempts_with_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_with_prompt?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **trial_data.attempts_without_prompt**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      attempts_without_prompt?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'trial_data_pkey';
     export type Column = keyof Selectable;

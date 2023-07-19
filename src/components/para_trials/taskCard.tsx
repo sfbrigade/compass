@@ -10,7 +10,7 @@ interface TaskCardProps {
 }
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
-  // TODO: calculate completion rate
+  // TODO: calculate completion rate depending on trials
   const [completionRate, setCompletionRate] = useState(0);
 
   const getDateStyle = () => {
@@ -54,7 +54,6 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
         </p>
       </div>
 
-      {/* Will be a progress bar */}
       <div className={styles.progressBar}>
         {completionRate}% complete
         <ProgressBar fillPercent={completionRate} />

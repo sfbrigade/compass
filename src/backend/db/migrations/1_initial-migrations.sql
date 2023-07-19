@@ -45,7 +45,8 @@ CREATE TABLE "student" (
   first_name TEXT NOT NULL,
   last_name TEXT NOT NULL,
   email TEXT NOT NULL UNIQUE,
-  assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL
+  assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
+  grade SMALLINT
 );
 
 CREATE TABLE "file" (
@@ -70,7 +71,8 @@ CREATE TABLE "goal" (
   goal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   iep_id UUID REFERENCES "iep" (iep_id),
   description TEXT NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  category TEXT NOT NULL CHECK (category IN ('writing', 'reading', 'math', 'other'))
 );
 
 CREATE TABLE "subgoal" (
@@ -78,7 +80,6 @@ CREATE TABLE "subgoal" (
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  subgoal_type TEXT NOT NULL CHECK (subgoal_type IN ('writing', 'math')),
   collection_type TEXT NOT NULL CHECK (collection_type IN ('attempt', 'behavioral')),
   instructions TEXT
 );
@@ -87,7 +88,8 @@ CREATE TABLE "task" (
   task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   assignee_id UUID REFERENCES "user" (user_id),
-  due_date TIMESTAMPTZ NOT NULL
+  due_date TIMESTAMPTZ NOT NULL,
+  targetMaxAttempts INTEGER NOT NULL DEFAULT 1
 );
 
 CREATE TABLE "trial_data" (
@@ -99,30 +101,14 @@ CREATE TABLE "trial_data" (
 
   -- Optional depending on type of task
   notes TEXT,
-  image_list TEXT[],
+  image_list TEXT[]
 
 
-  type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral')),
+  -- type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral'))
   -- data jsonb,
-  attempts_with_prompt int,
-  attempts_without_prompt int
-
-  -- behavioral_1
-  -- behavioral_2
-
+  -- attempts_with_prompt int,
+  -- attempts_without_prompt int
 
   -- enum - type of subgoal
   -- jsonb for actual data, e.g. attempt_counts etc
 );
-
-
--- message AttemptData {
---     int attempts_with_prompt
---     int attempts_without_prompt
--- }
--- message BehavioralData {
---     int behavioral_1
---     int behavioral_2
---     int behavioral_3
--- }
-
