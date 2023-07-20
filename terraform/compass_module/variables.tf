@@ -8,11 +8,6 @@ variable "app_environment" {
   type        = string
 }
 
-variable "aws_user" {
-  type        = string
-  description = "AWS user to manage resources"
-}
-
 variable "aws_region" {
   description = "AWS region for deployment"
   type        = string
