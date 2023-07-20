@@ -10,6 +10,7 @@ coverage
 build
 .terraform*
 terraform.tfstate*
+!.terraform.lock.hcl
 
 # Ignore all .env files except .env.example
 .env*
