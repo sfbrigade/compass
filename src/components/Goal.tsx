@@ -12,7 +12,7 @@ interface Goal {
   description: string | null;
 }
 
-const Goals: React.FC<GoalProps> = ({ goal }) => {
+const Goals = ({ goal }: GoalProps) => {
   const utils = trpc.useContext();
   const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
     goal_id: goal.goal_id,

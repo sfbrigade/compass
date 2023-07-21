@@ -16,7 +16,7 @@ interface TaskCardProps {
   };
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+const TaskCard = ({ task }: TaskCardProps) => {
   const getDateStyle = () => {
     //New or done should be green
     if (task.completion_rate === 0 || task.completion_rate === 100) {
