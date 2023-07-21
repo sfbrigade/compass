@@ -1,13 +1,9 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
+import { Subgoal } from "@/types/global";
 
 interface SubgoalProps {
   subgoal: Subgoal;
-}
-
-interface Subgoal {
-  subgoal_id: string;
-  description: string | null;
 }
 
 const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
@@ -26,7 +22,7 @@ const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
   const assignToPara = () => {
     task.mutate({
       subgoal_id: subgoal.subgoal_id,
-      assignee_id: "5fc0b2ab-ccfd-4407-83a4-6a1d4c4cc716",
+      assignee_id: "51c24050-103e-4183-b9ad-6ce6bea0e062",
       due_date: new Date(),
     });
   };
@@ -34,7 +30,10 @@ const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
     <div>
       <h4>Subgoal</h4>
       <div>Subgoal ID: {subgoal.subgoal_id}</div>
-      <p>{subgoal.description}</p>
+      <p>Description: {subgoal.description}</p>
+      <p>Created at: {subgoal.created_at.toDateString()}</p>
+      <p>Instructions: {subgoal.instructions || "null"}</p>
+      <p>Target max attempts: {subgoal.target_max_attempts || "null"}</p>
       <button onClick={assignToPara}>Assign</button>
     </div>
   );

@@ -11,7 +11,7 @@ interface TaskCardProps {
 
 const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
   // TODO: calculate completion rate depending on trials
-  const [completionRate, setCompletionRate] = useState(0);
+  const [completionRate] = useState(0);
 
   const getDateStyle = () => {
     //New or done should be green
@@ -50,7 +50,7 @@ const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
       </div>
       <div>
         <p>
-          <strong>{task.subgoal_type}</strong> - {task.description}
+          <strong>{task.category}</strong> - {task.description}
         </p>
       </div>
 

@@ -5,23 +5,22 @@ import { trpc } from "@/client/lib/trpc";
 // import styles from "@/styles/Paraflow.module.css";
 
 function paraDashboard() {
-  // const utils = trpc.useContext();
-  const { data: subgoals, isLoading } = trpc.iep.getMySubgoals.useQuery();
+  const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   return (
-    <div>
-      {subgoals?.map((subgoal, i) => {
+    <ul>
+      {tasks?.map((task) => {
         return (
-          <div key={i}>
-            <TaskCard task={subgoal} />
-          </div>
+          <li key={task.task_id}>
+            <TaskCard task={task} />
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 }
 

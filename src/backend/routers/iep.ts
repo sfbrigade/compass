@@ -32,18 +32,21 @@ export const iep = router({
       z.object({
         goal_id: z.string(),
         description: z.string(),
-        collection_type: z.string(),
+        instructions: z.string().nullable(),
+        target_max_attempts: z.number().nullable(),
       })
     )
     .mutation(async (req) => {
-      const { goal_id, description, collection_type } = req.input;
+      const { goal_id, description, instructions, target_max_attempts } =
+        req.input;
 
       const result = await req.ctx.db
         .insertInto("subgoal")
         .values({
           goal_id,
           description,
-          collection_type,
+          instructions,
+          target_max_attempts,
         })
         .returningAll()
         .executeTakeFirst();
@@ -130,44 +133,34 @@ export const iep = router({
       return result;
     }),
 
-  getMySubgoals: authenticatedProcedure.query(async (req) => {
-    const { userId } = req.ctx.auth;
-
-    const result = await req.ctx.db
-      .selectFrom("subgoal")
-      .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
-      .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
-      .innerJoin("iep", "goal.iep_id", "iep.iep_id")
-      .innerJoin("student", "iep.student_id", "student.student_id")
-      .where("task.assignee_id", "=", userId)
-      .select([
-        "first_name",
-        "last_name",
-        "subgoal.description as description",
-        "category",
-        "due_date",
-        "instructions",
-        "task.task_id",
-      ])
-      .execute();
-    return result;
-  }),
-
   addTrialData: authenticatedProcedure
     .input(
       z.object({
         subgoal_id: z.string(),
+        created_by_user_id: z.string(),
+        success_with_prompt: z.number(),
+        success_without_prompt: z.number(),
         notes: z.string(),
         image_list: z.array(z.string()),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, notes, image_list } = req.input;
+      const {
+        subgoal_id,
+        created_by_user_id,
+        success_with_prompt,
+        success_without_prompt,
+        notes,
+        image_list,
+      } = req.input;
 
       const result = req.ctx.db
         .insertInto("trial_data")
         .values({
           subgoal_id,
+          created_by_user_id,
+          success_with_prompt,
+          success_without_prompt,
           notes,
           image_list,
         })

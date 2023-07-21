@@ -15,14 +15,19 @@ test("basic flow - add/get goals and subgoals", async (t) => {
   const goal1 = await trpc.iep.addGoal.mutate({
     iep_id: iep.iep_id,
     description: "goal 1",
+    category: "writing",
   });
   await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 1",
+    instructions: "instructions here",
+    target_max_attempts: 5,
   });
   await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 2",
+    instructions: null,
+    target_max_attempts: null,
   });
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });

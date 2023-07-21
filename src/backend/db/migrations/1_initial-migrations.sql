@@ -80,35 +80,35 @@ CREATE TABLE "subgoal" (
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  collection_type TEXT NOT NULL CHECK (collection_type IN ('attempt', 'behavioral')),
-  instructions TEXT
+  instructions TEXT,
+  target_max_attempts INTEGER --How many "questions" to administer in a single sitting
+
+  -- Different collection types may be added later:
+  -- collection_type TEXT NOT NULL CHECK (collection_type IN ('attempt', 'behavioral')),
 );
 
 CREATE TABLE "task" (
   task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   assignee_id UUID REFERENCES "user" (user_id),
-  due_date TIMESTAMPTZ NOT NULL,
-  targetMaxAttempts INTEGER NOT NULL DEFAULT 1
+  due_date TIMESTAMPTZ NOT NULL
 );
 
 CREATE TABLE "trial_data" (
   id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
+  created_by_user_id UUID REFERENCES "user" (user_id),
   -- TODO: Possibly add optional reference to "task"
-
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+
+  success_with_prompt INTEGER NOT NULL,
+  success_without_prompt INTEGER NOT NULL,
 
   -- Optional depending on type of task
   notes TEXT,
   image_list TEXT[]
-
-
-  -- type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral'))
-  -- data jsonb,
-  -- attempts_with_prompt int,
-  -- attempts_without_prompt int
-
-  -- enum - type of subgoal
-  -- jsonb for actual data, e.g. attempt_counts etc
 );
+
+-- Potential schema for different collection types:
+  -- type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral')) -- enum - type of subgoal
+  -- data jsonb -- actual data, e.g. attempt_counts etc
