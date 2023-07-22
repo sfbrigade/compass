@@ -54,42 +54,6 @@ export const iep = router({
       return result;
     }),
 
-  getGoals: authenticatedProcedure
-    .input(
-      z.object({
-        iep_id: z.string(),
-      })
-    )
-    .query(async (req) => {
-      const { iep_id } = req.input;
-
-      const result = await req.ctx.db
-        .selectFrom("goal")
-        .where("iep_id", "=", iep_id)
-        .selectAll()
-        .execute();
-
-      return result;
-    }),
-
-  getSubgoals: authenticatedProcedure
-    .input(
-      z.object({
-        goal_id: z.string(),
-      })
-    )
-    .query(async (req) => {
-      const { goal_id } = req.input;
-
-      const result = await req.ctx.db
-        .selectFrom("subgoal")
-        .where("goal_id", "=", goal_id)
-        .selectAll()
-        .execute();
-
-      return result;
-    }),
-
   addTask: authenticatedProcedure
     .input(
       z.object({
@@ -110,25 +74,6 @@ export const iep = router({
         })
         .returningAll()
         .executeTakeFirst();
-
-      return result;
-    }),
-
-  getSubgoalsByAssignee: authenticatedProcedure
-    .input(
-      z.object({
-        assignee_id: z.string(),
-      })
-    )
-    .query(async (req) => {
-      const { assignee_id } = req.input;
-
-      const result = await req.ctx.db
-        .selectFrom("subgoal")
-        .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
-        .where("task.assignee_id", "=", assignee_id)
-        .selectAll()
-        .execute();
 
       return result;
     }),
@@ -166,6 +111,61 @@ export const iep = router({
         })
         .returningAll()
         .executeTakeFirst();
+
+      return result;
+    }),
+
+  getGoals: authenticatedProcedure
+    .input(
+      z.object({
+        iep_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { iep_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("goal")
+        .where("iep_id", "=", iep_id)
+        .selectAll()
+        .execute();
+
+      return result;
+    }),
+
+  getSubgoals: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { goal_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .where("goal_id", "=", goal_id)
+        .selectAll()
+        .execute();
+
+      return result;
+    }),
+
+  getSubgoalsByAssignee: authenticatedProcedure
+    .input(
+      z.object({
+        assignee_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { assignee_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
+        .where("task.assignee_id", "=", assignee_id)
+        .selectAll()
+        .execute();
 
       return result;
     }),

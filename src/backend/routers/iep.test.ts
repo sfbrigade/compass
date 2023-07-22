@@ -1,8 +1,8 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 
-test("basic flow - add/get goals and subgoals", async (t) => {
-  const { trpc, seed } = await getTestServer(t, {
+test("basic flow - add/get goals, subgoals, tasks", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
@@ -23,11 +23,16 @@ test("basic flow - add/get goals and subgoals", async (t) => {
     instructions: "instructions here",
     target_max_attempts: 5,
   });
-  await trpc.iep.addSubgoal.mutate({
+  const subgoal2 = await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 2",
     instructions: null,
     target_max_attempts: null,
+  });
+  await trpc.iep.addTask.mutate({
+    subgoal_id: subgoal2!.subgoal_id,
+    assignee_id: seed.para.user_id,
+    due_date: new Date("2023-12-31"),
   });
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });
@@ -37,4 +42,13 @@ test("basic flow - add/get goals and subgoals", async (t) => {
     goal_id: goal1!.goal_id,
   });
   t.is(gotSubgoals.length, 2);
+
+  t.truthy(
+    await db
+      .selectFrom("task")
+      .where("subgoal_id", "=", subgoal2!.subgoal_id)
+      .where("assignee_id", "=", seed.para.user_id)
+      .selectAll()
+      .executeTakeFirstOrThrow()
+  );
 });
