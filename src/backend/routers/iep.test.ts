@@ -26,7 +26,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   const subgoal2 = await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
     description: "subgoal 2",
-    instructions: null,
+    instructions: "",
     target_max_attempts: null,
   });
   await trpc.iep.addTask.mutate({

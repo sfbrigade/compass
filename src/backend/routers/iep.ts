@@ -32,7 +32,7 @@ export const iep = router({
       z.object({
         goal_id: z.string(),
         description: z.string(),
-        instructions: z.string().nullable(),
+        instructions: z.string(),
         target_max_attempts: z.number().nullable(),
       })
     )
@@ -86,7 +86,6 @@ export const iep = router({
         success_with_prompt: z.number(),
         success_without_prompt: z.number(),
         notes: z.string(),
-        image_list: z.array(z.string()),
       })
     )
     .mutation(async (req) => {
@@ -96,7 +95,6 @@ export const iep = router({
         success_with_prompt,
         success_without_prompt,
         notes,
-        image_list,
       } = req.input;
 
       const result = req.ctx.db
@@ -107,7 +105,6 @@ export const iep = router({
           success_with_prompt,
           success_without_prompt,
           notes,
-          image_list,
         })
         .returningAll()
         .executeTakeFirst();

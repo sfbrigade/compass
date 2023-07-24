@@ -25,7 +25,7 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
     subgoal.mutate({
       goal_id: goal.goal_id,
       description: data.get("description") as string,
-      instructions: (data.get("instructions") || null) as string | null,
+      instructions: data.get("instructions") as string,
       target_max_attempts: Number(data.get("target_max_attempts")) || null,
     });
   };
