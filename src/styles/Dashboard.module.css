@@ -1,8 +1,8 @@
 /* CM DASHBOARD */
 .cmContainer {
-  background-color: #f6f5ff;
+  background-color: var(--primary-container);
   min-height: 100vh;
-  color: #080155;
+  color: var(--on-primary-container);
   font-family: "Quicksand", sans-serif;
 }
 
@@ -13,7 +13,7 @@
   padding: 10px;
   margin-right: 10px;
   margin-left: 10px;
-  background-color: #c2bdf9;
+  background-color: var(--primary-30);
   margin-bottom: 15px;
 }
 .createTitle {
@@ -23,7 +23,7 @@
   height: 24px;
   width: auto;
   padding: 0px 20px;
-  background-color: #5347d7;
+  background-color: var(--primary);
   border-radius: 5px;
   border: none;
   color: white;
