@@ -118,7 +118,7 @@ function EnhancedTableToolbar({
         }}
       >
         <h2 className={styles.tableTitle}>{type}</h2>
-        <button onClick={onOpenInput} className={styles.addButton}>
+        <button onClick={onOpenInput} className="defaultButton">
           Add {type}
         </button>
       </div>
@@ -181,11 +181,7 @@ function EnhancedTableInput<Column extends HeadCell>({
         ) : null;
       })}
       <TableCell>
-        <button
-          type="submit"
-          form="table_input_form"
-          className={styles.addButton}
-        >
+        <button type="submit" form="table_input_form" className="defaultButton">
           Add {type}
         </button>
       </TableCell>

@@ -1,5 +1,5 @@
 .container {
-  background-color: #f6f5ff;
+  background-color: var(--primary-container);
 }
 
 /* NON SESSION USER HOMEPAGE */
@@ -33,7 +33,7 @@
   height: 40px;
   margin: 10px 0px;
   padding: 0px 24px;
-  background-color: #5347d7;
+  background-color: var(--primary);
   border-radius: 5px;
   border: none;
   color: white;
@@ -46,7 +46,7 @@
 }
 
 .signIn:active {
-  background-color: #3023b8;
+  background-color: var(--primary-50);
 }
 
 /* SESSION USER PAGE */
@@ -73,7 +73,7 @@
   width: 100px;
   margin: 10px 0px;
   padding: 0px 24px;
-  background-color: #5347d7;
+  background-color: var(--primary);
   border-radius: 5px;
   border: none;
   color: white;
@@ -85,7 +85,7 @@
 }
 
 .signOut:active {
-  background-color: #3023b8;
+  background-color: var(--primary-50);
 }
 
 /* Enable hover only on non-touch devices */

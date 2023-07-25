@@ -11,7 +11,7 @@
   height: 24px;
   width: auto;
   padding: 0px 20px;
-  background-color: #5347d7;
+  background-color: var(--primary);
   border-radius: 5px;
   border: none;
   color: white;

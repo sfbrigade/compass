@@ -1,20 +1,134 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter&family=Quicksand:wght@600;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@600&display=swap');
 
-/* Place any repeated colors or other things here */
 :root {
-  --primary-purple: #5347d7;
+  --primary: #5347d7;
+  --on-primary: #FFFFFF;
+  --primary-container: #F6F5FF;
+  --on-primary-container: #080155;
+
+  --accent: #1680A1;
+  --on-accent: #FFFFFF;
+  --accent-container: #F5FCFF;
+  --on-accent-container: #001B23;
+  --background: #FFFFFF;
+  --on-background: #021426;
+  --surface: #FBFBFF;
+  --on-surface: #021426;
+  --outline: #D6DDE1;
+  --outline-variant: #021426;
+
+  --success: #24804D;
+  --on-success: #FFFFFF;
+  --success-container: #F0FFF6;
+  --on-success-container: #001E0D;
+  --warning-state: #FBF6D9;
+  --on-warning: #1C1B1F;
+  --warning-container: #FFAA44;
+  --on-warning-container: #1C1B1F;
+
+  --primary-10: #030123;
+  --primary-20: #080155;
+  --primary-30: #140B7A;
+  --primary-40: #20159E;
+  --primary-50: #3023B8;
+  --primary-60: #5347D7;
+  --primary-70: #766CE3;
+  --primary-80: #9B93F1;
+  --primary-90: #C2BDF9;
+  --primary-99: #F6F5FF;
+
+  --grey-10: #021426;
+  --grey-20: #2A333C;
+  --grey-30: #586874;
+  --grey-40: #788591;
+  --grey-50: #A2ACB3;
+  --grey-60: #B9C1C6;
+  --grey-70: #D6DDE1;
+  --grey-80: #F4F6F7;
+  --grey-90: #F6F8F9;
+  --grey-100: #FFFFFF;
+  
+  --quicksand: "Quicksand", sans-serif;
+  --inter: "Inter", sans-serif;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: "Quicksand", sans-serif;
+  font-family: var(--inter);
 }
 
 html,
 body {
   max-width: 100vw;
   overflow-x: auto;
-  font-family: "Roboto", sans-serif;
 }
+
+h1, h2, h3, h4 {
+  font-weight: 600;
+  font-family: var(--quicksand);
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+p {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+.defaultButton {
+  background-color: var(--primary);
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Breakpoints recommended by Bootstrap */
+/* Custom, iPhone Retina */ 
+@media only screen and (min-width : 320px) {
+        
+}
+
+/* Extra Small Devices, Phones */ 
+@media only screen and (min-width : 480px) {
+
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width : 768px) {
+
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width : 992px) {
+
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width : 1200px) {
+
+}
+
