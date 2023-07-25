@@ -10,6 +10,7 @@ import { QueryCache } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
+import styles from "../../src/styles/Toast.module.css";
 
 interface CustomPageProps {
   session: Session;
@@ -44,7 +45,7 @@ export default function App({
               const defaultMessage = "An error occured. Please try again";
               const errorMessage =
                 errorMessages[error.message] || defaultMessage;
-              toast.error(errorMessage);
+              toast.error(errorMessage, { className: styles["custom-toast"] });
             }
           },
         }),
@@ -80,7 +81,18 @@ export default function App({
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
             <Component {...pageProps} showErrorToast={toast.error} />
-            <Toaster position="bottom-right" />
+            <Toaster
+              position="bottom-right"
+              // react-hot-toast does not directly support using custom classes for the toast content through toastOptions
+              toastOptions={{
+                style: {
+                  background: "#F6F5FF",
+                  borderRadius: "4px",
+                  color: "#021426",
+                },
+                duration: Infinity,
+              }}
+            />
           </SessionProvider>
         </QueryClientProvider>
       </trpc.Provider>
