@@ -5,9 +5,7 @@ terraform {
     google = ">= 3.3"
   }
 
-  backend "gcs" {
-    prefix = "compass/staging"
-  }
+  backend "gcs" {}
 }
 
 provider "google" {
