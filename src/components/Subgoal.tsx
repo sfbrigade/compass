@@ -6,9 +6,9 @@ interface SubgoalProps {
   subgoal: Subgoal;
 }
 
-const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
+const Subgoals = ({ subgoal }: SubgoalProps) => {
   const task = trpc.iep.addTask.useMutation();
-
+  // TODO: add form to assign to my paras
   // const assignToPara = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
   //   const data = new FormData(event.currentTarget);
@@ -26,6 +26,7 @@ const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
       due_date: new Date(),
     });
   };
+
   return (
     <div>
       <h4>Subgoal</h4>

@@ -9,7 +9,7 @@ interface TaskCardProps {
   task: ParaTaskCard;
 }
 
-const TaskCard: React.FC<TaskCardProps> = ({ task }) => {
+const TaskCard = ({ task }: TaskCardProps) => {
   // TODO: calculate completion rate depending on trials
   const [completionRate] = useState(0);
 
