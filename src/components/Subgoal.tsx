@@ -9,7 +9,7 @@ interface Subgoal {
   description: string | null;
 }
 
-const Subgoals: React.FC<SubgoalProps> = ({ subgoal }) => {
+const Subgoals = ({ subgoal }: SubgoalProps) => {
   return (
     <div>
       <h4>Subgoal</h4>
