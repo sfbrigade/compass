@@ -6,7 +6,7 @@ To initialize the Terraform backend and necessary services (must be done once ma
 
 1. `cd terraform/gcs-backend`
 2. `terraform init`
-3. `terraform apply`
+3. `terraform apply -var="project=<project-id>"`
 
 ### For a local development environment
 
@@ -22,4 +22,4 @@ Similarly, set or update the GitHub secrets `GCS_WORKLOAD_IDENTITY_PROVIDER` and
 
 1. `cd terraform/gcs`
 2. `terraform init -backend-config=../backend.dev.hcl` (you only need to run this once)
-3. `terraform apply`
+3. `terraform apply -var="project=<project-id>" -var="image=<image-ref>`
