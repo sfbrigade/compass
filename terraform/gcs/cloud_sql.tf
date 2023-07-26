@@ -8,7 +8,7 @@ resource "google_sql_database_instance" "postgres_instance" {
     tier = "db-f1-micro"
   }
 
-  # todo: set `deletion_protection` depending on the environment
+  # TODO: set `deletion_protection` depending on the environment
 
   depends_on = [google_project_service.sqladmin_api]
 }
