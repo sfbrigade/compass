@@ -5,7 +5,7 @@ interface TimerInputProps {
   onStartTimer: (inputTimeInSec: number) => void;
 }
 
-const TimerInput: React.FC<TimerInputProps> = ({ onStartTimer }) => {
+const TimerInput = ({ onStartTimer }: TimerInputProps) => {
   const [inputTime, setInputTime] = useState<string>("");
 
   const addNumber = (num: string) => {
