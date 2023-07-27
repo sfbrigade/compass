@@ -25,7 +25,7 @@ const Home: NextPage = () => {
                 Welcome {me?.first_name} {me?.last_name}
               </h1>
               {JSON.stringify(me)}
-              <Link href="/cmDashboard">
+              <Link href="/students">
                 <p>CM Dashboard</p>
               </Link>
               <button className={styles.signOut} onClick={() => signOut()}>
@@ -46,7 +46,11 @@ const Home: NextPage = () => {
                 <div>Log in with your Google account to continue</div>
                 <button
                   className={`${styles.signIn} ${styles.bold}`}
-                  onClick={() => signIn("google")}
+                  onClick={() =>
+                    signIn("google", {
+                      callbackUrl: "/students",
+                    })
+                  }
                 >
                   Sign in with Google
                 </button>
