@@ -108,3 +108,81 @@ test("createPara - invalid email", async (t) => {
     })
   );
 });
+
+test("getMyTasks", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const FIRST_NAME = "Foo";
+  const LAST_NAME = "Bar";
+  const DESCRIPTION = "Subgoal description";
+  const CATEGORY = "writing";
+  const DUE_DATE = new Date();
+  const INSTRUCTIONS = "subgoal instructions foobar";
+  const TARGET_MAX_ATTEMPTS = 5;
+
+  const { student_id } = await db
+    .insertInto("student")
+    .values({
+      first_name: FIRST_NAME,
+      last_name: LAST_NAME,
+      email: "jdoe@email.com",
+      assigned_case_manager_id: seed.case_manager.user_id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const { iep_id } = await db
+    .insertInto("iep")
+    .values({
+      student_id: student_id,
+      case_manager_id: seed.case_manager.user_id,
+      start_date: new Date("2023-01-01"),
+      end_date: new Date("2023-12-31"),
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const { goal_id } = await db
+    .insertInto("goal")
+    .values({
+      iep_id: iep_id,
+      description: "Goal Description",
+      category: CATEGORY,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const { subgoal_id } = await db
+    .insertInto("subgoal")
+    .values({
+      goal_id: goal_id,
+      description: DESCRIPTION,
+      instructions: INSTRUCTIONS,
+      target_max_attempts: TARGET_MAX_ATTEMPTS,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const { task_id } = await db
+    .insertInto("task")
+    .values({
+      subgoal_id: subgoal_id,
+      assignee_id: seed.case_manager.user_id,
+      due_date: DUE_DATE,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const task = await trpc.para.getMyTasks.query();
+  t.is(task.length, 1);
+  t.is(task[0].task_id, task_id);
+  t.is(task[0].first_name, FIRST_NAME);
+  t.is(task[0].last_name, LAST_NAME);
+  t.is(task[0].description, DESCRIPTION);
+  t.is(task[0].category, CATEGORY);
+  t.deepEqual(task[0].due_date, DUE_DATE);
+  t.is(task[0].instructions, INSTRUCTIONS);
+  t.is(task[0].target_max_attempts, TARGET_MAX_ATTEMPTS);
+});
