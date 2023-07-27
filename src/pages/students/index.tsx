@@ -4,7 +4,7 @@ import styles from "../../styles/Dashboard.module.css";
 
 function Students() {
   return (
-    <div className={styles.cmContainer}>
+    <div className="dash__container">
       <nav style={{ padding: "2%" }}></nav>
       <main>
         <div style={{ padding: "20px", textAlign: "center" }}>

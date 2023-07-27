@@ -47,7 +47,7 @@
   --grey-80: #F4F6F7;
   --grey-90: #F6F8F9;
   --grey-100: #FFFFFF;
-  
+
   --quicksand: "Quicksand", sans-serif;
   --inter: "Inter", sans-serif;
 }
@@ -96,7 +96,14 @@ p {
   font-weight: 500;
 }
 
-.defaultButton {
+/*
+  Global classnames follow BEM (block, element, modifier) naming convention
+  .block__element--modifier
+  https://getbem.com/introduction/
+*/
+
+/* Default styles for widespread classes ie buttons  */
+.default__button {
   background-color: var(--primary);
   border: none;
   color: white;
@@ -106,13 +113,23 @@ p {
   cursor: pointer;
 }
 
-/* Breakpoints recommended by Bootstrap */
-/* Custom, iPhone Retina */ 
-@media only screen and (min-width : 320px) {
-        
+/* Dashboard styles */
+.dash__container {
+  background-color: var(--primary-container);
+  min-height: 100vh;
+  color: var(--on-primary-container);
+  /* TODO: check if this is still necessary */
+  font-family: var(--quicksand);
 }
 
-/* Extra Small Devices, Phones */ 
+.
+/* Breakpoints recommended by Bootstrap */
+/* Custom, iPhone Retina */
+@media only screen and (min-width : 320px) {
+
+}
+
+/* Extra Small Devices, Phones */
 @media only screen and (min-width : 480px) {
 
 }

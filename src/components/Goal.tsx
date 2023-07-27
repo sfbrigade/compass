@@ -1,8 +1,8 @@
 import React from "react";
 import Subgoals from "./Subgoal";
 import { trpc } from "@/client/lib/trpc";
-import styles from "@/styles/Goal.module.css";
 import { Goal } from "@/types/global";
+import styles from "./Goal.module.css";
 
 interface GoalProps {
   goal: Goal;
