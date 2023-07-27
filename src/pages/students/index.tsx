@@ -1,8 +1,6 @@
 import React from "react";
-import MyStudents from "../components/case_manager/MyStudents";
-import styles from "../styles/Dashboard.module.css";
-import Image from "next/image";
-import MyParas from "@/components/case_manager/MyParas";
+import MyStudents from "../../components/case_manager/MyStudents";
+import styles from "../../styles/Dashboard.module.css";
 
 function students() {
   return (

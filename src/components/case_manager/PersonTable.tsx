@@ -117,7 +117,7 @@ function EnhancedTableToolbar({
           width: "100%",
         }}
       >
-        <h2 className={styles.tableTitle}>{type} List</h2>
+        <h2 className={styles.tableTitle}>{type}</h2>
         <button onClick={onOpenInput} className={styles.addButton}>
           Add {type}
         </button>

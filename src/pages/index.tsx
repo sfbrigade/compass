@@ -48,7 +48,7 @@ const Home: NextPage = () => {
                   className={`${styles.signIn} ${styles.bold}`}
                   onClick={() =>
                     signIn("google", {
-                      callbackUrl: "http://localhost:3000/students",
+                      callbackUrl: "/students",
                     })
                   }
                 >

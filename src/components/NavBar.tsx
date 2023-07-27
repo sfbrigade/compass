@@ -1,9 +1,13 @@
 import React from "react";
-import styles from "../../styles/Navbar.module.css";
+import styles from "../styles/Navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
-import { BsPersonWorkspace, BsPeople, BsGear } from "react-icons/bs";
-import { FiLogOut } from "react-icons/fi";
+import {
+  PeopleOutline,
+  CoPresent,
+  Settings,
+  Logout,
+} from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 import { trpc } from "@/client/lib/trpc";
 
@@ -17,7 +21,7 @@ const NavBar: React.FC<Props> = ({ children }) => {
     <React.Fragment>
       <div className={styles.container}>
         <div className={styles.sidebar}>
-          <Link href="">
+          <Link href="/">
             <Image
               src="/img/compass-logo.svg"
               alt="logo"
@@ -31,28 +35,26 @@ const NavBar: React.FC<Props> = ({ children }) => {
 
           {me && (
             <div className={styles.linkContainer}>
-              <Link href="/staff" className={styles.link}>
-                <BsPersonWorkspace className={styles.icon} />
-                <p className={styles.linkTitle}>Staff</p>
-              </Link>
-              <br />
               <Link href="/students" className={styles.link}>
-                <BsPeople className={styles.icon} />
+                <PeopleOutline className={styles.icon} />
                 <p className={styles.linkTitle}>Students</p>
               </Link>
               <br />
+              <Link href="/staff" className={styles.link}>
+                <CoPresent className={styles.icon} />
+                <p className={styles.linkTitle}>Staff</p>
+              </Link>
+              <br />
               <Link href="/settings" className={styles.link}>
-                <BsGear className={styles.icon} />
+                <Settings className={styles.icon} />
                 <p className={styles.linkTitle}>Settings</p>
               </Link>
               <br />
               <Link href="" className={styles.link}>
-                <FiLogOut className={styles.icon} />
+                <Logout className={styles.icon} />
                 <p
                   className={styles.linkTitle}
-                  onClick={() =>
-                    signOut({ callbackUrl: "http://localhost:3000/" })
-                  }
+                  onClick={() => signOut({ callbackUrl: "/" })}
                 >
                   Logout
                 </p>

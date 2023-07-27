@@ -1,7 +1,5 @@
 import React from "react";
-import MyStudents from "../components/case_manager/MyStudents";
-import styles from "../styles/Dashboard.module.css";
-import Image from "next/image";
+import styles from "../../styles/Dashboard.module.css";
 import MyParas from "@/components/case_manager/MyParas";
 
 function staff() {
