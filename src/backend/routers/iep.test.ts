@@ -1,6 +1,7 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 
+// TODO: Write more tests
 test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
@@ -43,6 +44,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   });
   t.is(gotSubgoals.length, 2);
 
+  // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
     await db
       .selectFrom("task")
