@@ -23,4 +23,4 @@ function Staff() {
   );
 }
 
-export default staff;
+export default Staff;

@@ -8,4 +8,4 @@ const Settings = () => {
   );
 };
 
-export default settings;
+export default Settings;

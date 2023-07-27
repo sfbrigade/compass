@@ -23,4 +23,4 @@ function Students() {
   );
 }
 
-export default students;
+export default Students;
