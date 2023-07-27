@@ -2,7 +2,7 @@ import React from "react";
 import MyStudents from "../../components/case_manager/MyStudents";
 import styles from "../../styles/Dashboard.module.css";
 
-function students() {
+function Students() {
   return (
     <div className={styles.cmContainer}>
       <nav style={{ padding: "2%" }}></nav>

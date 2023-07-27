@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 import MyParas from "@/components/case_manager/MyParas";
 
-function staff() {
+function Staff() {
   return (
     <div className={styles.cmContainer}>
       <nav style={{ padding: "2%" }}></nav>

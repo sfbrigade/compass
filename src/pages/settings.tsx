@@ -1,6 +1,6 @@
 import React from "react";
 
-const settings = () => {
+const Settings = () => {
   return (
     <div>
       <p>🚧 Under Construction 🚧</p>
