@@ -11,10 +11,11 @@ import {
 import { signOut } from "next-auth/react";
 import { trpc } from "@/client/lib/trpc";
 
-interface Props {
+interface NavBarProps {
   children: React.ReactNode;
 }
-const NavBar: React.FC<Props> = ({ children }) => {
+
+const NavBar = ({ children }: NavBarProps) => {
   const { data: me } = trpc.user.getMe.useQuery();
 
   return (
