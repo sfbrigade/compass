@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import styles from "./uploadImage.module.css";
 import { trpc } from "@/client/lib/trpc";
 import axios from "axios";
 import CameraIcon from "@mui/icons-material/PhotoCamera";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import CircularProgress from "@mui/material/CircularProgress";
+import Typography from "@mui/material/Typography";
 
 interface UploadImageComponentProps {
   title: string;
@@ -11,22 +13,26 @@ interface UploadImageComponentProps {
   onUpload: (fileId: string) => void;
 }
 
+enum UploadStep {
+  Start,
+  TakePicture,
+  UploadPicture,
+}
+
 const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   title,
   fileName,
   onUpload,
 }) => {
-  const [showStart, setShowStart] = useState(true);
-  const [showTakePicture, setShowTakePicture] = useState(false);
-  const [showUploadPicture, setShowUploadPicture] = useState(false);
-  const [startButtonDisabled, setStartButtonDisabled] = useState(false);
+  const [currentStep, setCurrentStep] = useState(UploadStep.Start);
   const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [capturedImage, setCapturedImage] = useState<Blob | null>(null);
 
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
   const onClickStartButton = () => {
-    setShowStart(false);
-    setShowTakePicture(true);
+    setCurrentStep(UploadStep.TakePicture);
   };
 
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -41,27 +47,25 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
         }
       };
       reader.readAsArrayBuffer(file);
-
-      setShowTakePicture(false);
-      setShowUploadPicture(true);
+      setCurrentStep(UploadStep.UploadPicture);
     }
   };
 
   const onCancelTakePicture = () => {
-    setShowStart(true);
-    setShowTakePicture(false);
-  };
-
-  const onCancelCaptureImage = () => {
-    setShowTakePicture(true);
-    setShowUploadPicture(false);
+    setCurrentStep(UploadStep.Start);
+    setCapturedImage(null);
   };
 
   const onClickUploadPicture = () => {
-    setShowUploadPicture(false);
-    setShowStart(true);
-    setStartButtonDisabled(true);
-    setUploading(true);
+    setCurrentStep(UploadStep.Start);
+    setCapturedImage(null);
+    setUploadSuccess(true);
+    setUploadSuccess(false);
+
+    if (capturedImage) {
+      setUploading(true);
+      void uploadImageToCloud();
+    }
   };
 
   const getPresignedUrlForUpload =
@@ -77,17 +81,17 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
 
     await axios.put(url, capturedImage);
 
-    await finishFileUpload.mutateAsync({
+    const { file_id } = await finishFileUpload.mutateAsync({
       key,
       filename: fileName,
     });
 
     setUploadSuccess(true);
 
-    onUpload(key);
+    if (file_id) {
+      onUpload(file_id);
+    }
 
-    setShowStart(true);
-    setStartButtonDisabled(false);
     setUploading(false);
   }, [
     capturedImage,
@@ -96,12 +100,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     finishFileUpload,
     onUpload,
   ]);
-
-  useEffect(() => {
-    if (uploading) {
-      void uploadImageToCloud();
-    }
-  }, [uploading, uploadImageToCloud]);
 
   useEffect(() => {
     if (uploadSuccess) {
@@ -114,59 +112,65 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   }, [uploadSuccess]);
 
   return (
-    <div>
-      {showStart && (
+    <div className={styles.uploadContainer}>
+      {currentStep === UploadStep.Start && (
         <button
-          className={
-            startButtonDisabled
-              ? styles.startButtonDisabled
-              : styles.startButton
-          }
           onClick={onClickStartButton}
-          disabled={startButtonDisabled}
+          disabled={uploading}
+          className={styles.actionButton}
         >
-          <div className={styles.startButtonContent}>
-            <CameraIcon />
-            <span>{title}</span>
-          </div>
+          <CameraIcon className={styles.buttonIcon} />
+          {title}
         </button>
       )}
-      {showTakePicture && (
+      {currentStep === UploadStep.TakePicture && (
         <>
           <input
+            ref={fileInputRef}
             type="file"
             accept="image/*;capture=camera"
             capture="environment"
             onChange={handleFile}
-            className={styles.startButton}
+            className={styles.actionButton}
           />
-          <button className={styles.startButton} onClick={onCancelTakePicture}>
-            Cancel
-          </button>
+          <div className={styles.buttonsContainer}>
+            <button
+              onClick={onCancelTakePicture}
+              className={styles.actionButton}
+            >
+              Cancel
+            </button>
+          </div>
         </>
       )}
-      {showUploadPicture && (
+      {currentStep === UploadStep.UploadPicture && (
         <div className={styles.uploadedImageContainer}>
           {capturedImage && (
             <svg>
               <image
                 href={URL.createObjectURL(capturedImage)}
-                // alt="image"
                 className={styles.uploadedImage}
               />
             </svg>
           )}
           <div className={styles.buttonsContainer}>
             <button
-              className={styles.startButton}
               onClick={onClickUploadPicture}
+              disabled={uploading}
+              className={styles.actionButton}
             >
-              Upload
+              {uploading ? (
+                <CircularProgress size={20} color="inherit" />
+              ) : (
+                <CheckCircleIcon className={styles.buttonIcon} />
+              )}
+              {uploading ? "Uploading..." : "Upload"}
             </button>
             <button
-              className={styles.startButton}
               id="cancel-button"
-              onClick={onCancelCaptureImage}
+              onClick={onCancelTakePicture}
+              disabled={uploading}
+              className={styles.actionButton}
             >
               Cancel
             </button>
@@ -174,13 +178,18 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
         </div>
       )}
 
-      {uploading && <p id="uploading">Uploading.......</p>}
+      {uploading && (
+        <div className={styles.uploadingText}>
+          <CircularProgress size={20} color="primary" />
+        </div>
+      )}
+
       {uploadSuccess && (
         <div className={styles.uploadSuccessContainer}>
           <CheckCircleIcon className={styles.uploadSuccessIcon} />
-          <p className={styles.uploadSuccessMessage}>
+          <Typography variant="body2" className={styles.uploadSuccessMessage}>
             Image uploaded successfully
-          </p>
+          </Typography>
         </div>
       )}
     </div>
