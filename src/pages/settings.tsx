@@ -3,7 +3,7 @@ import React from "react";
 const Settings = () => {
   return (
     <div>
-      <p>🚧 Under Construction 🚧</p>
+      <p>🚧 Under Construction! 🚧</p>
     </div>
   );
 };
