@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "google" {
-  project = var.project
+  project = var.project_id
 }
 
 data "google_project" "project" {}

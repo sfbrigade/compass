@@ -2,14 +2,10 @@ import React from "react";
 import Subgoals from "./Subgoal";
 import { trpc } from "@/client/lib/trpc";
 import styles from "@/styles/Goal.module.css";
+import { Goal } from "@/types/global";
 
 interface GoalProps {
   goal: Goal;
-}
-
-interface Goal {
-  goal_id: string;
-  description: string | null;
 }
 
 const Goals = ({ goal }: GoalProps) => {
@@ -29,6 +25,8 @@ const Goals = ({ goal }: GoalProps) => {
     subgoal.mutate({
       goal_id: goal.goal_id,
       description: data.get("description") as string,
+      instructions: data.get("instructions") as string,
+      target_max_attempts: Number(data.get("target_max_attempts")) || null,
     });
   };
 
@@ -38,6 +36,12 @@ const Goals = ({ goal }: GoalProps) => {
 
   return (
     <div>
+      <h3>Goal</h3>
+      <div>Goal ID: {goal.goal_id}</div>
+      <p>Description: {goal.description}</p>
+      <p>Created at: {goal.created_at.toDateString()}</p>
+      <p>Category: {goal.category}</p>
+
       <div className={styles.tab}>
         <ul className={styles.listNames}>
           {subgoals?.map((subgoal) => (
@@ -55,6 +59,13 @@ const Goals = ({ goal }: GoalProps) => {
             placeholder="Subgoal description"
             required
           />
+          <input type="text" name="instructions" placeholder="Instructions" />
+          <input
+            type="number"
+            name="target_max_attempts"
+            placeholder="# of attempts"
+          />
+
           <button type="submit" className={styles.createButton}>
             Add SubGoal
           </button>
