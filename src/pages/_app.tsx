@@ -10,7 +10,7 @@ import { QueryCache } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
-import NavBar from "@/components/NavBar";
+import Layout from "@/components/Layout";
 
 interface CustomPageProps {
   session: Session;
@@ -80,9 +80,9 @@ export default function App({
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
-            <NavBar>
+            <Layout>
               <Component {...pageProps} showErrorToast={toast.error} />
-            </NavBar>
+            </Layout>
             <Toaster position="bottom-right" />
           </SessionProvider>
         </QueryClientProvider>

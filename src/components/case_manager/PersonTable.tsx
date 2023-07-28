@@ -16,7 +16,8 @@ import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import { isStudent, HeadCell, Student, Para } from "./types/table";
-import styles from "./styles/Table.module.css";
+import $table from "./styles/Table.module.css";
+import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
@@ -59,7 +60,7 @@ function EnhancedTableHead<Column extends HeadCell>({
     };
 
   return (
-    <TableHead className={styles.header}>
+    <TableHead className={$table.header}>
       <TableRow>
         {headCells.map((headCell) => (
           <TableCell
@@ -71,7 +72,7 @@ function EnhancedTableHead<Column extends HeadCell>({
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
-              className={styles.headerLabel}
+              className={$table.headerLabel}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -117,8 +118,8 @@ function EnhancedTableToolbar({
           width: "100%",
         }}
       >
-        <h2 className={styles.tableTitle}>{type}</h2>
-        <button onClick={onOpenInput} className="default__button">
+        <h2 className={$table.tableTitle}>{type}</h2>
+        <button onClick={onOpenInput} className={$button.default}>
           Add {type}
         </button>
       </div>
@@ -184,13 +185,13 @@ function EnhancedTableInput<Column extends HeadCell>({
         <button
           type="submit"
           form="table_input_form"
-          className="default__button"
+          className={$button.default}
         >
           Add {type}
         </button>
       </TableCell>
       <TableCell padding="checkbox" align="center">
-        <button onClick={onCloseInput} className={styles.closeButton}>
+        <button onClick={onCloseInput} className={$table.closeButton}>
           <CloseIcon />
         </button>
       </TableCell>
@@ -287,7 +288,7 @@ export default function EnhancedTable<
   }, [order, orderBy, people, searchParam, filterList]);
 
   return (
-    <Box sx={{ width: "75%" }}>
+    <Box sx={{ width: "100%" }}>
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar

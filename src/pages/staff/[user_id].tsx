@@ -30,7 +30,7 @@ const ViewParaPage = () => {
   }
 
   return (
-    <div className={styles.person}>
+    <div>
       <h1>
         {para?.first_name} {para?.last_name}
       </h1>
