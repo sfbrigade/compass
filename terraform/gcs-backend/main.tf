@@ -8,6 +8,7 @@ terraform {
 
 provider "google" {
   project = var.project_id
+  region  = var.region
 }
 
 # Enable Cloud Storage API
@@ -18,6 +19,11 @@ resource "google_project_service" "storage_service" {
 # Enable Artifact Registry API
 resource "google_project_service" "artifact_registry" {
   service = "artifactregistry.googleapis.com"
+}
+
+# Enable IAM SA Credentials API
+resource "google_project_service" "iam_credentials" {
+  service = "iamcredentials.googleapis.com"
 }
 
 # Bucket name must be globally unique
@@ -64,7 +70,7 @@ module "gh_oidc" {
   sa_mapping = {
     (google_service_account.github_ci.account_id) = {
       sa_name   = google_service_account.github_ci.name
-      attribute = "attribute.repository/user/repo"
+      attribute = "attribute.repository/${var.github_repo}"
     }
   }
 }
@@ -75,4 +81,14 @@ output "github_ci_workload_identity_provider" {
 
 output "github_ci_sevice_account_email" {
   value = google_service_account.github_ci.email
+}
+
+# Create Artifact Registry for GitHub CI to push images to
+resource "google_artifact_registry_repository" "repo" {
+  repository_id = "compass"
+  format        = "DOCKER"
+}
+
+output "artifact_registry_repository" {
+  value = google_artifact_registry_repository.repo.name
 }
