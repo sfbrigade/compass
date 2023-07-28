@@ -1,20 +1,11 @@
 import React from "react";
-import MyStudents from "../components/case_manager/MyStudents";
-import styles from "../styles/Dashboard.module.css";
-import Image from "next/image";
+import MyStudents from "../../components/case_manager/MyStudents";
+import styles from "../../styles/Dashboard.module.css";
 
-function cmDashboard() {
+function Students() {
   return (
     <div className={styles.cmContainer}>
-      <nav style={{ padding: "2%" }}>
-        <Image
-          src="/img/compass-logo.svg"
-          alt="logo"
-          width={50}
-          height={50}
-          priority
-        />
-      </nav>
+      <nav style={{ padding: "2%" }}></nav>
       <main>
         <div style={{ padding: "20px", textAlign: "center" }}>
           <div
@@ -32,4 +23,4 @@ function cmDashboard() {
   );
 }
 
-export default cmDashboard;
+export default Students;

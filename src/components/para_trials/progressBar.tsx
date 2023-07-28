@@ -4,7 +4,7 @@ interface ProgressBarProps {
   fillPercent: number;
 }
 
-const ProgressBar: React.FC<ProgressBarProps> = ({ fillPercent }) => {
+const ProgressBar = ({ fillPercent }: ProgressBarProps) => {
   return (
     <div
       style={{
