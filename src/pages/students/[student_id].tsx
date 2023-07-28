@@ -51,7 +51,7 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <div className={styles.person}>
+    <div>
       <h1>
         {student?.first_name} {student?.last_name}
       </h1>

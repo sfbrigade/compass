@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "@/styles/Iep.module.css";
 import Goals from "@/components/Goal";
+import $button from "@/styles/Button.module.css";
+import $input from "@/styles/Input.module.css";
 
 const Iep = () => {
   const router = useRouter();
@@ -52,11 +54,12 @@ const Iep = () => {
       </ul>
 
       <div>
-        <form onSubmit={handleGoalSubmit} className={styles.createInput}>
+        <form onSubmit={handleGoalSubmit}>
           <input
             type="text"
             name="description"
             placeholder="Goal description"
+            className={$input.default}
             required
           />
           <select name="category">
@@ -65,7 +68,7 @@ const Iep = () => {
             <option value="math">math</option>
             <option value="other">other</option>
           </select>
-          <button type="submit" className={styles.createButton}>
+          <button type="submit" className={$button.default}>
             Add Goal
           </button>
         </form>
