@@ -25,11 +25,10 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   onUpload,
 }) => {
   const [currentStep, setCurrentStep] = useState(UploadStep.Start);
-  const [uploading, setUploading] = useState(false);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [capturedImage, setCapturedImage] = useState<Blob | null>(null);
 
-  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const onClickStartButton = () => {
     setCurrentStep(UploadStep.TakePicture);
@@ -63,7 +62,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     setUploadSuccess(false);
 
     if (capturedImage) {
-      setUploading(true);
       void uploadImageToCloud();
     }
   };
@@ -71,6 +69,9 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   const getPresignedUrlForUpload =
     trpc.file.getPresignedUrlForFileUpload.useMutation();
   const finishFileUpload = trpc.file.finishFileUpload.useMutation();
+
+  const isUploading =
+    getPresignedUrlForUpload.isLoading || finishFileUpload.isLoading;
 
   const uploadImageToCloud = useCallback(async () => {
     if (!capturedImage) return;
@@ -91,8 +92,6 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     if (file_id) {
       onUpload(file_id);
     }
-
-    setUploading(false);
   }, [
     capturedImage,
     fileName,
@@ -116,7 +115,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       {currentStep === UploadStep.Start && (
         <button
           onClick={onClickStartButton}
-          disabled={uploading}
+          disabled={isUploading}
           className={styles.actionButton}
         >
           <CameraIcon className={styles.buttonIcon} />
@@ -156,20 +155,20 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
           <div className={styles.buttonsContainer}>
             <button
               onClick={onClickUploadPicture}
-              disabled={uploading}
+              disabled={isUploading}
               className={styles.actionButton}
             >
-              {uploading ? (
+              {isUploading ? (
                 <CircularProgress size={20} color="inherit" />
               ) : (
                 <CheckCircleIcon className={styles.buttonIcon} />
               )}
-              {uploading ? "Uploading..." : "Upload"}
+              {isUploading ? "Uploading..." : "Upload"}
             </button>
             <button
               id="cancel-button"
               onClick={onCancelTakePicture}
-              disabled={uploading}
+              disabled={isUploading}
               className={styles.actionButton}
             >
               Cancel
@@ -178,7 +177,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
         </div>
       )}
 
-      {uploading && (
+      {isUploading && (
         <div className={styles.uploadingText}>
           <CircularProgress size={20} color="primary" />
         </div>
