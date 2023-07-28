@@ -7,7 +7,7 @@ terraform {
 }
 
 provider "google" {
-  project = var.project
+  project = var.project_id
 }
 
 # Enable Cloud Storage API
@@ -51,14 +51,14 @@ resource "google_service_account" "github_ci" {
 
 # Allow GitHub CI to write to Artifact Registry
 resource "google_project_iam_member" "github_ci_artifacts" {
-  project = var.project
+  project = var.project_id
   role    = "roles/artifactregistry.writer"
   member  = "serviceAccount:${google_service_account.github_ci.email}"
 }
 
 module "gh_oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
-  project_id  = var.project
+  project_id  = var.project_id
   pool_id     = "compass-ci-pool"
   provider_id = "gh-provider"
   sa_mapping = {
