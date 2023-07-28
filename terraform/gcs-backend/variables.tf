@@ -1,4 +1,4 @@
 # Google Cloud project slug
-variable "project" {
+variable "project_id" {
   type = string
 }

@@ -1,0 +1,31 @@
+name: Deploy
+on:
+  push:
+    branches:
+      - main
+jobs:
+  build-and-push-image:
+    name: Build and push image to Google Cloud
+    permissions:
+      id-token: write
+      contents: read
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - uses: google-github-actions/auth@v1
+        with:
+          token_format: "access_token"
+          workload_identity_provider: ${{ secrets.GCS_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCS_SERVICE_ACCOUNT_EMAIL }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          push: true
+          tags: gcr.io/${{ secrets.GCS_PROJECT_ID }}/compass:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
