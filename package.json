@@ -15,7 +15,10 @@
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "type-css": "npx tcm src",
+    "type-css:watch": "npx tcm src --watch",
+    "type-css:check": "npx tcm src --listDifferent"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.360.0",
@@ -78,6 +81,7 @@
     "prettier": "^2.8.8",
     "testcontainers": "^9.8.0",
     "type-fest": "^3.5.4",
+    "typed-css-modules": "^0.7.2",
     "typescript": "^4.9.5"
   },
   "engines": {

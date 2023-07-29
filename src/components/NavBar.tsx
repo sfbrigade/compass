@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./Navbar.module.css";
+import $navbar from "./Navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -17,12 +17,12 @@ const NavBar = () => {
   return (
     <>
       {status === "authenticated" && (
-        <nav className={styles.sidebar}>
+        <nav className={$navbar.sidebar}>
           <Link href="/">
             <Image
               src="/img/compass-logo.svg"
               alt="logo"
-              className={styles.logo}
+              className={$navbar.logo}
               width={64}
               height={64}
               priority
@@ -30,26 +30,26 @@ const NavBar = () => {
           </Link>
           <br />
 
-          <div className={styles.linkContainer}>
-            <Link href="/students" className={styles.link}>
-              <PeopleOutline className={styles.icon} />
-              <p className={styles.linkTitle}>Students</p>
+          <div className={$navbar.linkContainer}>
+            <Link href="/students" className={$navbar.link}>
+              <PeopleOutline className={$navbar.icon} />
+              <p className={$navbar.linkTitle}>Students</p>
             </Link>
             <br />
-            <Link href="/staff" className={styles.link}>
-              <CoPresent className={styles.icon} />
-              <p className={styles.linkTitle}>Staff</p>
+            <Link href="/staff" className={$navbar.link}>
+              <CoPresent className={$navbar.icon} />
+              <p className={$navbar.linkTitle}>Staff</p>
             </Link>
             <br />
-            <Link href="/settings" className={styles.link}>
-              <Settings className={styles.icon} />
-              <p className={styles.linkTitle}>Settings</p>
+            <Link href="/settings" className={$navbar.link}>
+              <Settings className={$navbar.icon} />
+              <p className={$navbar.linkTitle}>Settings</p>
             </Link>
             <br />
-            <Link href="" className={styles.link}>
-              <Logout className={styles.icon} />
+            <Link href="" className={$navbar.link}>
+              <Logout className={$navbar.icon} />
               <p
-                className={styles.linkTitle}
+                className={$navbar.linkTitle}
                 onClick={() => signOut({ callbackUrl: "/" })}
               >
                 Logout
