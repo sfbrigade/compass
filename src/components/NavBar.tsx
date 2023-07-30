@@ -9,32 +9,32 @@ import {
   Logout,
 } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
-import { trpc } from "@/client/lib/trpc";
+import { useSession } from "next-auth/react";
 
 interface NavBarProps {
   children: React.ReactNode;
 }
 
 const NavBar = ({ children }: NavBarProps) => {
-  const { data: me } = trpc.user.getMe.useQuery();
+  const { status } = useSession();
 
   return (
     <React.Fragment>
       <div className={styles.container}>
-        <div className={styles.sidebar}>
-          <Link href="/">
-            <Image
-              src="/img/compass-logo.svg"
-              alt="logo"
-              className={styles.logo}
-              width={64}
-              height={64}
-              priority
-            />
-          </Link>
-          <br />
+        {status === "authenticated" && (
+          <div className={styles.sidebar}>
+            <Link href="/">
+              <Image
+                src="/img/compass-logo.svg"
+                alt="logo"
+                className={styles.logo}
+                width={64}
+                height={64}
+                priority
+              />
+            </Link>
+            <br />
 
-          {me && (
             <div className={styles.linkContainer}>
               <Link href="/students" className={styles.link}>
                 <PeopleOutline className={styles.icon} />
@@ -61,8 +61,8 @@ const NavBar = ({ children }: NavBarProps) => {
                 </p>
               </Link>
             </div>
-          )}
-        </div>
+          </div>
+        )}
         <div className={styles.body}>{children}</div>
       </div>
     </React.Fragment>
