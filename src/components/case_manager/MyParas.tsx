@@ -32,6 +32,8 @@ const MyParas = () => {
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
     });
+    // resetting the form this way is only necessary if the form remains visible upon adding a person.
+    (event.target as HTMLFormElement).reset();
   };
 
   if (isLoading) {

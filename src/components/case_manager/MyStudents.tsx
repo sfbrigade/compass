@@ -26,6 +26,8 @@ const MyStudents = () => {
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
     });
+    // if form remains visible upon adding a student, this clears the form, however, due to Material UI limitations, it remains "filled"
+    (event.target as HTMLFormElement).reset();
   };
 
   const headCells: StudentHeadCell[] = [
