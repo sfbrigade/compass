@@ -4,7 +4,7 @@ interface StudentIEPProps {
 }
 
 // TODO: Move this to the components directory
-const StudentIEP: React.FC<StudentIEPProps> = ({ first_name, last_name }) => {
+const StudentIEP = ({ first_name, last_name }: StudentIEPProps) => {
   return (
     <div>
       <h1>
