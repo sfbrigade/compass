@@ -11,6 +11,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
 import styles from "../../src/styles/Toast.module.css";
+import CustomToast from "./customToast";
 
 interface CustomPageProps {
   session: Session;
@@ -80,19 +81,8 @@ export default function App({
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
+            <CustomToast />
             <Component {...pageProps} showErrorToast={toast.error} />
-            <Toaster
-              position="bottom-right"
-              // react-hot-toast does not directly support using custom classes for the toast content through toastOptions
-              toastOptions={{
-                style: {
-                  background: "#F6F5FF",
-                  borderRadius: "4px",
-                  color: "#021426",
-                },
-                duration: Infinity,
-              }}
-            />
           </SessionProvider>
         </QueryClientProvider>
       </trpc.Provider>
