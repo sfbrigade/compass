@@ -15,7 +15,7 @@
 }
 
 .link {
-  color: white;
+  color: var(--on-primary);
   padding-left: 30px;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -33,5 +33,5 @@
 }
 
 .icon {
-  color: white;
+  color: var(--on-primary);
 }

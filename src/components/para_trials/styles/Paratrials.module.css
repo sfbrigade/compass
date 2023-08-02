@@ -141,7 +141,7 @@
   height: 100px;
   width: 100px;
   background-color: var(--primary);
-  color: white;
+  color: var(--on-primary);
   cursor: pointer;
 }
 

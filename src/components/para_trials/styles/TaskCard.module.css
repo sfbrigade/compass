@@ -30,7 +30,7 @@
   font-size: 12px;
   font-family: "Inter", sans-serif;
   font-weight: 700;
-  color: #586874;
+  color: var(--grey-30);
 }
 
 .dateFloaterRed {
@@ -54,7 +54,7 @@
 
 .profileDone {
   composes: profile;
-  color: #a2acb3;
+  color: var(--grey-50);
 }
 
 /* This will need to change once a real image is in place */
@@ -78,7 +78,7 @@
   border-radius: 4px;
   padding: 5px;
   margin-top: 10px;
-  color: white;
+  color: var(--on-primary);
   text-decoration: none;
   text-align: center;
   font-size: 16px;
@@ -86,13 +86,13 @@
 
 .buttonDone {
   composes: button;
-  background-color: #d6dde1;
-  color: #a2acb3;
+  background-color: var(--grey-70);
+  color: var(--grey-50);
 }
 
 .progressBar {
   font-size: 10px;
-  color: #586874;
+  color: var(--grey-30);
   display: flex;
   flex-direction: column;
   align-items: flex-end;
