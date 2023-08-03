@@ -6,6 +6,9 @@
     "start": "npm run with-gcp-metadata next start",
     "with-gcp-metadata": "npx tsx src/backend/scripts/run-with-gcp-metadata.ts",
     "type-check": "tsc --noEmit",
+    "type-css": "npx tcm src",
+    "type-css:watch": "npx tcm src --watch",
+    "type-css:check": "npx tcm src --listDifferent",
     "test": "ava",
     "test:watch": "ava --watch",
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
@@ -16,9 +19,7 @@
     "format:check": "prettier --check --ignore-unknown .",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "type-css": "npx tcm src",
-    "type-css:watch": "npx tcm src --watch",
-    "type-css:check": "npx tcm src --listDifferent"
+    "all:check": "npm run type-check && npm run type-css:check && npm run lint && npm run format:check && npm run test"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.360.0",
