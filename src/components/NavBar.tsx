@@ -25,7 +25,7 @@ const NavBar = ({ children }: NavBarProps) => {
           <div className={styles.sidebar}>
             <Link href="/">
               <Image
-                src="/img/compass-logo.svg"
+                src="/img/compass-logo-white.svg"
                 alt="logo"
                 className={styles.logo}
                 width={64}
