@@ -56,7 +56,8 @@ const NavBar = () => {
               </p>
             </Link>
           </div>
-        </nav>)}
+        </nav>
+      )}
     </>
   );
 };

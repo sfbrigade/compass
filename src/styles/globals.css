@@ -100,16 +100,6 @@ p {
   font-weight: 500;
 }
 
-.caption {
-  font-size: 0.75em;
-  font-weight: 500;
-}
-
-.overline {
-  font-size: 0.75em;
-  font-weight: 600;
-}
-
 /* Breakpoints recommended by Bootstrap */
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {
@@ -124,15 +114,15 @@ p {
   h1 {
     font-size: 2em;
   }
-  
+
   h2 {
     font-size: 1.5em;
   }
-  
+
   h3 {
     font-size: 1.25em;
   }
-  
+
   h4 {
     font-size: 1.25em;
   }

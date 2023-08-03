@@ -17,8 +17,8 @@ jobs:
       - name: Check types
         run: npm run type-check
 
-  type-css check:
-    name: type-css check
+  type-css_check:
+    name: type-css_check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
