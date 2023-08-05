@@ -15,6 +15,9 @@ terraform.tfstate*
 .env*
 !.env.example
 
+# CSS declarations
+*.css.d.ts
+
 # misc
 .DS_Store
 .vscode
