@@ -20,7 +20,7 @@ const NavBar = () => {
         <nav className={$navbar.sidebar}>
           <Link href="/">
             <Image
-              src="/img/compass-logo.svg"
+              src="/img/compass-logo-white.svg"
               alt="logo"
               className={$navbar.logo}
               width={64}
@@ -34,6 +34,7 @@ const NavBar = () => {
             <Link href="/students" className={$navbar.link}>
               <PeopleOutline className={$navbar.icon} />
               <p className={$navbar.linkTitle}>Students</p>
+
             </Link>
             <br />
             <Link href="/staff" className={$navbar.link}>
