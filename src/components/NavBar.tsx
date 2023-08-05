@@ -34,7 +34,6 @@ const NavBar = () => {
             <Link href="/students" className={$navbar.link}>
               <PeopleOutline className={$navbar.icon} />
               <p className={$navbar.linkTitle}>Students</p>
-
             </Link>
             <br />
             <Link href="/staff" className={$navbar.link}>
