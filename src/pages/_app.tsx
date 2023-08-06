@@ -7,7 +7,7 @@ import { httpBatchLink, loggerLink } from "@trpc/client";
 import { useState } from "react";
 import "../styles/globals.css";
 import { QueryCache } from "@tanstack/react-query";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
 import styles from "../../src/styles/Toast.module.css";
@@ -31,6 +31,8 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -44,9 +46,8 @@ export default function App({
               };
 
               const defaultMessage = "An error occured. Please try again";
-              const errorMessage =
-                errorMessages[error.message] || defaultMessage;
-              toast.error(errorMessage, { className: styles["custom-toast"] });
+              const msg = errorMessages[error.message] || defaultMessage;
+              setErrorMessage(msg);
             }
           },
         }),
@@ -81,7 +82,7 @@ export default function App({
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
-            <CustomToast />
+            <CustomToast errorMessage={errorMessage} />
             <Component {...pageProps} showErrorToast={toast.error} />
           </SessionProvider>
         </QueryClientProvider>

@@ -1,8 +1,28 @@
 import React, { useState } from "react";
 import styles from "../styles/Toast.module.css";
 
-const CustomToast = () => {
-  return <div className={styles.customToast}>custom toast here</div>;
+interface CustomToastProps {
+  errorMessage: string;
+}
+
+const CustomToast: React.FC<CustomToastProps> = ({ errorMessage }) => {
+  const [showToast, setShowToast] = useState(true);
+
+  const handleCloseToast = () => {
+    setShowToast(false);
+  };
+
+  return (
+    <>
+      {showToast && (
+        <div className={styles.customToastWrapper}>
+          <div className={styles.customToast} onClick={handleCloseToast}>
+            {errorMessage}
+          </div>
+        </div>
+      )}
+    </>
+  );
 };
 
 export default CustomToast;
