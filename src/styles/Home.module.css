@@ -1,6 +1,4 @@
-.container {
-  background-color: #f6f5ff;
-}
+/* TODO: Once the home page is remade/restyled, remove this file from global styles (or edit as necessary) */
 
 /* NON SESSION USER HOMEPAGE */
 .greetWrap {
@@ -8,94 +6,20 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
-}
-
-.greet {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  min-height: 100%;
   gap: 15px;
 }
 
-.bold {
-  font-weight: bold;
-}
-
-/* INDIVIDUAL STUDENT/PARA PAGE */
-.person {
-  margin: 10px;
-}
-
-/* SIGN IN BUTTON */
-.signIn {
-  height: 40px;
-  margin: 10px 0px;
-  padding: 0px 24px;
-  background-color: #5347d7;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.signIn:hover {
-  box-shadow: 1px 1px 2px gray;
-}
-
-.signIn:active {
-  background-color: #3023b8;
-}
-
 /* SESSION USER PAGE */
-.userInfoWrap {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-}
-
 .userInfo {
   width: 90%;
   display: flex;
   flex-direction: column;
   word-wrap: break-word;
+  justify-content: center;
+  min-height: 100%;
 }
 
-/* SIGN OUT BUTTON
-(TODO: MOVE TO DROP DOWN CONTAINER ON NAV WITH USER PROFILE)
-*/
-.signOut {
-  height: 40px;
-  width: 100px;
-  margin: 10px 0px;
-  padding: 0px 24px;
-  background-color: #5347d7;
-  border-radius: 5px;
-  border: none;
-  color: white;
-  cursor: pointer;
-}
-
-.signOut:hover {
-  box-shadow: 1px 1px 2px gray;
-}
-
-.signOut:active {
-  background-color: #3023b8;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-}
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
+.bold {
+  font-weight: bold;
 }
