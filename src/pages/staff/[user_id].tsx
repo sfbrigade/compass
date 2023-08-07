@@ -4,7 +4,6 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
-import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const ViewParaPage = () => {
   const [unassignParaPrompt, setUnassignParaPrompt] = useState(false);
@@ -78,6 +77,4 @@ const ViewParaPage = () => {
   );
 };
 
-const protectedStaffPage = requiresAdminAuth(ViewParaPage);
-
-export default protectedStaffPage;
+export default ViewParaPage;

@@ -1,5 +1,3 @@
-import { requiresAdminAuth } from "@/client/lib/protected-page";
-
 interface StudentIEPProps {
   first_name: string | undefined;
   last_name: string | undefined;
@@ -17,6 +15,4 @@ const StudentIEP = ({ first_name, last_name }: StudentIEPProps) => {
   );
 };
 
-const protectedIEP = requiresAdminAuth(StudentIEP);
-
-export default protectedIEP;
+export default StudentIEP;

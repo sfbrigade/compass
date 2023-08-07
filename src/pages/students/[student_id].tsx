@@ -5,7 +5,6 @@ import Link from "next/link";
 import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
-import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const ViewStudentPage = () => {
   const [archivePrompt, setArchivePrompt] = useState(false);
@@ -133,6 +132,4 @@ const ViewStudentPage = () => {
   );
 };
 
-const protectedStudentPage = requiresAdminAuth(ViewStudentPage);
-
-export default protectedStudentPage;
+export default ViewStudentPage;
