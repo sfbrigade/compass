@@ -28,5 +28,6 @@ Similarly, set or update the GitHub secrets `GCS_WORKLOAD_IDENTITY_PROVIDER` and
 
 1. Configure the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) (no scopes needed)
 2. Create new [OAuth credentials](https://console.cloud.google.com/apis/credentials) ("Create credentials" -> "OAuth client ID")
-  - Application type: Web application
-  - Authorized redirect URIs: https://<project-url>/api/auth/callback/google
+
+- Application type: Web application
+- Authorized redirect URIs: https://<project-url>/api/auth/callback/google
