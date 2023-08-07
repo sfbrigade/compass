@@ -12,14 +12,21 @@ To initialize the Terraform backend and necessary services (must be done once ma
 
 Copy `backend.hcl` to `backend.dev.hcl` and update `bucket` with what is output from the `terraform apply` command.
 
+To manually deploy:
+
+1. `cd terraform/gcs`
+2. `terraform init -backend-config=../backend.dev.hcl` (you only need to run this once)
+3. `terraform apply -var="project=<project-id>" -var="image=<image-ref>`
+
 ### For a production deployment
 
 Update `bucket` in `backend.hcl` with what is output from the `terraform apply` command and commit your changes.
 
 Similarly, set or update the GitHub secrets `GCS_WORKLOAD_IDENTITY_PROVIDER` and `GCS_SERVICE_ACCOUNT_EMAIL` from the output of the `terraform apply` command.
 
-## Manual deployment
+## Google OAuth Client setup
 
-1. `cd terraform/gcs`
-2. `terraform init -backend-config=../backend.dev.hcl` (you only need to run this once)
-3. `terraform apply -var="project=<project-id>" -var="image=<image-ref>`
+1. Configure the [OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) (no scopes needed)
+2. Create new [OAuth credentials](https://console.cloud.google.com/apis/credentials) ("Create credentials" -> "OAuth client ID")
+  - Application type: Web application
+  - Authorized redirect URIs: https://<project-url>/api/auth/callback/google
