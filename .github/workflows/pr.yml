@@ -1,8 +1,8 @@
 name: PR
 on: [pull_request]
 jobs:
-  type_check:
-    name: type_check
+  type-check:
+    name: type-check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
