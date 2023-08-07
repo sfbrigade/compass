@@ -3,6 +3,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
+import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const ViewStudentPage = () => {
   const [archivePrompt, setArchivePrompt] = useState(false);
@@ -130,4 +131,6 @@ const ViewStudentPage = () => {
   );
 };
 
-export default ViewStudentPage;
+const protectedStudentPage = requiresAdminAuth(ViewStudentPage);
+
+export default protectedStudentPage;

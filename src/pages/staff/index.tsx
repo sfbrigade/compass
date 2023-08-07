@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "../../styles/Dashboard.module.css";
 import MyParas from "@/components/case_manager/MyParas";
+import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 function Staff() {
   return (
@@ -23,4 +24,6 @@ function Staff() {
   );
 }
 
-export default Staff;
+const protectedStaffList = requiresAdminAuth(Staff);
+
+export default protectedStaffList;

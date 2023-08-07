@@ -1,4 +1,5 @@
 import React from "react";
+import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const Settings = () => {
   return (
@@ -8,4 +9,6 @@ const Settings = () => {
   );
 };
 
-export default Settings;
+const protectedSettings = requiresAdminAuth(Settings);
+
+export default protectedSettings;

@@ -3,6 +3,7 @@ import Counter from "@/components/para_trials/counter";
 import Timer from "@/components/para_trials/timer";
 import TimerInput from "@/components/para_trials/timerInputPad";
 import styles from "@/styles/Paraflow.module.css";
+import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const TrialPage = () => {
   const [timerTimeInSec, setTimerTimeInSec] = useState(0);
@@ -56,4 +57,6 @@ const TrialPage = () => {
   );
 };
 
-export default TrialPage;
+const protectedTrialPage = requiresAdminAuth(TrialPage);
+
+export default protectedTrialPage;

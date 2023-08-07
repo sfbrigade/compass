@@ -3,6 +3,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import styles from "@/styles/Home.module.css";
+import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const ViewParaPage = () => {
   const [unassignParaPrompt, setUnassignParaPrompt] = useState(false);
@@ -76,4 +77,6 @@ const ViewParaPage = () => {
   );
 };
 
-export default ViewParaPage;
+const protectedStaffPage = requiresAdminAuth(ViewParaPage);
+
+export default protectedStaffPage;

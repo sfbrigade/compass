@@ -1,25 +1,26 @@
 import { trpc } from "./trpc";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export const requiresAdminAuth =
   <Props extends object>(WrappedPage: React.ComponentType<Props>) =>
   // eslint-disable-next-line react/display-name
   (props: Props) => {
     const router = useRouter();
-    const { data: me, error } = trpc.user.getMe.useQuery();
+    const { status } = useSession();
 
     useEffect(() => {
-      if ((me && me.role !== "admin") || error) {
+      if (status === "unauthenticated") {
         void router.push("/");
       }
-    }, [me, error, router]);
+    }, [status, router]);
 
-    if (!me) {
+    if (status === "loading") {
       return "Loading...";
     }
 
-    if (me?.role === "admin") {
+    if (status === "authenticated") {
       return <WrappedPage {...props} />;
     }
   };
