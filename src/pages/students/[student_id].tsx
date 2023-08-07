@@ -2,7 +2,9 @@ import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import styles from "@/styles/Home.module.css";
+import $home from "@/styles/Home.module.css";
+import $button from "@/styles/Button.module.css";
+import $input from "@/styles/Input.module.css";
 import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const ViewStudentPage = () => {
@@ -52,7 +54,7 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <div className={styles.person}>
+    <div>
       <h1>
         {student?.first_name} {student?.last_name}
       </h1>
@@ -63,7 +65,7 @@ const ViewStudentPage = () => {
         <b>Student Email:</b> {student?.email}
       </p>
       <button
-        className={`${styles.signIn} ${styles.bold}`}
+        className={`${$button.default} ${$home.bold}`}
         onClick={() => setArchivePrompt(true)}
       >
         Archive Student
@@ -76,13 +78,13 @@ const ViewStudentPage = () => {
             {student?.last_name}?
           </p>
           <button
-            className={`${styles.signIn} ${styles.bold}`}
+            className={`${$button.default} ${$home.bold}`}
             onClick={() => handleArchiveStudent()}
           >
             Yes
           </button>
           <button
-            className={`${styles.signIn} ${styles.bold}`}
+            className={`${$button.default} ${$home.bold}`}
             onClick={() => setArchivePrompt(false)}
           >
             No
@@ -92,7 +94,7 @@ const ViewStudentPage = () => {
 
       <div>Create IEP:</div>
       <div>
-        <form onSubmit={handleIepSubmit} className={styles.createInput}>
+        <form onSubmit={handleIepSubmit} className={$input.default}>
           <input
             type="date"
             name="start_date"
@@ -105,14 +107,14 @@ const ViewStudentPage = () => {
             placeholder="IEP end date"
             required
           />
-          <button type="submit" className={styles.createButton}>
+          <button type="submit" className={$button.default}>
             Create IEP
           </button>
         </form>
       </div>
 
       <br />
-      <ul className={styles.listNames}>
+      <ul>
         {ieps?.map((iep) => (
           <li key={iep.iep_id}>
             <Link href={`/iep/${iep.iep_id}`}>IEP</Link>

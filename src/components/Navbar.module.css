@@ -1,16 +1,6 @@
-.container {
-  display: flex;
-  flex-direction: row;
-}
-
 .sidebar {
   flex: 2;
-  background-color: #080155;
-  min-height: 100vh;
-}
-
-.body {
-  flex: 10;
+  background-color: var(--primary-20);
 }
 
 .linkContainer {
@@ -25,7 +15,7 @@
 }
 
 .link {
-  color: white;
+  color: var(--on-primary);
   padding-left: 30px;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -43,5 +33,5 @@
 }
 
 .icon {
-  color: white;
+  color: var(--on-primary);
 }

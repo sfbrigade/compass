@@ -5,17 +5,21 @@
     "build": "next build",
     "start": "npm run with-gcp-metadata next start",
     "with-gcp-metadata": "npx tsx src/backend/scripts/run-with-gcp-metadata.ts",
-    "type-check": "tsc --noEmit",
+    "type:check": "tsc --noEmit",
+    "type-css": "npx tcm src",
+    "type-css:watch": "npx tcm src --watch",
+    "type-css:check": "npx tcm src --listDifferent",
     "test": "ava",
     "test:watch": "ava --watch",
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
     "db:reset": "npx tsx src/backend/scripts/reset-database.ts",
     "prepare": "husky install",
-    "postinstall": "nsm build",
+    "postinstall": "nsm build && npm run type-css",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "all:check": "npm run type:check && npm run type-css:check && npm run lint && npm run format:check && npm run test"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.360.0",
@@ -78,6 +82,7 @@
     "prettier": "^2.8.8",
     "testcontainers": "^9.8.0",
     "type-fest": "^3.5.4",
+    "typed-css-modules": "^0.7.2",
     "typescript": "^4.9.5"
   },
   "engines": {

@@ -3,16 +3,7 @@
   font-weight: 600;
 }
 
-.addButton {
-  background-color: var(--primary-purple);
-  border: none;
-  color: white;
-  padding: 10px;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
+/* these colors don't match anything in colorsheet */
 .header {
   background-color: #dfe2e6;
   color: #4a5056;
