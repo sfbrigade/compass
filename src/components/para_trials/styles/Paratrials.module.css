@@ -73,7 +73,7 @@
 .startStopButton {
   border: none;
   border-radius: 50%;
-  color: white;
+  color: var(--on-primary);
   background-color: var(--primary);
   height: 50px;
   width: 50px;
@@ -83,7 +83,7 @@
 .resetButton {
   border: none;
   background: none;
-  color: #20159e;
+  color: var(--primary-40);
   font-size: 50px;
   cursor: pointer;
 }
@@ -112,7 +112,7 @@
   justify-content: center;
   align-items: center;
 }
-
+/* check */
 .numPadContainer h2 {
   color: black;
 }
