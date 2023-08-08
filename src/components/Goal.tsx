@@ -1,8 +1,8 @@
 import React from "react";
 import Subgoals from "./Subgoal";
 import { trpc } from "@/client/lib/trpc";
-import styles from "@/styles/Goal.module.css";
 import { Goal } from "@/types/global";
+import $goal from "./Goal.module.css";
 
 interface GoalProps {
   goal: Goal;
@@ -42,8 +42,8 @@ const Goals = ({ goal }: GoalProps) => {
       <p>Created at: {goal.created_at.toDateString()}</p>
       <p>Category: {goal.category}</p>
 
-      <div className={styles.tab}>
-        <ul className={styles.listNames}>
+      <div className={$goal.tab}>
+        <ul className={$goal.listNames}>
           {subgoals?.map((subgoal) => (
             <li key={subgoal.subgoal_id}>
               <br />
@@ -52,7 +52,7 @@ const Goals = ({ goal }: GoalProps) => {
           ))}
         </ul>
         <br />
-        <form onSubmit={handleSubGoalSubmit} className={styles.createInput}>
+        <form onSubmit={handleSubGoalSubmit} className={$goal.createInput}>
           <input
             type="text"
             name="description"
@@ -66,7 +66,7 @@ const Goals = ({ goal }: GoalProps) => {
             placeholder="# of attempts"
           />
 
-          <button type="submit" className={styles.createButton}>
+          <button type="submit" className={$goal.createButton}>
             Add SubGoal
           </button>
         </form>

@@ -39,9 +39,17 @@ resource "google_cloud_run_v2_service" "run_service" {
       }
 
       liveness_probe {
+        # Wait for migrations to run
+        initial_delay_seconds = 30
+        failure_threshold = 5
+
         http_get {
           path = "/"
         }
+      }
+
+      resources {
+        startup_cpu_boost = true
       }
     }
 

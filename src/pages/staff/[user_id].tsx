@@ -2,7 +2,8 @@ import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import styles from "@/styles/Home.module.css";
+import $home from "@/styles/Home.module.css";
+import $button from "@/styles/Button.module.css";
 
 const ViewParaPage = () => {
   const [unassignParaPrompt, setUnassignParaPrompt] = useState(false);
@@ -30,7 +31,7 @@ const ViewParaPage = () => {
   }
 
   return (
-    <div className={styles.person}>
+    <div>
       <h1>
         {para?.first_name} {para?.last_name}
       </h1>
@@ -42,7 +43,7 @@ const ViewParaPage = () => {
       </p>
 
       <button
-        className={`${styles.signIn} ${styles.bold}`}
+        className={`${$button.default} ${$home.bold}`}
         onClick={() => setUnassignParaPrompt(true)}
       >
         Unassign Para
@@ -55,13 +56,13 @@ const ViewParaPage = () => {
             {para?.last_name}?
           </p>
           <button
-            className={`${styles.signIn} ${styles.bold}`}
+            className={`${$button.default} ${$home.bold}`}
             onClick={() => handleUnassignPara()}
           >
             Yes
           </button>
           <button
-            className={`${styles.signIn} ${styles.bold}`}
+            className={`${$button.default} ${$home.bold}`}
             onClick={() => setUnassignParaPrompt(false)}
           >
             No
