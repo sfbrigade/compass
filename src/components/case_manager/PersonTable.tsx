@@ -263,6 +263,10 @@ export default function EnhancedTable<
 
   const filterList = useCallback(
     (list: Person[], searchTerm: string) => {
+      if (!list) {
+        return [];
+      }
+
       const filteredList = list.filter((person) => {
         for (const headCell of headCells) {
           if (
@@ -291,7 +295,7 @@ export default function EnhancedTable<
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
-        totalRows={people.length}
+        totalRows={people ? people.length : 0}
         type={type}
         onOpenInput={handleOpenInput}
         searchParam={searchParam}
