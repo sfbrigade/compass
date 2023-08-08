@@ -17,7 +17,6 @@
   background: var(--system-error-error-container-f-9-dedc, #fef1f0);
 }
 
-.customToast::after {
-  content: "X";
+.imgPointer {
   cursor: pointer;
 }
