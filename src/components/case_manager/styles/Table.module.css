@@ -3,16 +3,15 @@
   font-weight: 600;
 }
 
-/* these colors don't match anything in colorsheet */
 .header {
   /* check */
-  background-color: #dfe2e6;
-  color: #4a5056;
+  background-color: var(--grey-70);
+  color: var(--grey-20);
 }
 
 .headerLabel {
   font-size: 17px;
-  color: #4a5056;
+  color: var(--grey-20);
 }
 
 .closeButton {

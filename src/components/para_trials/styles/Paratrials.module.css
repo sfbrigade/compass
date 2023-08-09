@@ -39,25 +39,28 @@
   background-color: var(--accent);
 }
 .counterNumberDisplay-blue {
-  background-color: #1680a133;
+  /* background-color: #1680a133; */
+  background-color: var(--grey-10);
 }
 .counterButton-green {
   background-color: #167841;
 }
 .counterNumberDisplay-green {
-  background-color: #16784133;
+  /* background-color: #16784133; */
+  background-color: var(--grey-10);
 }
 .counterButton-yellow {
-  background-color: #ffaa44;
+  background-color: var(--warning-container);
 }
 .counterNumberDisplay-yellow {
-  background-color: #ffaa4433;
+  /* background-color: #ffaa4433; */
+  background-color: var(--grey-10);
 }
 
 .counterTitle {
   font-size: 20px;
   font-weight: 600;
-  color: #a2acb3;
+  color: var(--grey-50);
   width: 100%;
   text-align: center;
 }
