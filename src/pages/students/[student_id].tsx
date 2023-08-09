@@ -6,6 +6,11 @@ import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 
+// this page is where the action will be
+// component for Goals, for Benchmarks, Progress, and Staff
+// Each component can be done by an individual to break it up into parts
+// add getDetailQuery in this page?
+
 const ViewStudentPage = () => {
   const [archivePrompt, setArchivePrompt] = useState(false);
   const utils = trpc.useContext();
