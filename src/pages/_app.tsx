@@ -82,7 +82,7 @@ export default function App({
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
-            <CustomToast errorMessage={errorMessage} />
+            {errorMessage && <CustomToast errorMessage={errorMessage} />}
             <Component {...pageProps} showErrorToast={toast.error} />
           </SessionProvider>
         </QueryClientProvider>

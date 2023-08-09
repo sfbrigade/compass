@@ -13,12 +13,21 @@ const CustomToast: React.FC<CustomToastProps> = ({ errorMessage }) => {
     setShowToast(false);
   };
 
+  console.log("error is ", errorMessage);
+
   return (
     <>
       {showToast && (
         <div className={styles.customToastWrapper}>
           <div className={styles.customToast}>
-            {errorMessage}
+            <Image
+              src="/img/error.filled.svg"
+              alt="Close Toast"
+              width={24}
+              height={24}
+            ></Image>
+            <div>{errorMessage ?? "hi"}</div>
+
             <Image
               src="/img/cross-outline.svg"
               alt="Close Toast"
