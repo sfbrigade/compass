@@ -16,9 +16,6 @@
   color: var(--grey-50);
 }
 
-.container p {
-  font-family: "Inter", sans-serif;
-}
 .container strong {
   font-weight: 700;
 }
@@ -28,7 +25,6 @@
   top: 15px;
   right: 15px;
   font-size: 12px;
-  font-family: "Inter", sans-serif;
   font-weight: 700;
   color: var(--grey-30);
 }
@@ -69,26 +65,6 @@
   opacity: 0.5;
 }
 
-.button {
-  display: block;
-  background-color: var(--primary);
-  width: 100%;
-  border: none;
-  border-radius: 4px;
-  padding: 5px;
-  margin-top: 10px;
-  color: var(--on-primary);
-  text-decoration: none;
-  text-align: center;
-  font-size: 16px;
-}
-
-.buttonDone {
-  composes: button;
-  background-color: var(--grey-70);
-  color: var(--grey-50);
-}
-
 .progressBar {
   font-size: 10px;
   color: var(--grey-30);
@@ -96,5 +72,5 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 3px;
-  margin: 3px 0;
+  margin: 10px 0;
 }

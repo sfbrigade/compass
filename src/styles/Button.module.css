@@ -1,10 +1,15 @@
 .default {
+  display: block;
   background-color: var(--primary);
   border: none;
   color: var(--on-primary);
   padding: 10px;
   border-radius: 4px;
   cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+
 }
 
 .default:hover {
@@ -25,4 +30,10 @@
 .pilled {
   border-radius: 20px;
   padding: 5px 10px;
+}
+
+.inactive {
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  pointer-events: none;
 }

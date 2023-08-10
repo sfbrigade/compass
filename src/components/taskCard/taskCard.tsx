@@ -1,6 +1,7 @@
 // import Image from "next/image";
-import React, { useState } from "react";
-import styles from "./TaskCard.module.css";
+import React, { useEffect, useState } from "react";
+import $taskCard from "./styles/TaskCard.module.css";
+import $button from "@/styles/Button.module.css";
 import Link from "next/link";
 import ProgressBar from "../progressBar/progressBar";
 import { ParaTaskCard } from "@/types/global";
@@ -10,26 +11,34 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
-  // TODO: calculate completion rate depending on trials
-  const [completionRate] = useState(0);
+  const [completionRate, setCompletionRate] = useState(0);
+  useEffect(() => {
+    //TODO: discuss how to deal with null target_max_attempts
+    const calculatedRate =
+      Math.floor(
+        (task.success_with_prompt || 0 + (task.success_without_prompt || 0)) /
+          (task.target_max_attempts || 100)
+      ) * 100;
+    setCompletionRate(calculatedRate);
+  }, [task]);
 
   const getDateStyle = () => {
     //New or done should be green
     if (completionRate === 0 || completionRate === 100) {
-      return styles.dateFloaterGreen;
+      return $taskCard.dateFloaterGreen;
     }
     //Not sure if this should be due soon, or past due?
     else if (task.due_date) {
-      return styles.dateFloaterRed;
+      return $taskCard.dateFloaterRed;
     } else {
-      return styles.dateFloater;
+      return $taskCard.dateFloater;
     }
   };
 
   return (
     <div
       className={
-        completionRate === 100 ? styles.containerDone : styles.container
+        completionRate === 100 ? $taskCard.containerDone : $taskCard.container
       }
     >
       <div className={getDateStyle()}>
@@ -39,10 +48,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
           ? "DONE"
           : `DUE: ${task.due_date.toString()}`}
       </div>
-      <div className={styles.profile}>
+      <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
         <div
-          className={completionRate === 100 ? styles.imageDone : styles.image}
+          className={
+            completionRate === 100 ? $taskCard.imageDone : $taskCard.image
+          }
         ></div>
         <div>
           {task.first_name} {task.last_name}
@@ -54,14 +65,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </p>
       </div>
 
-      <div className={styles.progressBar}>
+      <div className={$taskCard.progressBar}>
         {completionRate}% complete
         <ProgressBar fillPercent={completionRate} />
       </div>
 
       <Link
-        href={`/trials/${task.task_id}`}
-        className={completionRate === 100 ? styles.buttonDone : styles.button}
+        href={`/benchmarks/${task.task_id}`}
+        className={`${$button.default} ${
+          completionRate === 100 ? $button.inactive : ""
+        }`}
       >
         Collect data
       </Link>

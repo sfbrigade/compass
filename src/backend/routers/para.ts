@@ -84,6 +84,11 @@ export const para = router({
       .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
       .innerJoin("iep", "goal.iep_id", "iep.iep_id")
       .innerJoin("student", "iep.student_id", "student.student_id")
+      .leftJoin("trial_data", (join) =>
+        join
+          .onRef("trial_data.subgoal_id", "=", "subgoal.subgoal_id")
+          .on("trial_data.created_by_user_id", "=", userId)
+      )
       .where("task.assignee_id", "=", userId)
       .select([
         "task.task_id",
@@ -93,6 +98,8 @@ export const para = router({
         "goal.category",
         "task.due_date",
         "subgoal.instructions",
+        "trial_data.success_with_prompt",
+        "trial_data.success_without_prompt",
         "subgoal.target_max_attempts",
       ])
       .execute();
