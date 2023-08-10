@@ -8,6 +8,8 @@ export interface ParaTaskCard {
   category: string;
   due_date: Date;
   instructions: string | null;
+  success_with_prompt: number | null;
+  success_without_prompt: number | null;
   target_max_attempts: number | null;
 }
 
