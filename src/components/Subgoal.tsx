@@ -23,8 +23,8 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
     task.mutate({
       subgoal_id: subgoal.subgoal_id,
       //Add in your own user_id for now, until real functionality is built
-      assignee_id: "0e82cfd7-86f2-455e-96f5-683fe208b257",
-      due_date: new Date(),
+      assignee_id: "916cf202-df29-4888-a512-5a048cf12870",
+      due_date: new Date(2023, 8, 20),
     });
   };
 

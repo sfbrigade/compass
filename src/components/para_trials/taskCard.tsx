@@ -5,6 +5,7 @@ import $button from "@/styles/Button.module.css";
 import Link from "next/link";
 import ProgressBar from "./progressBar";
 import { ParaTaskCard } from "@/types/global";
+import { differenceInWeeks } from "date-fns";
 
 interface TaskCardProps {
   task: ParaTaskCard;
@@ -24,11 +25,12 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
   const getDateStyle = () => {
     //New or done should be green
-    if (completionRate === 0 || completionRate === 100) {
+    if (!task.seen || task.submitted) {
       return $taskCard.dateFloaterGreen;
     }
-    //Not sure if this should be due soon, or past due?
-    else if (task.due_date) {
+    //Temporary until time period is given
+    //Checks if due date is less than a week away
+    else if (differenceInWeeks(task.due_date, new Date()) <= 0) {
       return $taskCard.dateFloaterRed;
     } else {
       return $taskCard.dateFloater;
@@ -37,23 +39,19 @@ const TaskCard = ({ task }: TaskCardProps) => {
 
   return (
     <div
-      className={
-        completionRate === 100 ? $taskCard.containerDone : $taskCard.container
-      }
+      className={task.submitted ? $taskCard.containerDone : $taskCard.container}
     >
       <div className={getDateStyle()}>
-        {completionRate === 0
+        {!task.seen
           ? "NEW"
-          : completionRate === 100
+          : task.submitted
           ? "DONE"
           : `DUE: ${task.due_date.toString()}`}
       </div>
       <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
         <div
-          className={
-            completionRate === 100 ? $taskCard.imageDone : $taskCard.image
-          }
+          className={task.submitted ? $taskCard.imageDone : $taskCard.image}
         ></div>
         <div>
           {task.first_name} {task.last_name}
@@ -73,7 +71,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
       <Link
         href={`/benchmarks/${task.task_id}`}
         className={`${$button.default} ${
-          completionRate === 100 ? $button.inactive : ""
+          task.submitted ? $button.inactive : ""
         }`}
       >
         Collect data

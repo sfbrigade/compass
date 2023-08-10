@@ -1760,6 +1760,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: Date;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen: boolean;
     }
     export interface JSONSelectable {
       /**
@@ -1786,6 +1792,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: db.TimestampTzString;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen: boolean;
     }
     export interface Whereable {
       /**
@@ -1812,6 +1824,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1838,6 +1856,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1864,6 +1888,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'task_pkey';
     export type Column = keyof Selectable;
@@ -1910,6 +1940,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt: number;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted: boolean;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -1953,6 +1989,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       success_without_prompt: number;
+      /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted: boolean;
       /**
       * **trial_data.notes**
       * - `text` in database
@@ -1998,6 +2040,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -2042,6 +2090,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt: number | db.Parameter<number> | db.SQLFragment;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -2085,6 +2139,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
       /**
       * **trial_data.notes**
       * - `text` in database
