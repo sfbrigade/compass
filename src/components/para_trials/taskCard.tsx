@@ -5,7 +5,7 @@ import $button from "@/styles/Button.module.css";
 import Link from "next/link";
 import ProgressBar from "./progressBar";
 import { ParaTaskCard } from "@/types/global";
-import { differenceInWeeks } from "date-fns";
+import { differenceInWeeks, format } from "date-fns";
 
 interface TaskCardProps {
   task: ParaTaskCard;
@@ -46,7 +46,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           ? "NEW"
           : task.submitted
           ? "DONE"
-          : `DUE: ${task.due_date.toString()}`}
+          : `DUE: ${format(task.due_date, "MM-dd-yyyy")}`}
       </div>
       <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
