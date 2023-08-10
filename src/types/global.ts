@@ -7,10 +7,12 @@ export interface ParaTaskCard {
   description: string;
   category: string;
   due_date: Date;
+  seen: boolean;
   instructions: string | null;
   success_with_prompt: number | null;
   success_without_prompt: number | null;
   target_max_attempts: number | null;
+  submitted: boolean | null;
 }
 
 export type Goal = SelectableForTable<"goal">;

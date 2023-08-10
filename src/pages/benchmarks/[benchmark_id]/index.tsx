@@ -1,12 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Counter from "@/components/counter/counter";
 import Timer from "@/components/timer/timer";
 import TimerInput from "@/components/timer/timerInputPad";
 import $button from "@/styles/Button.module.css";
+import { trpc } from "@/client/lib/trpc";
+import { useRouter } from "next/router";
 
-const TrialPage = () => {
+const BenchmarkPage = () => {
+  const router = useRouter();
+  const { benchmark_id } = router.query;
+  const utils = trpc.useContext();
+  const { data: task, isLoading } = trpc.iep.getTaskById.useQuery({
+    task_id: benchmark_id as string,
+  });
+  const seenMutation = trpc.iep.setSeen.useMutation({
+    onSuccess: () => utils.iep.getTaskById.invalidate(),
+  });
+
   const [timerTimeInSec, setTimerTimeInSec] = useState(0);
   const [timerInputIsOn, setTimerInputIsOn] = useState(false);
+
+  useEffect(() => {
+    if (task && !task.seen) {
+      seenMutation.mutate({ task_id: task.task_id });
+    }
+  }, [task, seenMutation]);
 
   const handleStartTimer = (inputTimeInSec: number) => {
     setTimerTimeInSec(inputTimeInSec);
@@ -16,6 +34,10 @@ const TrialPage = () => {
   const handleSetTimer = () => {
     setTimerInputIsOn(!timerInputIsOn);
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -59,4 +81,4 @@ const TrialPage = () => {
   );
 };
 
-export default TrialPage;
+export default BenchmarkPage;

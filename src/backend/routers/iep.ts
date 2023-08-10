@@ -184,4 +184,62 @@ export const iep = router({
 
       return result;
     }),
+
+  getTaskById: authenticatedProcedure
+    .input(
+      z.object({
+        task_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { task_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
+        .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
+        .innerJoin("iep", "goal.iep_id", "iep.iep_id")
+        .innerJoin("student", "iep.student_id", "student.student_id")
+        .leftJoin("trial_data", (join) =>
+          join
+            .onRef("trial_data.subgoal_id", "=", "subgoal.subgoal_id")
+            .onRef("trial_data.created_by_user_id", "=", "task.assignee_id")
+        )
+        .where("task.task_id", "=", task_id)
+        .select([
+          "task.task_id",
+          "student.first_name",
+          "student.last_name",
+          "subgoal.description",
+          "goal.category",
+          "task.due_date",
+          "task.seen",
+          "subgoal.instructions",
+          "trial_data.success_with_prompt",
+          "trial_data.success_without_prompt",
+          "subgoal.target_max_attempts",
+          "trial_data.submitted",
+        ])
+        .executeTakeFirstOrThrow();
+
+      return result;
+    }),
+
+  setSeen: authenticatedProcedure
+    .input(
+      z.object({
+        task_id: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { task_id } = req.input;
+
+      await req.ctx.db
+        .updateTable("task")
+        .set({
+          seen: true,
+        })
+        .where("task.task_id", "=", task_id)
+        .execute();
+    }),
 });

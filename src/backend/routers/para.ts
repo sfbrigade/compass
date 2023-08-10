@@ -97,10 +97,12 @@ export const para = router({
         "subgoal.description",
         "goal.category",
         "task.due_date",
+        "task.seen",
         "subgoal.instructions",
         "trial_data.success_with_prompt",
         "trial_data.success_without_prompt",
         "subgoal.target_max_attempts",
+        "trial_data.submitted",
       ])
       .execute();
     return result;

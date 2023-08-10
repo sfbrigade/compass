@@ -230,7 +230,7 @@ export default function EnhancedTable<
   Column extends HeadCell
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
-
+  console.log("outside fn: ", people);
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Person>("first_name");
   const [showInput, setShowInput] = useState<boolean>(false);
@@ -264,6 +264,7 @@ export default function EnhancedTable<
 
   const filterList = useCallback(
     (list: Person[], searchTerm: string) => {
+      console.log("inside fn: ", list);
       const filteredList = list.filter((person) => {
         for (const headCell of headCells) {
           if (

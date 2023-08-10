@@ -91,7 +91,8 @@ CREATE TABLE "task" (
   task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   assignee_id UUID REFERENCES "user" (user_id),
-  due_date TIMESTAMPTZ NOT NULL
+  due_date TIMESTAMPTZ NOT NULL,
+  seen BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE "trial_data" (
@@ -101,6 +102,7 @@ CREATE TABLE "trial_data" (
   -- TODO: Possibly add optional reference to "task"
   success_with_prompt INTEGER NOT NULL,
   success_without_prompt INTEGER NOT NULL,
+  submitted BOOLEAN NOT NULL DEFAULT FALSE,
   notes TEXT,-- Optional depending on type of task
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
