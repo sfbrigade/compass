@@ -20,10 +20,17 @@
   background-color: var(--primary-40);
 }
 
-.reversed {
-  background-color: inherit;
-  color: var(--primary);
+.secondary {
+  display: block;
   border: 1px solid var(--primary-50);
+  color: var(--primary);
+  padding: 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+  background-color: inherit;
 }
 
 .pilled {
@@ -31,8 +38,41 @@
   padding: 5px 10px;
 }
 
+.circular {
+  aspect-ratio: 1 / 1;
+  padding: 2px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .inactive {
   background-color: var(--grey-70);
   color: var(--grey-50);
   pointer-events: none;
+}
+
+.switch {
+  color: var(--primary);
+  background-color: inherit;
+  border: 1px solid var(--grey-70);
+  padding: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.switchActive {
+  background-color: var(--primary-90);
+  color: var(--primary-10);
+  border: 1px solid var(--primary-60);
+}
+
+.leftPill {
+  border-radius: 8px 0 0 8px;
+}
+
+.rightPill {
+  border-radius: 0 8px 8px 0;
 }
