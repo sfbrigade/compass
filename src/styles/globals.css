@@ -100,6 +100,10 @@ p {
   font-weight: 500;
 }
 
+button {
+  font-family: var(--quicksand);
+}
+
 /* Breakpoints recommended by Bootstrap */
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {
