@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
-import Home from "@/pages";
 
 export const requiresLogin =
   <Props extends object>(WrappedPage: React.ComponentType<Props>) =>
@@ -10,11 +9,15 @@ export const requiresLogin =
     const router = useRouter();
     const { status } = useSession();
 
+    // Include any public pathnames here
+    const publicPaths = ["/signInPage"];
+    const pathIsProtected = !publicPaths.includes(router.pathname);
+
     useEffect(() => {
-      if (status === "unauthenticated" && router.pathname !== "/") {
+      if (status === "unauthenticated" && pathIsProtected) {
         void router.push("/");
       }
-    }, [status, router]);
+    });
 
     if (status === "loading") {
       return "Loading...";

@@ -11,7 +11,6 @@ import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
 import Layout from "@/components/Layout";
-import { useSession } from "next-auth/react";
 
 interface CustomPageProps {
   session: Session;
