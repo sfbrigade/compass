@@ -20,7 +20,7 @@ export const requiresLogin =
     });
 
     if (status === "loading") {
-      return "Loading...";
+      return <>Loading...</>;
     }
 
     return <WrappedPage {...props} />;
