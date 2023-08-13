@@ -52,7 +52,45 @@ resource "google_cloud_run_v2_service" "run_service" {
         }
       }
 
+      env {
+        name  = "S3_USER_UPLOADS_ENDPOINT"
+        value = "https://storage.googleapis.com"
+      }
+
+      env {
+        name  = "S3_USER_UPLOADS_REGION"
+        value = var.region
+      }
+
+      env {
+        name = "S3_USER_UPLOADS_ACCESS_KEY_ID"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.storage_access_key.secret_id
+            version = "latest"
+          }
+        }
+      }
+
+      env {
+        name = "S3_USER_UPLOADS_SECRET_ACCESS_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.storage_secret_key.secret_id
+            version = "latest"
+          }
+        }
+      }
+
+      env {
+        name  = "S3_USER_UPLOADS_BUCKET_NAME"
+        value = google_storage_bucket.compass_data.name
+      }
+
       startup_probe {
+        period_seconds    = 1
+        failure_threshold = 30
+
         tcp_socket {
           port = 3000
         }
