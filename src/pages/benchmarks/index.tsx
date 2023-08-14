@@ -1,7 +1,7 @@
 import React from "react";
 import TaskCard from "@/components/para_trials/taskCard";
 import { trpc } from "@/client/lib/trpc";
-// import styles from "@/styles/Paraflow.module.css";
+import $typography from "@/styles/Typography.module.css";
 
 function Benchmarks() {
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
@@ -14,7 +14,7 @@ function Benchmarks() {
     <ul>
       {tasks?.map((task) => {
         return (
-          <li key={task.task_id}>
+          <li key={task.task_id} className={$typography.noDecoration}>
             <TaskCard task={task} />
           </li>
         );

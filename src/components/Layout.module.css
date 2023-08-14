@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: column;
   height: 100%;
 }
 
@@ -9,5 +10,32 @@
   background-color: var(--background);
   color: var(--on-background);
   height: 100%;
-  padding: 5em;
+  padding: 1em;
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  .container {
+    flex-direction: row;
+  }
+
+  .main {
+    padding: 5em;
+  }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
 }

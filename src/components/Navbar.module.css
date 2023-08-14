@@ -1,6 +1,7 @@
 .sidebar {
-  flex: 2;
   background-color: var(--primary-20);
+  /* Todo: Make mobile-view sidebar */
+  height: 3em;
 }
 
 .linkContainer {
@@ -34,4 +35,28 @@
 
 .icon {
   color: var(--on-primary);
+}
+
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  .sidebar {
+    flex: 2;
+    height: auto;
+  }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
 }

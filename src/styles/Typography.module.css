@@ -7,3 +7,7 @@
   font-size: 0.75em;
   font-weight: 600;
 }
+
+.noDecoration {
+  list-style-type: none;
+}
