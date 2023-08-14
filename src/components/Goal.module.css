@@ -1,13 +1,20 @@
-/* TODO: figure out a better way to share styles across modules. */
+.tab {
+  margin-left: 40px;
+}
+
+.listNames {
+  list-style-type: none;
+  font-family: "Quicksand", sans-serif;
+}
 
 .createButton {
   height: 24px;
   width: auto;
   padding: 0px 20px;
-  background-color: #5347d7;
+  background-color: var(--primary);
   border-radius: 5px;
   border: none;
-  color: white;
+  color: var(--on-primary);
   cursor: pointer;
   font-family: "Quicksand", sans-serif;
 }

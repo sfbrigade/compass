@@ -12,10 +12,10 @@ jobs:
         with:
           node-version: 18
           cache: "npm"
-      - name: Install dependencies
+      - name: Install dependencies & generate css types
         run: npm i --ci
       - name: Check types
-        run: npm run type-check
+        run: npm run type:check
 
   lint:
     name: lint
