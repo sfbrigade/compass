@@ -72,7 +72,7 @@ const BenchmarkPage = () => {
         </button>
       </div>
 
-      <div className={`${$box.default} ${$box.greyBg}`}>
+      <div className={$box.greyBg}>
         <Counter
           title="Successful without prompt"
           maxCount={5}

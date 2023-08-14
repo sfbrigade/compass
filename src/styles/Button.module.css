@@ -56,7 +56,7 @@
 .switch {
   color: var(--primary);
   background-color: inherit;
-  border: 1px solid var(--grey-70);
+  border: 1px solid var(--grey-50);
   padding: 10px;
   cursor: pointer;
   text-decoration: none;
@@ -64,6 +64,7 @@
 }
 
 .switchActive {
+  composes: switch;
   background-color: var(--primary-90);
   color: var(--primary-10);
   border: 1px solid var(--primary-60);
