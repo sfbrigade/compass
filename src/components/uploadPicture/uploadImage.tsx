@@ -118,7 +118,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
           disabled={isUploading}
           className={styles.actionButton}
         >
-          <CameraIcon className={styles.buttonIcon} />
+          <CameraIcon />
           {title}
         </button>
       )}
@@ -132,7 +132,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
             onChange={handleFile}
             className={styles.actionButton}
           />
-          <div className={styles.buttonsContainer}>
+          <div>
             <button
               onClick={onCancelTakePicture}
               className={styles.actionButton}
@@ -143,16 +143,13 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
         </>
       )}
       {currentStep === UploadStep.UploadPicture && (
-        <div className={styles.uploadedImageContainer}>
+        <div className={styles.uploadContainer}>
           {capturedImage && (
             <svg>
-              <image
-                href={URL.createObjectURL(capturedImage)}
-                className={styles.uploadedImage}
-              />
+              <image href={URL.createObjectURL(capturedImage)} />
             </svg>
           )}
-          <div className={styles.buttonsContainer}>
+          <div>
             <button
               onClick={onClickUploadPicture}
               disabled={isUploading}
@@ -161,7 +158,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
               {isUploading ? (
                 <CircularProgress size={20} color="inherit" />
               ) : (
-                <CheckCircleIcon className={styles.buttonIcon} />
+                <CheckCircleIcon />
               )}
               {isUploading ? "Uploading..." : "Upload"}
             </button>
@@ -184,11 +181,9 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       )}
 
       {uploadSuccess && (
-        <div className={styles.uploadSuccessContainer}>
-          <CheckCircleIcon className={styles.uploadSuccessIcon} />
-          <Typography variant="body2" className={styles.uploadSuccessMessage}>
-            Image uploaded successfully
-          </Typography>
+        <div>
+          <CheckCircleIcon />
+          <Typography variant="body2">Image uploaded successfully</Typography>
         </div>
       )}
     </div>
