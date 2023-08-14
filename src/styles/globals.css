@@ -104,6 +104,10 @@ button {
   font-family: var(--quicksand);
 }
 
+strong {
+  font-weight: 700;
+}
+
 /* Breakpoints recommended by Bootstrap */
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {

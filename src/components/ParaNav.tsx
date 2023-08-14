@@ -12,8 +12,13 @@ interface ParaNavProps {
 const ParaNav = () => {
   const { asPath } = useRouter();
   const modifyPaths = (path: string, toPath: string) => {
+    // If we are already at that path, we want to return to the benchmark
+    // If not, we move to the added path
     if (path.includes(toPath)) {
       return path.slice(0, path.lastIndexOf("/"));
+    }
+    if (path.includes("/studentprofile") || path.includes("/instructions")) {
+      return path.slice(0, path.lastIndexOf("/")) + toPath;
     }
     return path + toPath;
   };
@@ -22,13 +27,21 @@ const ParaNav = () => {
     <div className={`${$box.flex} ${$box.fullWidth}`}>
       <Link
         href={modifyPaths(asPath, "/studentprofile")}
-        className={`${$button.switch} ${$button.leftPill} ${$box.fullWidth}`}
+        className={`${
+          asPath.includes("studentprofile")
+            ? $button.switchActive
+            : $button.switch
+        } ${$button.leftPill} ${$box.fullWidth}`}
       >
         Student profile
       </Link>
       <Link
         href={modifyPaths(asPath, "/instructions")}
-        className={`${$button.switch} ${$button.switchActive} ${$button.rightPill} ${$box.fullWidth}`}
+        className={`${
+          asPath.includes("instructions")
+            ? $button.switchActive
+            : $button.switch
+        } ${$button.rightPill} ${$box.fullWidth}`}
       >
         Instructions
       </Link>

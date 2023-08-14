@@ -1,25 +1,3 @@
-.container {
-  position: relative;
-  width: 90%;
-  background-color: #f6f8f9;
-  margin: 10px auto;
-  border-radius: 8px;
-  border: 1px solid #d6dde1;
-  padding: 15px;
-  font-size: 14px;
-}
-
-.containerDone {
-  composes: container;
-  background-color: #f4f6f7;
-  border: none;
-  color: #a2acb3;
-}
-
-.container strong {
-  font-weight: 700;
-}
-
 .dateFloater {
   position: absolute;
   top: 15px;

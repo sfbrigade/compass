@@ -1,5 +1,6 @@
 /* Mobile first */
 .default {
+  position: relative;
   border-radius: 8px;
   padding: 1em;
   border: 1px solid var(--grey-70);
@@ -8,7 +9,15 @@
 }
 
 .greyBg {
+  composes: default;
   background-color: var(--grey-90);
+}
+
+.inactive {
+  composes: default;
+  background-color: var(--grey-80);
+  border: none;
+  color: var(--grey-50);
 }
 
 .topAndBottomBorder {

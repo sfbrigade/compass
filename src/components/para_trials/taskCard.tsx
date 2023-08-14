@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import $taskCard from "./styles/TaskCard.module.css";
 import $button from "@/styles/Button.module.css";
+import $box from "@/styles/Box.module.css";
 import Link from "next/link";
 import ProgressBar from "./progressBar";
 import { ParaTaskCard } from "@/types/global";
@@ -38,9 +39,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
   };
 
   return (
-    <div
-      className={task.submitted ? $taskCard.containerDone : $taskCard.container}
-    >
+    <div className={task.submitted ? $box.inactive : $box.greyBg}>
       <div className={getDateStyle()}>
         {!task.seen
           ? "NEW"
