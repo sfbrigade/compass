@@ -6,7 +6,6 @@ import {
   CoPresent,
   Settings,
   Logout,
-  NoEncryption,
 } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -20,20 +19,12 @@ import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
 
 const drawerWidth = 240;
 
-/*interface Props {
-  window?: () => Window;
-}*/
-
 export default function NavBar() {
-  /*const { window } = props;*/
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
   const handleDrawerToggle = () => {
@@ -96,8 +87,6 @@ export default function NavBar() {
     </div>
   );
 
-  /*const container = window !== undefined ? () => window().document.body : undefined;*/
-
   const { status } = useSession();
 
   return (
@@ -131,9 +120,7 @@ export default function NavBar() {
             aria-label="mailbox folders"
             className={$navbar.sidebar}
           >
-            {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
             <Drawer
-              /*container={container}*/
               variant="temporary"
               open={mobileOpen}
               onClose={handleDrawerToggle}
@@ -170,61 +157,3 @@ export default function NavBar() {
     </>
   );
 }
-
-/* const NavBar = () => {
-  const { status } = useSession(); 
-
-  return (
-    <>
-      {status === "authenticated" && (
-        <nav className={$navbar.sidebar}>
-
-          <div className={$navbar.allLinks}>
-          <Link href="/">
-            <Image
-              src="/img/compass-logo-white.svg"
-              alt="logo"
-              className={$navbar.logo}
-              width={64}
-              height={64}
-              priority
-            />
-          </Link>
-          <br />
-
-          <div className={$navbar.linkContainer}>
-            <Link href="/students" className={$navbar.link}>
-              <PeopleOutline className={$navbar.icon} />
-              <p className={$navbar.linkTitle}>Students</p>
-            </Link>
-            <br />
-            <Link href="/staff" className={$navbar.link}>
-              <CoPresent className={$navbar.icon} />
-              <p className={$navbar.linkTitle}>Staff</p>
-            </Link>
-            <br />
-            <Link href="/settings" className={$navbar.link}>
-              <Settings className={$navbar.icon} />
-              <p className={$navbar.linkTitle}>Settings</p>
-            </Link>
-            <br />
-            <Link href="" className={$navbar.link}>
-              <Logout className={$navbar.icon} />
-              <p
-                className={$navbar.linkTitle}
-                onClick={() => signOut({ callbackUrl: "/" })}
-              >
-                Logout
-              </p>
-            </Link>
-          </div>
-
-          </div>
-        </nav>
-
-      )}
-    </>
-  );
-}; 
-
-export default NavBar; */
