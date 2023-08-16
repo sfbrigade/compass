@@ -14,13 +14,28 @@
   padding-bottom: 10px;
 }
 
+.toolbar {
+  background-color: white;
+  box-shadow: 0;
+}
+
+.list {
+  color: white;
+}
+
+.burger {
+  color: var(--primary-20);
+  width: 2em;
+  height: 2em;
+}
+
 .link {
   color: var(--on-primary);
   padding-left: 30px;
   padding-top: 12px;
   padding-bottom: 12px;
   display: flex;
-  align-items: center;
+  align-items: center; 
   text-decoration: none;
 }
 
@@ -28,7 +43,7 @@
   padding-left: 8px;
 }
 
-.link:hover {
+.linkItem:hover {
   background-color: #383473;
 }
 
