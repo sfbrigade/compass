@@ -15,18 +15,15 @@ interface TaskCardProps {
 const TaskCard = ({ task }: TaskCardProps) => {
   const [completionRate, setCompletionRate] = useState(0);
   useEffect(() => {
-    //TODO: discuss how to deal with null target_max_attempts
-    const calculatedRate =
-      Math.floor(
-        (task.success_with_prompt || 0 + (task.success_without_prompt || 0)) /
-          (task.target_max_attempts || 100)
-      ) * 100;
+    const calculatedRate = Math.floor(
+      (task.completed_trials || 0 / task.trial_count) * 100
+    );
     setCompletionRate(calculatedRate);
   }, [task]);
 
   const getDateStyle = () => {
     //New or done should be green
-    if (!task.seen || task.submitted) {
+    if (!task.seen || completionRate >= 100) {
       return $taskCard.dateFloaterGreen;
     }
     //Temporary until time period is given
@@ -39,18 +36,20 @@ const TaskCard = ({ task }: TaskCardProps) => {
   };
 
   return (
-    <div className={task.submitted ? $box.inactive : $box.greyBg}>
+    <div className={completionRate >= 100 ? $box.inactive : $box.greyBg}>
       <div className={getDateStyle()}>
         {!task.seen
           ? "NEW"
-          : task.submitted
+          : completionRate >= 100
           ? "DONE"
           : `DUE: ${format(task.due_date, "MM-dd-yyyy")}`}
       </div>
       <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
         <div
-          className={task.submitted ? $taskCard.imageDone : $taskCard.image}
+          className={
+            completionRate >= 100 ? $taskCard.imageDone : $taskCard.image
+          }
         ></div>
         <div>
           {task.first_name} {task.last_name}
@@ -70,7 +69,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
       <Link
         href={`/benchmarks/${task.task_id}`}
         className={`${$button.default} ${
-          task.submitted ? $button.inactive : ""
+          completionRate >= 100 ? $button.inactive : ""
         }`}
       >
         Collect data

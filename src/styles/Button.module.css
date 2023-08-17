@@ -20,6 +20,16 @@
   background-color: var(--primary-40);
 }
 
+.default:disabled {
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  cursor: default;
+}
+
+.default:disabled:hover {
+  box-shadow: none;
+}
+
 .secondary {
   display: block;
   border: 1px solid var(--primary-50);

@@ -4,15 +4,14 @@ export interface ParaTaskCard {
   task_id: string;
   first_name: string;
   last_name: string;
-  description: string;
   category: string;
+  description: string;
+  instructions: string | null;
+  target_max_attempts: number | null;
   due_date: Date;
   seen: boolean;
-  instructions: string | null;
-  success_with_prompt: number | null;
-  success_without_prompt: number | null;
-  target_max_attempts: number | null;
-  submitted: boolean | null;
+  trial_count: number;
+  completed_trials: number | null;
 }
 
 export type Goal = SelectableForTable<"goal">;

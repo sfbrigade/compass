@@ -1,6 +1,7 @@
 import React from "react";
 import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
+import { ParaTaskCard } from "@/types/global";
 // import styles from "@/styles/Paraflow.module.css";
 
 function Benchmarks() {
@@ -15,7 +16,7 @@ function Benchmarks() {
       {tasks?.map((task) => {
         return (
           <li key={task.task_id}>
-            <TaskCard task={task} />
+            <TaskCard task={task as ParaTaskCard} />
           </li>
         );
       })}
