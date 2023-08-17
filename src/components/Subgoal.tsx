@@ -7,7 +7,7 @@ interface SubgoalProps {
 }
 
 const Subgoals = ({ subgoal }: SubgoalProps) => {
-  const task = trpc.iep.addTask.useMutation();
+  const task = trpc.iep.tempAddTaskToSelf.useMutation();
   // TODO: add form to assign to my paras
   // const assignToPara = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
@@ -22,9 +22,8 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
   const assignToPara = () => {
     task.mutate({
       subgoal_id: subgoal.subgoal_id,
-      //Add in your own user_id for now, until real functionality is built
-      assignee_id: "916cf202-df29-4888-a512-5a048cf12870",
       due_date: new Date(2023, 8, 20),
+      trial_count: 5,
     });
   };
 

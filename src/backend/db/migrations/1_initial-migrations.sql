@@ -92,12 +92,13 @@ CREATE TABLE "task" (
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   assignee_id UUID REFERENCES "user" (user_id),
   due_date TIMESTAMPTZ NOT NULL,
+  trial_count INTEGER NOT NULL,
   seen BOOLEAN NOT NULL DEFAULT FALSE
 );
 
 CREATE TABLE "trial_data" (
-  id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-  subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
+  trial_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  task_id UUID REFERENCES "task" (task_id),
   created_by_user_id UUID REFERENCES "user" (user_id),
   -- TODO: Possibly add optional reference to "task"
   success_with_prompt INTEGER NOT NULL,

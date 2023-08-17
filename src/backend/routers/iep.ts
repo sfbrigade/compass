@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
+import { jsonArrayFrom } from "kysely/helpers/postgres";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
@@ -60,10 +61,11 @@ export const iep = router({
         subgoal_id: z.string(),
         assignee_id: z.string(),
         due_date: z.date(),
+        trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, assignee_id, due_date } = req.input;
+      const { subgoal_id, assignee_id, due_date, trial_count } = req.input;
 
       const result = await req.ctx.db
         .insertInto("task")
@@ -71,6 +73,32 @@ export const iep = router({
           subgoal_id,
           assignee_id,
           due_date,
+          trial_count,
+        })
+        .returningAll()
+        .executeTakeFirst();
+
+      return result;
+    }),
+  //Temporary function to easily assign tasks to self for testing
+  tempAddTaskToSelf: authenticatedProcedure
+    .input(
+      z.object({
+        subgoal_id: z.string(),
+        due_date: z.date(),
+        trial_count: z.number(),
+      })
+    )
+    .mutation(async (req) => {
+      const { subgoal_id, due_date, trial_count } = req.input;
+      const { userId } = req.ctx.auth;
+      const result = await req.ctx.db
+        .insertInto("task")
+        .values({
+          subgoal_id,
+          assignee_id: userId,
+          due_date,
+          trial_count,
         })
         .returningAll()
         .executeTakeFirst();
@@ -81,27 +109,23 @@ export const iep = router({
   addTrialData: authenticatedProcedure
     .input(
       z.object({
-        subgoal_id: z.string(),
-        created_by_user_id: z.string(),
+        task_id: z.string(),
         success_with_prompt: z.number(),
         success_without_prompt: z.number(),
         notes: z.string(),
       })
     )
     .mutation(async (req) => {
-      const {
-        subgoal_id,
-        created_by_user_id,
-        success_with_prompt,
-        success_without_prompt,
-        notes,
-      } = req.input;
+      const { userId } = req.ctx.auth;
 
-      const result = req.ctx.db
+      const { task_id, success_with_prompt, success_without_prompt, notes } =
+        req.input;
+
+      const result = await req.ctx.db
         .insertInto("trial_data")
         .values({
-          subgoal_id,
-          created_by_user_id,
+          task_id,
+          created_by_user_id: userId,
           success_with_prompt,
           success_without_prompt,
           notes,
@@ -110,6 +134,37 @@ export const iep = router({
         .executeTakeFirst();
 
       return result;
+    }),
+
+  updateTrialData: authenticatedProcedure
+    .input(
+      z.object({
+        trial_id: z.string(),
+        success_with_prompt: z.number().optional(),
+        success_without_prompt: z.number().optional(),
+        submitted: z.boolean().optional(),
+        notes: z.string().optional(),
+      })
+    )
+    .mutation(async (req) => {
+      const {
+        trial_id,
+        success_with_prompt,
+        success_without_prompt,
+        submitted,
+        notes,
+      } = req.input;
+
+      await req.ctx.db
+        .updateTable("trial_data")
+        .set({
+          success_with_prompt,
+          success_without_prompt,
+          submitted,
+          notes,
+        })
+        .where("trial_data.trial_id", "=", trial_id)
+        .executeTakeFirst();
     }),
 
   getGoals: authenticatedProcedure
@@ -167,24 +222,6 @@ export const iep = router({
       return result;
     }),
 
-  getTrialData: authenticatedProcedure
-    .input(
-      z.object({
-        subgoal_id: z.string(),
-      })
-    )
-    .query(async (req) => {
-      const { subgoal_id } = req.input;
-
-      const result = await req.ctx.db
-        .selectFrom("trial_data")
-        .where("subgoal_id", "=", subgoal_id)
-        .selectAll()
-        .execute();
-
-      return result;
-    }),
-
   getTaskById: authenticatedProcedure
     .input(
       z.object({
@@ -200,25 +237,38 @@ export const iep = router({
         .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
         .innerJoin("iep", "goal.iep_id", "iep.iep_id")
         .innerJoin("student", "iep.student_id", "student.student_id")
-        .leftJoin("trial_data", (join) =>
-          join
-            .onRef("trial_data.subgoal_id", "=", "subgoal.subgoal_id")
-            .onRef("trial_data.created_by_user_id", "=", "task.assignee_id")
-        )
         .where("task.task_id", "=", task_id)
-        .select([
+        .select((eb) => [
           "task.task_id",
           "student.first_name",
           "student.last_name",
-          "subgoal.description",
           "goal.category",
+          "subgoal.description",
+          "subgoal.instructions",
+          "subgoal.target_max_attempts",
+          "subgoal.subgoal_id",
           "task.due_date",
           "task.seen",
-          "subgoal.instructions",
-          "trial_data.success_with_prompt",
-          "trial_data.success_without_prompt",
-          "subgoal.target_max_attempts",
-          "trial_data.submitted",
+          "task.trial_count",
+          jsonArrayFrom(
+            eb
+              .selectFrom("trial_data")
+              .select([
+                "trial_data.trial_id",
+                "trial_data.success_with_prompt",
+                "trial_data.success_without_prompt",
+                "trial_data.submitted",
+                "trial_data.notes",
+                "trial_data.created_at",
+              ])
+              .whereRef("trial_data.task_id", "=", "task.task_id")
+              .whereRef(
+                "trial_data.created_by_user_id",
+                "=",
+                "task.assignee_id"
+              )
+              .orderBy("trial_data.created_at")
+          ).as("trials"),
         ])
         .executeTakeFirstOrThrow();
 

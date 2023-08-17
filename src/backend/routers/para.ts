@@ -84,25 +84,28 @@ export const para = router({
       .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
       .innerJoin("iep", "goal.iep_id", "iep.iep_id")
       .innerJoin("student", "iep.student_id", "student.student_id")
-      .leftJoin("trial_data", (join) =>
-        join
-          .onRef("trial_data.subgoal_id", "=", "subgoal.subgoal_id")
-          .on("trial_data.created_by_user_id", "=", userId)
-      )
       .where("task.assignee_id", "=", userId)
-      .select([
+      .select((eb) => [
         "task.task_id",
         "student.first_name",
         "student.last_name",
-        "subgoal.description",
         "goal.category",
+        "subgoal.description",
+        "subgoal.instructions",
+        "subgoal.target_max_attempts",
         "task.due_date",
         "task.seen",
-        "subgoal.instructions",
-        "trial_data.success_with_prompt",
-        "trial_data.success_without_prompt",
-        "subgoal.target_max_attempts",
-        "trial_data.submitted",
+        "task.trial_count",
+
+        eb
+          .selectFrom("trial_data")
+          .whereRef("trial_data.task_id", "=", "task.task_id")
+          .where("trial_data.created_by_user_id", "=", userId)
+          .where("trial_data.submitted", "=", true)
+          .select(({ fn }) =>
+            fn.count("trial_data.trial_id").as("completed_trials")
+          )
+          .as("completed_trials"),
       ])
       .execute();
     return result;

@@ -1,29 +1,26 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./styles/Paratrials.module.css";
 
 interface CounterProps {
   title: string;
-  maxCount: number;
-  minCount: number;
+  count: number;
+  onIncrement: () => void;
+  onDecrement: () => void;
   color: "blue" | "green" | "yellow";
 }
 
-const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
-  // Count variable may need to become a prop, depending on how we implement
-  const [count, setCount] = useState(0);
-
-  const incrementCount = () => {
-    setCount(Math.min(count + 1, maxCount));
-  };
-  const decrementCount = () => {
-    setCount(Math.max(count - 1, minCount));
-  };
-
+const Counter = ({
+  title,
+  onIncrement,
+  onDecrement,
+  count,
+  color,
+}: CounterProps) => {
   return (
     <div className={styles.counterContainer}>
       <div className={styles.counterButtonContainer}>
         <button
-          onClick={decrementCount}
+          onClick={onDecrement}
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}
@@ -38,7 +35,7 @@ const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
           {count}
         </p>
         <button
-          onClick={incrementCount}
+          onClick={onIncrement}
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}

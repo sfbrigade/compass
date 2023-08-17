@@ -4,16 +4,11 @@ import $button from "@/styles/Button.module.css";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-interface ParaNavProps {
-  studentPath: string;
-  instructPath: string;
-}
-
 const ParaNav = () => {
   const { asPath } = useRouter();
   const modifyPaths = (path: string, toPath: string) => {
     // If we are already at that path, we want to return to the benchmark
-    // If not, we move to the added path
+    // If not, we move to the new path
     if (path.includes(toPath)) {
       return path.slice(0, path.lastIndexOf("/"));
     }
