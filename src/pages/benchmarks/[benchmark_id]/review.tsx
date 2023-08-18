@@ -16,6 +16,22 @@ const ReviewPage = () => {
     }
   );
 
+  const updateTrialMutation = trpc.iep.updateTrialData.useMutation();
+
+  const handleSubmit = async (trialId: string) => {
+    try {
+      await updateTrialMutation.mutateAsync({
+        trial_id: trialId,
+        submitted: true,
+      });
+
+      void router.push("/benchmarks");
+    } catch (err) {
+      //TODO: better error handling
+      console.log(err);
+    }
+  };
+
   if (isLoading || !task) {
     return <div>Loading...</div>;
   }
@@ -36,7 +52,12 @@ const ReviewPage = () => {
         <h4>Observation Notes:</h4>
         {currentTrial.notes}
       </div>
-      <button className={$button.default}>Sign and Submit</button>
+      <button
+        className={`${$button.default} ${$box.fullWidth}`}
+        onClick={() => handleSubmit(currentTrial.trial_id)}
+      >
+        Sign and Submit
+      </button>
     </div>
   );
 };

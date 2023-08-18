@@ -3,17 +3,21 @@ import styles from "./styles/Paratrials.module.css";
 
 interface CounterProps {
   title: string;
-  count: number;
+  count: number | null;
   onIncrement: () => void;
   onDecrement: () => void;
+  disableInc: boolean;
+  disableDec: boolean;
   color: "blue" | "green" | "yellow";
 }
 
 const Counter = ({
   title,
+  count,
   onIncrement,
   onDecrement,
-  count,
+  disableInc,
+  disableDec,
   color,
 }: CounterProps) => {
   return (
@@ -24,6 +28,7 @@ const Counter = ({
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}
+          disabled={disableDec}
         >
           -
         </button>
@@ -32,13 +37,14 @@ const Counter = ({
             styles[`counterNumberDisplay-${color}`]
           }`}
         >
-          {count}
+          {count ?? "-"}
         </p>
         <button
           onClick={onIncrement}
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}
+          disabled={disableInc}
         >
           +
         </button>

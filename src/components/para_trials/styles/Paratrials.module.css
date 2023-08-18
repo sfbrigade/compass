@@ -27,6 +27,12 @@
   cursor: pointer;
 }
 
+/* TODO: Ask design team for disabled button versions */
+.counterButton:disabled {
+  background-color: var(--grey-50);
+  cursor: default;
+}
+
 .counterNumberDisplay {
   color: black;
   font-family: inherit;
