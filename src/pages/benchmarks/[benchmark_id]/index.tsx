@@ -6,6 +6,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ParaNav from "@/components/ParaNav";
 import Link from "next/link";
 
@@ -41,36 +42,27 @@ const BenchmarkPage = () => {
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation({
     onSuccess: async () => await utils.iep.getTaskById.invalidate(),
   });
-  const handleUpdate = (updates: dataUpdate) => {
-    if (task && task.trials[task.trials.length - 1]) {
-      updateTrialMutation.mutate({
-        trial_id: task.trials[task.trials.length - 1].trial_id,
-        ...updates,
-      });
-    }
-  };
+
   const [notesValue, setNotesValue] = useState("");
   const [inputTimer, setInputTimer] = useState<NodeJS.Timer | null>(null);
-  const [runningTotal, setRunningTotal] = useState(0);
-  const [currentTrial, setCurrentTrial] = useState(0);
+  // const [runningTotal, setRunningTotal] = useState(0);
+  const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
+  const currentTrial = task?.trials[currentTrialIdx] || null;
   useEffect(() => {
-    if (task) {
-      setCurrentTrial(task.trials.length - 1);
+    if (task && task.trials.length > 0) {
+      setCurrentTrialIdx(task.trials.length - 1);
     }
   }, [task]);
 
   useEffect(() => {
-    if (task) {
-      setRunningTotal(
-        task.trials[currentTrial].success_with_prompt +
-          task.trials[currentTrial].success_without_prompt
-      );
-      setNotesValue(task.trials[currentTrial].notes || "");
+    if (task && currentTrial) {
+      // setRunningTotal(
+      //   currentTrial.success_with_prompt + currentTrial.success_without_prompt
+      // );
+      setNotesValue(currentTrial.notes || "");
     }
   }, [task, currentTrial]);
 
-  // const [timerTimeInSec, setTimerTimeInSec] = useState(0);
-  // const [timerInputIsOn, setTimerInputIsOn] = useState(false);
   useEffect(() => {
     if (!seenMutation.isLoading && !taskIsLoading && task && !task.seen) {
       seenMutation.mutate({ task_id: task.task_id });
@@ -94,38 +86,19 @@ const BenchmarkPage = () => {
     }
   }, [task, addTrialMutation, taskIsLoading]);
 
-  // Timers removed from current MVP. May reintroduce them later.
-  // const handleStartTimer = (inputTimeInSec: number) => {
-  //   setTimerTimeInSec(inputTimeInSec);
-  //   setTimerInputIsOn(false);
-  // };
-
-  // const handleSetTimer = () => {
-  //   setTimerInputIsOn(!timerInputIsOn);
-  // };
-  // console.log('state: ', {
-  //   currentTrial: currentTrial,
-  //   runningTotal: runningTotal,
-  //   notes: notesValue
-  // })
-
-  const handleIncrement = (updateObj: dataUpdate) => {
+  const handleUpdate = (updates: dataUpdate) => {
     //Can only update if we're on the most recent trial
-    if (
-      task &&
-      currentTrial === task.trials.length - 1 &&
-      runningTotal < task.trial_count
-    ) {
-      handleUpdate(updateObj);
+    if (task && currentTrial && currentTrialIdx === task.trials.length - 1) {
+      updateTrialMutation.mutate({
+        trial_id: currentTrial.trial_id,
+        ...updates,
+      });
     }
   };
-  const handleDecrement = (updateObj: dataUpdate) => {
-    if (task && currentTrial === task.trials.length - 1 && runningTotal > 0) {
-      handleUpdate(updateObj);
-    }
-  };
+
+  // BUG: Updating counters before the timer goes off results in changes being reverted.
   const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
-    //Only update db after typing has stopped for 1 sec
+    //Only update db after typing has stopped for 0.5 sec
     setNotesValue((e.target as HTMLInputElement).value);
     if (inputTimer) {
       clearTimeout(inputTimer);
@@ -135,12 +108,12 @@ const BenchmarkPage = () => {
       handleUpdate({
         notes: (e.target as HTMLInputElement).value,
       });
-    }, 1000);
+    }, 500);
 
     setInputTimer(newTimer);
   };
 
-  if (taskIsLoading || task?.trials.length === 0) {
+  if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
   }
 
@@ -150,6 +123,9 @@ const BenchmarkPage = () => {
 
   return (
     <>
+      <Link href="/benchmarks">
+        <ArrowBackIcon />
+      </Link>
       <ParaNav />
       <p className={$box.default}>
         <strong>Task:</strong> {task.description}
@@ -157,16 +133,16 @@ const BenchmarkPage = () => {
       <div className={`${$box.topAndBottomBorder} ${$box.flex}`}>
         <button
           className={`${$button.default} ${$button.circular}`}
-          onClick={() => setCurrentTrial(currentTrial - 1)}
-          disabled={currentTrial === 0}
+          onClick={() => setCurrentTrialIdx(currentTrialIdx - 1)}
+          disabled={currentTrialIdx === 0}
         >
           <ChevronLeftIcon />
         </button>
-        <p>Trial {currentTrial + 1}</p>
+        <p>Trial {currentTrialIdx + 1}</p>
         <button
           className={`${$button.default} ${$button.circular}`}
-          onClick={() => setCurrentTrial(currentTrial + 1)}
-          disabled={currentTrial === task.trials.length - 1}
+          onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
+          disabled={currentTrialIdx === task.trials.length - 1}
         >
           <ChevronRightIcon />
         </button>
@@ -175,43 +151,51 @@ const BenchmarkPage = () => {
       <div className={$box.greyBg}>
         <Counter
           title="Successful without prompt"
-          count={task.trials[currentTrial].success_without_prompt}
+          count={currentTrial.success_without_prompt}
           onIncrement={() =>
-            handleIncrement({
-              success_without_prompt:
-                task.trials[currentTrial].success_without_prompt + 1,
+            handleUpdate({
+              success_without_prompt: currentTrial.success_without_prompt + 1,
             })
           }
           onDecrement={() =>
-            handleDecrement({
-              success_without_prompt:
-                task.trials[currentTrial].success_without_prompt - 1,
+            handleUpdate({
+              success_without_prompt: currentTrial.success_without_prompt - 1,
             })
+          }
+          disableInc={currentTrialIdx !== task.trials.length - 1}
+          disableDec={
+            currentTrialIdx !== task.trials.length - 1 ||
+            currentTrial.success_without_prompt <= 0
           }
           color="green"
         />
         <Counter
           title="Successful with prompt"
-          count={task.trials[currentTrial].success_with_prompt}
+          count={currentTrial.success_with_prompt}
           onIncrement={() =>
-            handleIncrement({
-              success_with_prompt:
-                task.trials[currentTrial].success_with_prompt + 1,
+            handleUpdate({
+              success_with_prompt: currentTrial.success_with_prompt + 1,
             })
           }
           onDecrement={() =>
-            handleDecrement({
-              success_with_prompt:
-                task.trials[currentTrial].success_with_prompt - 1,
+            handleUpdate({
+              success_with_prompt: currentTrial.success_with_prompt - 1,
             })
+          }
+          disableInc={currentTrialIdx !== task.trials.length - 1}
+          disableDec={
+            currentTrialIdx !== task.trials.length - 1 ||
+            currentTrial.success_with_prompt <= 0
           }
           color="yellow"
         />
         <Counter
           title="Attempts"
-          count={task.trial_count}
+          count={task.target_max_attempts}
           onIncrement={() => console.log("hi")}
           onDecrement={() => console.log("hi")}
+          disableInc={true}
+          disableDec={true}
           color="blue"
         />
       </div>
@@ -219,13 +203,16 @@ const BenchmarkPage = () => {
         className={$box.default}
         type="text"
         placeholder="Type your observation notes here..."
+        readOnly={currentTrialIdx !== task.trials.length - 1}
         value={notesValue}
         onChange={onNoteChange}
       ></input>
 
       <Link
         href={`${router.asPath}/review`}
-        className={`${$button.default} ${$box.fullWidth}`}
+        className={`${$button.default} ${$box.fullWidth} ${
+          currentTrialIdx !== task.trials.length - 1 ? $button.inactive : ""
+        }`}
       >
         Review
       </Link>

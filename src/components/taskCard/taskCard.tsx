@@ -16,7 +16,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
   const [completionRate, setCompletionRate] = useState(0);
   useEffect(() => {
     const calculatedRate = Math.floor(
-      (task.completed_trials || 0 / task.trial_count) * 100
+      ((task.completed_trials || 0) / task.trial_count) * 100
     );
     setCompletionRate(calculatedRate);
   }, [task]);
