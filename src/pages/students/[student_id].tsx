@@ -31,6 +31,12 @@ const ViewStudentPage = () => {
   );
 
   // const { data: detailedStudent, isLoading: isLoadingDetail }
+  const studentQuery = trpc.student.getStudentDetailById.useQuery(
+    { student_id: student_id as string },
+    { enabled: Boolean(student_id) }
+  );
+
+  // const { data: detailedStudent, isLoading: isLoadingDetail }
   // const studentQuery = trpc.student.getStudentDetailById.useQuery(
   //   { student_id: student_id as string },
   //   { enabled: Boolean(student_id) }
@@ -231,6 +237,11 @@ const ViewStudentPage = () => {
       <div>
         {/* <h1>Detail</h1>
         {JSON.stringify(studentQuery.data)} */}
+      </div>
+      {/* Simply writing the detailed studentQuery to the div */}
+      <div>
+        <h1>Detail</h1>
+        {JSON.stringify(studentQuery.data)}
       </div>
     </div>
   );
