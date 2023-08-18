@@ -34,6 +34,84 @@ export const student = router({
 
       return result;
     }),
+  getStudentDetailById: authenticatedProcedure
+    .input(z.object({ student_id: z.string().uuid() }))
+    .query(async (req) => {
+      const { student_id } = req.input;
+
+      const rows = await req.ctx.db
+        .selectFrom("student")
+        .innerJoin("iep", "iep.student_id", "student.student_id")
+        .innerJoin("goal", "goal.iep_id", "iep.iep_id")
+        .innerJoin("subgoal", "subgoal.goal_id", "goal.goal_id")
+        .selectAll()
+        .where("student.student_id", "=", student_id)
+        .execute();
+
+      // return rows as an array of nested objects - not currently used
+      const nestedRows = rows.map(function (row) {
+        return {
+          student: {
+            student_id: row.student_id,
+            first_name: row.first_name,
+            last_name: row.last_name,
+            email: row.email,
+            assigned_case_manager_id: row.assigned_case_manager_id,
+            iep: {
+              iep_id: row.iep_id,
+              case_manager_id: row.assigned_case_manager_id,
+              start_date: row.start_date,
+              end_date: row.end_date,
+              created_at: row.created_at,
+              goal: {
+                goal_id: row.goal_id,
+                description: row.description,
+                category: row.category,
+                subgoal: {
+                  subgoal_id: row.subgoal_id,
+                  instructions: row.instructions,
+                  target_max_attempts: row.target_max_attempts,
+                },
+              },
+            },
+          },
+        };
+      });
+      // return nestedRows;
+
+      // return rows as an array of objects which in turn contain objects representing tables
+      // [{{student, iep, goal, subgoal}}, {{student, iep, goal, subgoal}}, ...]
+      const tableRows = rows.map(function (row) {
+        return {
+          student: {
+            student_id: row.student_id,
+            first_name: row.first_name,
+            last_name: row.last_name,
+            email: row.email,
+            assigned_case_manager_id: row.assigned_case_manager_id,
+          },
+          iep: {
+            iep_id: row.iep_id,
+            case_manager_id: row.assigned_case_manager_id,
+            start_date: row.start_date,
+            end_date: row.end_date,
+            created_at: row.created_at,
+          },
+          goal: {
+            goal_id: row.goal_id,
+            description: row.description,
+            category: row.category,
+          },
+          subgoal: {
+            subgoal_id: row.subgoal_id,
+            instructions: row.instructions,
+            target_max_attempts: row.target_max_attempts,
+          },
+        };
+      });
+
+      return tableRows;
+    }),
 
   /**
    * Adds a new IEP for the given student.
