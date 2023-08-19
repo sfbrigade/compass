@@ -10,9 +10,12 @@ export const case_manager = router({
 
     const result = await req.ctx.db
       .selectFrom("student")
+      // .innerJoin("iep", "iep.student_id", "student.student_id")
       .selectAll()
       .where("assigned_case_manager_id", "=", userId)
       .execute();
+
+    console.log("result", result);
 
     return result;
   }),
@@ -28,10 +31,11 @@ export const case_manager = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
+        grade: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth;
 
       await req.ctx.db
@@ -41,6 +45,7 @@ export const case_manager = router({
           last_name,
           email: email.toLowerCase(),
           assigned_case_manager_id: userId,
+          grade: Number(grade),
         })
         .onConflict((oc) =>
           oc

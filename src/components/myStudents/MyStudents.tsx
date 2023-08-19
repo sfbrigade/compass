@@ -8,6 +8,16 @@ const MyStudents = () => {
   const { data: students, isLoading } =
     trpc.case_manager.getMyStudents.useQuery();
 
+  // const fakeStudents = [{
+  //   iep_end_date: "12102023",
+  //   assigned_case_manager_id: "c36eecd3-349b-4f8b-ad7e-c44a19407999",
+  //   email: "jc@gmail.com",
+  //   first_name: "Jackie",
+  //   grade: "12",
+  //   last_name: "Chan",
+  //   student_id: "a140437a-0562-4ca3-8b9d-4a54ff7c992f",
+  // }]
+
   const { mutate } = trpc.case_manager.addStudent.useMutation({
     onSuccess: () => utils.case_manager.getMyStudents.invalidate(),
     // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
@@ -25,6 +35,7 @@ const MyStudents = () => {
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
+      grade: data.get("grade") as string,
     });
     // resetting the form this way is only necessary if the form remains visible upon adding a person. due to Materials UI, the reset form(s) will show as "touched" (TT).
     (event.target as HTMLFormElement).reset();
@@ -46,6 +57,16 @@ const MyStudents = () => {
       label: "Email",
       hasInput: true,
     },
+    {
+      id: "grade",
+      label: "Grade",
+      hasInput: true,
+    },
+    // {
+    //   id: "iep_end_date",
+    //   label: "End Date",
+    //   hasInput: true,
+    // },
   ];
 
   if (isLoading) {

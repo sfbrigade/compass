@@ -337,6 +337,10 @@ export default function EnhancedTable<
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
+                  {row.grade && (
+                    <TableCell align={"left"}>{row.grade}</TableCell>
+                  )}
+                  {/* {row.iep_end_date && <TableCell align={"left"}>{row.iep_end_date}</TableCell>} */}
                 </StyledTableRow>
               );
             })}

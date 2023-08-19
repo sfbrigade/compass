@@ -39,7 +39,7 @@ const ViewStudentPage = () => {
       return;
     }
     await archiveMutation.mutateAsync({ student_id: student.student_id });
-    await router.push(`/cmDashboard`);
+    await router.push(`/students`);
   };
 
   const iepMutation = trpc.student.addIep.useMutation({
@@ -137,7 +137,7 @@ const ViewStudentPage = () => {
         ))}
       </ul>
       <div>
-        <Link href={`/cmDashboard`}>Return to Student List</Link>
+        <Link href={`/students`}>Return to Student List</Link>
       </div>
       {/* Simply writing the detailed studentQuery to the div */}
       <div>
