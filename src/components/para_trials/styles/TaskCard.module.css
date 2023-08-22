@@ -32,7 +32,6 @@
   font-weight: 700;
   color: var(--grey-30);
 }
-/* check */
 .dateFloaterRed {
   composes: dateFloater;
   color: #b3261e;
@@ -64,7 +63,7 @@
   width: 50px;
   background-color: cadetblue;
 }
-/* check */
+
 .imageDone {
   composes: image;
   opacity: 0.5;
