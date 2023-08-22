@@ -1940,11 +1940,11 @@ declare module 'zapatos/schema' {
     export type Table = 'trial_data';
     export interface Selectable {
       /**
-      * **trial_data.trial_id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      trial_id: string;
+      trial_data_id: string;
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -1990,11 +1990,11 @@ declare module 'zapatos/schema' {
     }
     export interface JSONSelectable {
       /**
-      * **trial_data.trial_id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      trial_id: string;
+      trial_data_id: string;
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2040,11 +2040,11 @@ declare module 'zapatos/schema' {
     }
     export interface Whereable {
       /**
-      * **trial_data.trial_id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      trial_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      trial_data_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2090,11 +2090,11 @@ declare module 'zapatos/schema' {
     }
     export interface Insertable {
       /**
-      * **trial_data.trial_id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      trial_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2140,11 +2140,11 @@ declare module 'zapatos/schema' {
     }
     export interface Updatable {
       /**
-      * **trial_data.trial_id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      trial_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **trial_data.task_id**
       * - `uuid` in database

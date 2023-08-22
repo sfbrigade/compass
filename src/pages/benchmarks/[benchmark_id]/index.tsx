@@ -9,6 +9,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ParaNav from "@/components/ParaNav";
 import Link from "next/link";
+import { useDebounce } from "react-use";
 
 interface dataUpdate {
   success_with_prompt?: number;
@@ -25,7 +26,7 @@ const BenchmarkPage = () => {
     data: task,
     isLoading: taskIsLoading,
     isError,
-  } = trpc.iep.getTaskById.useQuery(
+  } = trpc.iep.getSubgoalAndTrialData.useQuery(
     {
       task_id: benchmark_id as string,
     },
@@ -33,18 +34,17 @@ const BenchmarkPage = () => {
       enabled: Boolean(benchmark_id),
     }
   );
-  const seenMutation = trpc.iep.setSeen.useMutation({
-    onSuccess: async () => await utils.iep.getTaskById.invalidate(),
+  const seenMutation = trpc.iep.markAsSeen.useMutation({
+    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
   const addTrialMutation = trpc.iep.addTrialData.useMutation({
-    onSuccess: async () => await utils.iep.getTaskById.invalidate(),
+    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation({
-    onSuccess: async () => await utils.iep.getTaskById.invalidate(),
+    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
 
   const [notesValue, setNotesValue] = useState("");
-  const [inputTimer, setInputTimer] = useState<NodeJS.Timer | null>(null);
   // const [runningTotal, setRunningTotal] = useState(0);
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
@@ -90,7 +90,7 @@ const BenchmarkPage = () => {
     //Can only update if we're on the most recent trial
     if (task && currentTrial && currentTrialIdx === task.trials.length - 1) {
       updateTrialMutation.mutate({
-        trial_id: currentTrial.trial_id,
+        trial_data_id: currentTrial.trial_data_id,
         ...updates,
       });
     }
@@ -98,21 +98,18 @@ const BenchmarkPage = () => {
 
   // BUG: Updating counters before the timer goes off results in changes being reverted.
   const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
-    //Only update db after typing has stopped for 0.5 sec
     setNotesValue((e.target as HTMLInputElement).value);
-    if (inputTimer) {
-      clearTimeout(inputTimer);
-    }
-
-    const newTimer = setTimeout(() => {
-      handleUpdate({
-        notes: (e.target as HTMLInputElement).value,
-      });
-    }, 500);
-
-    setInputTimer(newTimer);
   };
-
+  useDebounce(
+    () => {
+      //Only update db after typing has stopped for 0.5 sec
+      handleUpdate({
+        notes: notesValue,
+      });
+    },
+    1000,
+    [notesValue]
+  );
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
   }

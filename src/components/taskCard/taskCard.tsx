@@ -1,5 +1,5 @@
 // import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useMemo } from "react";
 import $taskCard from "./styles/TaskCard.module.css";
 import $button from "@/styles/Button.module.css";
 import $box from "@/styles/Box.module.css";
@@ -13,13 +13,11 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
-  const [completionRate, setCompletionRate] = useState(0);
-  useEffect(() => {
-    const calculatedRate = Math.floor(
-      ((task.completed_trials || 0) / task.trial_count) * 100
-    );
-    setCompletionRate(calculatedRate);
-  }, [task]);
+  const completionRate = useMemo(() => {
+    const num = parseInt(task.completed_trials as string) || 0;
+    const calculatedRate = Math.floor((num / task.trial_count) * 100);
+    return calculatedRate;
+  }, [task.completed_trials, task.trial_count]);
 
   const getDateStyle = () => {
     //New or done should be green

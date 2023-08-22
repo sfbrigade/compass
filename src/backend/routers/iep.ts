@@ -139,7 +139,7 @@ export const iep = router({
   updateTrialData: authenticatedProcedure
     .input(
       z.object({
-        trial_id: z.string(),
+        trial_data_id: z.string(),
         success_with_prompt: z.number().optional(),
         success_without_prompt: z.number().optional(),
         submitted: z.boolean().optional(),
@@ -148,7 +148,7 @@ export const iep = router({
     )
     .mutation(async (req) => {
       const {
-        trial_id,
+        trial_data_id,
         success_with_prompt,
         success_without_prompt,
         submitted,
@@ -163,8 +163,8 @@ export const iep = router({
           submitted,
           notes,
         })
-        .where("trial_data.trial_id", "=", trial_id)
-        .executeTakeFirst();
+        .where("trial_data.trial_data_id", "=", trial_data_id)
+        .execute();
     }),
 
   getGoals: authenticatedProcedure
@@ -222,7 +222,7 @@ export const iep = router({
       return result;
     }),
 
-  getTaskById: authenticatedProcedure
+  getSubgoalAndTrialData: authenticatedProcedure
     .input(
       z.object({
         task_id: z.string(),
@@ -254,7 +254,7 @@ export const iep = router({
             eb
               .selectFrom("trial_data")
               .select([
-                "trial_data.trial_id",
+                "trial_data.trial_data_id",
                 "trial_data.success_with_prompt",
                 "trial_data.success_without_prompt",
                 "trial_data.submitted",
@@ -275,7 +275,7 @@ export const iep = router({
       return result;
     }),
 
-  setSeen: authenticatedProcedure
+  markAsSeen: authenticatedProcedure
     .input(
       z.object({
         task_id: z.string(),

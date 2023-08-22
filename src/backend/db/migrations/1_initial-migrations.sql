@@ -97,7 +97,7 @@ CREATE TABLE "task" (
 );
 
 CREATE TABLE "trial_data" (
-  trial_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  trial_data_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   task_id UUID REFERENCES "task" (task_id),
   created_by_user_id UUID REFERENCES "user" (user_id),
   -- TODO: Possibly add optional reference to "task"
