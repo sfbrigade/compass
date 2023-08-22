@@ -87,3 +87,10 @@
 .rightPill {
   border-radius: 0 8px 8px 0;
 }
+
+.fixedToBottom {
+  position: fixed;
+  bottom: 1em;
+  left: 1em;
+  right: 1em;
+}

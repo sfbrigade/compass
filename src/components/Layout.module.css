@@ -13,6 +13,11 @@
   padding: 1em;
 }
 
+.mainPurple {
+  composes: main;
+  background-color: var(--primary-container);
+}
+
 @media only screen and (min-width: 480px) {
 }
 

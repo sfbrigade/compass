@@ -17,6 +17,23 @@ export const student = router({
       return result;
     }),
 
+  getStudentByTaskId: authenticatedProcedure
+    .input(z.object({ task_id: z.string().uuid() }))
+    .query(async (req) => {
+      const { task_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("task")
+        .innerJoin("subgoal", "subgoal.subgoal_id", "task.subgoal_id")
+        .innerJoin("goal", "goal.goal_id", "subgoal.goal_id")
+        .innerJoin("iep", "iep.iep_id", "goal.iep_id")
+        .innerJoin("student", "student.student_id", "iep.student_id")
+        .where("task.task_id", "=", task_id)
+        .select(["student.first_name", "student.last_name", "task.due_date"])
+        .executeTakeFirstOrThrow();
+
+      return result;
+    }),
   /**
    * Adds a new IEP for the given student.
    */

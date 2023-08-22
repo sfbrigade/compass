@@ -212,7 +212,7 @@ const BenchmarkPage = () => {
 
       <Link
         href={`${router.asPath}/review`}
-        className={`${$button.default} ${$box.fullWidth} ${
+        className={`${$button.default} ${$button.fixedToBottom} ${
           currentTrialIdx !== task.trials.length - 1 ? $button.inactive : ""
         }`}
       >

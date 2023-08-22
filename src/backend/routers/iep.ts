@@ -222,6 +222,25 @@ export const iep = router({
       return result;
     }),
 
+  getSubgoalByTaskId: authenticatedProcedure
+    .input(
+      z.object({
+        task_id: z.string().uuid(),
+      })
+    )
+    .query(async (req) => {
+      const { task_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .innerJoin("task", "task.subgoal_id", "subgoal.subgoal_id")
+        .where("task.task_id", "=", task_id)
+        .select(["subgoal.description", "subgoal.instructions"])
+        .executeTakeFirstOrThrow();
+
+      return result;
+    }),
+
   getTaskById: authenticatedProcedure
     .input(
       z.object({
