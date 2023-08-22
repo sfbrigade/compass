@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import Goals from "@/components/Goal";
+import Goals from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 

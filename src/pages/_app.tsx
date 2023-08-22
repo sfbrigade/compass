@@ -10,7 +10,7 @@ import { QueryCache } from "@tanstack/react-query";
 import toast, { Toaster } from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
-import Layout from "@/components/Layout";
+import Layout from "@/components/layout/Layout";
 
 interface CustomPageProps {
   session: Session;
