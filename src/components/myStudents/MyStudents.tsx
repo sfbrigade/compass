@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import PersonTable from "../table/personTable";
-import { Student, StudentHeadCell } from "../table/table";
+import PersonTable from "../table/table";
+import { Student, StudentHeadCell } from "../table/tableTypes";
 
 const MyStudents = () => {
   const utils = trpc.useContext();

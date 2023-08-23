@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
-import PersonTable from "../table/personTable";
-import { Para, ParaHeadCell } from "../table/table";
+import PersonTable from "../table/table";
+import { Para, ParaHeadCell } from "../table/tableTypes";
 
 const MyParas = () => {
   const utils = trpc.useContext();
