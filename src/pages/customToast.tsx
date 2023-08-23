@@ -6,7 +6,7 @@ interface CustomToastProps {
   errorMessage: string;
 }
 
-const CustomToast: React.FC<CustomToastProps> = ({ errorMessage }) => {
+const CustomToast = ({ errorMessage }: CustomToastProps) => {
   const [showToast, setShowToast] = useState(true);
 
   const handleCloseToast = () => {
