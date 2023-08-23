@@ -10,6 +10,7 @@ import { QueryCache } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
+import Layout from "@/components/Layout";
 import CustomToast from "@/components/CustomToast";
 
 interface CustomPageProps {
@@ -82,7 +83,9 @@ export default function App({
         <QueryClientProvider client={queryClient}>
           <SessionProvider session={pageProps.session}>
             {errorMessage && <CustomToast errorMessage={errorMessage} />}
-            <Component {...pageProps} showErrorToast={toast.error} />
+            <Layout>
+              <Component {...pageProps} showErrorToast={toast.error} />
+            </Layout>
           </SessionProvider>
         </QueryClientProvider>
       </trpc.Provider>

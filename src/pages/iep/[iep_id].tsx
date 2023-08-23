@@ -1,8 +1,9 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import styles from "@/styles/Iep.module.css";
 import Goals from "@/components/Goal";
+import $button from "@/styles/Button.module.css";
+import $input from "@/styles/Input.module.css";
 
 const Iep = () => {
   const router = useRouter();
@@ -30,6 +31,7 @@ const Iep = () => {
     goalMutation.mutate({
       iep_id: iep_id as string,
       description: data.get("description") as string,
+      category: data.get("category") as string,
     });
   };
 
@@ -43,26 +45,29 @@ const Iep = () => {
 
       <h2>Goals</h2>
       <ul>
-        {goals?.map((goal, idx) => (
+        {goals?.map((goal) => (
           <li key={goal.goal_id}>
-            <h3>Goal {idx + 1}</h3>
-            <div>Goal ID: {goal.goal_id}</div>
-            <p>{goal.description}</p>
             <Goals goal={goal} />
-            <br />
           </li>
         ))}
       </ul>
 
       <div>
-        <form onSubmit={handleGoalSubmit} className={styles.createInput}>
+        <form onSubmit={handleGoalSubmit}>
           <input
             type="text"
             name="description"
             placeholder="Goal description"
+            className={$input.default}
             required
           />
-          <button type="submit" className={styles.createButton}>
+          <select name="category">
+            <option value="writing">writing</option>
+            <option value="reading">reading</option>
+            <option value="math">math</option>
+            <option value="other">other</option>
+          </select>
+          <button type="submit" className={$button.default}>
             Add Goal
           </button>
         </form>

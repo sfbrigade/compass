@@ -1,18 +1,14 @@
 import React from "react";
 import Subgoals from "./Subgoal";
 import { trpc } from "@/client/lib/trpc";
-import styles from "@/styles/Goal.module.css";
+import { Goal } from "@/types/global";
+import $goal from "./Goal.module.css";
 
 interface GoalProps {
   goal: Goal;
 }
 
-interface Goal {
-  goal_id: string;
-  description: string | null;
-}
-
-const Goals: React.FC<GoalProps> = ({ goal }) => {
+const Goals = ({ goal }: GoalProps) => {
   const utils = trpc.useContext();
   const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
     goal_id: goal.goal_id,
@@ -29,6 +25,8 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
     subgoal.mutate({
       goal_id: goal.goal_id,
       description: data.get("description") as string,
+      instructions: data.get("instructions") as string,
+      target_max_attempts: Number(data.get("target_max_attempts")) || null,
     });
   };
 
@@ -38,8 +36,14 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
 
   return (
     <div>
-      <div className={styles.tab}>
-        <ul className={styles.listNames}>
+      <h3>Goal</h3>
+      <div>Goal ID: {goal.goal_id}</div>
+      <p>Description: {goal.description}</p>
+      <p>Created at: {goal.created_at.toDateString()}</p>
+      <p>Category: {goal.category}</p>
+
+      <div className={$goal.tab}>
+        <ul className={$goal.listNames}>
           {subgoals?.map((subgoal) => (
             <li key={subgoal.subgoal_id}>
               <br />
@@ -48,14 +52,21 @@ const Goals: React.FC<GoalProps> = ({ goal }) => {
           ))}
         </ul>
         <br />
-        <form onSubmit={handleSubGoalSubmit} className={styles.createInput}>
+        <form onSubmit={handleSubGoalSubmit} className={$goal.createInput}>
           <input
             type="text"
             name="description"
             placeholder="Subgoal description"
             required
           />
-          <button type="submit" className={styles.createButton}>
+          <input type="text" name="instructions" placeholder="Instructions" />
+          <input
+            type="number"
+            name="target_max_attempts"
+            placeholder="# of attempts"
+          />
+
+          <button type="submit" className={$goal.createButton}>
             Add SubGoal
           </button>
         </form>

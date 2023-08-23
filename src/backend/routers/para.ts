@@ -74,4 +74,28 @@ export const para = router({
 
       return paraData;
     }),
+
+  getMyTasks: authenticatedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const result = await req.ctx.db
+      .selectFrom("subgoal")
+      .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
+      .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
+      .innerJoin("iep", "goal.iep_id", "iep.iep_id")
+      .innerJoin("student", "iep.student_id", "student.student_id")
+      .where("task.assignee_id", "=", userId)
+      .select([
+        "task.task_id",
+        "student.first_name",
+        "student.last_name",
+        "subgoal.description",
+        "goal.category",
+        "task.due_date",
+        "subgoal.instructions",
+        "subgoal.target_max_attempts",
+      ])
+      .execute();
+    return result;
+  }),
 });

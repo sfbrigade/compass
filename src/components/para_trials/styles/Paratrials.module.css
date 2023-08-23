@@ -36,7 +36,7 @@
 }
 
 .counterButton-blue {
-  background-color: #1680a1;
+  background-color: var(--accent);
 }
 .counterNumberDisplay-blue {
   background-color: #1680a133;
@@ -74,7 +74,7 @@
   border: none;
   border-radius: 50%;
   color: white;
-  background-color: var(--primary-purple);
+  background-color: var(--primary);
   height: 50px;
   width: 50px;
   cursor: pointer;
@@ -92,7 +92,7 @@
   font-size: 40px;
   font-weight: 600;
   display: flex;
-  color: var(--primary-purple);
+  color: var(--primary);
 }
 
 .timer span {
@@ -106,7 +106,7 @@
 }
 
 .numPadContainer {
-  color: var(--primary-purple);
+  color: var(--primary);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -140,8 +140,8 @@
   border-radius: 50%;
   height: 100px;
   width: 100px;
-  background-color: var(--primary-purple);
-  color: white;
+  background-color: var(--primary);
+  color: var(--on-primary);
   cursor: pointer;
 }
 

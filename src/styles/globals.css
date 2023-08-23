@@ -1,20 +1,137 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter&family=Quicksand:wght@600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@600&display=swap");
 
-/* Place any repeated colors or other things here */
 :root {
-  --primary-purple: #5347d7;
+  --primary: #5347d7;
+  --on-primary: #ffffff;
+  --primary-container: #f6f5ff;
+  --on-primary-container: #080155;
+
+  --accent: #1680a1;
+  --on-accent: #ffffff;
+  --accent-container: #f5fcff;
+  --on-accent-container: #001b23;
+  --background: #ffffff;
+  --on-background: #021426;
+  --surface: #fbfbff;
+  --on-surface: #021426;
+  --outline: #d6dde1;
+  --outline-variant: #021426;
+
+  --success: #24804d;
+  --on-success: #ffffff;
+  --success-container: #f0fff6;
+  --on-success-container: #001e0d;
+  --warning-state: #fbf6d9;
+  --on-warning: #1c1b1f;
+  --warning-container: #ffaa44;
+  --on-warning-container: #1c1b1f;
+
+  --primary-10: #030123;
+  --primary-20: #080155;
+  --primary-30: #140b7a;
+  --primary-40: #20159e;
+  --primary-50: #3023b8;
+  --primary-60: #5347d7;
+  --primary-70: #766ce3;
+  --primary-80: #9b93f1;
+  --primary-90: #c2bdf9;
+  --primary-99: #f6f5ff;
+
+  --grey-10: #021426;
+  --grey-20: #2a333c;
+  --grey-30: #586874;
+  --grey-40: #788591;
+  --grey-50: #a2acb3;
+  --grey-60: #b9c1c6;
+  --grey-70: #d6dde1;
+  --grey-80: #f4f6f7;
+  --grey-90: #f6f8f9;
+  --grey-100: #ffffff;
+
+  --quicksand: "Quicksand", sans-serif;
+  --inter: "Inter", sans-serif;
 }
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-family: "Quicksand", sans-serif;
+  font-family: var(--inter);
 }
 
 html,
-body {
-  max-width: 100vw;
+body,
+#__next {
+  height: 100%;
   overflow-x: auto;
-  font-family: "Roboto", sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  font-family: var(--quicksand);
+}
+
+h1 {
+  font-size: 2.5em;
+}
+
+h2 {
+  font-size: 2em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+h4 {
+  font-size: 1.25em;
+}
+
+h5 {
+  font-size: 1em;
+  font-weight: 700;
+}
+
+p {
+  font-size: 1em;
+  font-weight: 500;
+}
+
+/* Breakpoints recommended by Bootstrap */
+/* Custom, iPhone Retina */
+@media only screen and (min-width: 320px) {
+}
+
+/* Extra Small Devices, Phones */
+@media only screen and (min-width: 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+  h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  h3 {
+    font-size: 1.25em;
+  }
+
+  h4 {
+    font-size: 1.25em;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
 }
