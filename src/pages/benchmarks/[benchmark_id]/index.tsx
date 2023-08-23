@@ -11,7 +11,7 @@ import ParaNav from "@/components/ParaNav";
 import Link from "next/link";
 import { useDebounce } from "react-use";
 
-interface dataUpdate {
+interface DataUpdate {
   success_with_prompt?: number;
   success_without_prompt?: number;
   submitted?: boolean;
@@ -45,7 +45,6 @@ const BenchmarkPage = () => {
   });
 
   const [notesValue, setNotesValue] = useState("");
-  // const [runningTotal, setRunningTotal] = useState(0);
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
   useEffect(() => {
@@ -56,9 +55,6 @@ const BenchmarkPage = () => {
 
   useEffect(() => {
     if (task && currentTrial) {
-      // setRunningTotal(
-      //   currentTrial.success_with_prompt + currentTrial.success_without_prompt
-      // );
       setNotesValue(currentTrial.notes || "");
     }
   }, [task, currentTrial]);
@@ -86,7 +82,7 @@ const BenchmarkPage = () => {
     }
   }, [task, addTrialMutation, taskIsLoading]);
 
-  const handleUpdate = (updates: dataUpdate) => {
+  const handleUpdate = (updates: DataUpdate) => {
     //Can only update if we're on the most recent trial
     if (task && currentTrial && currentTrialIdx === task.trials.length - 1) {
       updateTrialMutation.mutate({
@@ -102,7 +98,7 @@ const BenchmarkPage = () => {
   };
   useDebounce(
     () => {
-      //Only update db after typing has stopped for 0.5 sec
+      //Only update db after typing has stopped for 1 sec
       handleUpdate({
         notes: notesValue,
       });
