@@ -15,8 +15,8 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { isStudent, HeadCell, Student, Para } from "../table/table";
-import $table from "../table/Table.module.css";
+import { isStudent, HeadCell, Student, Para } from "./table";
+import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
 
