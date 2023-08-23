@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "../styles/Toast.module.css";
+import styles from "./styles/Toast.module.css";
 import Image from "next/image";
 
 interface CustomToastProps {
@@ -13,8 +13,6 @@ const CustomToast = ({ errorMessage }: CustomToastProps) => {
     setShowToast(false);
   };
 
-  console.log("error is ", errorMessage);
-
   return (
     <>
       {showToast && (
@@ -22,20 +20,20 @@ const CustomToast = ({ errorMessage }: CustomToastProps) => {
           <div className={styles.customToast}>
             <Image
               src="/img/error.filled.svg"
-              alt="Close Toast"
+              alt="Error Img"
               width={24}
               height={24}
             ></Image>
-            <div>{errorMessage ?? "hi"}</div>
+            <div>{errorMessage ?? null}</div>
 
-            <Image
-              src="/img/cross-outline.svg"
-              alt="Close Toast"
-              width={24}
-              height={24}
-              onClick={handleCloseToast}
-              className={styles.imgPointer}
-            ></Image>
+            <button className={styles.closeButton} onClick={handleCloseToast}>
+              <Image
+                src="/img/cross-outline.svg"
+                alt="Close Toast"
+                width={24}
+                height={24}
+              ></Image>
+            </button>
           </div>
         </div>
       )}

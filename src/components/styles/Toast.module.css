@@ -14,7 +14,7 @@
   row-gap: 8px;
   flex-wrap: wrap;
   border-radius: 4px;
-  background: var(--system-error-error-container-f-9-dedc, #fef1f0);
+  background: #fef1f0;
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -22,6 +22,7 @@
   line-height: 150%;
 }
 
-.imgPointer {
-  cursor: pointer;
+.closeButton {
+  border: none;
+  background: #fef1f0;
 }
