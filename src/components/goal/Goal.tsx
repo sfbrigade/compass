@@ -1,5 +1,5 @@
 import React from "react";
-import Subgoals from "./Subgoal";
+import Subgoals from "../subgoal/Subgoal";
 import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";

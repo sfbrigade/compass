@@ -1,0 +1,23 @@
+.uploadContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.actionButton {
+  padding: 10px;
+  display: block;
+  margin-bottom: 20px;
+  background-color: white;
+  color: rgb(131, 23, 202);
+  border: 1px solid #ffffffee;
+  box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
+  font-size: 14px;
+  font-family: "Lucida Grande", "Arial", sans-serif;
+  align-items: center;
+}
+
+.uploadingText {
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import Counter from "@/components/para_trials/counter";
-import Timer from "@/components/para_trials/timer";
-import TimerInput from "@/components/para_trials/timerInputPad";
+import Counter from "@/components/counter/counter";
+import Timer from "@/components/timer/timer";
+import TimerInput from "@/components/timer/timerInputPad";
 import $button from "@/styles/Button.module.css";
 
 const TrialPage = () => {
