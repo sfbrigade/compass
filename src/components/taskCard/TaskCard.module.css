@@ -6,7 +6,6 @@
   font-weight: 700;
   color: var(--grey-30);
 }
-
 .dateFloaterRed {
   composes: dateFloater;
   color: #b3261e;
