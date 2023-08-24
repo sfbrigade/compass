@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from "react";
 import { useTimer } from "react-timer-hook";
-import styles from "./styles/Paratrials.module.css";
+import styles from "../paraTrials/Paratrials.module.css";
 
 interface TimerProps {
   timeInSec: number;
