@@ -1,5 +1,5 @@
 import React from "react";
-import MyStudents from "@/components/case_manager/MyStudents";
+import MyStudents from "@/components/myStudents/MyStudents";
 
 function Students() {
   return <MyStudents />;
