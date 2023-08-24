@@ -164,5 +164,27 @@ export const student = router({
       return result;
     }),
 
+  // TODO: get only the active IEP from the student
+  getActiveStudentIep: authenticatedProcedure
+    .input(
+      z.object({
+        student_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { student_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("iep")
+        .where("student_id", "=", student_id)
+        .where("is_active", "=", true)
+        .selectAll()
+        .executeTakeFirst();
+
+      console.log("get Active Student IEP ~~ ", result || null);
+
+      return result || null;
+    }),
+
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
 });

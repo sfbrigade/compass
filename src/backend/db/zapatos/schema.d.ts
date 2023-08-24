@@ -794,6 +794,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at: Date;
+      /**
+      * **iep.is_active**
+      * - `bool` in database
+      * - `NOT NULL`, default: `true`
+      */
+      is_active: boolean;
     }
     export interface JSONSelectable {
       /**
@@ -832,6 +838,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at: db.TimestampTzString;
+      /**
+      * **iep.is_active**
+      * - `bool` in database
+      * - `NOT NULL`, default: `true`
+      */
+      is_active: boolean;
     }
     export interface Whereable {
       /**
@@ -870,6 +882,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **iep.is_active**
+      * - `bool` in database
+      * - `NOT NULL`, default: `true`
+      */
+      is_active?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -908,6 +926,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
+      * **iep.is_active**
+      * - `bool` in database
+      * - `NOT NULL`, default: `true`
+      */
+      is_active?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -946,6 +970,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `now()`
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **iep.is_active**
+      * - `bool` in database
+      * - `NOT NULL`, default: `true`
+      */
+      is_active?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'iep_pkey';
     export type Column = keyof Selectable;
