@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./styles/Paratrials.module.css";
+import styles from "../paraTrials/Paratrials.module.css";
 
 interface CounterProps {
   title: string;

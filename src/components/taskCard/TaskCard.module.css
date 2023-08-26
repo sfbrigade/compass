@@ -1,19 +1,19 @@
 .container {
   position: relative;
   width: 90%;
-  background-color: #f6f8f9;
+  background-color: var(--grey-90);
   margin: 10px auto;
   border-radius: 8px;
-  border: 1px solid #d6dde1;
+  border: 1px solid var(--grey-70);
   padding: 15px;
   font-size: 14px;
 }
 
 .containerDone {
   composes: container;
-  background-color: #f4f6f7;
+  background-color: var(--grey-80);
   border: none;
-  color: #a2acb3;
+  color: var(--grey-50);
 }
 
 .container p {
@@ -32,7 +32,6 @@
   font-weight: 700;
   color: var(--grey-30);
 }
-
 .dateFloaterRed {
   composes: dateFloater;
   color: #b3261e;

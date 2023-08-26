@@ -1,8 +1,8 @@
 // import Image from "next/image";
 import React, { useState } from "react";
-import styles from "./styles/TaskCard.module.css";
+import styles from "./TaskCard.module.css";
 import Link from "next/link";
-import ProgressBar from "./progressBar";
+import ProgressBar from "../progressBar/progressBar";
 import { ParaTaskCard } from "@/types/global";
 
 interface TaskCardProps {
