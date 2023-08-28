@@ -15,3 +15,7 @@
 .orderList li {
   list-style-position: inside;
 }
+
+.noDecoration {
+  list-style-type: none;
+}
