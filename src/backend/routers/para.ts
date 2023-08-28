@@ -103,7 +103,7 @@ export const para = router({
           .where("trial_data.created_by_user_id", "=", userId)
           .where("trial_data.submitted", "=", true)
           .select(({ fn }) =>
-            fn.count("trial_data.trial_id").as("completed_trials")
+            fn.count("trial_data.trial_data_id").as("completed_trials")
           )
           .as("completed_trials"),
       ])

@@ -1,7 +1,6 @@
 import React from "react";
 import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
-import { ParaTaskCard } from "@/types/global";
 import $typo from "@/styles/Typography.module.css";
 
 function Benchmarks() {
@@ -16,7 +15,7 @@ function Benchmarks() {
       {tasks?.map((task) => {
         return (
           <li key={task.task_id} className={$typo.noDecoration}>
-            <TaskCard task={task as ParaTaskCard} />
+            <TaskCard task={task} />
           </li>
         );
       })}

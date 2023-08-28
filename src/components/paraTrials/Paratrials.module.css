@@ -20,6 +20,7 @@
 .counterButton {
   font-family: inherit;
   color: var(--grey-100);
+  font-family: inherit;
   font-size: 2rem;
   width: 100%;
   height: 100%;
@@ -36,6 +37,7 @@
 .counterNumberDisplay {
   font-family: inherit;
   color: var(--grey-10);
+  font-family: inherit;
   width: 100%;
   height: 100%;
   display: flex;

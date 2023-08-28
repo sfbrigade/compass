@@ -10,7 +10,7 @@ import { trpc } from "@/client/lib/trpc";
 const InstructionsPage = () => {
   const router = useRouter();
   const { benchmark_id } = router.query;
-  const { data: subgoal, isLoading } = trpc.iep.getSubgoalByTaskId.useQuery(
+  const { data: subgoal, isLoading } = trpc.iep.getSubgoalAndTrialData.useQuery(
     { task_id: benchmark_id as string },
     { enabled: Boolean(benchmark_id) }
   );

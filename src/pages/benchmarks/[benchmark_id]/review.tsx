@@ -7,7 +7,7 @@ import $button from "@/styles/Button.module.css";
 const ReviewPage = () => {
   const router = useRouter();
   const { benchmark_id } = router.query;
-  const { data: task, isLoading } = trpc.iep.getTaskById.useQuery(
+  const { data: task, isLoading } = trpc.iep.getSubgoalAndTrialData.useQuery(
     {
       task_id: benchmark_id as string,
     },
@@ -21,7 +21,7 @@ const ReviewPage = () => {
   const handleSubmit = async (trialId: string) => {
     try {
       await updateTrialMutation.mutateAsync({
-        trial_id: trialId,
+        trial_data_id: trialId,
         submitted: true,
       });
 
@@ -54,7 +54,7 @@ const ReviewPage = () => {
       </div>
       <button
         className={`${$button.default} ${$box.fullWidth}`}
-        onClick={() => handleSubmit(currentTrial.trial_id)}
+        onClick={() => handleSubmit(currentTrial.trial_data_id)}
       >
         Sign and Submit
       </button>

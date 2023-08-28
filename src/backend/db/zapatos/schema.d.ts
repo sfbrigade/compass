@@ -1940,11 +1940,19 @@ declare module 'zapatos/schema' {
     export type Table = 'trial_data';
     export interface Selectable {
       /**
+<<<<<<< HEAD
       * **trial_data.trial_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       trial_id: string;
+=======
+      * **trial_data.trial_data_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_data_id: string;
+>>>>>>> Benchmark Data Collection (#183)
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -1990,11 +1998,19 @@ declare module 'zapatos/schema' {
     }
     export interface JSONSelectable {
       /**
+<<<<<<< HEAD
       * **trial_data.trial_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       trial_id: string;
+=======
+      * **trial_data.trial_data_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_data_id: string;
+>>>>>>> Benchmark Data Collection (#183)
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2040,11 +2056,19 @@ declare module 'zapatos/schema' {
     }
     export interface Whereable {
       /**
+<<<<<<< HEAD
       * **trial_data.trial_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       trial_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+=======
+      * **trial_data.trial_data_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_data_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+>>>>>>> Benchmark Data Collection (#183)
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2090,11 +2114,19 @@ declare module 'zapatos/schema' {
     }
     export interface Insertable {
       /**
+<<<<<<< HEAD
       * **trial_data.trial_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       trial_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+=======
+      * **trial_data.trial_data_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+>>>>>>> Benchmark Data Collection (#183)
       /**
       * **trial_data.task_id**
       * - `uuid` in database
@@ -2140,11 +2172,19 @@ declare module 'zapatos/schema' {
     }
     export interface Updatable {
       /**
+<<<<<<< HEAD
       * **trial_data.trial_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       trial_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+=======
+      * **trial_data.trial_data_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+>>>>>>> Benchmark Data Collection (#183)
       /**
       * **trial_data.task_id**
       * - `uuid` in database

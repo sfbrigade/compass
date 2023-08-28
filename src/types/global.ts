@@ -11,7 +11,7 @@ export interface ParaTaskCard {
   due_date: Date;
   seen: boolean;
   trial_count: number;
-  completed_trials: number | null;
+  completed_trials: string | number | bigint | null;
 }
 
 export type Goal = SelectableForTable<"goal">;
