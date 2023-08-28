@@ -121,6 +121,7 @@ test("getMyTasks", async (t) => {
   const DUE_DATE = new Date();
   const INSTRUCTIONS = "subgoal instructions foobar";
   const TARGET_MAX_ATTEMPTS = 5;
+  const TRIAL_COUNT = 10;
 
   const { student_id } = await db
     .insertInto("student")
@@ -171,6 +172,7 @@ test("getMyTasks", async (t) => {
       subgoal_id: subgoal_id,
       assignee_id: seed.case_manager.user_id,
       due_date: DUE_DATE,
+      trial_count: TRIAL_COUNT,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -185,4 +187,5 @@ test("getMyTasks", async (t) => {
   t.deepEqual(task[0].due_date, DUE_DATE);
   t.is(task[0].instructions, INSTRUCTIONS);
   t.is(task[0].target_max_attempts, TARGET_MAX_ATTEMPTS);
+  t.is(task[0].trial_count, TRIAL_COUNT);
 });

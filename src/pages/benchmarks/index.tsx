@@ -1,10 +1,8 @@
-//this will be the mobile-first web view of the para data collection app
 import React from "react";
 import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
-// import styles from "@/styles/Paraflow.module.css";
 
-function paraDashboard() {
+function Benchmarks() {
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
 
   if (isLoading) {
@@ -24,4 +22,4 @@ function paraDashboard() {
   );
 }
 
-export default paraDashboard;
+export default Benchmarks;

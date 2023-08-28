@@ -1,32 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "../paraTrials/Paratrials.module.css";
 
 interface CounterProps {
   title: string;
-  maxCount: number;
-  minCount: number;
+  count: number | null;
+  onIncrement: () => void;
+  onDecrement: () => void;
+  disableInc: boolean;
+  disableDec: boolean;
   color: "blue" | "green" | "yellow";
 }
 
-const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
-  // Count variable may need to become a prop, depending on how we implement
-  const [count, setCount] = useState(0);
-
-  const incrementCount = () => {
-    setCount(Math.min(count + 1, maxCount));
-  };
-  const decrementCount = () => {
-    setCount(Math.max(count - 1, minCount));
-  };
-
+const Counter = ({
+  title,
+  count,
+  onIncrement,
+  onDecrement,
+  disableInc,
+  disableDec,
+  color,
+}: CounterProps) => {
   return (
     <div className={styles.counterContainer}>
       <div className={styles.counterButtonContainer}>
         <button
-          onClick={decrementCount}
+          onClick={onDecrement}
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}
+          disabled={disableDec}
         >
           -
         </button>
@@ -35,13 +37,14 @@ const Counter = ({ title, maxCount, minCount, color }: CounterProps) => {
             styles[`counterNumberDisplay-${color}`]
           }`}
         >
-          {count}
+          {count ?? "-"}
         </p>
         <button
-          onClick={incrementCount}
+          onClick={onIncrement}
           className={`${styles.counterButton} ${
             styles[`counterButton-${color}`]
           }`}
+          disabled={disableInc}
         >
           +
         </button>
