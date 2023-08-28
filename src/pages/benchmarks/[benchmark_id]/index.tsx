@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import ParaNav from "@/components/ParaNav";
+import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
 import { useDebounce } from "react-use";
 

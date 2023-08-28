@@ -1,4 +1,4 @@
-import ParaNav from "@/components/ParaNav";
+import ParaNav from "@/components/paraNav/ParaNav";
 import React from "react";
 
 const InstructionsPage = () => {

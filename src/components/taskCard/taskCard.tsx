@@ -1,6 +1,6 @@
 // import Image from "next/image";
 import React, { useMemo } from "react";
-import $taskCard from "./styles/TaskCard.module.css";
+import $taskCard from "./TaskCard.module.css";
 import $button from "@/styles/Button.module.css";
 import $box from "@/styles/Box.module.css";
 import Link from "next/link";
