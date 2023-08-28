@@ -1,48 +1,53 @@
 // import Image from "next/image";
-import React, { useState } from "react";
-import styles from "./TaskCard.module.css";
+import React, { useMemo } from "react";
+import $taskCard from "./TaskCard.module.css";
+import $button from "@/styles/Button.module.css";
+import $box from "@/styles/Box.module.css";
 import Link from "next/link";
 import ProgressBar from "../progressBar/progressBar";
 import { ParaTaskCard } from "@/types/global";
+import { differenceInWeeks, format } from "date-fns";
 
 interface TaskCardProps {
   task: ParaTaskCard;
 }
 
 const TaskCard = ({ task }: TaskCardProps) => {
-  // TODO: calculate completion rate depending on trials
-  const [completionRate] = useState(0);
+  const completionRate = useMemo(() => {
+    const num = parseInt(task.completed_trials as string) || 0;
+    const calculatedRate = Math.floor((num / task.trial_count) * 100);
+    return calculatedRate;
+  }, [task.completed_trials, task.trial_count]);
 
   const getDateStyle = () => {
     //New or done should be green
-    if (completionRate === 0 || completionRate === 100) {
-      return styles.dateFloaterGreen;
+    if (!task.seen || completionRate >= 100) {
+      return $taskCard.dateFloaterGreen;
     }
-    //Not sure if this should be due soon, or past due?
-    else if (task.due_date) {
-      return styles.dateFloaterRed;
+    //Temporary until time period is given
+    //Checks if due date is less than a week away
+    else if (differenceInWeeks(task.due_date, new Date()) <= 0) {
+      return $taskCard.dateFloaterRed;
     } else {
-      return styles.dateFloater;
+      return $taskCard.dateFloater;
     }
   };
 
   return (
-    <div
-      className={
-        completionRate === 100 ? styles.containerDone : styles.container
-      }
-    >
+    <div className={completionRate >= 100 ? $box.inactive : $box.greyBg}>
       <div className={getDateStyle()}>
-        {completionRate === 0
+        {!task.seen
           ? "NEW"
-          : completionRate === 100
+          : completionRate >= 100
           ? "DONE"
-          : `DUE: ${task.due_date.toString()}`}
+          : `DUE: ${format(task.due_date, "MM-dd-yyyy")}`}
       </div>
-      <div className={styles.profile}>
+      <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
         <div
-          className={completionRate === 100 ? styles.imageDone : styles.image}
+          className={
+            completionRate >= 100 ? $taskCard.imageDone : $taskCard.image
+          }
         ></div>
         <div>
           {task.first_name} {task.last_name}
@@ -54,14 +59,16 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </p>
       </div>
 
-      <div className={styles.progressBar}>
+      <div className={$taskCard.progressBar}>
         {completionRate}% complete
         <ProgressBar fillPercent={completionRate} />
       </div>
 
       <Link
-        href={`/trials/${task.task_id}`}
-        className={completionRate === 100 ? styles.buttonDone : styles.button}
+        href={`/benchmarks/${task.task_id}`}
+        className={`${$button.default} ${
+          completionRate >= 100 ? $button.inactive : ""
+        }`}
       >
         Collect data
       </Link>
