@@ -6,6 +6,7 @@
   border: 1px solid var(--grey-70);
   width: 100%;
   margin: 1em 0;
+  background-color: var(--on-primary);
 }
 
 .greyBg {
