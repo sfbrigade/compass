@@ -3,21 +3,16 @@ import React from "react";
 import PersonTable from "../table/table";
 import { Student, StudentHeadCell } from "../table/tableTypes";
 
+type Iep = {
+  end_date: Date;
+};
+
+type StudentWithIep = Student & Iep;
+
 const MyStudents = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
-
-  console.log("students Data ~ ", students);
-  // const fakeStudents = [{
-  //   iep_end_date: "12102023",
-  //   assigned_case_manager_id: "c36eecd3-349b-4f8b-ad7e-c44a19407999",
-  //   email: "jc@gmail.com",
-  //   first_name: "Jackie",
-  //   grade: "12",
-  //   last_name: "Chan",
-  //   student_id: "a140437a-0562-4ca3-8b9d-4a54ff7c992f",
-  // }]
 
   const { mutate } = trpc.case_manager.addStudent.useMutation({
     onSuccess: () => utils.case_manager.getMyStudentsAndIepInfo.invalidate(),
@@ -63,11 +58,6 @@ const MyStudents = () => {
       label: "Grade",
       hasInput: true,
     },
-    // {
-    //   id: "iep_end_date",
-    //   label: "End Date",
-    //   hasInput: true,
-    // },
   ];
 
   if (isLoading) {
@@ -76,7 +66,7 @@ const MyStudents = () => {
 
   return (
     <PersonTable
-      people={students as Student[]}
+      people={students as StudentWithIep[]}
       onSubmit={handleSubmit}
       headCells={headCells}
       type="Student"

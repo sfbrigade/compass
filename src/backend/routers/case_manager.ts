@@ -23,7 +23,16 @@ export const case_manager = router({
     const result = await req.ctx.db
       .selectFrom("student")
       .fullJoin("iep", "iep.student_id", "student.student_id")
-      .selectAll()
+      .select([
+        "student.student_id",
+        "first_name",
+        "last_name",
+        "student.email",
+        "assigned_case_manager_id",
+        "iep.iep_id",
+        "end_date",
+        "grade",
+      ])
       .where("assigned_case_manager_id", "=", userId)
       .execute();
 

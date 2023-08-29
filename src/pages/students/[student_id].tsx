@@ -115,6 +115,8 @@ const ViewStudentPage = () => {
           </button>
         </div>
       ) : null}
+      <br />
+      <br />
 
       {/*//? If no active IEP, prompt cm to create one  */}
       {!activeIep?.is_active ? (
@@ -159,10 +161,12 @@ const ViewStudentPage = () => {
         </>
       ) : (
         <div>
-          <p>IEP ID: {activeIep.iep_id}</p>- Start Date:{" "}
-          {new Date(activeIep.start_date ?? "").toLocaleDateString()} <br />-
-          End Date: {new Date(activeIep.end_date ?? "").toLocaleDateString()}{" "}
-          <br />- CM: {activeIep.case_manager_id} <br />
+          <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
+          {new Date(activeIep.start_date ?? "").toLocaleDateString()}
+          <br />- End Date:{" "}
+          {new Date(activeIep.end_date ?? "").toLocaleDateString()}
+          <br />- CM: {activeIep.case_manager_id}
+          <br />
           <br />
           <Iep iep_id={activeIep.iep_id} />
         </div>

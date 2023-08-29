@@ -51,6 +51,7 @@ export const student = router({
           "last_name",
           "student.email",
           "assigned_case_manager_id",
+          "grade",
           "iep.iep_id",
           "case_manager_id",
           "start_date",
