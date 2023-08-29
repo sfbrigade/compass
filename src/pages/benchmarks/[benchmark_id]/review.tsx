@@ -44,9 +44,8 @@ const ReviewPage = () => {
         Trial {task.trials.length}
       </h2>
       <div className={$box.default}>
-        {task.first_name} completed {currentTrial.success_without_prompt}{" "}
-        successful attempts and {currentTrial.success_with_prompt} with prompt
-        attempts.
+        {task.first_name} completed {currentTrial.success} successful attempts
+        and {currentTrial.unsuccess} unsuccessful attempts.
       </div>
       <div className={$box.default}>
         <h4>Observation Notes:</h4>

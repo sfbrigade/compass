@@ -50,17 +50,22 @@
   background-color: #1680a133;
 }
 .counterButton-green {
-  /* background-color: #167841; */
   background-color: var(--success);
 }
 .counterNumberDisplay-green {
-  background-color: #16784133;
+  background-color: var(--success-container);
 }
 .counterButton-yellow {
   background-color: var(--warning-container);
 }
 .counterNumberDisplay-yellow {
   background-color: #ffaa4433;
+}
+.counterButton-red {
+  background-color: var(--error);
+}
+.counterNumberDisplay-red {
+  background-color: var(--error-container);
 }
 
 .counterTitle {

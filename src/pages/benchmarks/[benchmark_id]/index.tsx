@@ -12,8 +12,8 @@ import Link from "next/link";
 import { useDebounce } from "react-use";
 
 interface DataUpdate {
-  success_with_prompt?: number;
-  success_without_prompt?: number;
+  success?: number;
+  unsuccess?: number;
   submitted?: boolean;
   notes?: string;
 }
@@ -75,8 +75,8 @@ const BenchmarkPage = () => {
     ) {
       addTrialMutation.mutate({
         task_id: task.task_id,
-        success_with_prompt: 0,
-        success_without_prompt: 0,
+        success: 0,
+        unsuccess: 0,
         notes: "",
       });
     }
@@ -143,54 +143,49 @@ const BenchmarkPage = () => {
 
       <div className={$box.greyBg}>
         <Counter
-          title="Successful without prompt"
-          count={currentTrial.success_without_prompt}
+          title="Successful"
+          count={currentTrial.success}
           onIncrement={() =>
             handleUpdate({
-              success_without_prompt: currentTrial.success_without_prompt + 1,
+              success: currentTrial.success + 1,
             })
           }
           onDecrement={() =>
             handleUpdate({
-              success_without_prompt: currentTrial.success_without_prompt - 1,
+              success: currentTrial.success - 1,
             })
           }
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success_without_prompt <= 0
+            currentTrial.success <= 0
           }
           color="green"
         />
         <Counter
-          title="Successful with prompt"
-          count={currentTrial.success_with_prompt}
+          title="Unsuccessful"
+          count={currentTrial.unsuccess}
           onIncrement={() =>
             handleUpdate({
-              success_with_prompt: currentTrial.success_with_prompt + 1,
+              unsuccess: currentTrial.unsuccess + 1,
             })
           }
           onDecrement={() =>
             handleUpdate({
-              success_with_prompt: currentTrial.success_with_prompt - 1,
+              unsuccess: currentTrial.unsuccess - 1,
             })
           }
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success_with_prompt <= 0
+            currentTrial.unsuccess <= 0
           }
-          color="yellow"
+          color="red"
         />
-        <Counter
-          title="Attempts"
-          count={task.target_max_attempts}
-          onIncrement={() => console.log("hi")}
-          onDecrement={() => console.log("hi")}
-          disableInc={true}
-          disableDec={true}
-          color="blue"
-        />
+        <p>
+          {currentTrial.success + currentTrial.unsuccess} attempts out of{" "}
+          {task.target_max_attempts}
+        </p>
       </div>
       <input
         className={$box.default}

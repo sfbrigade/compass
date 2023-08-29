@@ -1958,17 +1958,17 @@ declare module 'zapatos/schema' {
       */
       created_by_user_id: string | null;
       /**
-      * **trial_data.success_with_prompt**
+      * **trial_data.success**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_with_prompt: number;
+      success: number;
       /**
-      * **trial_data.success_without_prompt**
+      * **trial_data.unsuccess**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_without_prompt: number;
+      unsuccess: number;
       /**
       * **trial_data.submitted**
       * - `bool` in database
@@ -2008,17 +2008,17 @@ declare module 'zapatos/schema' {
       */
       created_by_user_id: string | null;
       /**
-      * **trial_data.success_with_prompt**
+      * **trial_data.success**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_with_prompt: number;
+      success: number;
       /**
-      * **trial_data.success_without_prompt**
+      * **trial_data.unsuccess**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_without_prompt: number;
+      unsuccess: number;
       /**
       * **trial_data.submitted**
       * - `bool` in database
@@ -2058,17 +2058,17 @@ declare module 'zapatos/schema' {
       */
       created_by_user_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **trial_data.success_with_prompt**
+      * **trial_data.success**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_with_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      success?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **trial_data.success_without_prompt**
+      * **trial_data.unsuccess**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      unsuccess?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
       * **trial_data.submitted**
       * - `bool` in database
@@ -2108,17 +2108,17 @@ declare module 'zapatos/schema' {
       */
       created_by_user_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
-      * **trial_data.success_with_prompt**
+      * **trial_data.success**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_with_prompt: number | db.Parameter<number> | db.SQLFragment;
+      success: number | db.Parameter<number> | db.SQLFragment;
       /**
-      * **trial_data.success_without_prompt**
+      * **trial_data.unsuccess**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_without_prompt: number | db.Parameter<number> | db.SQLFragment;
+      unsuccess: number | db.Parameter<number> | db.SQLFragment;
       /**
       * **trial_data.submitted**
       * - `bool` in database
@@ -2158,17 +2158,17 @@ declare module 'zapatos/schema' {
       */
       created_by_user_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
-      * **trial_data.success_with_prompt**
+      * **trial_data.success**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_with_prompt?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      success?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
       /**
-      * **trial_data.success_without_prompt**
+      * **trial_data.unsuccess**
       * - `int4` in database
       * - `NOT NULL`, no default
       */
-      success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      unsuccess?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
       /**
       * **trial_data.submitted**
       * - `bool` in database

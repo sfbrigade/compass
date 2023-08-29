@@ -8,7 +8,7 @@ interface CounterProps {
   onDecrement: () => void;
   disableInc: boolean;
   disableDec: boolean;
-  color: "blue" | "green" | "yellow";
+  color: "blue" | "green" | "yellow" | "red";
 }
 
 const Counter = ({
