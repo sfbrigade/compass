@@ -1,7 +1,7 @@
 import ParaNav from "@/components/ParaNav";
 import React from "react";
 import $box from "@/styles/Box.module.css";
-import $taskCard from "@/components/para_trials/styles/TaskCard.module.css";
+import $taskCard from "@/components/taskCard/TaskCard.module.css";
 import $button from "@/styles/Button.module.css";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
