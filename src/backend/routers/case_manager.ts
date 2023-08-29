@@ -10,12 +10,22 @@ export const case_manager = router({
 
     const result = await req.ctx.db
       .selectFrom("student")
-      // .innerJoin("iep", "iep.student_id", "student.student_id")
       .selectAll()
       .where("assigned_case_manager_id", "=", userId)
       .execute();
 
-    console.log("result", result);
+    return result;
+  }),
+
+  getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const result = await req.ctx.db
+      .selectFrom("student")
+      .fullJoin("iep", "iep.student_id", "student.student_id")
+      .selectAll()
+      .where("assigned_case_manager_id", "=", userId)
+      .execute();
 
     return result;
   }),
