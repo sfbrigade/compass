@@ -7,3 +7,15 @@
   font-size: 0.75em;
   font-weight: 600;
 }
+
+.orderList {
+  padding-left: 0.5em;
+}
+
+.orderList li {
+  list-style-position: inside;
+}
+
+.noDecoration {
+  list-style-type: none;
+}

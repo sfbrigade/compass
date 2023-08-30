@@ -1,6 +1,7 @@
 import React from "react";
 import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
+import $typo from "@/styles/Typography.module.css";
 
 function Benchmarks() {
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
@@ -13,7 +14,7 @@ function Benchmarks() {
     <ul>
       {tasks?.map((task) => {
         return (
-          <li key={task.task_id}>
+          <li key={task.task_id} className={$typo.noDecoration}>
             <TaskCard task={task} />
           </li>
         );
