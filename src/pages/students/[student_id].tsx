@@ -235,8 +235,8 @@ const ViewStudentPage = () => {
 
       {/* Simply writing the detailed studentQuery to the div */}
       <div>
-        <h1>Detail</h1>
-        {JSON.stringify(studentQuery.data)}
+        {/* <h1>Detail</h1>
+        {JSON.stringify(studentQuery.data)} */}
       </div>
     </div>
   );
