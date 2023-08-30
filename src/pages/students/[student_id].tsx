@@ -6,7 +6,7 @@ import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import Iep from "../../components/Iep";
-import { Container } from "@mui/material";
+import { Box, Button, Container, Stack } from "@mui/material";
 
 // this page is where the action will be
 // component for Goals, for Benchmarks, Progress, and Staff
@@ -74,24 +74,57 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <h1>
-        {student?.first_name} {student?.last_name}
-      </h1>
-      <p>
-        <b>Grade:</b> {student?.grade}
-      </p>
-      {activeIep && (
-        <p>
-          <b>Next IEP End Date:</b>{" "}
-          {new Date(activeIep.end_date ?? "").toLocaleDateString()}
-        </p>
-      )}
-      <button
-        className={`${$button.default} ${$home.bold}`}
-        onClick={() => setArchivePrompt(true)}
+      <Stack
+      // sx={{
+      //   display: "flex",
+      // }}
       >
-        Archive Student
-      </button>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "1rem",
+          }}
+        >
+          <h1>
+            {student?.first_name} {student?.last_name}
+          </h1>
+          <Button variant="outlined">Edit Student Information</Button>
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "flex-start",
+          }}
+        >
+          <Stack
+            sx={{
+              padding: "1rem",
+            }}
+          >
+            <div>Grade:</div>
+            <div>{student?.grade}</div>
+          </Stack>
+          {activeIep && (
+            <Stack
+              sx={{
+                padding: "1rem",
+              }}
+            >
+              <div>Next IEP End Date:</div>{" "}
+              <div>
+                {new Date(activeIep.end_date ?? "").toLocaleDateString()}
+              </div>
+            </Stack>
+          )}
+        </Box>
+        <button
+          className={`${$button.default} ${$home.bold}`}
+          onClick={() => setArchivePrompt(true)}
+        >
+          Archive Student
+        </button>
+      </Stack>
 
       {archivePrompt ? (
         <div>
