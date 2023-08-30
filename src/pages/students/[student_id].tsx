@@ -31,10 +31,10 @@ const ViewStudentPage = () => {
   );
 
   // const { data: detailedStudent, isLoading: isLoadingDetail }
-  const studentQuery = trpc.student.getStudentDetailById.useQuery(
-    { student_id: student_id as string },
-    { enabled: Boolean(student_id) }
-  );
+  // const studentQuery = trpc.student.getStudentDetailById.useQuery(
+  //   { student_id: student_id as string },
+  //   { enabled: Boolean(student_id) }
+  // );
 
   // const { data: detailedStudent, isLoading: isLoadingDetail }
   // const studentQuery = trpc.student.getStudentDetailById.useQuery(
