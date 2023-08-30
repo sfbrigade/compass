@@ -6,6 +6,7 @@ import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import Iep from "../../components/Iep";
+import { Container } from "@mui/material";
 
 // this page is where the action will be
 // component for Goals, for Benchmarks, Progress, and Staff
@@ -77,14 +78,11 @@ const ViewStudentPage = () => {
         {student?.first_name} {student?.last_name}
       </h1>
       <p>
-        <b>Student ID:</b> {student?.student_id}
-      </p>
-      <p>
-        <b>Student Email:</b> {student?.email}
+        <b>Grade:</b> {student?.grade}
       </p>
       {activeIep && (
         <p>
-          <b>IEP End Date:</b>{" "}
+          <b>Next IEP End Date:</b>{" "}
           {new Date(activeIep.end_date ?? "").toLocaleDateString()}
         </p>
       )}
@@ -161,13 +159,13 @@ const ViewStudentPage = () => {
         </>
       ) : (
         <div>
-          <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
+          {/* <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
           {new Date(activeIep.start_date ?? "").toLocaleDateString()}
           <br />- End Date:{" "}
           {new Date(activeIep.end_date ?? "").toLocaleDateString()}
           <br />- CM: {activeIep.case_manager_id}
           <br />
-          <br />
+          <br /> */}
           <Iep iep_id={activeIep.iep_id} />
         </div>
       )}
@@ -191,8 +189,8 @@ const ViewStudentPage = () => {
 
       {/* Simply writing the detailed studentQuery to the div */}
       <div>
-        <h1>Detail</h1>
-        {JSON.stringify(studentQuery.data)}
+        {/* <h1>Detail</h1>
+        {JSON.stringify(studentQuery.data)} */}
       </div>
     </div>
   );
