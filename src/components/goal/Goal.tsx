@@ -38,11 +38,12 @@ const Goals = ({ goal }: GoalProps) => {
     <div>
       {/* <h3>Goal</h3> */}
       {/* <div>Goal ID: {goal.goal_id}</div> */}
-      <p>Description: {goal.description}</p>
+      <p className={$goal.para}>{goal.description}</p>
       {/* <p>Created at: {goal.created_at.toDateString()}</p> */}
       {/* <p>Category: {goal.category}</p> */}
 
       <div className={$goal.tab}>
+        <h4>Subgoals</h4>
         <ul className={$goal.listNames}>
           {subgoals?.map((subgoal) => (
             <li key={subgoal.subgoal_id}>

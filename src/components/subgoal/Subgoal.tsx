@@ -29,9 +29,9 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
 
   return (
     <div>
-      <h4>Subgoal</h4>
+      {/* <h4>Subgoal</h4> */}
       {/* <div>Subgoal ID: {subgoal.subgoal_id}</div> */}
-      <p>Description: {subgoal.description}</p>
+      <p>{subgoal.description}</p>
       {/* <p>Created at: {subgoal.created_at.toDateString()}</p> */}
       {/* <p>Instructions: {subgoal.instructions || "null"}</p>
       <p>Target max attempts: {subgoal.target_max_attempts || "null"}</p> */}

@@ -26,10 +26,10 @@ const ViewStudentPage = () => {
   );
 
   // const { data: detailedStudent, isLoading: isLoadingDetail }
-  const studentQuery = trpc.student.getStudentDetailById.useQuery(
-    { student_id: student_id as string },
-    { enabled: Boolean(student_id) }
-  );
+  // const studentQuery = trpc.student.getStudentDetailById.useQuery(
+  //   { student_id: student_id as string },
+  //   { enabled: Boolean(student_id) }
+  // );
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
@@ -74,57 +74,57 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <Stack
-      // sx={{
-      //   display: "flex",
-      // }}
-      >
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "1rem",
-          }}
-        >
-          <h1>
-            {student?.first_name} {student?.last_name}
-          </h1>
-          <Button variant="outlined">Edit Student Information</Button>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "flex-start",
-          }}
-        >
-          <Stack
+      <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
+        <Stack>
+          <Box
             sx={{
+              display: "flex",
+              justifyContent: "space-between",
               padding: "1rem",
             }}
           >
-            <div>Grade:</div>
-            <div>{student?.grade}</div>
-          </Stack>
-          {activeIep && (
+            <h1>
+              {student?.first_name} {student?.last_name}
+            </h1>
+            <Button variant="outlined">Edit</Button>
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+            }}
+          >
             <Stack
+              spacing={1}
               sx={{
                 padding: "1rem",
               }}
             >
-              <div>Next IEP End Date:</div>{" "}
-              <div>
-                {new Date(activeIep.end_date ?? "").toLocaleDateString()}
-              </div>
+              <div>Grade:</div>
+              <div>{student?.grade}</div>
             </Stack>
-          )}
-        </Box>
-        <button
-          className={`${$button.default} ${$home.bold}`}
-          onClick={() => setArchivePrompt(true)}
-        >
-          Archive Student
-        </button>
-      </Stack>
+            {activeIep && (
+              <Stack
+                spacing={1}
+                sx={{
+                  padding: "1rem",
+                }}
+              >
+                <div>Next IEP End Date:</div>{" "}
+                <div>
+                  {new Date(activeIep.end_date ?? "").toLocaleDateString()}
+                </div>
+              </Stack>
+            )}
+          </Box>
+          {/* <button
+            className={`${$button.default} ${$home.bold}`}
+            onClick={() => setArchivePrompt(true)}
+          >
+            Archive Student
+          </button> */}
+        </Stack>
+      </Container>
 
       {archivePrompt ? (
         <div>
@@ -191,16 +191,18 @@ const ViewStudentPage = () => {
           )}
         </>
       ) : (
-        <div>
-          {/* <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
-          {new Date(activeIep.start_date ?? "").toLocaleDateString()}
-          <br />- End Date:{" "}
-          {new Date(activeIep.end_date ?? "").toLocaleDateString()}
-          <br />- CM: {activeIep.case_manager_id}
-          <br />
-          <br /> */}
-          <Iep iep_id={activeIep.iep_id} />
-        </div>
+        <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
+          <div>
+            {/* <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
+            {new Date(activeIep.start_date ?? "").toLocaleDateString()}
+            <br />- End Date:{" "}
+            {new Date(activeIep.end_date ?? "").toLocaleDateString()}
+            <br />- CM: {activeIep.case_manager_id}
+            <br />
+            <br /> */}
+            <Iep iep_id={activeIep.iep_id} />
+          </div>
+        </Container>
       )}
 
       <br />
