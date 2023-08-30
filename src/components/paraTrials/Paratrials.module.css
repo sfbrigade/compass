@@ -74,7 +74,10 @@
   font-weight: 600;
   color: var(--grey-50);
   width: 100%;
-  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25em;
 }
 
 /* Styles for timer components */

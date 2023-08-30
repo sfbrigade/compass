@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
 import Counter from "@/components/counter/counter";
-import $box from "@/styles/Box.module.css";
-import $button from "@/styles/Button.module.css";
-import { trpc } from "@/client/lib/trpc";
-import { useRouter } from "next/router";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
+import { trpc } from "@/client/lib/trpc";
+import { useRouter } from "next/router";
 import { useDebounce } from "react-use";
+import $box from "@/styles/Box.module.css";
+import $button from "@/styles/Button.module.css";
+import $typo from "@/styles/Typography.module.css";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface DataUpdate {
   success?: number;
@@ -143,7 +146,11 @@ const BenchmarkPage = () => {
 
       <div className={$box.greyBg}>
         <Counter
-          title="Successful"
+          title={
+            <>
+              Successful <CheckIcon />
+            </>
+          }
           count={currentTrial.success}
           onIncrement={() =>
             handleUpdate({
@@ -163,7 +170,11 @@ const BenchmarkPage = () => {
           color="green"
         />
         <Counter
-          title="Unsuccessful"
+          title={
+            <>
+              Unsuccessful <ClearIcon />
+            </>
+          }
           count={currentTrial.unsuccess}
           onIncrement={() =>
             handleUpdate({
@@ -182,7 +193,7 @@ const BenchmarkPage = () => {
           }
           color="red"
         />
-        <p>
+        <p className={`${$typo.centeredText} ${$typo.bold}`}>
           {currentTrial.success + currentTrial.unsuccess} attempts out of{" "}
           {task.target_max_attempts}
         </p>

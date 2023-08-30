@@ -2,7 +2,7 @@ import React from "react";
 import styles from "../paraTrials/Paratrials.module.css";
 
 interface CounterProps {
-  title: string;
+  title: React.ReactNode;
   count: number | null;
   onIncrement: () => void;
   onDecrement: () => void;
