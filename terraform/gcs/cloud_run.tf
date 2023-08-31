@@ -32,19 +32,29 @@ resource "google_cloud_run_v2_service" "run_service" {
         }
       }
 
-      startup_probe {
-        tcp_socket {
-          port = 3000
+      env {
+        name = "GOOGLE_CLIENT_ID"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.oauth_client_id.secret_id
+            version = "latest"
+          }
         }
       }
 
-      liveness_probe {
-        # Wait for migrations to run
-        initial_delay_seconds = 30
-        failure_threshold = 5
+      env {
+        name = "GOOGLE_CLIENT_SECRET"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.oauth_client_secret.secret_id
+            version = "latest"
+          }
+        }
+      }
 
-        http_get {
-          path = "/"
+      startup_probe {
+        tcp_socket {
+          port = 3000
         }
       }
 
