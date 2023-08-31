@@ -1,6 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import { Subgoal } from "@/types/global";
+import { Box, Button } from "@mui/material";
 
 interface SubgoalProps {
   subgoal: Subgoal;
@@ -25,18 +26,27 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
       due_date: new Date(2023, 8, 20),
       trial_count: 5,
     });
+    alert("TODO: add form to assign to my para");
   };
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "space-between",
+        backgroundColor: "#f4d5d5",
+      }}
+    >
       {/* <h4>Subgoal</h4> */}
       {/* <div>Subgoal ID: {subgoal.subgoal_id}</div> */}
       <p>{subgoal.description}</p>
       {/* <p>Created at: {subgoal.created_at.toDateString()}</p> */}
       {/* <p>Instructions: {subgoal.instructions || "null"}</p>
       <p>Target max attempts: {subgoal.target_max_attempts || "null"}</p> */}
-      <button onClick={assignToPara}>Assign</button>
-    </div>
+      <Button variant="outlined" onClick={assignToPara}>
+        Assign
+      </Button>
+    </Box>
   );
 };
 
