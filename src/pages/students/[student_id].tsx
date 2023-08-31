@@ -14,6 +14,7 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
+import { isAbsolute } from "path";
 
 const modalStyle = {
   position: "absolute",
@@ -184,14 +185,35 @@ const ViewStudentPage = () => {
 
       {/*//? If no active IEP, prompt cm to create one  */}
       {!activeIep?.is_active ? (
-        <>
-          <h3>This student does not have an active IEP. Please create one.</h3>
-          <button
-            onClick={() => setCreateIepModal(true)}
-            className={$button.default}
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            minHeight: "600px",
+          }}
+        >
+          <Box
+            sx={{
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
           >
-            Create IEP
-          </button>
+            <Box sx={{ display: "flex", flexDirection: "column" }}>
+              <h3 style={{ marginBottom: "1rem" }}>
+                This student does not have an active IEP. Please create one.
+              </h3>
+              <button
+                onClick={() => setCreateIepModal(true)}
+                className={`${$button.default}`}
+                style={{ width: "fit-content", alignSelf: "center" }}
+              >
+                Create IEP
+              </button>
+            </Box>
+          </Box>
           {createIepModal && (
             <>
               <div>Create IEP:</div>
@@ -222,7 +244,7 @@ const ViewStudentPage = () => {
               </div>
             </>
           )}
-        </>
+        </Container>
       ) : (
         <Container
           sx={{
