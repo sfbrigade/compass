@@ -6,11 +6,33 @@ import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import Iep from "../../components/Iep";
-import { Box, Button, Container, Stack } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  Modal,
+  Typography,
+} from "@mui/material";
+
+const modalStyle = {
+  position: "absolute",
+  top: "25%",
+  left: "50%",
+  transform: "translate(-50%)",
+  width: 400,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
 
 const ViewStudentPage = () => {
-  const [archivePrompt, setArchivePrompt] = useState(false);
   const [createIepModal, setCreateIepModal] = useState(false);
+  const [archivePrompt, setArchivePrompt] = useState(false);
+  const handleOpen = () => setArchivePrompt(true);
+  const handleClose = () => setArchivePrompt(false);
+
   const utils = trpc.useContext();
   const router = useRouter();
   const { student_id } = router.query;
@@ -108,8 +130,8 @@ const ViewStudentPage = () => {
             sx={{ padding: "1rem", display: "flex", alignItems: "flex-start" }}
           >
             <button
-              className={`${$button.default} ${$home.bold} `}
-              onClick={() => setArchivePrompt(true)}
+              onClick={handleOpen}
+              className={`${$button.default} ${$home.bold}`}
             >
               Archive Student
             </button>
@@ -125,28 +147,40 @@ const ViewStudentPage = () => {
         {/* </Stack> */}
       </Container>
 
-      {archivePrompt ? (
-        <div>
-          <p>
-            Are you sure you want to archive {student?.first_name}&nbsp;
+      {/* Archiving Student Modal*/}
+      <Modal
+        open={archivePrompt}
+        onClose={handleClose}
+        aria-labelledby="archiving-student"
+        aria-describedby="archiving-current-student"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="archiving-student" variant="h6" component="h2">
+            Are you sure you want to archive {student?.first_name}{" "}
             {student?.last_name}?
-          </p>
-          <button
-            className={`${$button.default} ${$home.bold}`}
-            onClick={() => handleArchiveStudent()}
+          </Typography>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-evenly",
+              paddingTop: "2rem",
+            }}
           >
-            Yes
-          </button>
-          <button
-            className={`${$button.default} ${$home.bold}`}
-            onClick={() => setArchivePrompt(false)}
-          >
-            No
-          </button>
-        </div>
-      ) : null}
-      <br />
-      <br />
+            <button
+              className={`${$button.default} ${$home.bold}`}
+              onClick={() => handleArchiveStudent()}
+            >
+              Yes
+            </button>
+            <button
+              className={`${$button.default} ${$home.bold}`}
+              onClick={handleClose}
+            >
+              No
+            </button>
+          </Box>
+        </Box>
+      </Modal>
 
       {/*//? If no active IEP, prompt cm to create one  */}
       {!activeIep?.is_active ? (
@@ -190,7 +224,14 @@ const ViewStudentPage = () => {
           )}
         </>
       ) : (
-        <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            paddingBottom: "2rem",
+          }}
+        >
           <div>
             <Iep iep_id={activeIep.iep_id} />
           </div>
