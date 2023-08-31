@@ -8,7 +8,8 @@ interface SubgoalProps {
 }
 
 const Subgoals = ({ subgoal }: SubgoalProps) => {
-  const task = trpc.iep.tempAddTaskToSelf.useMutation();
+  // const task = trpc.iep.tempAddTaskToSelf.useMutation();
+
   // TODO: add form to assign to my paras
   // const assignToPara = (event: React.FormEvent<HTMLFormElement>) => {
   //   event.preventDefault();
@@ -21,11 +22,11 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
   //   });
   // }
   const assignToPara = () => {
-    task.mutate({
-      subgoal_id: subgoal.subgoal_id,
-      due_date: new Date(2023, 8, 20),
-      trial_count: 5,
-    });
+    // task.mutate({
+    //   subgoal_id: subgoal.subgoal_id,
+    //   due_date: new Date(2023, 8, 20),
+    //   trial_count: 5,
+    // });
     alert("TODO: add form to assign to my para");
   };
 
@@ -35,6 +36,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
         display: "flex",
         justifyContent: "space-between",
         backgroundColor: "#f4d5d5",
+        padding: "1rem",
       }}
     >
       {/* <h4>Subgoal</h4> */}
@@ -43,7 +45,20 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
       {/* <p>Created at: {subgoal.created_at.toDateString()}</p> */}
       {/* <p>Instructions: {subgoal.instructions || "null"}</p>
       <p>Target max attempts: {subgoal.target_max_attempts || "null"}</p> */}
-      <Button variant="outlined" onClick={assignToPara}>
+      <Button
+        sx={{
+          height: "24px",
+          width: "auto",
+          padding: "0px 20px",
+          backgroundColor: "#5347d7",
+          borderRadius: "5px",
+          border: "none",
+          color: "#ffffff",
+          fontFamily: "Quicksand",
+        }}
+        variant="contained"
+        onClick={assignToPara}
+      >
         Assign
       </Button>
     </Box>

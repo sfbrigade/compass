@@ -9,12 +9,6 @@ type Iep = {
 
 type StudentWithIep = Student & Iep;
 
-type Iep = {
-  end_date: Date;
-};
-
-type StudentWithIep = Student & Iep;
-
 const MyStudents = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } =

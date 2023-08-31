@@ -7,7 +7,7 @@
 .main {
   flex: 10;
   position: relative;
-  background-color: var(--background);
+  background-color: var(--grey-80);
   color: var(--on-background);
   height: 100%;
   width: 100%;

@@ -20,9 +20,6 @@ import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
 
-//! Modified by Hieu
-import { trpc } from "@/client/lib/trpc";
-
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -87,9 +84,22 @@ function EnhancedTableHead<Column extends HeadCell>({
           </TableCell>
         ))}
         {/* //! Changes made by Hieu */}
-        {headCells[3].id === "grade" && (
+        {headCells[3]?.id === "grade" && (
           <TableCell key="iep_end_date" align={`left`}>
-            IEP End Date
+            <TableSortLabel
+              active={orderBy === "iep_end_date"}
+              direction={orderBy === "iep_end_date" ? order : "asc"}
+              onClick={createSortHandler("iep_end_date")}
+              className={$table.headerLabel}
+            >
+              IEP End Date
+              {/* //! SORTING DOES NOT WORK FOR IEP */}
+              {orderBy === "iep_end_date" ? (
+                <Box component="span" sx={visuallyHidden}>
+                  {order === "desc" ? "sorted descending" : "sorted ascending"}
+                </Box>
+              ) : null}
+            </TableSortLabel>
           </TableCell>
         )}
       </TableRow>
@@ -227,10 +237,12 @@ interface EnhancedTableProps<Person, Column> {
   type: "Student" | "Staff";
 }
 
-//! Modified by Hieu
-interface personObj {
-  iep_end_date: string;
-}
+// //! Modified by Hieu / Brett / Connor
+type Iep = {
+  end_date: Date;
+};
+
+type StudentWithIep = Student & Iep;
 
 /**
  * exported table component built with MUI displaying either the CM's paras or students, depending on input.
@@ -240,35 +252,16 @@ interface personObj {
  * @param type - type of table: either student or staff
  */
 export default function EnhancedTable<
-  Person extends Student | Para,
+  Person extends StudentWithIep | Para,
+  // Person extends Student | Para,
   Column extends HeadCell
->({
-  people,
-  onSubmit,
-  headCells,
-  type,
-}: EnhancedTableProps<personObj, Column>) {
+>({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
 
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Person>("first_name");
   const [showInput, setShowInput] = useState<boolean>(false);
-
   const [searchParam, setSearchParam] = useState<string>("");
-
-  {
-    /* //! Changes made by Hieu */
-  }
-  if (type === "Student") {
-    for (const person of people) {
-      const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
-        { student_id: person?.student_id as string },
-        { enabled: Boolean(person?.student_id) }
-      );
-      console.log("active end date ~~ ", typeof activeIep?.end_date.toString());
-      person.iep_end_date = activeIep?.end_date.toString() as string;
-    }
-  }
 
   const handleOpenInput = () => {
     setShowInput(true);
@@ -297,7 +290,7 @@ export default function EnhancedTable<
 
   const filterList = useCallback(
     (list: Person[], searchTerm: string) => {
-      const filteredList = list.filter((person) => {
+      const filteredList = list?.filter((person) => {
         for (const headCell of headCells) {
           if (
             headCell.id in person &&
@@ -317,7 +310,12 @@ export default function EnhancedTable<
   const visibleRows = useMemo(() => {
     const filteredList = filterList(people, searchParam);
 
-    return filteredList.slice().sort(getComparator(order, orderBy));
+    console.log(
+      "visible rows: ",
+      filteredList?.slice().sort(getComparator(order, orderBy))
+    );
+
+    return filteredList?.slice().sort(getComparator(order, orderBy));
   }, [order, orderBy, people, searchParam, filterList]);
 
   return (
@@ -325,7 +323,7 @@ export default function EnhancedTable<
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
-        totalRows={people.length}
+        totalRows={people?.length}
         type={type}
         onOpenInput={handleOpenInput}
         searchParam={searchParam}
@@ -334,7 +332,7 @@ export default function EnhancedTable<
       <TableContainer>
         <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
           <EnhancedTableHead
-            headCells={headCells || "Iep End Date"}
+            headCells={headCells}
             order={order}
             orderBy={orderBy as string}
             onRequestSort={handleRequestSort}
@@ -348,10 +346,18 @@ export default function EnhancedTable<
               />
             )}
             {visibleRows.map((row) => {
+              console.log(row);
               const labelId = row.email;
+              let endDate;
+              let grade;
 
-              //! Changes made by Hieu
-              const endDate = row.iep_end_date as string;
+              //! Modified by Hieu / Brett / Connor
+              if (!isStudent(row)) {
+                // This is a para, pass
+              } else {
+                endDate = row?.end_date?.toString();
+                grade = row?.grade;
+              }
 
               return (
                 <StyledTableRow
@@ -373,11 +379,9 @@ export default function EnhancedTable<
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
-                  {row.grade && (
-                    <TableCell align={"left"}>{row.grade}</TableCell>
-                  )}
+                  {grade && <TableCell align={"left"}>{grade}</TableCell>}
 
-                  {/* //! Changes made by Hieu */}
+                  {/* //! Modified by Hieu / Brett / Connor */}
                   {endDate ? (
                     <TableCell align={"left"}>{endDate.slice(4, 15)}</TableCell>
                   ) : (

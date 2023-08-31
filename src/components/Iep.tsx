@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import Goals from "@/components/Goal";
+import Goals from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import { Box, Container, List } from "@mui/material";
@@ -37,7 +37,6 @@ const Iep = ({ iep_id }: IepProps) => {
 
   return (
     <div>
-      {/* <h1>IEP ID: {iep_id}</h1> */}
       <Box
         sx={{
           display: "flex",
@@ -47,7 +46,14 @@ const Iep = ({ iep_id }: IepProps) => {
       >
         <h2>Goals</h2>
         <div>
-          <form onSubmit={handleGoalSubmit}>
+          <form
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: "1rem",
+            }}
+            onSubmit={handleGoalSubmit}
+          >
             <input
               type="text"
               name="description"
@@ -68,7 +74,7 @@ const Iep = ({ iep_id }: IepProps) => {
         </div>
       </Box>
 
-      <Container sx={{ border: "1px solid black", borderRadius: "10px" }}>
+      <Container sx={{ borderRadius: "10px" }}>
         <ul>
           {goals?.map((goal) => (
             <List key={goal.goal_id}>

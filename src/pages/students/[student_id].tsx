@@ -8,16 +8,6 @@ import $input from "@/styles/Input.module.css";
 import Iep from "../../components/Iep";
 import { Box, Button, Container, Stack } from "@mui/material";
 
-// this page is where the action will be
-// component for Goals, for Benchmarks, Progress, and Staff
-// Each component can be done by an individual to break it up into parts
-// add getDetailQuery in this page?
-
-// this page is where the action will be
-// component for Goals, for Benchmarks, Progress, and Staff
-// Each component can be done by an individual to break it up into parts
-// add getDetailQuery in this page?
-
 const ViewStudentPage = () => {
   const [archivePrompt, setArchivePrompt] = useState(false);
   const [createIepModal, setCreateIepModal] = useState(false);
@@ -30,27 +20,10 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  // const { data: detailedStudent, isLoading: isLoadingDetail }
-  // const studentQuery = trpc.student.getStudentDetailById.useQuery(
-  //   { student_id: student_id as string },
-  //   { enabled: Boolean(student_id) }
-  // );
-
-  // const { data: detailedStudent, isLoading: isLoadingDetail }
-  // const studentQuery = trpc.student.getStudentDetailById.useQuery(
-  //   { student_id: student_id as string },
-  //   { enabled: Boolean(student_id) }
-  // );
-
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id) }
   );
-
-  // const { data: ieps } = trpc.student.getIeps.useQuery(
-  //   { student_id: student_id as string },
-  //   { enabled: Boolean(student_id) }
-  // );
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
   const handleArchiveStudent = async () => {
@@ -204,13 +177,6 @@ const ViewStudentPage = () => {
       ) : (
         <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
           <div>
-            {/* <p>IEP ID: {activeIep.iep_id}</p>- Start Date:
-            {new Date(activeIep.start_date ?? "").toLocaleDateString()}
-            <br />- End Date:{" "}
-            {new Date(activeIep.end_date ?? "").toLocaleDateString()}
-            <br />- CM: {activeIep.case_manager_id}
-            <br />
-            <br /> */}
             <Iep iep_id={activeIep.iep_id} />
           </div>
         </Container>
@@ -231,12 +197,6 @@ const ViewStudentPage = () => {
       </ul> */}
       <div>
         <Link href={`/students`}>Return to Student List</Link>
-      </div>
-
-      {/* Simply writing the detailed studentQuery to the div */}
-      <div>
-        {/* <h1>Detail</h1>
-        {JSON.stringify(studentQuery.data)} */}
       </div>
     </div>
   );
