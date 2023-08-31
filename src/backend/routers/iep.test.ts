@@ -34,6 +34,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
     subgoal_id: subgoal2!.subgoal_id,
     assignee_id: seed.para.user_id,
     due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });

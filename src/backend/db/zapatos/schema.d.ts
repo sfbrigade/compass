@@ -1760,6 +1760,18 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: Date;
+      /**
+      * **task.trial_count**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      trial_count: number;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen: boolean;
     }
     export interface JSONSelectable {
       /**
@@ -1786,6 +1798,18 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: db.TimestampTzString;
+      /**
+      * **task.trial_count**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      trial_count: number;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen: boolean;
     }
     export interface Whereable {
       /**
@@ -1812,6 +1836,18 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.trial_count**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      trial_count?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1838,6 +1874,18 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+      /**
+      * **task.trial_count**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      trial_count: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1864,6 +1912,18 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+      /**
+      * **task.trial_count**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      trial_count?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **task.seen**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'task_pkey';
     export type Column = keyof Selectable;
@@ -1880,17 +1940,17 @@ declare module 'zapatos/schema' {
     export type Table = 'trial_data';
     export interface Selectable {
       /**
-      * **trial_data.id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      id: string;
+      trial_data_id: string;
       /**
-      * **trial_data.subgoal_id**
+      * **trial_data.task_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id: string | null;
+      task_id: string | null;
       /**
       * **trial_data.created_by_user_id**
       * - `uuid` in database
@@ -1909,6 +1969,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       success_without_prompt: number;
+      /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted: boolean;
       /**
       * **trial_data.notes**
       * - `text` in database
@@ -1924,17 +1990,17 @@ declare module 'zapatos/schema' {
     }
     export interface JSONSelectable {
       /**
-      * **trial_data.id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      id: string;
+      trial_data_id: string;
       /**
-      * **trial_data.subgoal_id**
+      * **trial_data.task_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id: string | null;
+      task_id: string | null;
       /**
       * **trial_data.created_by_user_id**
       * - `uuid` in database
@@ -1954,6 +2020,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt: number;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted: boolean;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -1968,17 +2040,17 @@ declare module 'zapatos/schema' {
     }
     export interface Whereable {
       /**
-      * **trial_data.id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      trial_data_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **trial_data.subgoal_id**
+      * **trial_data.task_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **trial_data.created_by_user_id**
       * - `uuid` in database
@@ -1998,6 +2070,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -2012,17 +2090,17 @@ declare module 'zapatos/schema' {
     }
     export interface Insertable {
       /**
-      * **trial_data.id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
-      * **trial_data.subgoal_id**
+      * **trial_data.task_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      task_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
       * **trial_data.created_by_user_id**
       * - `uuid` in database
@@ -2042,6 +2120,12 @@ declare module 'zapatos/schema' {
       */
       success_without_prompt: number | db.Parameter<number> | db.SQLFragment;
       /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
+      /**
       * **trial_data.notes**
       * - `text` in database
       * - Nullable, no default
@@ -2056,17 +2140,17 @@ declare module 'zapatos/schema' {
     }
     export interface Updatable {
       /**
-      * **trial_data.id**
+      * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
-      id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      trial_data_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
-      * **trial_data.subgoal_id**
+      * **trial_data.task_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      task_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **trial_data.created_by_user_id**
       * - `uuid` in database
@@ -2085,6 +2169,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       success_without_prompt?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **trial_data.submitted**
+      * - `bool` in database
+      * - `NOT NULL`, default: `false`
+      */
+      submitted?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
       /**
       * **trial_data.notes**
       * - `text` in database

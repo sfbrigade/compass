@@ -49,16 +49,18 @@ output "state_bucket_name" {
   value = google_storage_bucket.default.name
 }
 
-# Create necessary resources for authenticating to GCP via GitHub Actions tokens
+# Create necessary resources for authenticating to GCP via GitHub Actions tokens #
+
+# Create GitHub CI service account
 resource "google_service_account" "github_ci" {
   account_id   = "github-ci"
   display_name = "GitHub CI"
 }
 
-# Allow GitHub CI to write to Artifact Registry
-resource "google_project_iam_member" "github_ci_artifacts" {
+# Make GitHub CI service account a project owner
+resource "google_project_iam_member" "github_ci_owner" {
   project = var.project_id
-  role    = "roles/artifactregistry.writer"
+  role    = "roles/owner"
   member  = "serviceAccount:${google_service_account.github_ci.email}"
 }
 
@@ -91,4 +93,10 @@ resource "google_artifact_registry_repository" "repo" {
 
 output "artifact_registry_repository" {
   value = google_artifact_registry_repository.repo.name
+}
+
+
+resource "google_project_service" "cloud_resource_manager_api" {
+  project = var.project_id
+  service = "cloudresourcemanager.googleapis.com"
 }

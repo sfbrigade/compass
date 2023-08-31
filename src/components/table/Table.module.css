@@ -1,0 +1,24 @@
+.tableTitle {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+.header {
+  background-color: var(--grey-70);
+  color: var(--grey-20);
+}
+
+.headerLabel {
+  font-size: 17px;
+  color: var(--grey-20);
+}
+
+.closeButton {
+  border: none;
+  background: none;
+  padding: 10px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
