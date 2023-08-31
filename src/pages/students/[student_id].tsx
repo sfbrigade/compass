@@ -35,7 +35,7 @@ const ViewStudentPage = () => {
   };
 
   const iepMutation = trpc.student.addIep.useMutation({
-    onSuccess: () => utils.student.getIeps.invalidate(),
+    onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -59,23 +59,24 @@ const ViewStudentPage = () => {
   return (
     <div>
       <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
-        <Stack>
+        {/* <Stack> */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "1rem",
+          }}
+        >
+          <h1>
+            {student?.first_name} {student?.last_name}
+          </h1>
+          <Button variant="outlined">Edit</Button>
+        </Box>
+
+        <Box style={{ display: "flex", justifyContent: "space-between" }}>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
-              padding: "1rem",
-            }}
-          >
-            <h1>
-              {student?.first_name} {student?.last_name}
-            </h1>
-            <Button variant="outlined">Edit</Button>
-          </Box>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
             }}
           >
             <Stack
@@ -85,7 +86,7 @@ const ViewStudentPage = () => {
               }}
             >
               <div>Grade:</div>
-              <div>{student?.grade}</div>
+              <div style={{ alignSelf: "center" }}>{student?.grade}</div>
             </Stack>
             {activeIep && (
               <Stack
@@ -94,20 +95,34 @@ const ViewStudentPage = () => {
                   padding: "1rem",
                 }}
               >
-                <div>Next IEP End Date:</div>{" "}
-                <div>
+                <div>IEP End Date:</div>{" "}
+                <div style={{ alignSelf: "center" }}>
                   {new Date(activeIep.end_date ?? "").toLocaleDateString()}
                 </div>
               </Stack>
             )}
           </Box>
-          {/* <button
-            className={`${$button.default} ${$home.bold}`}
-            onClick={() => setArchivePrompt(true)}
+
+          {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
+          <Box
+            sx={{ padding: "1rem", display: "flex", alignItems: "flex-start" }}
           >
-            Archive Student
-          </button> */}
-        </Stack>
+            <button
+              className={`${$button.default} ${$home.bold} `}
+              onClick={() => setArchivePrompt(true)}
+            >
+              Archive Student
+            </button>
+            <Link
+              href={`/students`}
+              className={`${$button.default} ${$home.bold}`}
+              style={{ marginLeft: "10px" }}
+            >
+              Return to Student List
+            </Link>
+          </Box>
+        </Box>
+        {/* </Stack> */}
       </Container>
 
       {archivePrompt ? (
@@ -181,23 +196,6 @@ const ViewStudentPage = () => {
           </div>
         </Container>
       )}
-
-      <br />
-      {/* <ul>
-        {ieps?.map((iep) => (
-          <li key={iep.iep_id}>
-            <Link href={`/iep/${iep.iep_id}`}>IEP</Link>
-            <p>IEP ID: {iep.iep_id}</p>- Start Date:{" "}
-            {new Date(iep.start_date ?? "").toLocaleDateString()} <br />- End
-            Date: {new Date(iep.end_date ?? "").toLocaleDateString()} <br />-
-            CM: {iep.case_manager_id} <br />
-            <br />
-          </li>
-        ))}
-      </ul> */}
-      <div>
-        <Link href={`/students`}>Return to Student List</Link>
-      </div>
     </div>
   );
 };
