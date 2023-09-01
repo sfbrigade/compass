@@ -14,7 +14,6 @@ import {
   Modal,
   Typography,
 } from "@mui/material";
-import { isAbsolute } from "path";
 
 const modalStyle = {
   position: "absolute",
@@ -31,8 +30,6 @@ const modalStyle = {
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
-  const handleOpen = () => setArchivePrompt(true);
-  const handleClose = () => setArchivePrompt(false);
 
   const utils = trpc.useContext();
   const router = useRouter();
@@ -82,7 +79,6 @@ const ViewStudentPage = () => {
   return (
     <div>
       <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
-        {/* <Stack> */}
         <Box
           sx={{
             display: "flex",
@@ -111,19 +107,21 @@ const ViewStudentPage = () => {
               <div>Grade:</div>
               <div style={{ alignSelf: "center" }}>{student?.grade}</div>
             </Stack>
-            {activeIep && (
-              <Stack
-                spacing={1}
-                sx={{
-                  padding: "1rem",
-                }}
-              >
-                <div>IEP End Date:</div>{" "}
-                <div style={{ alignSelf: "center" }}>
-                  {new Date(activeIep.end_date ?? "").toLocaleDateString()}
-                </div>
-              </Stack>
-            )}
+            <Stack
+              spacing={1}
+              sx={{
+                padding: "1rem",
+              }}
+            >
+              <div>IEP End Date:</div>{" "}
+              <div style={{ alignSelf: "center" }}>
+                {activeIep ? (
+                  <>{new Date(activeIep.end_date ?? "").toLocaleDateString()}</>
+                ) : (
+                  <>None</>
+                )}
+              </div>
+            </Stack>
           </Box>
 
           {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
@@ -131,7 +129,7 @@ const ViewStudentPage = () => {
             sx={{ padding: "1rem", display: "flex", alignItems: "flex-start" }}
           >
             <button
-              onClick={handleOpen}
+              onClick={() => setArchivePrompt(true)}
               className={`${$button.default} ${$home.bold}`}
             >
               Archive Student
@@ -145,13 +143,12 @@ const ViewStudentPage = () => {
             </Link>
           </Box>
         </Box>
-        {/* </Stack> */}
       </Container>
 
       {/* Archiving Student Modal*/}
       <Modal
         open={archivePrompt}
-        onClose={handleClose}
+        onClose={() => setArchivePrompt(false)}
         aria-labelledby="archiving-student"
         aria-describedby="archiving-current-student"
       >
@@ -175,7 +172,7 @@ const ViewStudentPage = () => {
             </button>
             <button
               className={`${$button.default} ${$home.bold}`}
-              onClick={handleClose}
+              onClick={() => setArchivePrompt(false)}
             >
               No
             </button>
@@ -183,75 +180,52 @@ const ViewStudentPage = () => {
         </Box>
       </Modal>
 
-      {/*//? If no active IEP, prompt cm to create one  */}
+      {/* If no active IEP, prompt CM to create one  */}
       {!activeIep?.is_active ? (
         <Container
           sx={{
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             marginTop: "2rem",
-            minHeight: "600px",
+            height: "650px",
           }}
         >
           <Box
             sx={{
               position: "absolute",
-              top: "50%",
+              top: "60%",
               left: "50%",
-              transform: "translate(-50%, -50%)",
+              transform: "translate(-50%)",
+              display: "flex",
+              flexDirection: "column",
             }}
           >
-            <Box sx={{ display: "flex", flexDirection: "column" }}>
-              <h3 style={{ marginBottom: "1rem" }}>
-                This student does not have an active IEP. Please create one.
-              </h3>
-              <button
-                onClick={() => setCreateIepModal(true)}
-                className={`${$button.default}`}
-                style={{ width: "fit-content", alignSelf: "center" }}
-              >
-                Create IEP
-              </button>
-            </Box>
+            <h3 style={{ marginBottom: "1rem" }}>
+              This student does not have an active IEP. Please create one.
+            </h3>
+            {/* <h6>Start adding goals to set up your student's profile</h6> */}
+            <button
+              onClick={() => setCreateIepModal(true)}
+              className={`${$button.default}`}
+              style={{ width: "fit-content", alignSelf: "center" }}
+            >
+              Create IEP
+            </button>
           </Box>
-          {createIepModal && (
-            <>
-              <div>Create IEP:</div>
-              <div>
-                <form onSubmit={handleIepSubmit} className={$input.default}>
-                  <input
-                    type="date"
-                    name="start_date"
-                    placeholder="IEP start date"
-                    required
-                  />
-                  <input
-                    type="date"
-                    name="end_date"
-                    placeholder="IEP end date"
-                    required
-                  />
-                  <button type="submit" className={$button.default}>
-                    Create IEP
-                  </button>
-                  <button
-                    onClick={() => setCreateIepModal(false)}
-                    className={$button.default}
-                  >
-                    Cancel
-                  </button>
-                </form>
-              </div>
-            </>
-          )}
         </Container>
       ) : (
+        // Active IEP is in db
         <Container
           sx={{
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             marginTop: "2rem",
             paddingBottom: "2rem",
+            height: "650px",
+            overflowY: "auto",
+            borderTop: "20px solid",
+            borderBottom: "40px solid",
+            borderColor: "#ffffff",
           }}
         >
           <div>
@@ -259,6 +233,61 @@ const ViewStudentPage = () => {
           </div>
         </Container>
       )}
+
+      {/* Modal for Creating IEP */}
+      <Modal
+        open={createIepModal}
+        onClose={() => setCreateIepModal(false)}
+        aria-labelledby="create-student-iep"
+        aria-describedby="modal for creating student iep"
+      >
+        <Box sx={modalStyle}>
+          <Typography id="create-student-iep" variant="h6" component="h2">
+            Create an IEP for{" "}
+            <b>
+              {student?.first_name} {student?.last_name}
+            </b>
+          </Typography>
+          <form
+            onSubmit={handleIepSubmit}
+            className={$input.default}
+            style={{ marginTop: "2rem", padding: "1rem" }}
+          >
+            <Stack spacing={2}>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography sx={{ fontSize: "larger" }}>Start Date:</Typography>
+                <input
+                  type="date"
+                  name="start_date"
+                  placeholder="IEP start date"
+                  required
+                />
+              </Box>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Typography sx={{ fontSize: "larger" }}>End Date:</Typography>
+                <input
+                  type="date"
+                  name="end_date"
+                  placeholder="IEP end date"
+                  required
+                />
+              </Box>
+
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <button type="submit" className={$button.default}>
+                  Create IEP
+                </button>
+                <button
+                  onClick={() => setCreateIepModal(false)}
+                  className={$button.default}
+                >
+                  Cancel
+                </button>
+              </Box>
+            </Stack>
+          </form>
+        </Box>
+      </Modal>
     </div>
   );
 };
