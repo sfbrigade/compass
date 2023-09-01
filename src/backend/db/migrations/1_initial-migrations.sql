@@ -101,8 +101,8 @@ CREATE TABLE "trial_data" (
   task_id UUID REFERENCES "task" (task_id),
   created_by_user_id UUID REFERENCES "user" (user_id),
   -- TODO: Possibly add optional reference to "task"
-  success_with_prompt INTEGER NOT NULL,
-  success_without_prompt INTEGER NOT NULL,
+  success INTEGER NOT NULL,
+  unsuccess INTEGER NOT NULL,
   submitted BOOLEAN NOT NULL DEFAULT FALSE,
   notes TEXT,-- Optional depending on type of task
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()

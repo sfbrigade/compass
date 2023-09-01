@@ -19,3 +19,11 @@
 .noDecoration {
   list-style-type: none;
 }
+
+.centeredText {
+  text-align: center;
+}
+
+.bold {
+  font-weight: 700;
+}

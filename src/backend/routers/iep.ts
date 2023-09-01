@@ -110,24 +110,23 @@ export const iep = router({
     .input(
       z.object({
         task_id: z.string(),
-        success_with_prompt: z.number(),
-        success_without_prompt: z.number(),
+        success: z.number(),
+        unsuccess: z.number(),
         notes: z.string(),
       })
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
 
-      const { task_id, success_with_prompt, success_without_prompt, notes } =
-        req.input;
+      const { task_id, success, unsuccess, notes } = req.input;
 
       const result = await req.ctx.db
         .insertInto("trial_data")
         .values({
           task_id,
           created_by_user_id: userId,
-          success_with_prompt,
-          success_without_prompt,
+          success,
+          unsuccess,
           notes,
         })
         .returningAll()
@@ -140,26 +139,20 @@ export const iep = router({
     .input(
       z.object({
         trial_data_id: z.string(),
-        success_with_prompt: z.number().optional(),
-        success_without_prompt: z.number().optional(),
+        success: z.number().optional(),
+        unsuccess: z.number().optional(),
         submitted: z.boolean().optional(),
         notes: z.string().optional(),
       })
     )
     .mutation(async (req) => {
-      const {
-        trial_data_id,
-        success_with_prompt,
-        success_without_prompt,
-        submitted,
-        notes,
-      } = req.input;
+      const { trial_data_id, success, unsuccess, submitted, notes } = req.input;
 
       await req.ctx.db
         .updateTable("trial_data")
         .set({
-          success_with_prompt,
-          success_without_prompt,
+          success,
+          unsuccess,
           submitted,
           notes,
         })
@@ -255,8 +248,8 @@ export const iep = router({
               .selectFrom("trial_data")
               .select([
                 "trial_data.trial_data_id",
-                "trial_data.success_with_prompt",
-                "trial_data.success_without_prompt",
+                "trial_data.success",
+                "trial_data.unsuccess",
                 "trial_data.submitted",
                 "trial_data.notes",
                 "trial_data.created_at",

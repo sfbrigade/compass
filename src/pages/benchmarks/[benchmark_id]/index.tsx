@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import Counter from "@/components/counter/counter";
-import $box from "@/styles/Box.module.css";
-import $button from "@/styles/Button.module.css";
-import { trpc } from "@/client/lib/trpc";
-import { useRouter } from "next/router";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
+import { trpc } from "@/client/lib/trpc";
+import { useRouter } from "next/router";
 import { useDebounce } from "react-use";
+import $box from "@/styles/Box.module.css";
+import $button from "@/styles/Button.module.css";
+import $typo from "@/styles/Typography.module.css";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 interface DataUpdate {
-  success_with_prompt?: number;
-  success_without_prompt?: number;
+  success?: number;
+  unsuccess?: number;
   submitted?: boolean;
   notes?: string;
 }
@@ -75,8 +78,8 @@ const BenchmarkPage = () => {
     ) {
       addTrialMutation.mutate({
         task_id: task.task_id,
-        success_with_prompt: 0,
-        success_without_prompt: 0,
+        success: 0,
+        unsuccess: 0,
         notes: "",
       });
     }
@@ -143,54 +146,57 @@ const BenchmarkPage = () => {
 
       <div className={$box.greyBg}>
         <Counter
-          title="Successful without prompt"
-          count={currentTrial.success_without_prompt}
+          title={
+            <>
+              Successful <CheckIcon />
+            </>
+          }
+          count={currentTrial.success}
           onIncrement={() =>
             handleUpdate({
-              success_without_prompt: currentTrial.success_without_prompt + 1,
+              success: currentTrial.success + 1,
             })
           }
           onDecrement={() =>
             handleUpdate({
-              success_without_prompt: currentTrial.success_without_prompt - 1,
+              success: currentTrial.success - 1,
             })
           }
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success_without_prompt <= 0
+            currentTrial.success <= 0
           }
           color="green"
         />
         <Counter
-          title="Successful with prompt"
-          count={currentTrial.success_with_prompt}
+          title={
+            <>
+              Unsuccessful <ClearIcon />
+            </>
+          }
+          count={currentTrial.unsuccess}
           onIncrement={() =>
             handleUpdate({
-              success_with_prompt: currentTrial.success_with_prompt + 1,
+              unsuccess: currentTrial.unsuccess + 1,
             })
           }
           onDecrement={() =>
             handleUpdate({
-              success_with_prompt: currentTrial.success_with_prompt - 1,
+              unsuccess: currentTrial.unsuccess - 1,
             })
           }
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success_with_prompt <= 0
+            currentTrial.unsuccess <= 0
           }
-          color="yellow"
+          color="red"
         />
-        <Counter
-          title="Attempts"
-          count={task.target_max_attempts}
-          onIncrement={() => console.log("hi")}
-          onDecrement={() => console.log("hi")}
-          disableInc={true}
-          disableDec={true}
-          color="blue"
-        />
+        <p className={`${$typo.centeredText} ${$typo.bold}`}>
+          {currentTrial.success + currentTrial.unsuccess} attempts out of{" "}
+          {task.target_max_attempts}
+        </p>
       </div>
       <input
         className={$box.default}
