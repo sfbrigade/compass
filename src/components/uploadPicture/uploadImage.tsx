@@ -113,9 +113,9 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   }, [uploadSuccess]);
 
   return (
-    <div className={styles.uploadContainer} onClick={onClickStartButton}>
+    <div className={styles.uploadContainer}>
       {currentStep === UploadStep.Start && (
-        <div className={styles.actionButton} style={{ cursor: "pointer" }}>
+        <button className={styles.actionButton} onClick={onClickStartButton}>
           <input
             ref={fileInputRef}
             type="file"
@@ -126,19 +126,12 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
           />
           <CameraIcon />
           {title}
-        </div>
+        </button>
       )}
       {currentStep === UploadStep.TakePicture && (
-        <>
-          <div>
-            <button
-              onClick={onCancelTakePicture}
-              className={styles.actionButton}
-            >
-              Cancel
-            </button>
-          </div>
-        </>
+        <button onClick={onCancelTakePicture} className={styles.actionButton}>
+          Cancel
+        </button>
       )}
       {currentStep === UploadStep.UploadPicture && (
         <div className={styles.uploadContainer}>

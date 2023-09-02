@@ -16,6 +16,7 @@
   font-size: 14px;
   font-family: "Lucida Grande", "Arial", sans-serif;
   align-items: center;
+  cursor: pointer;
 }
 
 .uploadingText {
