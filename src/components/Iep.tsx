@@ -3,6 +3,8 @@ import Goals from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import { Box, Container, List } from "@mui/material";
+import Image from "next/image";
+import noGoals from "../../public/img/no-goals-icon.png";
 
 interface IepProps {
   iep_id: string;
@@ -37,7 +39,7 @@ const Iep = ({ iep_id }: IepProps) => {
 
   return (
     <div>
-      <Box
+      {/* <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -72,17 +74,72 @@ const Iep = ({ iep_id }: IepProps) => {
             </button>
           </form>
         </div>
-      </Box>
+      </Box> */}
 
-      <Container sx={{ borderRadius: "10px" }}>
-        <ul>
-          {goals?.map((goal) => (
-            <List key={goal.goal_id}>
-              <Goals goal={goal} />
-            </List>
-          ))}
-        </ul>
-      </Container>
+      {/* List of goals */}
+      {goals?.length ? (
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            paddingBottom: "2rem",
+            height: "620px",
+            overflowY: "auto",
+            borderTop: "20px solid",
+            borderBottom: "40px solid",
+            borderColor: "#ffffff",
+          }}
+        >
+          {" "}
+          <ul>
+            {goals.map((goal) => (
+              <List key={goal.goal_id}>
+                <Goals goal={goal} />
+              </List>
+            ))}
+          </ul>
+        </Container>
+      ) : (
+        // No Goal in DB yet
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            height: "620px",
+          }}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              top: "40px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              src={noGoals}
+              alt="no goals image"
+              style={{ width: "600px", height: "auto" }}
+            />
+            <h1 style={{ marginBottom: "1rem", alignSelf: "center" }}>
+              No goals yet
+            </h1>
+            <h4 style={{ marginBottom: "1rem" }}>
+              Start adding goals to set up your student&#39;s profile
+            </h4>
+            <button
+              // onClick={() => setCreateIepModal(true)}
+              className={`${$button.default}`}
+              style={{ width: "fit-content", alignSelf: "center" }}
+            >
+              Add goal
+            </button>
+          </Box>
+        </Container>
+      )}
     </div>
   );
 };

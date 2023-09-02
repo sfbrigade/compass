@@ -187,7 +187,7 @@ const ViewStudentPage = () => {
             backgroundColor: "#ffffff",
             borderRadius: "10px",
             marginTop: "2rem",
-            height: "650px",
+            height: "620px",
           }}
         >
           <Box
@@ -203,7 +203,6 @@ const ViewStudentPage = () => {
             <h3 style={{ marginBottom: "1rem" }}>
               This student does not have an active IEP. Please create one.
             </h3>
-            {/* <h6>Start adding goals to set up your student's profile</h6> */}
             <button
               onClick={() => setCreateIepModal(true)}
               className={`${$button.default}`}
@@ -215,23 +214,7 @@ const ViewStudentPage = () => {
         </Container>
       ) : (
         // Active IEP is in db
-        <Container
-          sx={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            marginTop: "2rem",
-            paddingBottom: "2rem",
-            height: "650px",
-            overflowY: "auto",
-            borderTop: "20px solid",
-            borderBottom: "40px solid",
-            borderColor: "#ffffff",
-          }}
-        >
-          <div>
-            <Iep iep_id={activeIep.iep_id} />
-          </div>
-        </Container>
+        <Iep iep_id={activeIep.iep_id} />
       )}
 
       {/* Modal for Creating IEP */}
