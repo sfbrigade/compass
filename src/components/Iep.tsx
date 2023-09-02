@@ -38,48 +38,52 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <div>
+    <>
       {/* Tabs on Top */}
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <h3
-          style={{
-            backgroundColor: "#ffffff",
-            width: "fit-content",
-            padding: "1rem",
-            borderRadius: "10px",
-            marginTop: "2rem",
-            marginBottom: "-1rem",
-          }}
-        >
-          Goals
-        </h3>
-        {/* adding new goals // TODO: extract this content elsewhere */}
-        <form
-          style={{
-            display: "flex",
-            gap: "1rem",
-            alignItems: "flex-end",
-          }}
-          onSubmit={handleGoalSubmit}
-        >
-          <input
-            type="text"
-            name="description"
-            placeholder="Goal description"
-            className={$input.default}
-            required
-          />
-          <select name="category">
-            <option value="writing">writing</option>
-            <option value="reading">reading</option>
-            <option value="math">math</option>
-            <option value="other">other</option>
-          </select>
-          <button type="submit" className={$button.default}>
-            Add Goal
-          </button>
-        </form>
-      </div>
+      <Container>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <h3
+            style={{
+              backgroundColor: "#ffffff",
+              width: "fit-content",
+              padding: "1rem",
+              borderRadius: "10px",
+              marginTop: "2rem",
+              marginBottom: "-1rem",
+              marginLeft: "-24px",
+            }}
+          >
+            Goals
+          </h3>
+          {/* adding new goals // TODO: extract this content elsewhere */}
+          <form
+            style={{
+              display: "flex",
+              gap: "1rem",
+              alignItems: "flex-end",
+            }}
+            onSubmit={handleGoalSubmit}
+          >
+            <input
+              type="text"
+              name="description"
+              placeholder="Goal description"
+              className={$input.default}
+              required
+            />
+            <select name="category">
+              <option value="writing">writing</option>
+              <option value="reading">reading</option>
+              <option value="math">math</option>
+              <option value="other">other</option>
+            </select>
+            <button type="submit" className={$button.default}>
+              Add Goal
+            </button>
+          </form>
+        </Box>
+      </Container>
+
       {/* List of goals */}
       {goals?.length ? (
         <Container
@@ -142,7 +146,7 @@ const Iep = ({ iep_id }: IepProps) => {
           </Box>
         </Container>
       )}
-    </div>
+    </>
   );
 };
 export default Iep;
