@@ -4,7 +4,7 @@ import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import { Box, Container, List } from "@mui/material";
 import Image from "next/image";
-import noGoals from "../../public/img/no-goals-icon.png";
+import noGoals from "../public/img/no-goals-icon.png";
 
 interface IepProps {
   iep_id: string;
@@ -39,50 +39,53 @@ const Iep = ({ iep_id }: IepProps) => {
 
   return (
     <div>
-      {/* <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "1rem",
-        }}
-      >
-        <h2>Goals</h2>
-        <div>
-          <form
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              gap: "1rem",
-            }}
-            onSubmit={handleGoalSubmit}
-          >
-            <input
-              type="text"
-              name="description"
-              placeholder="Goal description"
-              className={$input.default}
-              required
-            />
-            <select name="category">
-              <option value="writing">writing</option>
-              <option value="reading">reading</option>
-              <option value="math">math</option>
-              <option value="other">other</option>
-            </select>
-            <button type="submit" className={$button.default}>
-              Add Goal
-            </button>
-          </form>
-        </div>
-      </Box> */}
-
+      {/* Tabs on Top */}
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <h3
+          style={{
+            backgroundColor: "#ffffff",
+            width: "fit-content",
+            padding: "1rem",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            marginBottom: "-1rem",
+          }}
+        >
+          Goals
+        </h3>
+        {/* adding new goals // TODO: extract this content elsewhere */}
+        <form
+          style={{
+            display: "flex",
+            gap: "1rem",
+            alignItems: "flex-end",
+          }}
+          onSubmit={handleGoalSubmit}
+        >
+          <input
+            type="text"
+            name="description"
+            placeholder="Goal description"
+            className={$input.default}
+            required
+          />
+          <select name="category">
+            <option value="writing">writing</option>
+            <option value="reading">reading</option>
+            <option value="math">math</option>
+            <option value="other">other</option>
+          </select>
+          <button type="submit" className={$button.default}>
+            Add Goal
+          </button>
+        </form>
+      </div>
       {/* List of goals */}
       {goals?.length ? (
         <Container
           sx={{
             backgroundColor: "#ffffff",
             borderRadius: "10px",
-            marginTop: "2rem",
             paddingBottom: "2rem",
             height: "620px",
             overflowY: "auto",
@@ -91,7 +94,6 @@ const Iep = ({ iep_id }: IepProps) => {
             borderColor: "#ffffff",
           }}
         >
-          {" "}
           <ul>
             {goals.map((goal) => (
               <List key={goal.goal_id}>
@@ -106,8 +108,7 @@ const Iep = ({ iep_id }: IepProps) => {
           sx={{
             backgroundColor: "#ffffff",
             borderRadius: "10px",
-            marginTop: "2rem",
-            height: "620px",
+            height: "580px",
           }}
         >
           <Box
@@ -119,6 +120,7 @@ const Iep = ({ iep_id }: IepProps) => {
               alignItems: "center",
             }}
           >
+            {/* Contents Inside */}
             <Image
               src={noGoals}
               alt="no goals image"

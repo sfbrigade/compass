@@ -1,19 +1,21 @@
-import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
+import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
-import Iep from "../../components/Iep";
 import {
   Box,
   Button,
   Container,
-  Stack,
   Modal,
+  Stack,
   Typography,
 } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import Iep from "../../components/Iep";
+import noGoals from "../../public/img/no-goals-icon.png";
 
 const modalStyle = {
   position: "absolute",
@@ -145,6 +147,47 @@ const ViewStudentPage = () => {
         </Box>
       </Container>
 
+      {/* If no active IEP, prompt CM to create one  */}
+      {!activeIep?.is_active ? (
+        <Container
+          sx={{
+            backgroundColor: "#ffffff",
+            borderRadius: "10px",
+            marginTop: "2rem",
+            height: "620px",
+          }}
+        >
+          <Box
+            sx={{
+              position: "relative",
+              top: "40px",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+          >
+            <Image
+              src={noGoals}
+              alt="no IEP image"
+              style={{ width: "600px", height: "auto" }}
+            />
+            <h3 style={{ marginBottom: "1rem" }}>
+              This student does not have an active IEP. Please create one.
+            </h3>
+            <button
+              onClick={() => setCreateIepModal(true)}
+              className={`${$button.default}`}
+              style={{ width: "fit-content", alignSelf: "center" }}
+            >
+              Create IEP
+            </button>
+          </Box>
+        </Container>
+      ) : (
+        // Active IEP is in db
+        <Iep iep_id={activeIep.iep_id} />
+      )}
+
       {/* Archiving Student Modal*/}
       <Modal
         open={archivePrompt}
@@ -179,43 +222,6 @@ const ViewStudentPage = () => {
           </Box>
         </Box>
       </Modal>
-
-      {/* If no active IEP, prompt CM to create one  */}
-      {!activeIep?.is_active ? (
-        <Container
-          sx={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            marginTop: "2rem",
-            height: "620px",
-          }}
-        >
-          <Box
-            sx={{
-              position: "absolute",
-              top: "60%",
-              left: "50%",
-              transform: "translate(-50%)",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <h3 style={{ marginBottom: "1rem" }}>
-              This student does not have an active IEP. Please create one.
-            </h3>
-            <button
-              onClick={() => setCreateIepModal(true)}
-              className={`${$button.default}`}
-              style={{ width: "fit-content", alignSelf: "center" }}
-            >
-              Create IEP
-            </button>
-          </Box>
-        </Container>
-      ) : (
-        // Active IEP is in db
-        <Iep iep_id={activeIep.iep_id} />
-      )}
 
       {/* Modal for Creating IEP */}
       <Modal
