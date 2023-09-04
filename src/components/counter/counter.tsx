@@ -3,7 +3,7 @@ import styles from "../paraTrials/Paratrials.module.css";
 
 interface CounterProps {
   title: React.ReactNode;
-  count: number | null;
+  count: number;
   onIncrement: () => void;
   onDecrement: () => void;
   disableInc: boolean;
@@ -37,7 +37,7 @@ const Counter = ({
             styles[`counterNumberDisplay-${color}`]
           }`}
         >
-          {count ?? "-"}
+          {count}
         </p>
         <button
           onClick={onIncrement}

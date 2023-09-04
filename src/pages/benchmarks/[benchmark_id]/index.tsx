@@ -47,7 +47,10 @@ const BenchmarkPage = () => {
     onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
 
-  const [notesValue, setNotesValue] = useState("");
+  const [notesInputValue, setNotesInputValue] = useState("");
+  const [successInputValue, setSuccessInputValue] = useState(0);
+  const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
+  const [doNotUpdate, setDoNotUpdate] = useState(false);
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
   useEffect(() => {
@@ -57,10 +60,34 @@ const BenchmarkPage = () => {
   }, [task]);
 
   useEffect(() => {
-    if (task && currentTrial) {
-      setNotesValue(currentTrial.notes || "");
+    console.log("I ran useEffect: ", currentTrial);
+    let isDiff = false;
+    if (
+      currentTrial?.notes !== undefined &&
+      currentTrial?.notes !== notesInputValue
+    ) {
+      setNotesInputValue(currentTrial.notes || "");
+      isDiff = true;
     }
-  }, [task, currentTrial]);
+    if (
+      currentTrial?.success !== undefined &&
+      currentTrial?.success !== successInputValue
+    ) {
+      setSuccessInputValue(currentTrial?.success);
+      isDiff = true;
+    }
+    if (
+      currentTrial?.unsuccess !== undefined &&
+      currentTrial?.unsuccess !== unsuccessInputValue
+    ) {
+      setUnsuccessInputValue(currentTrial?.unsuccess);
+      isDiff = true;
+    }
+
+    if (isDiff) {
+      setDoNotUpdate(true);
+    }
+  }, [currentTrial?.notes, currentTrial?.success, currentTrial?.unsuccess]);
 
   useEffect(() => {
     if (!seenMutation.isLoading && !taskIsLoading && task && !task.seen) {
@@ -97,18 +124,26 @@ const BenchmarkPage = () => {
 
   // BUG: Updating counters before the timer goes off results in changes being reverted.
   const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setNotesValue((e.target as HTMLInputElement).value);
+    setNotesInputValue((e.target as HTMLInputElement).value);
   };
-  useDebounce(
+
+  //Only update db after typing has stopped for 1 sec
+  const [isReady] = useDebounce(
     () => {
-      //Only update db after typing has stopped for 1 sec
-      handleUpdate({
-        notes: notesValue,
-      });
+      console.log("i ran debounce func");
+      if (!doNotUpdate) {
+        handleUpdate({
+          notes: notesInputValue,
+          success: successInputValue,
+          unsuccess: unsuccessInputValue,
+        });
+      }
+      setDoNotUpdate(false);
     },
     1000,
-    [notesValue]
+    [notesInputValue, successInputValue, unsuccessInputValue]
   );
+
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
   }
@@ -151,21 +186,16 @@ const BenchmarkPage = () => {
               Successful <CheckIcon />
             </>
           }
-          count={currentTrial.success}
-          onIncrement={() =>
-            handleUpdate({
-              success: currentTrial.success + 1,
-            })
-          }
-          onDecrement={() =>
-            handleUpdate({
-              success: currentTrial.success - 1,
-            })
-          }
+          count={successInputValue}
+          onIncrement={() => {
+            setSuccessInputValue(successInputValue + 1);
+          }}
+          onDecrement={() => {
+            setSuccessInputValue(successInputValue - 1);
+          }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
-            currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success <= 0
+            currentTrialIdx !== task.trials.length - 1 || successInputValue <= 0
           }
           color="green"
         />
@@ -175,26 +205,22 @@ const BenchmarkPage = () => {
               Unsuccessful <ClearIcon />
             </>
           }
-          count={currentTrial.unsuccess}
-          onIncrement={() =>
-            handleUpdate({
-              unsuccess: currentTrial.unsuccess + 1,
-            })
-          }
-          onDecrement={() =>
-            handleUpdate({
-              unsuccess: currentTrial.unsuccess - 1,
-            })
-          }
+          count={unsuccessInputValue}
+          onIncrement={() => {
+            setUnsuccessInputValue(unsuccessInputValue + 1);
+          }}
+          onDecrement={() => {
+            setUnsuccessInputValue(unsuccessInputValue - 1);
+          }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.unsuccess <= 0
+            unsuccessInputValue <= 0
           }
           color="red"
         />
         <p className={`${$typo.centeredText} ${$typo.bold}`}>
-          {currentTrial.success + currentTrial.unsuccess} attempts out of{" "}
+          {successInputValue + unsuccessInputValue} attempts out of{" "}
           {task.target_max_attempts}
         </p>
       </div>
@@ -203,7 +229,7 @@ const BenchmarkPage = () => {
         type="text"
         placeholder="Type your observation notes here..."
         readOnly={currentTrialIdx !== task.trials.length - 1}
-        value={notesValue}
+        value={notesInputValue}
         onChange={onNoteChange}
       ></input>
 
