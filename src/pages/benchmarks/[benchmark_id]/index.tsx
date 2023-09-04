@@ -106,7 +106,7 @@ const BenchmarkPage = () => {
     }
   };
 
-  const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
+  const onNoteChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setNotesInputValue((e.target as HTMLInputElement).value);
     setIsInputChange(true);
   };
@@ -152,7 +152,7 @@ const BenchmarkPage = () => {
         >
           <ChevronLeftIcon />
         </button>
-        <p>Trial {currentTrialIdx + 1}</p>
+        <h3>Trial {currentTrialIdx + 1}</h3>
         <button
           className={`${$button.default} ${$button.circular}`}
           onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
@@ -211,14 +211,14 @@ const BenchmarkPage = () => {
           {task.target_max_attempts}
         </p>
       </div>
-      <input
+      <textarea
         className={$box.default}
-        type="text"
         placeholder="Type your observation notes here..."
+        rows={5}
         readOnly={currentTrialIdx !== task.trials.length - 1}
         value={notesInputValue}
         onChange={onNoteChange}
-      ></input>
+      ></textarea>
 
       <Link
         href={`${router.asPath}/review`}
