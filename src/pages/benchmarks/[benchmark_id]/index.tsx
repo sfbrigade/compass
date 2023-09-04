@@ -50,7 +50,9 @@ const BenchmarkPage = () => {
   const [notesInputValue, setNotesInputValue] = useState("");
   const [successInputValue, setSuccessInputValue] = useState(0);
   const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
-  const [doNotUpdate, setDoNotUpdate] = useState(false);
+
+  const [isInputChange, setIsInputChange] = useState(false);
+  // const [doNotUpdate, setDoNotUpdate] = useState(false);
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
   useEffect(() => {
@@ -60,32 +62,14 @@ const BenchmarkPage = () => {
   }, [task]);
 
   useEffect(() => {
-    console.log("I ran useEffect: ", currentTrial);
-    let isDiff = false;
-    if (
-      currentTrial?.notes !== undefined &&
-      currentTrial?.notes !== notesInputValue
-    ) {
+    if (currentTrial?.notes !== undefined) {
       setNotesInputValue(currentTrial.notes || "");
-      isDiff = true;
     }
-    if (
-      currentTrial?.success !== undefined &&
-      currentTrial?.success !== successInputValue
-    ) {
+    if (currentTrial?.success !== undefined) {
       setSuccessInputValue(currentTrial?.success);
-      isDiff = true;
     }
-    if (
-      currentTrial?.unsuccess !== undefined &&
-      currentTrial?.unsuccess !== unsuccessInputValue
-    ) {
+    if (currentTrial?.unsuccess !== undefined) {
       setUnsuccessInputValue(currentTrial?.unsuccess);
-      isDiff = true;
-    }
-
-    if (isDiff) {
-      setDoNotUpdate(true);
     }
   }, [currentTrial?.notes, currentTrial?.success, currentTrial?.unsuccess]);
 
@@ -122,23 +106,22 @@ const BenchmarkPage = () => {
     }
   };
 
-  // BUG: Updating counters before the timer goes off results in changes being reverted.
   const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
     setNotesInputValue((e.target as HTMLInputElement).value);
+    setIsInputChange(true);
   };
 
   //Only update db after typing has stopped for 1 sec
   const [isReady] = useDebounce(
     () => {
-      console.log("i ran debounce func");
-      if (!doNotUpdate) {
+      if (isInputChange) {
         handleUpdate({
           notes: notesInputValue,
           success: successInputValue,
           unsuccess: unsuccessInputValue,
         });
       }
-      setDoNotUpdate(false);
+      setIsInputChange(false);
     },
     1000,
     [notesInputValue, successInputValue, unsuccessInputValue]
@@ -189,9 +172,11 @@ const BenchmarkPage = () => {
           count={successInputValue}
           onIncrement={() => {
             setSuccessInputValue(successInputValue + 1);
+            setIsInputChange(true);
           }}
           onDecrement={() => {
             setSuccessInputValue(successInputValue - 1);
+            setIsInputChange(true);
           }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
@@ -208,9 +193,11 @@ const BenchmarkPage = () => {
           count={unsuccessInputValue}
           onIncrement={() => {
             setUnsuccessInputValue(unsuccessInputValue + 1);
+            setIsInputChange(true);
           }}
           onDecrement={() => {
             setUnsuccessInputValue(unsuccessInputValue - 1);
+            setIsInputChange(true);
           }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
