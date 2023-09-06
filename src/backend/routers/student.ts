@@ -158,7 +158,7 @@ export const student = router({
   getActiveStudentIep: authenticatedProcedure
     .input(
       z.object({
-        student_id: z.string(),
+        student_id: z.string().uuid(),
       })
     )
     .query(async (req) => {

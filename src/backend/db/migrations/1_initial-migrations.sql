@@ -65,7 +65,7 @@ CREATE TABLE "iep" (
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  -- TODO: create an is_active key
+  
   is_active BOOL NOT NULL DEFAULT TRUE
 );
 

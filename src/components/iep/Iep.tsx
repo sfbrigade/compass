@@ -53,7 +53,7 @@ const Iep = ({ iep_id }: IepProps) => {
               marginLeft: "-24px",
             }}
           >
-            Goals &#40;{goals?.length ? goals.length : 0}&#41;
+            Goals &#40;{goals?.length ?? 0}&#41;
           </h3>
           {/* adding new goals // TODO: extract this content elsewhere */}
           <form

@@ -340,14 +340,6 @@ export default function EnhancedTable<
             )}
             {visibleRows.map((row) => {
               const labelId = row.email;
-              let endDate;
-              let grade;
-
-              // add student properties of grade and end date if student
-              if (isStudent(row)) {
-                grade = row?.grade;
-                endDate = row?.end_date?.toString();
-              }
 
               return (
                 <StyledTableRow
@@ -370,16 +362,12 @@ export default function EnhancedTable<
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
 
-                  {type === "Student" && (
+                  {isStudent(row) && (
                     <>
-                      {grade && <TableCell align={"left"}>{grade}</TableCell>}
-                      {endDate ? (
-                        <TableCell align={"left"}>
-                          {endDate?.slice(4, 15)}
-                        </TableCell>
-                      ) : (
-                        <TableCell align={"left"}>None</TableCell>
-                      )}
+                      <TableCell align={"left"}>{row.grade}</TableCell>}
+                      <TableCell align={"left"}>
+                        {row.endDate?.toDateString().slice(4) ?? 'None'}
+                      </TableCell>
                     </>
                   )}
                 </StyledTableRow>
