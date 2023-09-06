@@ -39,28 +39,6 @@ export const case_manager = router({
     return result;
   }),
 
-  getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
-    const { userId } = req.ctx.auth;
-
-    const result = await req.ctx.db
-      .selectFrom("student")
-      .fullJoin("iep", "iep.student_id", "student.student_id")
-      .select([
-        "student.student_id",
-        "first_name",
-        "last_name",
-        "student.email",
-        "assigned_case_manager_id",
-        "iep.iep_id",
-        "end_date",
-        "grade",
-      ])
-      .where("assigned_case_manager_id", "=", userId)
-      .execute();
-
-    return result;
-  }),
-
   /**
    * Adds the given student to the CM's roster. The student row is created if
    * it doesn't already exist. Throws an error if the student is already
