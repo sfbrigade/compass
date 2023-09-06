@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import Iep from "../../components/Iep";
+import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 
 const modalStyle = {

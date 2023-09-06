@@ -4,7 +4,7 @@ import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import { Box, Container, List } from "@mui/material";
 import Image from "next/image";
-import noGoals from "../public/img/no-goals-icon.png";
+import noGoals from "../../public/img/no-goals-icon.png";
 
 interface IepProps {
   iep_id: string;
@@ -53,7 +53,7 @@ const Iep = ({ iep_id }: IepProps) => {
               marginLeft: "-24px",
             }}
           >
-            Goals
+            Goals &#40;{goals?.length ? goals.length : 0}&#41;
           </h3>
           {/* adding new goals // TODO: extract this content elsewhere */}
           <form

@@ -83,7 +83,6 @@ function EnhancedTableHead<Column extends HeadCell>({
             </TableSortLabel>
           </TableCell>
         ))}
-        {/* //! Changes made by Hieu */}
         {headCells[3]?.id === "grade" && (
           <TableCell key="iep_end_date" align={`left`}>
             <TableSortLabel
@@ -237,7 +236,6 @@ interface EnhancedTableProps<Person, Column> {
   type: "Student" | "Staff";
 }
 
-// //! Modified by Hieu / Brett / Connor
 type Iep = {
   end_date: Date;
 };
@@ -310,11 +308,6 @@ export default function EnhancedTable<
   const visibleRows = useMemo(() => {
     const filteredList = filterList(people, searchParam);
 
-    console.log(
-      "visible rows: ",
-      filteredList?.slice().sort(getComparator(order, orderBy))
-    );
-
     return filteredList?.slice().sort(getComparator(order, orderBy));
   }, [order, orderBy, people, searchParam, filterList]);
 
@@ -346,17 +339,14 @@ export default function EnhancedTable<
               />
             )}
             {visibleRows.map((row) => {
-              console.log(row);
               const labelId = row.email;
               let endDate;
               let grade;
 
-              //! Modified by Hieu / Brett / Connor
-              if (!isStudent(row)) {
-                // This is a para, pass
-              } else {
-                endDate = row?.end_date?.toString();
+              // add student properties of grade and end date if student
+              if (isStudent(row)) {
                 grade = row?.grade;
+                endDate = row?.end_date?.toString();
               }
 
               return (
@@ -379,13 +369,18 @@ export default function EnhancedTable<
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
-                  {grade && <TableCell align={"left"}>{grade}</TableCell>}
 
-                  {/* //! Modified by Hieu / Brett / Connor */}
-                  {endDate ? (
-                    <TableCell align={"left"}>{endDate.slice(4, 15)}</TableCell>
-                  ) : (
-                    <TableCell align={"left"}>None</TableCell>
+                  {type === "Student" && (
+                    <>
+                      {grade && <TableCell align={"left"}>{grade}</TableCell>}
+                      {endDate ? (
+                        <TableCell align={"left"}>
+                          {endDate?.slice(4, 15)}
+                        </TableCell>
+                      ) : (
+                        <TableCell align={"left"}>None</TableCell>
+                      )}
+                    </>
                   )}
                 </StyledTableRow>
               );

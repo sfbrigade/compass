@@ -34,6 +34,7 @@ export const student = router({
 
       return result;
     }),
+
   getStudentDetailById: authenticatedProcedure
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
@@ -169,8 +170,6 @@ export const student = router({
         .where("is_active", "=", true)
         .selectAll()
         .executeTakeFirst();
-
-      console.log("get Active Student IEP ~~ ", result || null);
 
       return result || null;
     }),
