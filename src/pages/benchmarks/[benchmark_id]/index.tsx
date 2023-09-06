@@ -110,9 +110,8 @@ const BenchmarkPage = () => {
     setNotesInputValue((e.target as HTMLInputElement).value);
     setIsInputChange(true);
   };
-
   //Only update db after typing has stopped for 1 sec
-  const [isReady] = useDebounce(
+  useDebounce(
     () => {
       if (isInputChange) {
         handleUpdate({
@@ -208,7 +207,7 @@ const BenchmarkPage = () => {
         />
         <p className={`${$typo.centeredText} ${$typo.bold}`}>
           {successInputValue + unsuccessInputValue} attempts out of{" "}
-          {task.target_max_attempts}
+          {task.target_max_attempts ?? "-"}
         </p>
       </div>
       <textarea
@@ -220,6 +219,14 @@ const BenchmarkPage = () => {
         onChange={onNoteChange}
       ></textarea>
 
+      <div className={`${$typo.caption} ${$typo.rightText}`}>
+        {/* TODO: Error handling */}
+        {isInputChange || updateTrialMutation.isLoading
+          ? "Saving..."
+          : updateTrialMutation.isError
+          ? "uh oh"
+          : "Saved to Cloud"}
+      </div>
       <Link
         href={`${router.asPath}/review`}
         className={`${$button.default} ${$button.fixedToBottom} ${
