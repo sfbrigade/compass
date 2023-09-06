@@ -72,6 +72,8 @@ const ViewStudentPage = () => {
       start_date: new Date(data.get("start_date") as string),
       end_date: new Date(data.get("end_date") as string),
     });
+
+    setCreateIepModal(false);
   };
 
   if (isLoading) {
