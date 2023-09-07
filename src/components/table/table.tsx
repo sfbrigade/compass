@@ -264,7 +264,7 @@ export default function EnhancedTable<
 
   const filterList = useCallback(
     (list: Person[], searchTerm: string) => {
-      const filteredList = list?.filter((person) => {
+      const filteredList = list.filter((person) => {
         for (const headCell of headCells) {
           if (
             headCell.id in person &&
@@ -284,7 +284,7 @@ export default function EnhancedTable<
   const visibleRows = useMemo(() => {
     const filteredList = filterList(people, searchParam);
 
-    return filteredList?.slice().sort(getComparator(order, orderBy));
+    return filteredList.slice().sort(getComparator(order, orderBy));
   }, [order, orderBy, people, searchParam, filterList]);
 
   return (
@@ -292,7 +292,7 @@ export default function EnhancedTable<
       {/* Form can't be integrated with table (can't span multiple cells), so the form is on the outside with inputs referencing its id */}
       <form onSubmit={onSubmit} id="table_input_form"></form>
       <EnhancedTableToolbar
-        totalRows={people?.length}
+        totalRows={people.length}
         type={type}
         onOpenInput={handleOpenInput}
         searchParam={searchParam}
@@ -314,7 +314,7 @@ export default function EnhancedTable<
                 onCloseInput={handleCloseInput}
               />
             )}
-            {visibleRows?.map((row) => {
+            {visibleRows.map((row) => {
               const labelId = row.email;
 
               return (
@@ -343,7 +343,7 @@ export default function EnhancedTable<
                       <TableCell align={"left"}>{row.grade}</TableCell>
                       <TableCell align={"left"}>
                         {row.is_active
-                          ? row.end_date?.toDateString().slice(4)
+                          ? row.end_date.toDateString().slice(4)
                           : "None"}
                       </TableCell>
                     </>

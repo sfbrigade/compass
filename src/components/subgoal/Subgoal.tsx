@@ -1,4 +1,3 @@
-import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import { Subgoal } from "@/types/global";
 import { Box, Button } from "@mui/material";
@@ -39,12 +38,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
         padding: "1rem",
       }}
     >
-      {/* <h4>Subgoal</h4> */}
-      {/* <div>Subgoal ID: {subgoal.subgoal_id}</div> */}
       <p>{subgoal.description}</p>
-      {/* <p>Created at: {subgoal.created_at.toDateString()}</p> */}
-      {/* <p>Instructions: {subgoal.instructions || "null"}</p>
-      <p>Target max attempts: {subgoal.target_max_attempts || "null"}</p> */}
       <Button
         sx={{
           height: "24px",

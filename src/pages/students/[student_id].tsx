@@ -2,14 +2,12 @@ import { trpc } from "@/client/lib/trpc";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
-import {
-  Box,
-  Button,
-  Container,
-  Modal,
-  Stack,
-  Typography,
-} from "@mui/material";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -119,11 +117,7 @@ const ViewStudentPage = () => {
             >
               <div>IEP End Date:</div>{" "}
               <div style={{ alignSelf: "center" }}>
-                {activeIep ? (
-                  <>{new Date(activeIep.end_date ?? "").toLocaleDateString()}</>
-                ) : (
-                  <>None</>
-                )}
+                {activeIep?.end_date.toLocaleDateString() ?? "None"}
               </div>
             </Stack>
           </Box>

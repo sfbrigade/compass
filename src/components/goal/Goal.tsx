@@ -36,7 +36,7 @@ const Goals = ({ goal }: GoalProps) => {
 
   return (
     <div>
-      <p className={$goal.para}>{goal.description}</p>
+      <p className={$goal.description}>{goal.description}</p>
 
       <div className={$goal.tab}>
         <ul className={$goal.listNames}>
