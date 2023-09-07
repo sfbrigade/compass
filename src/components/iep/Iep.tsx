@@ -2,7 +2,9 @@ import { trpc } from "@/client/lib/trpc";
 import Goals from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
-import { Box, Container, List } from "@mui/material";
+import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import List from "@mui/material/List";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
 
