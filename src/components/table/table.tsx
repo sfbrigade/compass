@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { isStudent, HeadCell, Student, Para } from "./tableTypes";
+import { isStudent, HeadCell, Para, StudentWithIep } from "./tableTypes";
 import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
@@ -83,24 +83,6 @@ function EnhancedTableHead<Column extends HeadCell>({
             </TableSortLabel>
           </TableCell>
         ))}
-        {headCells[3]?.id === "grade" && (
-          <TableCell key="iep_end_date" align={`left`}>
-            <TableSortLabel
-              active={orderBy === "iep_end_date"}
-              direction={orderBy === "iep_end_date" ? order : "asc"}
-              onClick={createSortHandler("iep_end_date")}
-              className={$table.headerLabel}
-            >
-              IEP End Date
-              {/* //! SORTING DOES NOT WORK FOR IEP */}
-              {orderBy === "iep_end_date" ? (
-                <Box component="span" sx={visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </Box>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        )}
       </TableRow>
     </TableHead>
   );
@@ -236,12 +218,6 @@ interface EnhancedTableProps<Person, Column> {
   type: "Student" | "Staff";
 }
 
-type Iep = {
-  end_date: Date;
-};
-
-type StudentWithIep = Student & Iep;
-
 /**
  * exported table component built with MUI displaying either the CM's paras or students, depending on input.
  * @param people - Array of either paras or student objects
@@ -338,7 +314,7 @@ export default function EnhancedTable<
                 onCloseInput={handleCloseInput}
               />
             )}
-            {visibleRows.map((row) => {
+            {visibleRows?.map((row) => {
               const labelId = row.email;
 
               return (
@@ -366,7 +342,9 @@ export default function EnhancedTable<
                     <>
                       <TableCell align={"left"}>{row.grade}</TableCell>
                       <TableCell align={"left"}>
-                        {row.end_date.toDateString().slice(4) ?? "None"}
+                        {row.is_active
+                          ? row.end_date?.toDateString().slice(4)
+                          : "None"}
                       </TableCell>
                     </>
                   )}

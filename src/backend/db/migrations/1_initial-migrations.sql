@@ -65,7 +65,6 @@ CREATE TABLE "iep" (
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  
   is_active BOOL NOT NULL DEFAULT TRUE
 );
 

@@ -1,13 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import React from "react";
 import PersonTable from "../table/table";
-import { Student, StudentHeadCell } from "../table/tableTypes";
-
-type Iep = {
-  end_date: Date;
-};
-
-type StudentWithIep = Student & Iep;
+import { StudentWithIep, StudentWithIepHeadcell } from "../table/tableTypes";
 
 const MyStudents = () => {
   const utils = trpc.useContext();
@@ -37,7 +31,7 @@ const MyStudents = () => {
     (event.target as HTMLFormElement).reset();
   };
 
-  const headCells: StudentHeadCell[] = [
+  const headCells: StudentWithIepHeadcell[] = [
     {
       id: "first_name",
       label: "First Name",
@@ -57,6 +51,11 @@ const MyStudents = () => {
       id: "grade",
       label: "Grade",
       hasInput: true,
+    },
+    {
+      id: "end_date",
+      label: "IEP End Date",
+      hasInput: false,
     },
   ];
 

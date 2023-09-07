@@ -20,23 +20,39 @@ export const case_manager = router({
   getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
-    const result = await req.ctx.db
+    const studentData = await req.ctx.db
       .selectFrom("student")
-      .fullJoin("iep", "iep.student_id", "student.student_id")
-      .select([
-        "student.student_id",
-        "first_name",
-        "last_name",
-        "student.email",
-        "assigned_case_manager_id",
-        "iep.iep_id",
-        "end_date",
-        "grade",
-      ])
       .where("assigned_case_manager_id", "=", userId)
+      .fullJoin("iep", (join) =>
+        join.onRef("iep.student_id", "=", "student.student_id")
+      )
+      .orderBy("is_active", "desc")
+      .selectAll()
       .execute();
 
-    return result;
+    const refinedList: typeof studentData = [];
+
+    studentData.forEach((student) => {
+      if (student.is_active === null) {
+        refinedList.push(student);
+      } else if (student.is_active === true) {
+        refinedList.push(student);
+      } else if (student.is_active === false) {
+        let isThere = false;
+
+        for (const addedStudent of refinedList) {
+          if (addedStudent.student_id === student.student_id) {
+            isThere = true;
+          }
+        }
+
+        if (!isThere) {
+          refinedList.push(student);
+        }
+      }
+    });
+
+    return refinedList;
   }),
 
   /**
