@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Counter from "@/components/counter/counter";
 import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
@@ -13,6 +13,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import useConfirmBeforeLeave from "@/hooks/useConfirmBeforeLeave";
 
 interface DataUpdate {
   success?: number;
@@ -50,17 +51,19 @@ const BenchmarkPage = () => {
   const [notesInputValue, setNotesInputValue] = useState("");
   const [successInputValue, setSuccessInputValue] = useState(0);
   const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
-
   const [isInputChange, setIsInputChange] = useState(false);
-  // const [doNotUpdate, setDoNotUpdate] = useState(false);
+
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
+
+  // Sets the current trial to most recent whenever a new task is loaded.
   useEffect(() => {
     if (task && task.trials.length > 0) {
       setCurrentTrialIdx(task.trials.length - 1);
     }
   }, [task]);
 
+  // Sets all input states to saved values
   useEffect(() => {
     if (currentTrial?.notes !== undefined) {
       setNotesInputValue(currentTrial.notes || "");
@@ -73,12 +76,14 @@ const BenchmarkPage = () => {
     }
   }, [currentTrial?.notes, currentTrial?.success, currentTrial?.unsuccess]);
 
+  // Marks this benchmark as seen (if it hasn't been seen yet)
   useEffect(() => {
     if (!seenMutation.isLoading && !taskIsLoading && task && !task.seen) {
       seenMutation.mutate({ task_id: task.task_id });
     }
   }, [task, seenMutation, taskIsLoading]);
 
+  // Creates a new data collection instance (if there are none in progress)
   useEffect(() => {
     if (
       !addTrialMutation.isLoading &&
@@ -110,7 +115,8 @@ const BenchmarkPage = () => {
     setNotesInputValue((e.target as HTMLInputElement).value);
     setIsInputChange(true);
   };
-  //Only update db after typing has stopped for 1 sec
+
+  //Only updates db after inputs have stopped for 1 sec
   useDebounce(
     () => {
       if (isInputChange) {
@@ -125,6 +131,20 @@ const BenchmarkPage = () => {
     1000,
     [notesInputValue, successInputValue, unsuccessInputValue]
   );
+
+  // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
+  const checkUnsavedData = useCallback(() => {
+    if (
+      currentTrial?.notes !== notesInputValue ||
+      currentTrial?.success !== successInputValue ||
+      currentTrial?.unsuccess !== unsuccessInputValue
+    ) {
+      return true;
+    }
+    return false;
+  }, [notesInputValue, successInputValue, unsuccessInputValue, currentTrial]);
+
+  useConfirmBeforeLeave(checkUnsavedData);
 
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
