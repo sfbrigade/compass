@@ -6,26 +6,16 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
-
-const modalStyle = {
-  position: "absolute",
-  top: "25%",
-  left: "50%",
-  transform: "translate(-50%)",
-  width: 400,
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
+import $Form from "../../styles/Form.module.css";
+import $Modal from "../../styles/Modal.module.css";
+import $StudentPage from "../../styles/StudentPage.module.css";
+import $Image from "../../styles/Image.module.css";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
@@ -80,46 +70,27 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <Container sx={{ backgroundColor: "#ffffff", borderRadius: "10px" }}>
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "1rem",
-          }}
-        >
-          <h1>
+      <Container className={$StudentPage.studentInfoContainer}>
+        <Box className={$StudentPage.displayBox}>
+          <p className={$StudentPage.studentName}>
             {student?.first_name} {student?.last_name}
-          </h1>
+          </p>
+          {/* //Todo: Modify Edit Button */}
           <Button variant="outlined">Edit</Button>
         </Box>
 
-        <Box style={{ display: "flex", justifyContent: "space-between" }}>
-          <Box
-            sx={{
-              display: "flex",
-            }}
-          >
-            <Stack
-              spacing={1}
-              sx={{
-                padding: "1rem",
-              }}
-            >
-              <div>Grade:</div>
-              <div style={{ alignSelf: "center" }}>{student?.grade}</div>
-            </Stack>
-            <Stack
-              spacing={1}
-              sx={{
-                padding: "1rem",
-              }}
-            >
-              <div>IEP End Date:</div>{" "}
-              <div style={{ alignSelf: "center" }}>
+        <Box className={$StudentPage.displayBox}>
+          <Box className={$StudentPage.infoBox}>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>Grade:</p>
+              <p className={$StudentPage.centerText}>{student?.grade}</p>
+            </div>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>IEP End Date:</p>
+              <p className={$StudentPage.centerText}>
                 {activeIep?.end_date.toLocaleDateString() ?? "None"}
-              </div>
-            </Stack>
+              </p>
+            </div>
           </Box>
 
           {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
@@ -145,35 +116,19 @@ const ViewStudentPage = () => {
 
       {/* If no active IEP, prompt CM to create one  */}
       {!activeIep?.is_active ? (
-        <Container
-          sx={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            marginTop: "2rem",
-            height: "620px",
-          }}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              top: "40px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
+        <Container className={$StudentPage.noIepContainer}>
+          <Box className={$StudentPage.noIepBox}>
             <Image
               src={noGoals}
               alt="no IEP image"
-              style={{ width: "600px", height: "auto" }}
+              className={$Image.fitContent}
             />
-            <h3 style={{ marginBottom: "1rem" }}>
+            <p className={$StudentPage.textSpacing}>
               This student does not have an active IEP. Please create one.
-            </h3>
+            </p>
             <button
               onClick={() => setCreateIepModal(true)}
               className={`${$button.default}`}
-              style={{ width: "fit-content", alignSelf: "center" }}
             >
               Create IEP
             </button>
@@ -191,18 +146,16 @@ const ViewStudentPage = () => {
         aria-labelledby="archiving-student"
         aria-describedby="archiving-current-student"
       >
-        <Box sx={modalStyle}>
-          <Typography id="archiving-student" variant="h6" component="h2">
-            Are you sure you want to archive {student?.first_name}{" "}
-            {student?.last_name}?
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-evenly",
-              paddingTop: "2rem",
-            }}
-          >
+        <Box className={$Modal.modalContent}>
+          <p className={$StudentPage.centerText}>
+            Are you sure you want to archive
+          </p>
+          <p className={$StudentPage.centerText}>
+            <b>
+              {student?.first_name} {student?.last_name}
+            </b>
+          </p>
+          <Box className={$StudentPage.archiveOptions}>
             <button
               className={`${$button.default} ${$home.bold}`}
               onClick={() => handleArchiveStudent()}
@@ -226,21 +179,20 @@ const ViewStudentPage = () => {
         aria-labelledby="create-student-iep"
         aria-describedby="modal for creating student iep"
       >
-        <Box sx={modalStyle}>
-          <Typography id="create-student-iep" variant="h6" component="h2">
-            Create an IEP for{" "}
+        <Box className={$Modal.modalContent}>
+          <p className={$StudentPage.centerText}>Create an IEP for</p>
+          <p className={$StudentPage.centerText}>
             <b>
               {student?.first_name} {student?.last_name}
             </b>
-          </Typography>
+          </p>
           <form
             onSubmit={handleIepSubmit}
-            className={$input.default}
-            style={{ marginTop: "2rem", padding: "1rem" }}
+            className={`${$input.default} ${$Form.formPadding}`}
           >
-            <Stack spacing={2}>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography sx={{ fontSize: "larger" }}>Start Date:</Typography>
+            <div>
+              <Box className={$StudentPage.displayBox}>
+                <p className={$StudentPage.textLarge}>Start Date:</p>
                 <input
                   type="date"
                   name="start_date"
@@ -248,8 +200,8 @@ const ViewStudentPage = () => {
                   required
                 />
               </Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                <Typography sx={{ fontSize: "larger" }}>End Date:</Typography>
+              <Box className={$StudentPage.displayBox}>
+                <p className={$StudentPage.textLarge}>End Date:</p>
                 <input
                   type="date"
                   name="end_date"
@@ -258,7 +210,7 @@ const ViewStudentPage = () => {
                 />
               </Box>
 
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box className={$StudentPage.displayBox}>
                 <button type="submit" className={$button.default}>
                   Create IEP
                 </button>
@@ -269,7 +221,7 @@ const ViewStudentPage = () => {
                   Cancel
                 </button>
               </Box>
-            </Stack>
+            </div>
           </form>
         </Box>
       </Modal>

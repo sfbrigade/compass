@@ -7,6 +7,8 @@ import Container from "@mui/material/Container";
 import List from "@mui/material/List";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
+import $Iep from "./Iep.module.css";
+import $Image from "../../styles/Image.module.css";
 
 interface IepProps {
   iep_id: string;
@@ -41,22 +43,9 @@ const Iep = ({ iep_id }: IepProps) => {
 
   return (
     <>
-      {/* Tabs on Top */}
       <Container>
-        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-          <h3
-            style={{
-              backgroundColor: "#ffffff",
-              width: "fit-content",
-              padding: "1rem",
-              borderRadius: "10px",
-              marginTop: "2rem",
-              marginBottom: "-1rem",
-              marginLeft: "-24px",
-            }}
-          >
-            Goals &#40;{goals?.length ?? 0}&#41;
-          </h3>
+        <Box className={$Iep.goalBox}>
+          <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
           {/* adding new goals // TODO: extract this content elsewhere */}
           <form
             style={{
@@ -88,18 +77,7 @@ const Iep = ({ iep_id }: IepProps) => {
 
       {/* List of goals */}
       {goals?.length ? (
-        <Container
-          sx={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            paddingBottom: "2rem",
-            height: "620px",
-            overflowY: "auto",
-            borderTop: "20px solid",
-            borderBottom: "40px solid",
-            borderColor: "#ffffff",
-          }}
-        >
+        <Container className={$Iep.goalsContainer}>
           <ul>
             {goals.map((goal) => (
               <List key={goal.goal_id}>
@@ -110,41 +88,19 @@ const Iep = ({ iep_id }: IepProps) => {
         </Container>
       ) : (
         // No Goal in DB yet
-        <Container
-          sx={{
-            backgroundColor: "#ffffff",
-            borderRadius: "10px",
-            height: "580px",
-          }}
-        >
-          <Box
-            sx={{
-              position: "relative",
-              top: "40px",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-            }}
-          >
-            {/* Contents Inside */}
+        <Container className={$Iep.goalsContainer}>
+          <Box className={$Iep.noGoalBox}>
             <Image
               src={noGoals}
               alt="no goals image"
-              style={{ width: "600px", height: "auto" }}
+              className={$Image.fitContent}
             />
-            <h1 style={{ marginBottom: "1rem", alignSelf: "center" }}>
-              No goals yet
-            </h1>
-            <h4 style={{ marginBottom: "1rem" }}>
+            <p className={$Iep.noGoalText}>No goals yet</p>
+            <p className={$Iep.noGoalTextSmall}>
               Start adding goals to set up your student&#39;s profile
-            </h4>
-            <button
-              // onClick={() => setCreateIepModal(true)}
-              className={`${$button.default}`}
-              style={{ width: "fit-content", alignSelf: "center" }}
-            >
-              Add goal
-            </button>
+            </p>
+            {/* // TODO: Modify add goal function here. */}
+            <button className={`${$button.default}`}>Add goal</button>
           </Box>
         </Container>
       )}

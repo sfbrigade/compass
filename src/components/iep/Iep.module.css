@@ -1,0 +1,41 @@
+.goalBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.goalTab {
+  background-color: #ffffff;
+  width: fit-content;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-top: 2rem;
+  margin-bottom: -1rem;
+  margin-left: -24px;
+}
+
+.goalsContainer {
+  background-color: #ffffff;
+  padding-bottom: 2rem;
+  height: 580px;
+  overflow-y: auto;
+  border-radius: 10px;
+  border-top: 20px solid;
+  border-bottom: 40px solid;
+  border-color: #ffffff;
+}
+
+.noGoalBox {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noGoalText {
+  margin-bottom: 1rem;
+  font-size: xx-large;
+}
+
+.noGoalTextSmall {
+  margin-bottom: 1rem;
+}
