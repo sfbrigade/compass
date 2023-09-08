@@ -94,9 +94,7 @@ const ViewStudentPage = () => {
           </Box>
 
           {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
-          <Box
-            sx={{ padding: "1rem", display: "flex", alignItems: "flex-start" }}
-          >
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <button
               onClick={() => setArchivePrompt(true)}
               className={`${$button.default} ${$home.bold}`}
