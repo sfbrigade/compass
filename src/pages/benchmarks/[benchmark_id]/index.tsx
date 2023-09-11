@@ -51,10 +51,14 @@ const BenchmarkPage = () => {
   const [notesInputValue, setNotesInputValue] = useState("");
   const [successInputValue, setSuccessInputValue] = useState(0);
   const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
-  const [isInputChange, setIsInputChange] = useState(false);
 
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
+
+  const hasInputChanged =
+    currentTrial?.notes !== notesInputValue ||
+    currentTrial?.success !== successInputValue ||
+    currentTrial?.unsuccess !== unsuccessInputValue;
 
   // Sets the current trial to most recent whenever a new task is loaded.
   useEffect(() => {
@@ -113,20 +117,18 @@ const BenchmarkPage = () => {
 
   const onNoteChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
     setNotesInputValue((e.target as HTMLInputElement).value);
-    setIsInputChange(true);
   };
 
   //Only updates db after inputs have stopped for 1 sec
   useDebounce(
     () => {
-      if (isInputChange) {
+      if (hasInputChanged) {
         handleUpdate({
           notes: notesInputValue,
           success: successInputValue,
           unsuccess: unsuccessInputValue,
         });
       }
-      setIsInputChange(false);
     },
     1000,
     [notesInputValue, successInputValue, unsuccessInputValue]
@@ -134,15 +136,11 @@ const BenchmarkPage = () => {
 
   // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
   const checkUnsavedData = useCallback(() => {
-    if (
-      currentTrial?.notes !== notesInputValue ||
-      currentTrial?.success !== successInputValue ||
-      currentTrial?.unsuccess !== unsuccessInputValue
-    ) {
+    if (hasInputChanged) {
       return true;
     }
     return false;
-  }, [notesInputValue, successInputValue, unsuccessInputValue, currentTrial]);
+  }, [hasInputChanged]);
 
   useConfirmBeforeLeave(checkUnsavedData);
 
@@ -191,11 +189,9 @@ const BenchmarkPage = () => {
           count={successInputValue}
           onIncrement={() => {
             setSuccessInputValue(successInputValue + 1);
-            setIsInputChange(true);
           }}
           onDecrement={() => {
             setSuccessInputValue(successInputValue - 1);
-            setIsInputChange(true);
           }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
@@ -212,11 +208,9 @@ const BenchmarkPage = () => {
           count={unsuccessInputValue}
           onIncrement={() => {
             setUnsuccessInputValue(unsuccessInputValue + 1);
-            setIsInputChange(true);
           }}
           onDecrement={() => {
             setUnsuccessInputValue(unsuccessInputValue - 1);
-            setIsInputChange(true);
           }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
@@ -241,7 +235,7 @@ const BenchmarkPage = () => {
 
       <div className={`${$typo.caption} ${$typo.rightText}`}>
         {/* TODO: Error handling */}
-        {isInputChange || updateTrialMutation.isLoading
+        {hasInputChanged || updateTrialMutation.isLoading
           ? "Saving..."
           : updateTrialMutation.isError
           ? "uh oh"
