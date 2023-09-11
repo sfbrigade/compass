@@ -87,6 +87,16 @@ resource "google_cloud_run_v2_service" "run_service" {
         value = google_storage_bucket.compass_data.name
       }
 
+      env {
+        name  = "NEXTAUTH_URL"
+        value = var.base_http_endpoint
+      }
+
+      env {
+        name  = "BASE_HTTP_ENDPOINT"
+        value = var.base_http_endpoint
+      }
+
       startup_probe {
         period_seconds    = 1
         failure_threshold = 30

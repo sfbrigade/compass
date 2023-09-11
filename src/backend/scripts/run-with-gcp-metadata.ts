@@ -36,12 +36,18 @@ const runWithGcpMetadata = async () => {
       }
     );
 
-    env.NEXTAUTH_URL = getServiceResponse.data.status.url;
-    env.BASE_HTTP_ENDPOINT = getServiceResponse.data.status.url;
+    if (process.env.NEXTAUTH_URL && process.env.NEXTAUTH_URL !== "") {
+      console.log(
+        "🕵️  NEXTAUTH_URL already set, NEXTAUTH_URL and BASE_HTTP_ENDPOINT will not be modified."
+      );
+    } else {
+      env.NEXTAUTH_URL = getServiceResponse.data.status.url;
+      env.BASE_HTTP_ENDPOINT = getServiceResponse.data.status.url;
 
-    console.log(
-      "🕵️  running on GCP, environment will be modified with NEXTAUTH_URL and BASE_HTTP_ENDPOINT."
-    );
+      console.log(
+        "🕵️  running on GCP, environment will be modified with NEXTAUTH_URL and BASE_HTTP_ENDPOINT."
+      );
+    }
   } else {
     console.log("🕵️  not running on GCP, environment will not be modified.");
   }
