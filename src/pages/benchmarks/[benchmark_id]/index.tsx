@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Counter from "@/components/counter/counter";
 import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
@@ -135,14 +135,7 @@ const BenchmarkPage = () => {
   );
 
   // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
-  const checkUnsavedData = useCallback(() => {
-    if (hasInputChanged) {
-      return true;
-    }
-    return false;
-  }, [hasInputChanged]);
-
-  useConfirmBeforeLeave(checkUnsavedData);
+  useConfirmBeforeLeave(hasInputChanged);
 
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
