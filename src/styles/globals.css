@@ -110,6 +110,10 @@ strong {
   font-weight: 700;
 }
 
+textarea {
+  resize: vertical;
+}
+
 /* Breakpoints recommended by Bootstrap */
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {
