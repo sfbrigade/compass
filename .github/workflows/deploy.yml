@@ -65,4 +65,4 @@ jobs:
 
       - run: terraform init -backend-config=../backend.hcl
 
-      - run: terraform apply -auto-approve -var="project_id=${{ secrets.GCS_PROJECT_ID }}" -var="image=${{ secrets.GCS_REGION }}-docker.pkg.dev/${{ secrets.GCS_PROJECT_ID }}/${{ secrets.GCS_ARTIFACT_REPO_NAME }}/compass:${{ github.sha }}" -var="oauth_client_id=${{ secrets.GCS_OAUTH_CLIENT_ID }}" -var="oauth_client_secret=${{ secrets.GCS_OAUTH_CLIENT_SECRET }}"
+      - run: terraform apply -auto-approve -var="project_id=${{ secrets.GCS_PROJECT_ID }}" -var="image=${{ secrets.GCS_REGION }}-docker.pkg.dev/${{ secrets.GCS_PROJECT_ID }}/${{ secrets.GCS_ARTIFACT_REPO_NAME }}/compass:${{ github.sha }}" -var="oauth_client_id=${{ secrets.GCS_OAUTH_CLIENT_ID }}" -var="oauth_client_secret=${{ secrets.GCS_OAUTH_CLIENT_SECRET }}" -var="base_http_endpoint=${{ secrets.GCS_BASE_HTTP_ENDPOINT }}"
