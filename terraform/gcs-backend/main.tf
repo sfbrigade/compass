@@ -64,10 +64,15 @@ resource "google_project_iam_member" "github_ci_owner" {
   member  = "serviceAccount:${google_service_account.github_ci.email}"
 }
 
+# The lifecycle of Workload Pools is very annoying: Terraform likes to re-create resources, but Workload Pools aren't fully deleted until after 30 days and don't allow re-using the same name.
+resource "random_id" "pool_suffix" {
+  byte_length = 8
+}
+
 module "gh_oidc" {
   source      = "terraform-google-modules/github-actions-runners/google//modules/gh-oidc"
   project_id  = var.project_id
-  pool_id     = "compass-ci-pool"
+  pool_id     = "compass-ci-pool-${random_id.pool_suffix.hex}"
   provider_id = "gh-provider"
   sa_mapping = {
     (google_service_account.github_ci.account_id) = {
@@ -89,6 +94,8 @@ output "github_ci_sevice_account_email" {
 resource "google_artifact_registry_repository" "repo" {
   repository_id = "compass"
   format        = "DOCKER"
+
+  depends_on = [google_project_service.artifact_registry]
 }
 
 output "artifact_registry_repository" {
