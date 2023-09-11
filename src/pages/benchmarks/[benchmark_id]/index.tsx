@@ -13,6 +13,7 @@ import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import useConfirmBeforeLeave from "@/hooks/useConfirmBeforeLeave";
 
 interface DataUpdate {
   success?: number;
@@ -47,27 +48,46 @@ const BenchmarkPage = () => {
     onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
 
-  const [notesValue, setNotesValue] = useState("");
+  const [notesInputValue, setNotesInputValue] = useState("");
+  const [successInputValue, setSuccessInputValue] = useState(0);
+  const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
+
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
+
+  const hasInputChanged =
+    currentTrial?.notes !== notesInputValue ||
+    currentTrial?.success !== successInputValue ||
+    currentTrial?.unsuccess !== unsuccessInputValue;
+
+  // Sets the current trial to most recent whenever a new task is loaded.
   useEffect(() => {
     if (task && task.trials.length > 0) {
       setCurrentTrialIdx(task.trials.length - 1);
     }
   }, [task]);
 
+  // Sets all input states to saved values
   useEffect(() => {
-    if (task && currentTrial) {
-      setNotesValue(currentTrial.notes || "");
+    if (currentTrial?.notes !== undefined) {
+      setNotesInputValue(currentTrial.notes || "");
     }
-  }, [task, currentTrial]);
+    if (currentTrial?.success !== undefined) {
+      setSuccessInputValue(currentTrial?.success);
+    }
+    if (currentTrial?.unsuccess !== undefined) {
+      setUnsuccessInputValue(currentTrial?.unsuccess);
+    }
+  }, [currentTrial?.notes, currentTrial?.success, currentTrial?.unsuccess]);
 
+  // Marks this benchmark as seen (if it hasn't been seen yet)
   useEffect(() => {
     if (!seenMutation.isLoading && !taskIsLoading && task && !task.seen) {
       seenMutation.mutate({ task_id: task.task_id });
     }
   }, [task, seenMutation, taskIsLoading]);
 
+  // Creates a new data collection instance (if there are none in progress)
   useEffect(() => {
     if (
       !addTrialMutation.isLoading &&
@@ -95,20 +115,28 @@ const BenchmarkPage = () => {
     }
   };
 
-  // BUG: Updating counters before the timer goes off results in changes being reverted.
-  const onNoteChange = (e: React.FormEvent<HTMLInputElement>) => {
-    setNotesValue((e.target as HTMLInputElement).value);
+  const onNoteChange = (e: React.FormEvent<HTMLTextAreaElement>) => {
+    setNotesInputValue((e.target as HTMLInputElement).value);
   };
+
+  //Only updates db after inputs have stopped for 1 sec
   useDebounce(
     () => {
-      //Only update db after typing has stopped for 1 sec
-      handleUpdate({
-        notes: notesValue,
-      });
+      if (hasInputChanged) {
+        handleUpdate({
+          notes: notesInputValue,
+          success: successInputValue,
+          unsuccess: unsuccessInputValue,
+        });
+      }
     },
     1000,
-    [notesValue]
+    [notesInputValue, successInputValue, unsuccessInputValue]
   );
+
+  // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
+  useConfirmBeforeLeave(hasInputChanged);
+
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
   }
@@ -134,7 +162,7 @@ const BenchmarkPage = () => {
         >
           <ChevronLeftIcon />
         </button>
-        <p>Trial {currentTrialIdx + 1}</p>
+        <h3>Trial {currentTrialIdx + 1}</h3>
         <button
           className={`${$button.default} ${$button.circular}`}
           onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
@@ -151,21 +179,16 @@ const BenchmarkPage = () => {
               Successful <CheckIcon />
             </>
           }
-          count={currentTrial.success}
-          onIncrement={() =>
-            handleUpdate({
-              success: currentTrial.success + 1,
-            })
-          }
-          onDecrement={() =>
-            handleUpdate({
-              success: currentTrial.success - 1,
-            })
-          }
+          count={successInputValue}
+          onIncrement={() => {
+            setSuccessInputValue(successInputValue + 1);
+          }}
+          onDecrement={() => {
+            setSuccessInputValue(successInputValue - 1);
+          }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
-            currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.success <= 0
+            currentTrialIdx !== task.trials.length - 1 || successInputValue <= 0
           }
           color="green"
         />
@@ -175,38 +198,42 @@ const BenchmarkPage = () => {
               Unsuccessful <ClearIcon />
             </>
           }
-          count={currentTrial.unsuccess}
-          onIncrement={() =>
-            handleUpdate({
-              unsuccess: currentTrial.unsuccess + 1,
-            })
-          }
-          onDecrement={() =>
-            handleUpdate({
-              unsuccess: currentTrial.unsuccess - 1,
-            })
-          }
+          count={unsuccessInputValue}
+          onIncrement={() => {
+            setUnsuccessInputValue(unsuccessInputValue + 1);
+          }}
+          onDecrement={() => {
+            setUnsuccessInputValue(unsuccessInputValue - 1);
+          }}
           disableInc={currentTrialIdx !== task.trials.length - 1}
           disableDec={
             currentTrialIdx !== task.trials.length - 1 ||
-            currentTrial.unsuccess <= 0
+            unsuccessInputValue <= 0
           }
           color="red"
         />
         <p className={`${$typo.centeredText} ${$typo.bold}`}>
-          {currentTrial.success + currentTrial.unsuccess} attempts out of{" "}
-          {task.target_max_attempts}
+          {successInputValue + unsuccessInputValue} attempts out of{" "}
+          {task.target_max_attempts ?? "-"}
         </p>
       </div>
-      <input
+      <textarea
         className={$box.default}
-        type="text"
         placeholder="Type your observation notes here..."
+        rows={5}
         readOnly={currentTrialIdx !== task.trials.length - 1}
-        value={notesValue}
+        value={notesInputValue}
         onChange={onNoteChange}
-      ></input>
+      ></textarea>
 
+      <div className={`${$typo.caption} ${$typo.rightText}`}>
+        {/* TODO: Error handling */}
+        {hasInputChanged || updateTrialMutation.isLoading
+          ? "Saving..."
+          : updateTrialMutation.isError
+          ? "uh oh"
+          : "Saved to Cloud"}
+      </div>
       <Link
         href={`${router.asPath}/review`}
         className={`${$button.default} ${$button.fixedToBottom} ${
