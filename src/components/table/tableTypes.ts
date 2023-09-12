@@ -25,6 +25,11 @@ export interface IepHeadCell extends HeadCell {
 
 export type StudentWithIepHeadcell = StudentHeadCell | IepHeadCell;
 
-export function isStudent(person: Student | Para): person is Student {
-  return (person as Student).student_id !== undefined;
+export function isStudentWithIep(
+  person: StudentWithIep | Para
+): person is StudentWithIep {
+  return (
+    (person as StudentWithIep).student_id !== undefined &&
+    (person as StudentWithIep).iep_id !== undefined
+  );
 }

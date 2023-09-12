@@ -1,3 +1,4 @@
+import { trpc } from "@/client/lib/trpc";
 import { Subgoal } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -7,7 +8,7 @@ interface SubgoalProps {
 }
 
 const Subgoals = ({ subgoal }: SubgoalProps) => {
-  // const task = trpc.iep.tempAddTaskToSelf.useMutation();
+  const task = trpc.iep.tempAddTaskToSelf.useMutation();
 
   // TODO: add form to assign to my paras
   // const assignToPara = (event: React.FormEvent<HTMLFormElement>) => {
@@ -21,11 +22,11 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
   //   });
   // }
   const assignToPara = () => {
-    // task.mutate({
-    //   subgoal_id: subgoal.subgoal_id,
-    //   due_date: new Date(2023, 8, 20),
-    //   trial_count: 5,
-    // });
+    task.mutate({
+      subgoal_id: subgoal.subgoal_id,
+      due_date: new Date(2023, 8, 20),
+      trial_count: 5,
+    });
     alert("TODO: add form to assign to my para");
   };
 
