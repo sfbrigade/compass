@@ -1,7 +1,7 @@
 import React from "react";
-import { requiresAdminAuth } from "@/client/lib/protected-page";
 
 const Settings = () => {
+  // TODO? make sure settings displayed reflect the specific logged-in user
   return (
     <div>
       <p>🚧 Under Construction! 🚧</p>
@@ -9,6 +9,4 @@ const Settings = () => {
   );
 };
 
-const protectedSettings = requiresAdminAuth(Settings);
-
-export default protectedSettings;
+export default Settings;

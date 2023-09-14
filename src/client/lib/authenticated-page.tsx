@@ -19,6 +19,7 @@ export const requiresLogin =
       }
     }, [status, router, pathIsProtected]);
 
+    // TODO? make it so wrapped page does not even load - currently "loading" and unauthorized GET
     if (status === "loading") {
       return <>Loading...</>;
     }

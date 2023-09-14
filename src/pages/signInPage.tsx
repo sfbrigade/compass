@@ -12,7 +12,7 @@ const SignInPage = () => {
 
   useEffect(() => {
     status === "authenticated" ? void router.push("/students") : null;
-  });
+  }, [router, status]);
 
   return (
     <div className={$home.greetWrap}>
