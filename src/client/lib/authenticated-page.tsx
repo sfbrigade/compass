@@ -17,7 +17,7 @@ export const requiresLogin =
       if (status === "unauthenticated" && pathIsProtected) {
         void router.push("/");
       }
-    });
+    }, [status, router, pathIsProtected]);
 
     if (status === "loading") {
       return <>Loading...</>;

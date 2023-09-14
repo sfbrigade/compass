@@ -25,6 +25,8 @@
   --on-warning: #1c1b1f;
   --warning-container: #ffaa44;
   --on-warning-container: #1c1b1f;
+  --error: #b3261e;
+  --error-container: #f9dedc;
 
   --primary-10: #030123;
   --primary-20: #080155;
@@ -98,6 +100,18 @@ h5 {
 p {
   font-size: 1em;
   font-weight: 500;
+}
+
+button {
+  font-family: var(--quicksand);
+}
+
+strong {
+  font-weight: 700;
+}
+
+textarea {
+  resize: vertical;
 }
 
 /* Breakpoints recommended by Bootstrap */

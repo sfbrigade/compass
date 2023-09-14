@@ -32,19 +32,77 @@ resource "google_cloud_run_v2_service" "run_service" {
         }
       }
 
-      startup_probe {
-        tcp_socket {
-          port = 3000
+      env {
+        name = "GOOGLE_CLIENT_ID"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.oauth_client_id.secret_id
+            version = "latest"
+          }
         }
       }
 
-      liveness_probe {
-        # Wait for migrations to run
-        initial_delay_seconds = 30
-        failure_threshold = 5
+      env {
+        name = "GOOGLE_CLIENT_SECRET"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.oauth_client_secret.secret_id
+            version = "latest"
+          }
+        }
+      }
 
-        http_get {
-          path = "/"
+      env {
+        name  = "S3_USER_UPLOADS_ENDPOINT"
+        value = "https://storage.googleapis.com"
+      }
+
+      env {
+        name  = "S3_USER_UPLOADS_REGION"
+        value = var.region
+      }
+
+      env {
+        name = "S3_USER_UPLOADS_ACCESS_KEY_ID"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.storage_access_key.secret_id
+            version = "latest"
+          }
+        }
+      }
+
+      env {
+        name = "S3_USER_UPLOADS_SECRET_ACCESS_KEY"
+        value_source {
+          secret_key_ref {
+            secret  = google_secret_manager_secret.storage_secret_key.secret_id
+            version = "latest"
+          }
+        }
+      }
+
+      env {
+        name  = "S3_USER_UPLOADS_BUCKET_NAME"
+        value = google_storage_bucket.compass_data.name
+      }
+
+      env {
+        name  = "NEXTAUTH_URL"
+        value = var.base_http_endpoint
+      }
+
+      env {
+        name  = "BASE_HTTP_ENDPOINT"
+        value = var.base_http_endpoint
+      }
+
+      startup_probe {
+        period_seconds    = 1
+        failure_threshold = 30
+
+        tcp_socket {
+          port = 3000
         }
       }
 

@@ -1,0 +1,38 @@
+/* Mobile first */
+.default {
+  position: relative;
+  border-radius: 8px;
+  padding: 1em;
+  border: 1px solid var(--grey-70);
+  width: 100%;
+  margin: 1em 0;
+  background-color: var(--on-primary);
+}
+
+.greyBg {
+  composes: default;
+  background-color: var(--grey-90);
+}
+
+.inactive {
+  composes: default;
+  background-color: var(--grey-80);
+  border: none;
+  color: var(--grey-50);
+}
+
+.topAndBottomBorder {
+  padding: 1em 0;
+  border-top: 1px solid var(--grey-70);
+  border-bottom: 1px solid var(--grey-70);
+}
+
+.flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.fullWidth {
+  width: 100%;
+}

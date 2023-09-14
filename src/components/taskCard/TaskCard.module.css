@@ -1,0 +1,54 @@
+.dateFloater {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--grey-30);
+}
+.dateFloaterRed {
+  composes: dateFloater;
+  color: #b3261e;
+}
+
+.dateFloaterGreen {
+  composes: dateFloater;
+  color: #167841;
+}
+
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.profileDone {
+  composes: profile;
+  color: var(--grey-50);
+}
+
+/* This will need to change once a real image is in place */
+.image {
+  border-radius: 50%;
+  height: 50px;
+  width: 50px;
+  background-color: cadetblue;
+}
+
+.imageDone {
+  composes: image;
+  opacity: 0.5;
+}
+
+.progressBar {
+  font-size: 10px;
+  color: var(--grey-30);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+  margin: 10px 0;
+}
