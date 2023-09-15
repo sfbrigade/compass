@@ -341,9 +341,7 @@ export default function EnhancedTable<
                     <>
                       <TableCell align={"left"}>{row.grade}</TableCell>
                       <TableCell align={"left"}>
-                        {row.is_active
-                          ? row.end_date.toDateString().slice(4)
-                          : "None"}
+                        {row.end_date?.toDateString().slice(4) || "None"}
                       </TableCell>
                     </>
                   )}

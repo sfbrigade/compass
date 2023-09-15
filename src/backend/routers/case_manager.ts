@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
+import { student } from "./student";
 
 export const case_manager = router({
   /**
@@ -21,38 +22,23 @@ export const case_manager = router({
     const { userId } = req.ctx.auth;
 
     const studentData = await req.ctx.db
-      .selectFrom("student")
-      .where("assigned_case_manager_id", "=", userId)
-      .fullJoin("iep", (join) =>
-        join.onRef("iep.student_id", "=", "student.student_id")
+      .selectFrom("iep")
+      .fullJoin("student", (join) =>
+        join.onRef("student.student_id", "=", "iep.student_id")
       )
-      .orderBy("is_active", "desc")
-      .selectAll()
+      .where("assigned_case_manager_id", "=", userId)
+      .select([
+        "student.student_id as student_id",
+        "first_name",
+        "last_name",
+        "student.email",
+        "iep.iep_id as iep_id",
+        "iep.end_date as end_date",
+        "student.grade as grade",
+      ])
       .execute();
 
-    const refinedList: typeof studentData = [];
-
-    studentData.forEach((student) => {
-      if (student.is_active === null) {
-        refinedList.push(student);
-      } else if (student.is_active === true) {
-        refinedList.push(student);
-      } else if (student.is_active === false) {
-        let isThere = false;
-
-        for (const addedStudent of refinedList) {
-          if (addedStudent.student_id === student.student_id) {
-            isThere = true;
-          }
-        }
-
-        if (!isThere) {
-          refinedList.push(student);
-        }
-      }
-    });
-
-    return refinedList;
+    return studentData;
   }),
 
   /**

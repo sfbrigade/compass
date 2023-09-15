@@ -64,8 +64,7 @@ CREATE TABLE "iep" (
   case_manager_id UUID REFERENCES "user" (user_id),
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
-  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  is_active BOOL NOT NULL DEFAULT TRUE
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE "goal" (
