@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
-import { student } from "./student";
 
 export const case_manager = router({
   /**
