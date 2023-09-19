@@ -14,4 +14,5 @@ const StudentIEP = ({ first_name, last_name }: StudentIEPProps) => {
     </div>
   );
 };
+
 export default StudentIEP;
