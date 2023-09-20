@@ -86,7 +86,13 @@ export const student = router({
       return result;
     }),
 
-  // TODO: get only the active IEP from the student
+  /**
+   * Gets a student's IEP
+   * NOTE: This currently assumes a student has only
+   * ONE IEP each. This is operating on the assumption
+   * per the MVP that there will only be one IEP per student,
+   * but this should be revisited after the MVP.
+   */
   getActiveStudentIep: authenticatedProcedure
     .input(
       z.object({
@@ -99,7 +105,6 @@ export const student = router({
       const result = await req.ctx.db
         .selectFrom("iep")
         .where("student_id", "=", student_id)
-        .where("is_active", "=", true)
         .selectAll()
         .executeTakeFirst();
 
