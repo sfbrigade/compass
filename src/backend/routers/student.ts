@@ -106,9 +106,9 @@ export const student = router({
         .selectFrom("iep")
         .where("student_id", "=", student_id)
         .selectAll()
-        .executeTakeFirst();
+        .executeTakeFirstOrThrow();
 
-      return result || null;
+      return result;
     }),
 
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.

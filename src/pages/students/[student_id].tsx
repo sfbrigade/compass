@@ -112,8 +112,8 @@ const ViewStudentPage = () => {
         </Box>
       </Container>
 
-      {/* If no active IEP, prompt CM to create one  */}
-      {!activeIep?.is_active ? (
+      {/* If no IEP, prompt CM to create one  */}
+      {!activeIep ? (
         <Container className={$StudentPage.noIepContainer}>
           <Box className={$StudentPage.noIepBox}>
             <Image
