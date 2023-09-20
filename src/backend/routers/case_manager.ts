@@ -51,7 +51,7 @@ export const case_manager = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-        grade: z.string(),
+        grade: z.number(),
       })
     )
     .mutation(async (req) => {
@@ -65,7 +65,7 @@ export const case_manager = router({
           last_name,
           email: email.toLowerCase(),
           assigned_case_manager_id: userId,
-          grade: Number(grade),
+          grade,
         })
         .onConflict((oc) =>
           oc

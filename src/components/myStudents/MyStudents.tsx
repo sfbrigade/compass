@@ -20,12 +20,13 @@ const MyStudents = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const grade = Number(data.get("grade"));
 
     mutate({
       first_name: data.get("first_name") as string,
       last_name: data.get("last_name") as string,
       email: data.get("email") as string,
-      grade: data.get("grade") as string,
+      grade,
     });
     // resetting the form this way is only necessary if the form remains visible upon adding a person. due to Materials UI, the reset form(s) will show as "touched" (TT).
     (event.target as HTMLFormElement).reset();

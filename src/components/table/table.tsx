@@ -177,6 +177,7 @@ function EnhancedTableInput<Column extends HeadCell>({
                 form: "table_input_form",
                 name: inputCell.id,
               }}
+              type={inputCell.id === "grade" ? "number" : "string"}
             />
           </TableCell>
         ) : null;
