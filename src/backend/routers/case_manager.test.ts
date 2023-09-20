@@ -12,32 +12,94 @@ test("getMyStudents", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const students = await trpc.case_manager.getMyStudents.query();
-  t.is(students.length, 1);
-  t.is(students[0].student_id, student_id);
+  const myStudents = await trpc.case_manager.getMyStudents.query();
+  t.is(myStudents.length, 1);
+  t.is(myStudents[0].student_id, student_id);
 });
 
-test("addStudent - student doesn't exist in db", async (t) => {
-  const { trpc } = await getTestServer(t, {
+test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
-  const before = await trpc.case_manager.getMyStudents.query();
-  t.is(before.length, 0);
+  const student = await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      grade: 6,
+      assigned_case_manager_id: seed.case_manager.user_id,
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const myStudents = await trpc.case_manager.getMyStudentsAndIepInfo.query();
+  t.is(myStudents.length, 1);
+  t.is(myStudents[0].student_id, student.student_id);
+  t.is(myStudents[0].iep_id, null);
+  t.is(myStudents[0].end_date, null);
+});
+
+test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  await trpc.case_manager.addStudent.mutate({
+    first_name: seed.student.first_name,
+    last_name: seed.student.last_name,
+    email: seed.student.email,
+    grade: seed.student.grade,
+  });
+
+  const myStudentsBefore =
+    await trpc.case_manager.getMyStudentsAndIepInfo.query();
+  t.is(myStudentsBefore[0].iep_id, null);
+  t.is(myStudentsBefore[0].end_date, null);
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const myStudentsAfter =
+    await trpc.case_manager.getMyStudentsAndIepInfo.query();
+  t.is(myStudentsAfter[0].iep_id, iep.iep_id);
+  t.deepEqual(myStudentsAfter[0].end_date, iep.end_date);
+});
+
+test("addStudent - student doesn't exist in db", async (t) => {
+  const { trpc, db } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const myStudentsBefore = await trpc.case_manager.getMyStudents.query();
+  t.is(myStudentsBefore.length, 0);
+  t.falsy(
+    await db
+      .selectFrom("student")
+      .where("first_name", "=", "Foo")
+      .selectAll()
+      .executeTakeFirst()
+  );
 
   await trpc.case_manager.addStudent.mutate({
     first_name: "Foo",
     last_name: "Bar",
     email: "foo.bar@email.com",
+    grade: 6,
   });
 
-  const after = await trpc.case_manager.getMyStudents.query();
-  t.is(after.length, 1);
+  const myStudentsAfter = await trpc.case_manager.getMyStudents.query();
+  t.is(myStudentsAfter.length, 1);
 });
 
 test("addStudent - student exists in db", async (t) => {
@@ -47,11 +109,19 @@ test("addStudent - student exists in db", async (t) => {
 
   const before = await trpc.case_manager.getMyStudents.query();
   t.is(before.length, 0);
+  t.truthy(
+    await db
+      .selectFrom("student")
+      .where("first_name", "=", seed.student.first_name)
+      .selectAll()
+      .executeTakeFirst()
+  );
 
   await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
     email: seed.student.email,
+    grade: seed.student.grade,
   });
 
   const after = await trpc.case_manager.getMyStudents.query();
@@ -77,6 +147,7 @@ test("addStudent - invalid email", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "invalid-email",
+      grade: 6,
     })
   );
 });
@@ -92,6 +163,7 @@ test("removeStudent", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
     .returningAll()

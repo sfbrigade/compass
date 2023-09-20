@@ -12,6 +12,7 @@ test("getStudentById", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
     .returningAll()
@@ -34,6 +35,7 @@ test("doNotAddDuplicateEmails", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
+      grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
     .execute();
@@ -45,6 +47,7 @@ test("doNotAddDuplicateEmails", async (t) => {
         first_name: "Foos",
         last_name: "Bar",
         email: "foo.bar@email.com",
+        grade: 6,
         assigned_case_manager_id: seed.para.user_id,
       })
       .execute();
@@ -76,4 +79,28 @@ test("addIep and getIep", async (t) => {
   t.is(got[0].student_id, seed.student.student_id);
   t.deepEqual(got[0].start_date, added.start_date);
   t.deepEqual(got[0].end_date, added.end_date);
+});
+
+test("getActiveStudentIep - return only one iep object", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const start_date = new Date("2023-01-01");
+  const end_date = new Date("2023-12-31");
+
+  const addedIep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: start_date,
+    end_date: end_date,
+  });
+
+  const studentWithIep = await trpc.student.getActiveStudentIep.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.deepEqual(typeof studentWithIep, "object");
+  t.is(studentWithIep.student_id, seed.student.student_id);
+  t.deepEqual(studentWithIep.start_date, addedIep.start_date);
+  t.deepEqual(studentWithIep.end_date, addedIep.end_date);
 });
