@@ -2,6 +2,7 @@ import React from "react";
 import NavBar from "../navbar/NavBar";
 import $layout from "./Layout.module.css";
 import { useRouter } from "next/router";
+import { requiresLogin } from "@/client/lib/authenticated-page";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -25,4 +26,4 @@ const Layout = ({ children }: LayoutProps) => {
   );
 };
 
-export default Layout;
+export default requiresLogin(Layout);
