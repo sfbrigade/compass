@@ -14,7 +14,7 @@
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
     "db:reset": "npx tsx src/backend/scripts/reset-database.ts",
     "prepare": "husky install",
-    "postinstall": "next build --no-lint && nsm build --skip-build && npm run type-css",
+    "postinstall": "next build --no-lint && nsm build --skip-build --only-api-files && npm run type-css",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
     "lint": "eslint .",
