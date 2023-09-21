@@ -21,13 +21,17 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
   //     due_date: new Date(data.get("due_date")) as Date
   //   });
   // }
-  const assignToPara = () => {
-    task.mutate({
+  const assignToPara = async () => {
+    const result = await task.mutateAsync({
       subgoal_id: subgoal.subgoal_id,
       due_date: new Date(2023, 8, 20),
       trial_count: 5,
     });
-    alert("TODO: add form to assign to my para");
+    if (!result) {
+      alert("Error: Benchmark already assigned to self.");
+    } else {
+      alert("Success! Benchmark assigned to self.");
+    }
   };
 
   return (
