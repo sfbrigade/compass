@@ -86,5 +86,30 @@ export const student = router({
       return result;
     }),
 
+  /**
+   * Gets a student's IEP
+   * NOTE: This currently assumes a student has only
+   * ONE IEP each. This is operating on the assumption
+   * per the MVP that there will only be one IEP per student,
+   * but this should be revisited after the MVP.
+   */
+  getActiveStudentIep: authenticatedProcedure
+    .input(
+      z.object({
+        student_id: z.string().uuid(),
+      })
+    )
+    .query(async (req) => {
+      const { student_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("iep")
+        .where("student_id", "=", student_id)
+        .selectAll()
+        .executeTakeFirstOrThrow();
+
+      return result;
+    }),
+
   //for future CM's to not have access to a former CM's IEP data, we need a property on the IEP's for the case manager ID and only retrieve database data that matches the current CM's ID.
 });

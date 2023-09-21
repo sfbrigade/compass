@@ -1363,9 +1363,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.grade**
       * - `int2` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      grade: number | null;
+      grade: number;
     }
     export interface JSONSelectable {
       /**
@@ -1401,9 +1401,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.grade**
       * - `int2` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      grade: number | null;
+      grade: number;
     }
     export interface Whereable {
       /**
@@ -1439,7 +1439,7 @@ declare module 'zapatos/schema' {
       /**
       * **student.grade**
       * - `int2` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       grade?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
@@ -1477,9 +1477,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.grade**
       * - `int2` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      grade?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      grade: number | db.Parameter<number> | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1515,9 +1515,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.grade**
       * - `int2` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      grade?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      grade?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
     }
     export type UniqueIndex = 'student_email_key' | 'student_pkey';
     export type Column = keyof Selectable;

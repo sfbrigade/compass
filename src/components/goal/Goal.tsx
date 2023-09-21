@@ -36,11 +36,7 @@ const Goals = ({ goal }: GoalProps) => {
 
   return (
     <div>
-      <h3>Goal</h3>
-      <div>Goal ID: {goal.goal_id}</div>
-      <p>Description: {goal.description}</p>
-      <p>Created at: {goal.created_at.toDateString()}</p>
-      <p>Category: {goal.category}</p>
+      <p className={$goal.description}>{goal.description}</p>
 
       <div className={$goal.tab}>
         <ul className={$goal.listNames}>

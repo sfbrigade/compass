@@ -1,0 +1,12 @@
+.modalContent {
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 400;
+  background-color: white;
+  border: 1px solid #000;
+  border-radius: 10px;
+  box-shadow: 24;
+  padding: 3rem;
+}

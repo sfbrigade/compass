@@ -17,6 +17,29 @@ export const case_manager = router({
     return result;
   }),
 
+  getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const studentData = await req.ctx.db
+      .selectFrom("iep")
+      .fullJoin("student", (join) =>
+        join.onRef("student.student_id", "=", "iep.student_id")
+      )
+      .where("assigned_case_manager_id", "=", userId)
+      .select([
+        "student.student_id as student_id",
+        "first_name",
+        "last_name",
+        "student.email",
+        "iep.iep_id as iep_id",
+        "iep.end_date as end_date",
+        "student.grade as grade",
+      ])
+      .execute();
+
+    return studentData;
+  }),
+
   /**
    * Adds the given student to the CM's roster. The student row is created if
    * it doesn't already exist. Throws an error if the student is already
@@ -28,10 +51,11 @@ export const case_manager = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
+        grade: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth;
 
       await req.ctx.db
@@ -41,6 +65,7 @@ export const case_manager = router({
           last_name,
           email: email.toLowerCase(),
           assigned_case_manager_id: userId,
+          grade,
         })
         .onConflict((oc) =>
           oc

@@ -19,7 +19,10 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div className={$layout.container}>
       <NavBar />
-      <main className={`${isPurpleBg ? $layout.mainPurple : $layout.main}`}>
+      <main
+        className={`${isPurpleBg ? $layout.mainPurple : $layout.main}
+        ${router.query.student_id ? $layout.mainStudent : ""}`}
+      >
         {children}
       </main>
     </div>

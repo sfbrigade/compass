@@ -1,0 +1,58 @@
+.studentInfoContainer {
+  background-color: #ffffff;
+  border-radius: 10px;
+}
+
+.displayBox {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.studentName {
+  font-size: xx-large;
+}
+
+.infoBox {
+  display: flex;
+}
+
+.singleInfoArea {
+  padding: 10px 0;
+  text-align: center;
+}
+
+.centerText {
+  text-align: center;
+  padding-top: 10px;
+}
+
+.noIepContainer {
+  background-color: #ffffff;
+  border-radius: 10px;
+  margin-top: 2rem;
+  min-height: 50vh;
+  max-height: 70vh;
+}
+
+.noIepBox {
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.textSpacing {
+  margin-bottom: 1rem;
+}
+
+.textLarge {
+  font-size: large;
+}
+
+.archiveOptions {
+  display: flex;
+  justify-content: space-evenly;
+  padding-top: 2rem;
+}

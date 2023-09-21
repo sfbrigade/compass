@@ -15,7 +15,7 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { isStudent, HeadCell, Student, Para } from "./tableTypes";
+import { isStudentWithIep, HeadCell, Para, StudentWithIep } from "./tableTypes";
 import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
@@ -177,6 +177,7 @@ function EnhancedTableInput<Column extends HeadCell>({
                 form: "table_input_form",
                 name: inputCell.id,
               }}
+              type={inputCell.id === "grade" ? "number" : "string"}
             />
           </TableCell>
         ) : null;
@@ -226,7 +227,7 @@ interface EnhancedTableProps<Person, Column> {
  * @param type - type of table: either student or staff
  */
 export default function EnhancedTable<
-  Person extends Student | Para,
+  Person extends StudentWithIep | Para,
   Column extends HeadCell
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
@@ -234,7 +235,6 @@ export default function EnhancedTable<
   const [order, setOrder] = useState<Order>("asc");
   const [orderBy, setOrderBy] = useState<keyof Person>("first_name");
   const [showInput, setShowInput] = useState<boolean>(false);
-
   const [searchParam, setSearchParam] = useState<string>("");
 
   const handleOpenInput = () => {
@@ -326,7 +326,7 @@ export default function EnhancedTable<
                   sx={{ cursor: "pointer" }}
                   onClick={() =>
                     handleLinkToPage(
-                      isStudent(row)
+                      isStudentWithIep(row)
                         ? `../students/${row.student_id || ""}`
                         : `../paras/${row.user_id || ""}`
                     )
@@ -337,6 +337,15 @@ export default function EnhancedTable<
                   </TableCell>
                   <TableCell align={"left"}>{row.last_name}</TableCell>
                   <TableCell align={"left"}>{row.email}</TableCell>
+
+                  {isStudentWithIep(row) && (
+                    <>
+                      <TableCell align={"left"}>{row.grade}</TableCell>
+                      <TableCell align={"left"}>
+                        {row.end_date?.toDateString().slice(4) || "None"}
+                      </TableCell>
+                    </>
+                  )}
                 </StyledTableRow>
               );
             })}

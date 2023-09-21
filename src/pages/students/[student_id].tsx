@@ -1,13 +1,26 @@
-import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
-import { useRouter } from "next/router";
-import Link from "next/link";
-import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
+import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import Container from "@mui/material/Container";
+import Modal from "@mui/material/Modal";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import Iep from "../../components/iep/Iep";
+import noGoals from "../../public/img/no-goals-icon.png";
+import $Form from "../../styles/Form.module.css";
+import $Modal from "../../styles/Modal.module.css";
+import $StudentPage from "../../styles/StudentPage.module.css";
+import $Image from "../../styles/Image.module.css";
 
 const ViewStudentPage = () => {
+  const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
+
   const utils = trpc.useContext();
   const router = useRouter();
   const { student_id } = router.query;
@@ -17,7 +30,7 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  const { data: ieps } = trpc.student.getIeps.useQuery(
+  const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id) }
   );
@@ -28,12 +41,13 @@ const ViewStudentPage = () => {
       return;
     }
     await archiveMutation.mutateAsync({ student_id: student.student_id });
-    await router.push(`/cmDashboard`);
+    await router.push(`/students`);
   };
 
   const iepMutation = trpc.student.addIep.useMutation({
-    onSuccess: () => utils.student.getIeps.invalidate(),
+    onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
+
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -46,6 +60,8 @@ const ViewStudentPage = () => {
       start_date: new Date(data.get("start_date") as string),
       end_date: new Date(data.get("end_date") as string),
     });
+
+    setCreateIepModal(false);
   };
 
   if (isLoading) {
@@ -54,80 +70,159 @@ const ViewStudentPage = () => {
 
   return (
     <div>
-      <h1>
-        {student?.first_name} {student?.last_name}
-      </h1>
-      <p>
-        <b>Student ID:</b> {student?.student_id}
-      </p>
-      <p>
-        <b>Student Email:</b> {student?.email}
-      </p>
-      <button
-        className={`${$button.default} ${$home.bold}`}
-        onClick={() => setArchivePrompt(true)}
-      >
-        Archive Student
-      </button>
-
-      {archivePrompt ? (
-        <div>
-          <p>
-            Are you sure you want to archive {student?.first_name}&nbsp;
-            {student?.last_name}?
+      <Container className={$StudentPage.studentInfoContainer}>
+        <Box className={$StudentPage.displayBox}>
+          <p className={$StudentPage.studentName}>
+            {student?.first_name} {student?.last_name}
           </p>
-          <button
-            className={`${$button.default} ${$home.bold}`}
-            onClick={() => handleArchiveStudent()}
-          >
-            Yes
-          </button>
-          <button
-            className={`${$button.default} ${$home.bold}`}
-            onClick={() => setArchivePrompt(false)}
-          >
-            No
-          </button>
-        </div>
-      ) : null}
+          {/* //Todo: Modify Edit Button */}
+          <Button variant="outlined">Edit</Button>
+        </Box>
 
-      <div>Create IEP:</div>
-      <div>
-        <form onSubmit={handleIepSubmit} className={$input.default}>
-          <input
-            type="date"
-            name="start_date"
-            placeholder="IEP start date"
-            required
-          />
-          <input
-            type="date"
-            name="end_date"
-            placeholder="IEP end date"
-            required
-          />
-          <button type="submit" className={$button.default}>
-            Create IEP
-          </button>
-        </form>
-      </div>
+        <Box className={$StudentPage.displayBox}>
+          <Box className={$StudentPage.infoBox}>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>Grade:</p>
+              <p className={$StudentPage.centerText}>{student?.grade}</p>
+            </div>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>IEP End Date:</p>
+              <p className={$StudentPage.centerText}>
+                {activeIep?.end_date.toLocaleDateString() ?? "None"}
+              </p>
+            </div>
+          </Box>
 
-      <br />
-      <ul>
-        {ieps?.map((iep) => (
-          <li key={iep.iep_id}>
-            <Link href={`/iep/${iep.iep_id}`}>IEP</Link>
-            <p>IEP ID: {iep.iep_id}</p>- Start Date:{" "}
-            {new Date(iep.start_date ?? "").toLocaleDateString()} <br />- End
-            Date: {new Date(iep.end_date ?? "").toLocaleDateString()} <br />-
-            CM: {iep.case_manager_id} <br />
-            <br />
-          </li>
-        ))}
-      </ul>
-      <div>
-        <Link href={`/cmDashboard`}>Return to Student List</Link>
-      </div>
+          {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <button
+              onClick={() => setArchivePrompt(true)}
+              className={`${$button.default} ${$home.bold}`}
+            >
+              Archive Student
+            </button>
+            <Link
+              href={`/students`}
+              className={`${$button.default} ${$home.bold}`}
+              style={{ marginLeft: "10px" }}
+            >
+              Return to Student List
+            </Link>
+          </Box>
+        </Box>
+      </Container>
+
+      {/* If no IEP, prompt CM to create one  */}
+      {!activeIep ? (
+        <Container className={$StudentPage.noIepContainer}>
+          <Box className={$StudentPage.noIepBox}>
+            <Image
+              src={noGoals}
+              alt="no IEP image"
+              className={$Image.fitContent}
+            />
+            <p className={$StudentPage.textSpacing}>
+              This student does not have an active IEP. Please create one.
+            </p>
+            <button
+              onClick={() => setCreateIepModal(true)}
+              className={`${$button.default}`}
+            >
+              Create IEP
+            </button>
+          </Box>
+        </Container>
+      ) : (
+        // Active IEP is in db
+        <Iep iep_id={activeIep.iep_id} />
+      )}
+
+      {/* Archiving Student Modal*/}
+      <Modal
+        open={archivePrompt}
+        onClose={() => setArchivePrompt(false)}
+        aria-labelledby="archiving-student"
+        aria-describedby="archiving-current-student"
+      >
+        <Box className={$Modal.modalContent}>
+          <p className={$StudentPage.centerText}>
+            Are you sure you want to archive
+          </p>
+          <p className={$StudentPage.centerText}>
+            <b>
+              {student?.first_name} {student?.last_name}
+            </b>
+          </p>
+          <Box className={$StudentPage.archiveOptions}>
+            <button
+              className={`${$button.default} ${$home.bold}`}
+              onClick={() => handleArchiveStudent()}
+            >
+              Yes
+            </button>
+            <button
+              className={`${$button.default} ${$home.bold}`}
+              onClick={() => setArchivePrompt(false)}
+            >
+              No
+            </button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Modal for Creating IEP */}
+      <Modal
+        open={createIepModal}
+        onClose={() => setCreateIepModal(false)}
+        aria-labelledby="create-student-iep"
+        aria-describedby="modal for creating student iep"
+      >
+        <Box className={$Modal.modalContent}>
+          <p className={$StudentPage.centerText}>Create an IEP for</p>
+          <p className={$StudentPage.centerText}>
+            <b>
+              {student?.first_name} {student?.last_name}
+            </b>
+          </p>
+          <form
+            onSubmit={handleIepSubmit}
+            className={`${$input.default} ${$Form.formPadding}`}
+          >
+            <div>
+              <Box className={$StudentPage.displayBox}>
+                <p className={$StudentPage.textLarge}>Start Date:</p>
+                <input
+                  type="date"
+                  name="start_date"
+                  placeholder="IEP start date"
+                  required
+                />
+              </Box>
+              <Box className={$StudentPage.displayBox}>
+                <p className={$StudentPage.textLarge}>End Date:</p>
+                <input
+                  type="date"
+                  name="end_date"
+                  placeholder="IEP end date"
+                  required
+                />
+              </Box>
+
+              <Box className={$StudentPage.displayBox}>
+                <button type="submit" className={$button.default}>
+                  Create IEP
+                </button>
+                <button
+                  onClick={() => setCreateIepModal(false)}
+                  className={$button.default}
+                >
+                  Cancel
+                </button>
+              </Box>
+            </div>
+          </form>
+        </Box>
+      </Modal>
     </div>
   );
 };

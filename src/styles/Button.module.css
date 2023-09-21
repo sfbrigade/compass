@@ -1,6 +1,7 @@
 .default {
   display: block;
   background-color: var(--primary);
+  font-family: var(--quicksand);
   border: none;
   color: var(--on-primary);
   padding: 10px;

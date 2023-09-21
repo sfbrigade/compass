@@ -42,6 +42,7 @@ export const seed = async (db: KyselyDatabaseInstance) => {
       first_name: "Student",
       last_name: "One",
       email: "student1@example.com",
+      grade: 12,
     })
     .returningAll()
     .executeTakeFirstOrThrow();

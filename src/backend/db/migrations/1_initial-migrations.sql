@@ -46,7 +46,7 @@ CREATE TABLE "student" (
   last_name TEXT NOT NULL,
   email TEXT NOT NULL UNIQUE,
   assigned_case_manager_id UUID REFERENCES "user" (user_id) ON DELETE SET NULL,
-  grade SMALLINT
+  grade SMALLINT NOT NULL
 );
 
 CREATE TABLE "file" (

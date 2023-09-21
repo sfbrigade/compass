@@ -26,3 +26,8 @@
   padding: 4px 2px;
   font-family: "Quicksand", sans-serif;
 }
+
+.description {
+  /* font-family: "Quicksand", sans-serif; */
+  margin: 4px;
+}
