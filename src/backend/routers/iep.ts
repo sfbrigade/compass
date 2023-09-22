@@ -92,6 +92,23 @@ export const iep = router({
     .mutation(async (req) => {
       const { subgoal_id, due_date, trial_count } = req.input;
       const { userId } = req.ctx.auth;
+
+      const shouldAdd = await req.ctx.db
+        .selectFrom("task")
+        .selectAll()
+        .where((eb) =>
+          eb.and([
+            eb("subgoal_id", "=", subgoal_id),
+            eb("assignee_id", "=", userId),
+          ])
+        )
+        .executeTakeFirst();
+
+      // Prevent multiple assignments of the same task
+      if (shouldAdd !== undefined) {
+        return null;
+      }
+
       const result = await req.ctx.db
         .insertInto("task")
         .values({
