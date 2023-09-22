@@ -40,4 +40,4 @@ COPY --chown=node:node . $APP_HOME
 RUN npm run build
 
 # Always the run the database migrations to make prod maintenance easier
-CMD npm run db:migrate && npm run start
+CMD npm run db:reset && npm run start
