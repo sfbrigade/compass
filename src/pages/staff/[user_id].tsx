@@ -23,7 +23,7 @@ const ViewParaPage = () => {
     if (!para) return;
 
     await unassignPara.mutateAsync({ para_id: para.user_id });
-    await router.push(`/cmDashboard`);
+    await router.push(`/staff`);
   };
 
   if (isLoading) {
@@ -70,8 +70,8 @@ const ViewParaPage = () => {
         </div>
       ) : null}
 
-      <Link href={`/cmDashboard`}>
-        <p>CM Dashboard</p>
+      <Link href={`/staff`}>
+        <p>Return to Staff List</p>
       </Link>
     </div>
   );

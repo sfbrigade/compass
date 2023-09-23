@@ -328,7 +328,7 @@ export default function EnhancedTable<
                     handleLinkToPage(
                       isStudentWithIep(row)
                         ? `../students/${row.student_id || ""}`
-                        : `../paras/${row.user_id || ""}`
+                        : `../staff/${row.user_id || ""}`
                     )
                   }
                 >
