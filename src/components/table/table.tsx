@@ -15,7 +15,12 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { isStudentWithIep, HeadCell, Para, StudentWithIep } from "./tableTypes";
+import {
+  isStudentWithIep,
+  HeadCell,
+  Para,
+  StudentWithIep,
+} from "@/types/global";
 import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
