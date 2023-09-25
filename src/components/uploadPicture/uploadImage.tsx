@@ -7,10 +7,9 @@ import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
 
-interface UploadImageComponentProps {
-  title: string;
-  fileName: string;
-  onUpload: (fileId: string) => void;
+interface UploadImageProps {
+  label: string;
+  onUpload: (fileId: string) => Promise<void> | void;
 }
 
 enum UploadStep {
@@ -19,14 +18,10 @@ enum UploadStep {
   UploadPicture,
 }
 
-const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
-  title,
-  fileName,
-  onUpload,
-}) => {
+const UploadImage: React.FC<UploadImageProps> = ({ label, onUpload }) => {
   const [currentStep, setCurrentStep] = useState(UploadStep.Start);
   const [uploadSuccess, setUploadSuccess] = useState(false);
-  const [capturedImage, setCapturedImage] = useState<Blob | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -39,31 +34,23 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   const handleFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        const fileContent = reader.result;
-        if (fileContent instanceof ArrayBuffer) {
-          const fileBlob = new Blob([fileContent]);
-          setCapturedImage(fileBlob);
-        }
-      };
-      reader.readAsArrayBuffer(file);
+      setSelectedFile(file);
       setCurrentStep(UploadStep.UploadPicture);
     }
   };
 
   const onCancelTakePicture = () => {
     setCurrentStep(UploadStep.Start);
-    setCapturedImage(null);
+    setSelectedFile(null);
   };
 
   const onClickUploadPicture = () => {
     setCurrentStep(UploadStep.Start);
-    setCapturedImage(null);
+    setSelectedFile(null);
     setUploadSuccess(true);
     setUploadSuccess(false);
 
-    if (capturedImage) {
+    if (selectedFile) {
       void uploadImageToCloud();
     }
   };
@@ -76,31 +63,26 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
     getPresignedUrlForUpload.isLoading || finishFileUpload.isLoading;
 
   const uploadImageToCloud = useCallback(async () => {
-    if (!capturedImage) return;
+    if (!selectedFile) return;
 
     const { key, url } = await getPresignedUrlForUpload.mutateAsync({
-      type: capturedImage.type || "application/octet-stream",
+      type: selectedFile.type,
     });
 
-    await axios.put(url, capturedImage);
+    await axios.put(url, selectedFile, {
+      headers: {
+        "Content-Type": selectedFile.type,
+      },
+    });
 
     const { file_id } = await finishFileUpload.mutateAsync({
       key,
-      filename: fileName,
+      filename: selectedFile.name,
     });
 
+    await onUpload(file_id);
     setUploadSuccess(true);
-
-    if (file_id) {
-      onUpload(file_id);
-    }
-  }, [
-    capturedImage,
-    fileName,
-    getPresignedUrlForUpload,
-    finishFileUpload,
-    onUpload,
-  ]);
+  }, [selectedFile, getPresignedUrlForUpload, finishFileUpload, onUpload]);
 
   useEffect(() => {
     if (uploadSuccess) {
@@ -125,7 +107,7 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
             style={{ display: "none" }}
           />
           <CameraIcon />
-          {title}
+          {label}
         </button>
       )}
       {currentStep === UploadStep.TakePicture && (
@@ -135,9 +117,9 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
       )}
       {currentStep === UploadStep.UploadPicture && (
         <div className={styles.uploadContainer}>
-          {capturedImage && (
+          {selectedFile && (
             <svg>
-              <image href={URL.createObjectURL(capturedImage)} />
+              <image href={URL.createObjectURL(selectedFile)} />
             </svg>
           )}
           <div>
@@ -181,4 +163,4 @@ const UploadImageComponent: React.FC<UploadImageComponentProps> = ({
   );
 };
 
-export default UploadImageComponent;
+export default UploadImage;

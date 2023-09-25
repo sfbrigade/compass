@@ -108,6 +108,14 @@ CREATE TABLE "trial_data" (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+CREATE TABLE "trial_data_file" (
+  trial_file_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  trial_data_id UUID REFERENCES "trial_data" (trial_data_id),
+  file_id UUID REFERENCES "file" (file_id),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (trial_data_id, file_id)
+);
+
 -- Potential schema for different collection types:
   -- type TEXT NOT NULL CHECK (type IN ('attempt', 'behavioral')) -- enum - type of subgoal
   -- data jsonb -- actual data, e.g. attempt_counts etc

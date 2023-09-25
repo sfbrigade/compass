@@ -271,6 +271,18 @@ export const iep = router({
                 "trial_data.notes",
                 "trial_data.created_at",
               ])
+              .select((eb) =>
+                jsonArrayFrom(
+                  eb
+                    .selectFrom("trial_data_file")
+                    .innerJoin(
+                      "file",
+                      "file.file_id",
+                      "trial_data_file.file_id"
+                    )
+                    .selectAll("file")
+                ).as("files")
+              )
               .whereRef("trial_data.task_id", "=", "task.task_id")
               .whereRef(
                 "trial_data.created_by_user_id",
@@ -300,6 +312,42 @@ export const iep = router({
           seen: true,
         })
         .where("task.task_id", "=", task_id)
+        .execute();
+    }),
+
+  attachFileToTrialData: authenticatedProcedure
+    .input(
+      z.object({
+        trial_data_id: z.string(),
+        file_id: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { trial_data_id, file_id } = req.input;
+
+      await req.ctx.db
+        .insertInto("trial_data_file")
+        .values({
+          trial_data_id,
+          file_id,
+        })
+        .execute();
+    }),
+
+  removeFileFromTrialData: authenticatedProcedure
+    .input(
+      z.object({
+        trial_data_id: z.string(),
+        file_id: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { trial_data_id, file_id } = req.input;
+
+      await req.ctx.db
+        .deleteFrom("trial_data_file")
+        .where("trial_data_id", "=", trial_data_id)
+        .where("file_id", "=", file_id)
         .execute();
     }),
 });

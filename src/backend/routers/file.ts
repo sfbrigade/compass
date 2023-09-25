@@ -27,6 +27,7 @@ export const file = router({
       const file = await req.ctx.db
         .selectFrom("file")
         .select("ext_s3_path")
+        .select(["name", "content_type"])
         .where("file_id", "=", req.input.file_id)
         // Only allow access to your own files
         .where("uploaded_by_user_id", "=", req.ctx.auth.userId)
@@ -40,7 +41,12 @@ export const file = router({
       const url = await getSignedUrl(req.ctx.s3, command, {
         expiresIn: 60 * 60, // 1 hour
       });
-      return url;
+
+      return {
+        url,
+        name: file.name,
+        content_type: file.content_type,
+      };
     }),
 
   getPresignedUrlForFileUpload: authenticatedProcedure

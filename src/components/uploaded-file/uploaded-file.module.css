@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.name {
+  margin-right: auto;
+}
+
+.image {
+  height: 6rem;
+  width: 6rem;
+  object-fit: contain;
+  background-color: grey;
+}
+
+.notImage {
+  background-color: grey;
+  height: 6rem;
+  width: 6rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
