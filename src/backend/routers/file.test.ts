@@ -75,9 +75,10 @@ test("can download files", async (t) => {
     filename: "favicon.png",
   });
 
-  const downloadUrl = await trpc.file.getPresignedUrlForFileDownload.mutate({
-    file_id,
-  });
+  const { url: downloadUrl } =
+    await trpc.file.getPresignedUrlForFileDownload.mutate({
+      file_id,
+    });
 
   const { data } = await axios.get<Buffer>(downloadUrl, {
     responseType: "arraybuffer",
