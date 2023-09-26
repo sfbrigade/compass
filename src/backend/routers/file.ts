@@ -7,6 +7,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { authenticatedProcedure, router } from "../trpc";
 import { randomUUID } from "crypto";
+import { deleteFile } from "../lib/files";
 
 export const file = router({
   getMyFiles: authenticatedProcedure.query(async (req) => {
@@ -96,5 +97,15 @@ export const file = router({
         .executeTakeFirstOrThrow();
 
       return file;
+    }),
+
+  deleteFile: authenticatedProcedure
+    .input(
+      z.object({
+        file_id: z.string().uuid(),
+      })
+    )
+    .mutation(async (req) => {
+      await deleteFile(req.input.file_id, req.ctx);
     }),
 });

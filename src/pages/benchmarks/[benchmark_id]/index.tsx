@@ -55,8 +55,8 @@ const BenchmarkPage = () => {
       onSuccess: async () =>
         await utils.iep.getSubgoalAndTrialData.invalidate(),
     });
-  const removeFileFromTrialDataMutation =
-    trpc.iep.removeFileFromTrialData.useMutation({
+  const removeFileFromTrialDataAndDeleteMutation =
+    trpc.iep.removeFileFromTrialDataAndDelete.useMutation({
       onSuccess: async () =>
         await utils.iep.getSubgoalAndTrialData.invalidate(),
     });
@@ -166,7 +166,7 @@ const BenchmarkPage = () => {
       throw new Error("Trial data has not yet loaded");
     }
 
-    await removeFileFromTrialDataMutation.mutateAsync({
+    await removeFileFromTrialDataAndDeleteMutation.mutateAsync({
       file_id: fileId,
       trial_data_id: currentTrial?.trial_data_id,
     });

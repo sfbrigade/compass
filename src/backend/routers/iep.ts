@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
+import { deleteFile } from "../lib/files";
+import { substituteTransactionOnContext } from "../lib/utils/context";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
@@ -332,7 +334,7 @@ export const iep = router({
         .execute();
     }),
 
-  removeFileFromTrialData: authenticatedProcedure
+  removeFileFromTrialDataAndDelete: authenticatedProcedure
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -342,10 +344,14 @@ export const iep = router({
     .mutation(async (req) => {
       const { trial_data_id, file_id } = req.input;
 
-      await req.ctx.db
-        .deleteFrom("trial_data_file")
-        .where("trial_data_id", "=", trial_data_id)
-        .where("file_id", "=", file_id)
-        .execute();
+      await req.ctx.db.transaction().execute(async (trx) => {
+        await trx
+          .deleteFrom("trial_data_file")
+          .where("trial_data_id", "=", trial_data_id)
+          .where("file_id", "=", file_id)
+          .execute();
+
+        await deleteFile(file_id, substituteTransactionOnContext(trx, req.ctx));
+      });
     }),
 });
