@@ -18,7 +18,7 @@ enum UploadStep {
   UploadPicture,
 }
 
-const UploadImage: React.FC<UploadImageProps> = ({ label, onUpload }) => {
+const UploadImage = ({ label, onUpload }: UploadImageProps) => {
   const [currentStep, setCurrentStep] = useState(UploadStep.Start);
   const [uploadSuccess, setUploadSuccess] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
