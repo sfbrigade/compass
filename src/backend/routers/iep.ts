@@ -263,15 +263,13 @@ export const iep = router({
           jsonArrayFrom(
             eb
               .selectFrom("trial_data")
-              .select([
+              .select((eb) => [
                 "trial_data.trial_data_id",
                 "trial_data.success",
                 "trial_data.unsuccess",
                 "trial_data.submitted",
                 "trial_data.notes",
                 "trial_data.created_at",
-              ])
-              .select((eb) =>
                 jsonArrayFrom(
                   eb
                     .selectFrom("trial_data_file")
@@ -281,8 +279,8 @@ export const iep = router({
                       "trial_data_file.file_id"
                     )
                     .selectAll("file")
-                ).as("files")
-              )
+                ).as("files"),
+              ])
               .whereRef("trial_data.task_id", "=", "task.task_id")
               .whereRef(
                 "trial_data.created_by_user_id",
