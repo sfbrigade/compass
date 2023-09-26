@@ -47,7 +47,6 @@ const UploadImage: React.FC<UploadImageProps> = ({ label, onUpload }) => {
   const onClickUploadPicture = () => {
     setCurrentStep(UploadStep.Start);
     setSelectedFile(null);
-    setUploadSuccess(true);
     setUploadSuccess(false);
 
     if (selectedFile) {
@@ -118,9 +117,11 @@ const UploadImage: React.FC<UploadImageProps> = ({ label, onUpload }) => {
       {currentStep === UploadStep.UploadPicture && (
         <div className={styles.uploadContainer}>
           {selectedFile && (
-            <svg>
-              <image href={URL.createObjectURL(selectedFile)} />
-            </svg>
+            <img
+              src={URL.createObjectURL(selectedFile)}
+              className={styles.imagePreview}
+              alt="preview of image"
+            />
           )}
           <div>
             <button

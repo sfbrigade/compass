@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
 import { IconButton, Skeleton } from "@mui/material";
 import { useEffect } from "react";
-import styles from "./uploaded-file.module.css";
+import styles from "./uploadedFile.module.css";
 import { QuestionMark } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
 

@@ -15,7 +15,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useConfirmBeforeLeave from "@/hooks/useConfirmBeforeLeave";
 import UploadImage from "@/components/uploadPicture/uploadImage";
-import { UploadedFile } from "@/components/uploaded-file/uploaded-file";
+import { UploadedFile } from "@/components/uploadedFile/uploadedFile";
 import { Grid } from "@mui/material";
 
 interface DataUpdate {
