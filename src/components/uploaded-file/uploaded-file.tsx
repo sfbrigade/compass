@@ -23,7 +23,11 @@ export const UploadedFile = ({ fileId, onDelete }: UploadedFileProps) => {
       {data ? (
         <>
           {data.content_type.startsWith("image/") ? (
-            <img src={data.url} className={styles.image} />
+            <img
+              src={data.url}
+              className={styles.image}
+              alt={`user uploaded image: ${data.name}`}
+            />
           ) : (
             <div className={styles.notImage}>
               <QuestionMark />
