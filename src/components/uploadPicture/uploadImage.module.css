@@ -22,3 +22,8 @@
 .uploadingText {
   text-align: center;
 }
+
+.imagePreview {
+  width: 10rem;
+  height: auto;
+}

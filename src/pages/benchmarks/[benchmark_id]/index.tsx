@@ -14,6 +14,9 @@ import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import useConfirmBeforeLeave from "@/hooks/useConfirmBeforeLeave";
+import UploadImage from "@/components/uploadPicture/uploadImage";
+import { UploadedFile } from "@/components/uploadedFile/uploadedFile";
+import { Grid } from "@mui/material";
 
 interface DataUpdate {
   success?: number;
@@ -47,6 +50,16 @@ const BenchmarkPage = () => {
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation({
     onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
   });
+  const attachFileToTrialDataMutation =
+    trpc.iep.attachFileToTrialData.useMutation({
+      onSuccess: async () =>
+        await utils.iep.getSubgoalAndTrialData.invalidate(),
+    });
+  const removeFileFromTrialDataAndDeleteMutation =
+    trpc.iep.removeFileFromTrialDataAndDelete.useMutation({
+      onSuccess: async () =>
+        await utils.iep.getSubgoalAndTrialData.invalidate(),
+    });
 
   const [notesInputValue, setNotesInputValue] = useState("");
   const [successInputValue, setSuccessInputValue] = useState(0);
@@ -136,6 +149,28 @@ const BenchmarkPage = () => {
 
   // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
   useConfirmBeforeLeave(hasInputChanged);
+
+  const handleFileUpload = async (fileId: string) => {
+    if (!currentTrial) {
+      throw new Error("Trial data has not yet loaded");
+    }
+
+    await attachFileToTrialDataMutation.mutateAsync({
+      file_id: fileId,
+      trial_data_id: currentTrial?.trial_data_id,
+    });
+  };
+
+  const handleFileDelete = async (fileId: string) => {
+    if (!currentTrial) {
+      throw new Error("Trial data has not yet loaded");
+    }
+
+    await removeFileFromTrialDataAndDeleteMutation.mutateAsync({
+      file_id: fileId,
+      trial_data_id: currentTrial?.trial_data_id,
+    });
+  };
 
   if (taskIsLoading || !currentTrial) {
     return <div>Loading...</div>;
@@ -234,9 +269,26 @@ const BenchmarkPage = () => {
           ? "uh oh"
           : "Saved to Cloud"}
       </div>
+
+      <Grid container spacing={2}>
+        {currentTrial.files.map((file) => (
+          <Grid key={file.file_id} item xs={12}>
+            <UploadedFile
+              fileId={file.file_id}
+              onDelete={() => handleFileDelete(file.file_id)}
+            />
+          </Grid>
+        ))}
+      </Grid>
+
+      <UploadImage
+        label="Take a picture of student work"
+        onUpload={handleFileUpload}
+      />
+
       <Link
         href={`${router.asPath}/review`}
-        className={`${$button.default} ${$button.fixedToBottom} ${
+        className={`${$button.default} ${
           currentTrialIdx !== task.trials.length - 1 ? $button.inactive : ""
         }`}
       >

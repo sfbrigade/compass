@@ -36,7 +36,7 @@ const FilesPage = () => {
   };
 
   const handleDownload = async (file_id: string) => {
-    const url = await getPresignedUrlForFileDownload.mutateAsync({
+    const { url } = await getPresignedUrlForFileDownload.mutateAsync({
       file_id,
     });
 
