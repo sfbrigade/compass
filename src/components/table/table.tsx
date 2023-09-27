@@ -106,8 +106,8 @@ function EnhancedTableToolbar({
   return (
     <Toolbar
       sx={{
-        pl: { sm: 0 },
-        pr: { xs: 0, sm: 0 },
+        pl: { xs: 0 },
+        pr: { xs: 0 },
         flexDirection: "column",
       }}
     >

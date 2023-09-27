@@ -1,6 +1,7 @@
 .sidebar {
   flex: 2;
   background-color: var(--primary-20);
+  padding-top: 8px;
 }
 
 .logo {
@@ -10,7 +11,9 @@
 }
 
 .toolbar {
-  background-color: white;
+  background-color: var(--primary-20);
+  display: flex;
+  justify-content: space-between;
   box-shadow: 0;
 }
 
@@ -19,7 +22,7 @@
 }
 
 .burger {
-  color: var(--primary-20);
+  color: var(--primary-99);
   width: 2em;
   height: 2em;
 }
@@ -27,15 +30,23 @@
 .link {
   color: var(--on-primary);
   padding-left: 30px;
-  padding-top: 12px;
-  padding-bottom: 12px;
+  padding-top: 22px;
+  padding-bottom: 22px;
   display: flex;
   align-items: center;
-  text-decoration: none;
 }
 
 .linkTitle {
   padding-left: 8px;
+}
+
+.linkItem {
+  text-decoration: none;
+}
+
+.linkItem:hover {
+  display: flex;
+  align-items: center;
 }
 
 .linkItem:hover {
@@ -44,4 +55,5 @@
 
 .icon {
   color: var(--on-primary);
+  margin-right: 8px;
 }
