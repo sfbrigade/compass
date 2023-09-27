@@ -15,10 +15,37 @@ import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
-import { isStudentWithIep, HeadCell, Para, StudentWithIep } from "./tableTypes";
 import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
+import { SelectableForTable } from "zapatos/schema";
+
+export type StudentWithIep = SelectableForTable<"student"> &
+  SelectableForTable<"iep">;
+export type Para = SelectableForTable<"user">;
+
+export interface HeadCell {
+  id: string;
+  label: string;
+  hasInput: boolean;
+}
+
+export interface StudentWithIepHeadcell extends HeadCell {
+  id: keyof StudentWithIep;
+}
+
+export interface ParaHeadCell extends HeadCell {
+  id: keyof Para;
+}
+
+export function isStudentWithIep(
+  person: StudentWithIep | Para
+): person is StudentWithIep {
+  return (
+    (person as StudentWithIep).student_id !== undefined &&
+    (person as StudentWithIep).iep_id !== undefined
+  );
+}
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
