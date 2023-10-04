@@ -10,7 +10,7 @@ export const requiresLogin =
     const { status } = useSession();
 
     // Include any public pathnames here
-    const publicPaths = ["/signInPage"];
+    const publicPaths = ["/signInPage", "/about"];
     const pathIsProtected = !publicPaths.includes(router.pathname);
 
     useEffect(() => {

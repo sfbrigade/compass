@@ -16,13 +16,15 @@ const SignInPage = () => {
 
   return (
     <div className={$home.greetWrap}>
-      <Image
-        src="/img/compass-logo.svg"
-        alt="logo"
-        width={60}
-        height={60}
-        priority
-      />
+      <button className={$button.about} onClick={() => router.push("/about")}>
+        <Image
+          src="/img/compass-logo.svg"
+          alt="logo"
+          width={60}
+          height={60}
+          priority
+        />
+      </button>
       <h1 className={$home.bold}>Welcome to Project Compass</h1>
       <div>Log in with your Google account to continue</div>
       <button

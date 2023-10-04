@@ -46,6 +46,11 @@ const NavBar = () => {
               <p className={$navbar.linkTitle}>Settings</p>
             </Link>
             <br />
+            <Link href="/about" className={$navbar.link}>
+              <Settings className={$navbar.icon} />
+              <p className={$navbar.linkTitle}>about</p>
+            </Link>
+            <br />
             <Link href="" className={$navbar.link}>
               <Logout className={$navbar.icon} />
               <p
