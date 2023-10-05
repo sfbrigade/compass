@@ -16,7 +16,7 @@ type Auth =
       role: string;
     };
 
-type Context = ReturnType<typeof getDb> & {
+export type tRPCContext = ReturnType<typeof getDb> & {
   auth: Auth;
   s3: S3Client;
   env: Env;
@@ -24,7 +24,7 @@ type Context = ReturnType<typeof getDb> & {
 
 export const createContext = async (
   options: CreateNextContextOptions
-): Promise<Context> => {
+): Promise<tRPCContext> => {
   const env = (options.req.env as unknown as Env) ?? process.env;
   const {
     DATABASE_URL,

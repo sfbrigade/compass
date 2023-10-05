@@ -2196,6 +2196,149 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **trial_data_file**
+   * - Table in database
+   */
+  export namespace trial_data_file {
+    export type Table = 'trial_data_file';
+    export interface Selectable {
+      /**
+      * **trial_data_file.trial_file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_file_id: string;
+      /**
+      * **trial_data_file.trial_data_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      trial_data_id: string | null;
+      /**
+      * **trial_data_file.file_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      file_id: string | null;
+      /**
+      * **trial_data_file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **trial_data_file.trial_file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_file_id: string;
+      /**
+      * **trial_data_file.trial_data_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      trial_data_id: string | null;
+      /**
+      * **trial_data_file.file_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      file_id: string | null;
+      /**
+      * **trial_data_file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
+    }
+    export interface Whereable {
+      /**
+      * **trial_data_file.trial_file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_file_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **trial_data_file.trial_data_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      trial_data_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **trial_data_file.file_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      file_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **trial_data_file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **trial_data_file.trial_file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_file_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **trial_data_file.trial_data_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      trial_data_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **trial_data_file.file_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      file_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **trial_data_file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **trial_data_file.trial_file_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      trial_file_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **trial_data_file.trial_data_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      trial_data_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **trial_data_file.file_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      file_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **trial_data_file.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'trial_data_file_pkey' | 'trial_data_file_trial_data_id_file_id_key';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **user**
    * - Table in database
    */
@@ -2431,20 +2574,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | subgoal.Table | task.Table | trial_data.Table | user.Table;
-    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | task.Selectable | trial_data.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | task.JSONSelectable | trial_data.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | task.Whereable | trial_data.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | task.Insertable | trial_data.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | task.Updatable | trial_data.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | task.UniqueIndex | trial_data.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | subgoal.Column | task.Column | trial_data.Column | user.Column;
+    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | subgoal.Table | task.Table | trial_data.Table | trial_data_file.Table | user.Table;
+    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | task.Selectable | trial_data.Selectable | trial_data_file.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | task.JSONSelectable | trial_data.JSONSelectable | trial_data_file.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | task.Whereable | trial_data.Whereable | trial_data_file.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | task.Insertable | trial_data.Insertable | trial_data_file.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | task.Updatable | trial_data.Updatable | trial_data_file.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | task.UniqueIndex | trial_data.UniqueIndex | trial_data_file.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | subgoal.Column | task.Column | trial_data.Column | trial_data_file.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, user.Table];
+    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
   }
 
 
@@ -2483,6 +2626,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.Selectable;
     "task": task.Selectable;
     "trial_data": trial_data.Selectable;
+    "trial_data_file": trial_data_file.Selectable;
     "user": user.Selectable;
   }[T];
 
@@ -2498,6 +2642,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.JSONSelectable;
     "task": task.JSONSelectable;
     "trial_data": trial_data.JSONSelectable;
+    "trial_data_file": trial_data_file.JSONSelectable;
     "user": user.JSONSelectable;
   }[T];
 
@@ -2513,6 +2658,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.Whereable;
     "task": task.Whereable;
     "trial_data": trial_data.Whereable;
+    "trial_data_file": trial_data_file.Whereable;
     "user": user.Whereable;
   }[T];
 
@@ -2528,6 +2674,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.Insertable;
     "task": task.Insertable;
     "trial_data": trial_data.Insertable;
+    "trial_data_file": trial_data_file.Insertable;
     "user": user.Insertable;
   }[T];
 
@@ -2543,6 +2690,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.Updatable;
     "task": task.Updatable;
     "trial_data": trial_data.Updatable;
+    "trial_data_file": trial_data_file.Updatable;
     "user": user.Updatable;
   }[T];
 
@@ -2558,6 +2706,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.UniqueIndex;
     "task": task.UniqueIndex;
     "trial_data": trial_data.UniqueIndex;
+    "trial_data_file": trial_data_file.UniqueIndex;
     "user": user.UniqueIndex;
   }[T];
 
@@ -2573,6 +2722,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.Column;
     "task": task.Column;
     "trial_data": trial_data.Column;
+    "trial_data_file": trial_data_file.Column;
     "user": user.Column;
   }[T];
 
@@ -2588,6 +2738,7 @@ declare module 'zapatos/schema' {
     "subgoal": subgoal.SQL;
     "task": task.SQL;
     "trial_data": trial_data.SQL;
+    "trial_data_file": trial_data_file.SQL;
     "user": user.SQL;
   }[T];
 
