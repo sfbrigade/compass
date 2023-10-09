@@ -17,16 +17,29 @@ import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import $Image from "../../styles/Image.module.css";
 import { parseISO, addYears, subDays, format } from "date-fns";
+import BasicTable from "@/components/tableBasic/tableBasic";
+import Stack from "@mui/material/Stack";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [viewState, setViewState] = useState(0);
 
   const utils = trpc.useContext();
   const router = useRouter();
   const { student_id } = router.query;
+
+  const VIEW_STATES = { MAIN: 0, EDIT: 1 };
+
+  const handleEditState = () => {
+    setViewState(VIEW_STATES.EDIT);
+  };
+
+  const handleMainState = () => {
+    setViewState(VIEW_STATES.MAIN);
+  };
 
   const { data: student, isLoading } = trpc.student.getStudentById.useQuery(
     { student_id: student_id as string },
@@ -82,51 +95,87 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <div>
+    <Stack spacing={2}>
       <Container className={$StudentPage.studentInfoContainer}>
         <Box className={$StudentPage.displayBox}>
           <p className={$StudentPage.studentName}>
             {student?.first_name} {student?.last_name}
           </p>
-          {/* //Todo: Modify Edit Button */}
-          <Button variant="outlined">Edit</Button>
+
+          {/* Edit button only to be shown when view state is set to MAIN */}
+          {viewState === VIEW_STATES.MAIN && (
+            <Button onClick={handleEditState} variant="outlined">
+              Edit
+            </Button>
+          )}
+
+          {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
+          {viewState === VIEW_STATES.EDIT && (
+            <Box className={$StudentPage.displayBoxGap}>
+              <Button onClick={handleMainState} variant="outlined">
+                Cancel
+              </Button>
+              <Button
+                onClick={() => {
+                  alert("placeholder for Saved");
+                }}
+                variant="outlined"
+              >
+                Save
+              </Button>
+            </Box>
+          )}
         </Box>
 
-        <Box className={$StudentPage.displayBox}>
-          <Box className={$StudentPage.infoBox}>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>Grade:</p>
-              <p className={$StudentPage.centerText}>{student?.grade}</p>
-            </div>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>IEP End Date:</p>
-              <p className={$StudentPage.centerText}>
-                {activeIep?.end_date.toLocaleDateString() ?? "None"}
-              </p>
-            </div>
-          </Box>
+        {/* if view state is "EDIT" then show the edit version of the student page */}
+        {viewState === VIEW_STATES.EDIT && <h3>Edit Profile</h3>}
 
-          {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
-          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-            <button
-              onClick={() => setArchivePrompt(true)}
-              className={`${$button.default} ${$home.bold}`}
-            >
-              Archive Student
-            </button>
-            <Link
-              href={`/students`}
-              className={`${$button.default} ${$home.bold}`}
-              style={{ marginLeft: "10px" }}
-            >
-              Return to Student List
-            </Link>
-          </Box>
-        </Box>
+        {viewState === VIEW_STATES.MAIN && (
+          <div>
+            <Box className={$StudentPage.displayBox}>
+              <Box className={$StudentPage.infoBox}>
+                <div className={$StudentPage.singleInfoArea}>
+                  <p>Grade:</p>
+                  <p className={$StudentPage.centerText}>{student?.grade}</p>
+                </div>
+                <div className={$StudentPage.singleInfoArea}>
+                  <p>IEP End Date:</p>
+                  <p className={$StudentPage.centerText}>
+                    {activeIep?.end_date.toLocaleDateString() ?? "None"}
+                  </p>
+                </div>
+              </Box>
+
+              {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
+
+              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+                <Link
+                  href={`/students`}
+                  className={`${$button.default} ${$home.bold}`}
+                  style={{ marginLeft: "10px" }}
+                >
+                  Return to Student List
+                </Link>
+              </Box>
+            </Box>
+          </div>
+        )}
       </Container>
 
-      {/* If no IEP, prompt CM to create one  */}
-      {!activeIep ? (
+      {viewState === VIEW_STATES.EDIT ? (
+        <>
+          <BasicTable />
+          <div>
+            <Button
+              onClick={() => setArchivePrompt(true)}
+              className={`${$button.default} ${$home.bold}`}
+              variant="outlined"
+            >
+              Archive Student
+            </Button>
+          </div>
+        </>
+      ) : !activeIep ? (
         <Container className={$StudentPage.noIepContainer}>
           <Box className={$StudentPage.noIepBox}>
             <Image
@@ -150,7 +199,7 @@ const ViewStudentPage = () => {
         <Iep iep_id={activeIep.iep_id} />
       )}
 
-      {/* Archiving Student Modal*/}
+      {/* Archiving Student Modal appears when "Archive" button is pressed*/}
       <Modal
         open={archivePrompt}
         onClose={() => setArchivePrompt(false)}
@@ -241,7 +290,7 @@ const ViewStudentPage = () => {
           </form>
         </Box>
       </Modal>
-    </div>
+    </Stack>
   );
 };
 
