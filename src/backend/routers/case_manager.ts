@@ -77,6 +77,59 @@ export const case_manager = router({
         .executeTakeFirstOrThrow();
     }),
 
+  // TODO: create editStudent authenticated procedure. This is a possible example, but NOT WORKING YET
+  // editStudent: authenticatedProcedure
+  //   .input(
+  //     z.object({
+  //       studentId: z.string(), // Add a field to specify the student to edit
+  //       first_name: z.string(),
+  //       last_name: z.string(),
+  //       email: z.string().email(),
+  //       grade: z.number(),
+  //     })
+  //   )
+  //   .mutation(async (req) => {
+  //     const { studentId, first_name, last_name, email, grade } = req.input;
+  //     const { userId } = req.ctx.auth;
+
+  //     // Check if the student exists
+  //     const existingStudent = await req.ctx.db
+  //       .from("student")
+  //       .select("*")
+  //       .where("id", studentId)
+  //       .first();
+
+  //     if (!existingStudent) {
+  //       throw new Error("Student not found");
+  //     }
+
+  //     // Check if the authenticated user has the necessary permissions to edit this student
+  //     if (existingStudent.assigned_case_manager_id !== userId) {
+  //       throw new Error("You don't have permission to edit this student");
+  //     }
+
+  //     // Update the student's information
+  //     await req.ctx.db
+  //       .update("student")
+  //       .set({
+  //         first_name,
+  //         last_name,
+  //         email: email.toLowerCase(),
+  //         grade,
+  //       })
+  //       .where("id", studentId)
+  //       .execute();
+
+  //     // Return the updated student information
+  //     const updatedStudent = await req.ctx.db
+  //       .from("student")
+  //       .select("*")
+  //       .where("id", studentId)
+  //       .first();
+
+  //     return updatedStudent;
+  //   }),
+
   /**
    * Removes the case manager associated with this student.
    */
