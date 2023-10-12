@@ -1,4 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
+import BasicTable from "@/components/tableBasic/tableBasic";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
@@ -6,6 +7,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
+import Stack from "@mui/material/Stack";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -13,11 +15,9 @@ import { useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import $Form from "../../styles/Form.module.css";
+import $Image from "../../styles/Image.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
-import $Image from "../../styles/Image.module.css";
-import BasicTable from "@/components/tableBasic/tableBasic";
-import Stack from "@mui/material/Stack";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
