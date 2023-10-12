@@ -77,7 +77,7 @@ export const case_manager = router({
         .executeTakeFirstOrThrow();
     }),
 
-  // TODO: create editStudent authenticated procedure. This is a possible example, but NOT WORKING YET
+  // TODO: create editStudent authenticated procedure. This is a possible example, but NOT WORKING YET. Also, could be .updateTable instead of .update
   // editStudent: authenticatedProcedure
   //   .input(
   //     z.object({
