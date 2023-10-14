@@ -7,6 +7,7 @@ import {
   CoPresent,
   Settings,
   Logout,
+  Info,
 } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -18,7 +19,7 @@ const NavBar = () => {
     <>
       {status === "authenticated" && (
         <nav className={$navbar.sidebar}>
-          <Link href="/">
+          <Link href="/about">
             <Image
               src="/img/compass-logo-white.svg"
               alt="logo"
@@ -47,8 +48,8 @@ const NavBar = () => {
             </Link>
             <br />
             <Link href="/about" className={$navbar.link}>
-              <Settings className={$navbar.icon} />
-              <p className={$navbar.linkTitle}>about</p>
+              <Info className={$navbar.icon} />
+              <p className={$navbar.linkTitle}>About</p>
             </Link>
             <br />
             <Link href="" className={$navbar.link}>
