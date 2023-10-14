@@ -5,13 +5,7 @@ const About = () => {
   return (
     <>
       <h2>About Compass</h2>
-      {/* <Image
-        src="/img/compass-logo.svg"
-        alt="logo"
-        width={64}
-        height={64}
-        priority
-      /> */}
+
       <div>
         Compass is a civic app we are building for the San Francisco Unified
         School District. The app seeks to assist Teachers with setting and
