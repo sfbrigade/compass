@@ -5,8 +5,21 @@ import $button from "@/styles/Button.module.css";
 import $box from "@/styles/Box.module.css";
 import Link from "next/link";
 import ProgressBar from "../progressBar/progressBar";
-import { ParaTaskCard } from "@/types/global";
 import { differenceInWeeks, format } from "date-fns";
+
+interface ParaTaskCard {
+  task_id: string;
+  first_name: string;
+  last_name: string;
+  category: string;
+  description: string;
+  instructions: string | null;
+  target_max_attempts: number | null;
+  due_date: Date;
+  seen: boolean;
+  trial_count: number;
+  completed_trials: string | number | bigint | null;
+}
 
 interface TaskCardProps {
   task: ParaTaskCard;

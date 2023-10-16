@@ -7,6 +7,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { authenticatedProcedure, router } from "../trpc";
 import { randomUUID } from "crypto";
+import { deleteFile } from "../lib/files";
 
 export const file = router({
   getMyFiles: authenticatedProcedure.query(async (req) => {
@@ -27,6 +28,7 @@ export const file = router({
       const file = await req.ctx.db
         .selectFrom("file")
         .select("ext_s3_path")
+        .select(["name", "content_type"])
         .where("file_id", "=", req.input.file_id)
         // Only allow access to your own files
         .where("uploaded_by_user_id", "=", req.ctx.auth.userId)
@@ -40,7 +42,12 @@ export const file = router({
       const url = await getSignedUrl(req.ctx.s3, command, {
         expiresIn: 60 * 60, // 1 hour
       });
-      return url;
+
+      return {
+        url,
+        name: file.name,
+        content_type: file.content_type,
+      };
     }),
 
   getPresignedUrlForFileUpload: authenticatedProcedure
@@ -90,5 +97,15 @@ export const file = router({
         .executeTakeFirstOrThrow();
 
       return file;
+    }),
+
+  deleteFile: authenticatedProcedure
+    .input(
+      z.object({
+        file_id: z.string().uuid(),
+      })
+    )
+    .mutation(async (req) => {
+      await deleteFile(req.input.file_id, req.ctx);
     }),
 });
