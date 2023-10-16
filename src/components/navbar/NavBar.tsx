@@ -12,13 +12,10 @@ import { useSession } from "next-auth/react";
 import * as React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
 
@@ -29,18 +26,21 @@ export default function NavBar() {
     setMobileOpen(!mobileOpen);
   };
 
+  const logo = (
+    <Link href="/">
+      <Image
+        src="/img/compass-logo-white.svg"
+        alt="logo"
+        className={$navbar.logo}
+        width={64}
+        height={64}
+        priority
+      />
+    </Link>
+  );
+
   const drawer = (
     <div className={$navbar.sidebar}>
-      <Link href="/">
-        <Image
-          src="/img/compass-logo-white.svg"
-          alt="logo"
-          className={$navbar.logo}
-          width={64}
-          height={64}
-          priority
-        />
-      </Link>
       <List className={$navbar.list}>
         <Link href="/students" className={$navbar.linkItem}>
           <ListItem disablePadding className={$navbar.link}>
@@ -89,16 +89,7 @@ export default function NavBar() {
             }}
           >
             <Toolbar className={$navbar.toolbar}>
-              <Link href="/">
-                <Image
-                  src="/img/compass-logo-white.svg"
-                  alt="logo"
-                  className={$navbar.logo}
-                  width={56}
-                  height={56}
-                  priority
-                />
-              </Link>
+              {logo}
               <IconButton
                 color="inherit"
                 aria-label="open drawer"
@@ -122,19 +113,22 @@ export default function NavBar() {
             aria-label="nav"
             className={$navbar.sidebar}
           >
+            {logo}
             {drawer}
           </Box>
 
           {/* Modal for sidebar when screen is <= md size */}
           <Drawer
             variant="temporary"
+            anchor="top"
             open={mobileOpen}
             onClick={handleDrawerToggle}
             sx={{
               display: { xs: "block", md: "none" },
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
-                width: "200px",
+                width: "full",
+                marginTop: "4.25rem",
               },
             }}
           >

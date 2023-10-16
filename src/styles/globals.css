@@ -66,6 +66,7 @@ body,
 #__next {
   height: 100%;
   overflow-x: auto;
+  margin-top: .5rem;
 }
 
 h1,
@@ -139,6 +140,15 @@ textarea {
 
   h4 {
     font-size: 1.25em;
+  }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 900px) {
+  html,
+  body,
+  #__next {
+    margin-top: 0;
   }
 }
 

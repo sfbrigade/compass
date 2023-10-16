@@ -1,13 +1,12 @@
 .sidebar {
-  flex: 2;
   background-color: var(--primary-20);
   padding-top: 8px;
+  display: flex;
+  justify-content: center;
 }
 
 .logo {
-  padding-left: 28px;
-  padding-top: 12px;
-  padding-bottom: 10px;
+  padding: 1rem;
 }
 
 .toolbar {
@@ -19,41 +18,38 @@
 
 .list {
   color: white;
+  width: 100%;
 }
 
 .burger {
   color: var(--primary-99);
-  width: 2em;
-  height: 2em;
 }
 
 .link {
   color: var(--on-primary);
-  padding-left: 30px;
+  padding-left: calc(100vw - 55% - 2.5rem);
   padding-top: 22px;
   padding-bottom: 22px;
-  display: flex;
-  align-items: center;
 }
 
 .linkTitle {
-  padding-left: 8px;
+  padding-left: 1rem;
 }
 
 .linkItem {
   text-decoration: none;
-}
-
-.linkItem:hover {
   display: flex;
-  align-items: center;
 }
 
 .linkItem:hover {
-  background-color: #383473;
+  background-color: var(--primary-50);
 }
 
-.icon {
-  color: var(--on-primary);
-  margin-right: 8px;
+@media (min-width: 900px) {
+  .sidebar {
+    justify-content: start;
+  }
+  .link {
+    padding-left: 9%;
+  }
 }
