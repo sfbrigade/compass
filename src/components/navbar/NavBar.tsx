@@ -44,25 +44,25 @@ export default function NavBar() {
       <List className={$navbar.list}>
         <Link href="/students" className={$navbar.linkItem}>
           <ListItem disablePadding className={$navbar.link}>
-            <PeopleOutline className={$navbar.icon} />
+            <PeopleOutline />
             <p className={$navbar.linkTitle}>Students</p>
           </ListItem>
         </Link>
         <Link href="/staff" className={$navbar.linkItem}>
           <ListItem disablePadding className={$navbar.link}>
-            <CoPresent className={$navbar.icon} />
+            <CoPresent />
             <p className={$navbar.linkTitle}>Staff</p>
           </ListItem>
         </Link>
         <Link href="/settings" className={$navbar.linkItem}>
           <ListItem disablePadding className={$navbar.link}>
-            <Settings className={$navbar.icon} />
+            <Settings />
             <p className={$navbar.linkTitle}>Settings</p>
           </ListItem>
         </Link>
         <Link href="" className={$navbar.linkItem}>
           <ListItem disablePadding className={$navbar.link}>
-            <Logout className={$navbar.icon} />
+            <Logout />
             <p
               className={$navbar.linkTitle}
               onClick={() => signOut({ callbackUrl: "/" })}

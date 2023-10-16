@@ -66,7 +66,7 @@ body,
 #__next {
   height: 100%;
   overflow-x: auto;
-  margin-top: .5rem;
+  margin-top: 0.5rem;
 }
 
 h1,
