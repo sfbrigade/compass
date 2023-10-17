@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import BasicTable from "@/components/tableBasic/tableBasic";
+import BasicTable from "@/components/editStudentTable/EditStudentTable";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
@@ -118,41 +118,31 @@ const ViewStudentPage = () => {
         {viewState === VIEW_STATES.EDIT && <h3>Edit Profile</h3>}
 
         {viewState === VIEW_STATES.MAIN && (
-          <div>
-            <Box className={$StudentPage.displayBox}>
-              <Box className={$StudentPage.infoBox}>
-                <div className={$StudentPage.singleInfoArea}>
-                  <p>Grade:</p>
-                  <p className={$StudentPage.centerText}>{student?.grade}</p>
-                </div>
-                <div className={$StudentPage.singleInfoArea}>
-                  <p>IEP End Date:</p>
-                  <p className={$StudentPage.centerText}>
-                    {activeIep?.end_date.toLocaleDateString() ?? "None"}
-                  </p>
-                </div>
-              </Box>
-
-              {/* // TODO: Extract 'Archive Student' to 'Edit' and 'Return to Student List' somewhere */}
-
-              <Box sx={{ display: "flex", alignItems: "flex-end" }}>
-                <Link
-                  href={`/students`}
-                  className={`${$button.default} ${$home.bold}`}
-                  style={{ marginLeft: "10px" }}
-                >
-                  Return to Student List
-                </Link>
-              </Box>
+          <Box className={$StudentPage.displayBox}>
+            <Box gap={10} className={$StudentPage.infoBox}>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>Grade</p>
+                <p className={$StudentPage.centerText}>{student?.grade}</p>
+              </div>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>Next IEP</p>
+                <p className={$StudentPage.centerText}>
+                  {activeIep?.end_date.toLocaleDateString() ?? "None"}
+                </p>
+              </div>
             </Box>
-          </div>
+          </Box>
         )}
       </Container>
 
       {viewState === VIEW_STATES.EDIT ? (
-        <>
-          <BasicTable />
-          <div>
+        <Stack gap={4} sx={{ justifyContent: "center" }}>
+          <Container className={$StudentPage.studentInfoContainer}>
+            <Box gap={10} className={$StudentPage.infoBox}>
+              <BasicTable />
+            </Box>
+          </Container>
+          <Container>
             <Button
               onClick={() => setArchivePrompt(true)}
               className={`${$button.default} ${$home.bold}`}
@@ -160,8 +150,8 @@ const ViewStudentPage = () => {
             >
               Archive Student
             </Button>
-          </div>
-        </>
+          </Container>
+        </Stack>
       ) : !activeIep ? (
         <Container className={$StudentPage.noIepContainer}>
           <Box className={$StudentPage.noIepBox}>
