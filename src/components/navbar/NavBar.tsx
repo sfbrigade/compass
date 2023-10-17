@@ -1,26 +1,27 @@
-import $navbar from "./Navbar.module.css";
-import Link from "next/link";
-import Image from "next/image";
 import {
-  PeopleOutline,
   CoPresent,
-  Settings,
   Logout,
+  PeopleOutline,
+  Settings,
 } from "@mui/icons-material";
-import { signOut } from "next-auth/react";
-import { useSession } from "next-auth/react";
-import * as React from "react";
+import MenuIcon from "@mui/icons-material/Menu";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import IconButton from "@mui/material/IconButton";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
-import MenuIcon from "@mui/icons-material/Menu";
 import Toolbar from "@mui/material/Toolbar";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import * as React from "react";
+import $navbar from "./Navbar.module.css";
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
+  const desktop = useMediaQuery("(min-width: 992px)");
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -85,7 +86,7 @@ export default function NavBar() {
           <AppBar
             position="fixed"
             sx={{
-              display: { sm: "block", md: "none" },
+              display: desktop ? "none" : "block",
             }}
           >
             <Toolbar className={$navbar.toolbar}>
@@ -95,7 +96,7 @@ export default function NavBar() {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { md: "none" } }}
+                sx={{ mr: 2, display: desktop ? "none" : "" }}
               >
                 <MenuIcon className={$navbar.burger} fontSize="large" />
               </IconButton>
@@ -106,9 +107,8 @@ export default function NavBar() {
           <Box
             component="nav"
             sx={{
-              display: { xs: "none", md: "block" },
-              width: { md: "200px" },
-              flexShrink: { md: 0 },
+              display: desktop ? "block" : "none",
+              width: "200px",
             }}
             aria-label="nav"
             className={$navbar.sidebar}
@@ -124,7 +124,7 @@ export default function NavBar() {
             open={mobileOpen}
             onClick={handleDrawerToggle}
             sx={{
-              display: { xs: "block", md: "none" },
+              display: desktop ? "none" : "block",
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: "full",

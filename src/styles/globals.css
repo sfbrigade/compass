@@ -144,16 +144,12 @@ textarea {
 }
 
 /* Medium Devices, Desktops */
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 992px) {
   html,
   body,
   #__next {
     padding-top: 0;
   }
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
 }
 
 /* Large Devices, Wide Screens */

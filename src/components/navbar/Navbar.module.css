@@ -26,7 +26,7 @@
 }
 
 .linkItem {
-  padding: 1.25rem 0 1.25rem calc(100vw - 55% - 2.5rem);
+  padding: 1.25rem 0 1.25rem calc(45% - 2rem * 1.4);
 }
 
 .linkTitle {
@@ -43,7 +43,7 @@
   background-color: var(--primary-50);
 }
 
-@media (min-width: 900px) {
+@media (min-width: 992px) {
   .sidebar {
     justify-content: start;
   }
