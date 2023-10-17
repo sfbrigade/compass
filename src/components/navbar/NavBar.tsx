@@ -42,26 +42,26 @@ export default function NavBar() {
   const drawer = (
     <div className={$navbar.sidebar}>
       <List className={$navbar.list}>
-        <Link href="/students" className={$navbar.linkItem}>
-          <ListItem disablePadding className={$navbar.link}>
+        <ListItem disablePadding className={$navbar.linkItem}>
+          <Link href="/students" className={$navbar.link}>
             <PeopleOutline />
             <p className={$navbar.linkTitle}>Students</p>
-          </ListItem>
-        </Link>
-        <Link href="/staff" className={$navbar.linkItem}>
-          <ListItem disablePadding className={$navbar.link}>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding className={$navbar.linkItem}>
+          <Link href="/staff" className={$navbar.link}>
             <CoPresent />
             <p className={$navbar.linkTitle}>Staff</p>
-          </ListItem>
-        </Link>
-        <Link href="/settings" className={$navbar.linkItem}>
-          <ListItem disablePadding className={$navbar.link}>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding className={$navbar.linkItem}>
+          <Link href="/settings" className={$navbar.link}>
             <Settings />
             <p className={$navbar.linkTitle}>Settings</p>
-          </ListItem>
-        </Link>
-        <Link href="" className={$navbar.linkItem}>
-          <ListItem disablePadding className={$navbar.link}>
+          </Link>
+        </ListItem>
+        <ListItem disablePadding className={$navbar.linkItem}>
+          <Link href="" className={$navbar.link}>
             <Logout />
             <p
               className={$navbar.linkTitle}
@@ -69,8 +69,8 @@ export default function NavBar() {
             >
               Logout
             </p>
-          </ListItem>
-        </Link>
+          </Link>
+        </ListItem>
       </List>
     </div>
   );
@@ -85,7 +85,7 @@ export default function NavBar() {
           <AppBar
             position="fixed"
             sx={{
-              display: { xs: "block", md: "none" },
+              display: { sm: "block", md: "none" },
             }}
           >
             <Toolbar className={$navbar.toolbar}>

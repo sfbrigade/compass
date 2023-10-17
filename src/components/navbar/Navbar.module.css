@@ -25,18 +25,16 @@
   color: var(--primary-99);
 }
 
-.link {
-  color: var(--on-primary);
-  padding-left: calc(100vw - 55% - 2.5rem);
-  padding-top: 22px;
-  padding-bottom: 22px;
+.linkItem {
+  padding: 1.25rem 0 1.25rem calc(100vw - 55% - 2.5rem);
 }
 
 .linkTitle {
   padding-left: 1rem;
 }
 
-.linkItem {
+.link {
+  color: var(--on-primary);
   text-decoration: none;
   display: flex;
 }
@@ -49,7 +47,7 @@
   .sidebar {
     justify-content: start;
   }
-  .link {
+  .linkItem {
     padding-left: 9%;
   }
 }
