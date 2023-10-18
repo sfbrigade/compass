@@ -1,5 +1,5 @@
 .sidebar {
-  background-color: var(--primary-20);
+  background-color: var(--primary-40);
   padding-top: 8px;
   display: flex;
   justify-content: center;
@@ -10,7 +10,7 @@
 }
 
 .toolbar {
-  background-color: var(--primary-20);
+  background-color: var(--primary-40);
   display: flex;
   justify-content: space-between;
   box-shadow: 0;
@@ -40,7 +40,7 @@
 }
 
 .linkItem:hover {
-  background-color: var(--primary-50);
+  background-color: var(--primary-60);
 }
 
 @media (min-width: 992px) {

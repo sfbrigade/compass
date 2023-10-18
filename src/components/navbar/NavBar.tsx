@@ -1,10 +1,10 @@
-import {
-  CoPresent,
-  Logout,
-  PeopleOutline,
-  Settings,
-} from "@mui/icons-material";
+import { SvgIconComponent } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
+import CoPresent from "@mui/icons-material/CoPresent";
+import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import PeopleOutline from "@mui/icons-material/PeopleOutline";
+import Settings from "@mui/icons-material/Settings";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -23,6 +23,8 @@ export default function NavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const desktop = useMediaQuery("(min-width: 992px)");
 
+  const { status } = useSession();
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -38,6 +40,21 @@ export default function NavBar() {
         priority
       />
     </Link>
+  );
+
+  const ToolbarMenu = ({ name }: SvgIconComponent) => (
+    <Toolbar className={$navbar.toolbar}>
+      {logo}
+      <IconButton
+        color="inherit"
+        aria-label="open drawer"
+        edge="start"
+        onClick={handleDrawerToggle}
+        sx={{ mr: 2, display: desktop ? "none" : "" }}
+      >
+        {name}
+      </IconButton>
+    </Toolbar>
   );
 
   const drawer = (
@@ -76,8 +93,6 @@ export default function NavBar() {
     </div>
   );
 
-  const { status } = useSession();
-
   return (
     <>
       {status === "authenticated" && (
@@ -89,18 +104,9 @@ export default function NavBar() {
               display: desktop ? "none" : "block",
             }}
           >
-            <Toolbar className={$navbar.toolbar}>
-              {logo}
-              <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: desktop ? "none" : "" }}
-              >
-                <MenuIcon className={$navbar.burger} fontSize="large" />
-              </IconButton>
-            </Toolbar>
+            <ToolbarMenu
+              name={<MenuIcon className={$navbar.burger} fontSize="large" />}
+            />
           </AppBar>
 
           {/* Sidebar for screens > md size */}
@@ -128,10 +134,12 @@ export default function NavBar() {
               "& .MuiDrawer-paper": {
                 boxSizing: "border-box",
                 width: "full",
-                marginTop: "4.25rem",
               },
             }}
           >
+            <ToolbarMenu
+              name={<CloseIcon className={$navbar.burger} fontSize="large" />}
+            />
             {drawer}
           </Drawer>
         </Box>
