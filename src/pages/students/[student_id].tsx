@@ -221,9 +221,6 @@ const ViewStudentPage = () => {
                   name="end_date"
                   placeholder="IEP end date"
                   value={endDate}
-                  // onChange={(e) => {
-                  //   setEndDate(e.target.value);
-                  // }}
                   required
                 />
               </Box>
