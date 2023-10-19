@@ -16,7 +16,7 @@ import $Form from "../../styles/Form.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import $Image from "../../styles/Image.module.css";
-import IepDateInput from "@/components/iep/IepDateInput";
+import { parseISO, addYears, subDays, format } from "date-fns";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
@@ -53,10 +53,10 @@ const ViewStudentPage = () => {
 
   const handleIepStartDateChange = (date: string) => {
     setStartDate(date);
-    const futureDate = new Date(date);
-    futureDate.setFullYear(futureDate.getFullYear() + 1);
-    futureDate.setDate(futureDate.getDate() - 1);
-    const formattedEndDate = futureDate.toISOString().substring(0, 10); // Get YYYY-MM-DD parts of new date
+    const parsedDate: Date = parseISO(date);
+    const datePlusOneYear: Date = addYears(parsedDate, 1);
+    const finalDate: Date = subDays(datePlusOneYear, 1);
+    const formattedEndDate: string = format(finalDate, "yyyy-MM-dd");
     setEndDate(formattedEndDate);
   };
 
@@ -69,8 +69,8 @@ const ViewStudentPage = () => {
     }
     iepMutation.mutate({
       student_id: student.student_id,
-      start_date: new Date(data.get("start_date") as string),
-      end_date: new Date(data.get("end_date") as string),
+      start_date: new Date(parseISO(data.get("start_date") as string)),
+      end_date: new Date(parseISO(data.get("end_date") as string)),
     });
 
     setCreateIepModal(false);
@@ -203,20 +203,28 @@ const ViewStudentPage = () => {
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>
-                <IepDateInput
+                <input
+                  type="date"
                   name="start_date"
-                  value={startDate}
                   placeholder="IEP start date"
-                  onChange={handleIepStartDateChange}
+                  value={startDate}
+                  onChange={(e) => {
+                    handleIepStartDateChange(e.target.value);
+                  }}
+                  required
                 />
               </Box>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>End Date:</p>
-                <IepDateInput
+                <input
+                  type="date"
                   name="end_date"
-                  value={endDate}
                   placeholder="IEP end date"
-                  onChange={setEndDate}
+                  value={endDate}
+                  // onChange={(e) => {
+                  //   setEndDate(e.target.value);
+                  // }}
+                  required
                 />
               </Box>
 
