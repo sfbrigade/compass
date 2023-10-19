@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import BasicTable from "@/components/editStudentTable/EditStudentTable";
+import EditStudentTable from "@/components/editStudentTable/EditStudentTable";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
@@ -10,7 +10,6 @@ import Modal from "@mui/material/Modal";
 import Stack from "@mui/material/Stack";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Iep from "../../components/iep/Iep";
@@ -46,12 +45,20 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
+  // console.log("student: ", student);
+
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id), retry: false }
   );
 
+  const handleEditStudent = () => {
+    console.log("edit student placeholder");
+    alert("placeholder for edit student");
+  };
+
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
+
   const handleArchiveStudent = async () => {
     if (!student) {
       return;
@@ -115,12 +122,7 @@ const ViewStudentPage = () => {
               <Button onClick={handleMainState} variant="outlined">
                 Cancel
               </Button>
-              <Button
-                onClick={() => {
-                  alert("placeholder for Saved");
-                }}
-                variant="outlined"
-              >
+              <Button onClick={handleEditStudent} variant="outlined">
                 Save
               </Button>
             </Box>
@@ -152,7 +154,18 @@ const ViewStudentPage = () => {
         <Stack gap={4} sx={{ justifyContent: "center" }}>
           <Container className={$StudentPage.studentInfoContainer}>
             <Box gap={10} className={$StudentPage.infoBox}>
-              <BasicTable />
+              <EditStudentTable
+                student={
+                  student || {
+                    first_name: "",
+                    last_name: "",
+                    email: "",
+                    grade: 0,
+                    student_id: "",
+                    assigned_case_manager_id: null,
+                  }
+                }
+              />
             </Box>
           </Container>
           <Container>
