@@ -16,10 +16,13 @@ import $Form from "../../styles/Form.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import $Image from "../../styles/Image.module.css";
+import IepDateInput from "@/components/iep/IepDateInput";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const utils = trpc.useContext();
   const router = useRouter();
@@ -47,6 +50,15 @@ const ViewStudentPage = () => {
   const iepMutation = trpc.student.addIep.useMutation({
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
+
+  const handleIepStartDateChange = (date: string) => {
+    setStartDate(date);
+    const futureDate = new Date(date);
+    futureDate.setFullYear(futureDate.getFullYear() + 1);
+    futureDate.setDate(futureDate.getDate() - 1);
+    const formattedEndDate = futureDate.toISOString().substring(0, 10); // Get YYYY-MM-DD parts of new date
+    setEndDate(formattedEndDate);
+  };
 
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -191,20 +203,20 @@ const ViewStudentPage = () => {
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>
-                <input
-                  type="date"
+                <IepDateInput
                   name="start_date"
+                  value={startDate}
                   placeholder="IEP start date"
-                  required
+                  onChange={handleIepStartDateChange}
                 />
               </Box>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>End Date:</p>
-                <input
-                  type="date"
+                <IepDateInput
                   name="end_date"
+                  value={endDate}
                   placeholder="IEP end date"
-                  required
+                  onChange={setEndDate}
                 />
               </Box>
 
