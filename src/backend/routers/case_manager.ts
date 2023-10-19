@@ -81,7 +81,7 @@ export const case_manager = router({
   // editStudent: authenticatedProcedure
   //   .input(
   //     z.object({
-  //       studentId: z.string(), // Add a field to specify the student to edit
+  //       student_id: z.string(), // Add a field to specify the student to edit
   //       first_name: z.string(),
   //       last_name: z.string(),
   //       email: z.string().email(),
@@ -89,14 +89,14 @@ export const case_manager = router({
   //     })
   //   )
   //   .mutation(async (req) => {
-  //     const { studentId, first_name, last_name, email, grade } = req.input;
-  //     const { userId } = req.ctx.auth;
+  //     const { student_id, first_name, last_name, email, grade } = req.input;
+  //     const { userId } = req.ctx.auth; // case manager id
 
   //     // Check if the student exists
   //     const existingStudent = await req.ctx.db
   //       .from("student")
   //       .select("*")
-  //       .where("id", studentId)
+  //       .where("id", student_id)
   //       .first();
 
   //     if (!existingStudent) {
@@ -117,14 +117,14 @@ export const case_manager = router({
   //         email: email.toLowerCase(),
   //         grade,
   //       })
-  //       .where("id", studentId)
+  //       .where("id", student_id)
   //       .execute();
 
   //     // Return the updated student information
   //     const updatedStudent = await req.ctx.db
   //       .from("student")
   //       .select("*")
-  //       .where("id", studentId)
+  //       .where("id", student_id)
   //       .first();
 
   //     return updatedStudent;
