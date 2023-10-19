@@ -42,7 +42,10 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
-  // console.log("student: ", student);
+  const [firstName, setFirstName] = useState(student?.first_name || "");
+  const [lastName, setLastName] = useState(student?.last_name || "");
+  const [email, setEmail] = useState(student?.email || "");
+  const [grade, setGrade] = useState(student?.grade || "");
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
@@ -142,16 +145,14 @@ const ViewStudentPage = () => {
           <Container className={$StudentPage.studentInfoContainer}>
             <Box gap={10} className={$StudentPage.infoBox}>
               <EditStudentTable
-                student={
-                  student || {
-                    first_name: "",
-                    last_name: "",
-                    email: "",
-                    grade: 0,
-                    student_id: "",
-                    assigned_case_manager_id: null,
-                  }
-                }
+                firstName={firstName}
+                setFirstName={setFirstName}
+                lastName={lastName}
+                setLastName={setLastName}
+                email={email}
+                setEmail={setEmail}
+                grade={grade}
+                setGrade={setGrade}
               />
             </Box>
           </Container>
