@@ -78,57 +78,57 @@ export const case_manager = router({
     }),
 
   // TODO: create editStudent authenticated procedure. This is a possible example, but NOT WORKING YET. Also, could be .updateTable instead of .update
-  // editStudent: authenticatedProcedure
-  //   .input(
-  //     z.object({
-  //       student_id: z.string(), // Add a field to specify the student to edit
-  //       first_name: z.string(),
-  //       last_name: z.string(),
-  //       email: z.string().email(),
-  //       grade: z.number(),
-  //     })
-  //   )
-  //   .mutation(async (req) => {
-  //     const { student_id, first_name, last_name, email, grade } = req.input;
-  //     const { userId } = req.ctx.auth; // case manager id
+  editStudent: authenticatedProcedure
+    .input(
+      z.object({
+        student_id: z.string(), // Add a field to specify the student to edit
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+        grade: z.number(),
+      })
+    )
+    .mutation(async (req) => {
+      const { student_id, first_name, last_name, email, grade } = req.input;
+      const { userId } = req.ctx.auth; // case manager id
 
-  //     // Check if the student exists
-  //     const existingStudent = await req.ctx.db
-  //       .from("student")
-  //       .select("*")
-  //       .where("id", student_id)
-  //       .first();
+      // Check if the student exists
+      const existingStudent = req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .where("student_id", "=", student_id);
+      //.first();
 
-  //     if (!existingStudent) {
-  //       throw new Error("Student not found");
-  //     }
+      if (!existingStudent) {
+        throw new Error("Student not found");
+      }
 
-  //     // Check if the authenticated user has the necessary permissions to edit this student
-  //     if (existingStudent.assigned_case_manager_id !== userId) {
-  //       throw new Error("You don't have permission to edit this student");
-  //     }
+      // Check if the authenticated user has the necessary permissions to edit this student
+      if (existingStudent.assigned_case_manager_id !== userId) {
+        throw new Error("You don't have permission to edit this student");
+      }
 
-  //     // Update the student's information
-  //     await req.ctx.db
-  //       .update("student")
-  //       .set({
-  //         first_name,
-  //         last_name,
-  //         email: email.toLowerCase(),
-  //         grade,
-  //       })
-  //       .where("id", student_id)
-  //       .execute();
+      // Update the student's information
+      await req.ctx.db
+        .updateTable("student")
+        .set({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+          grade,
+        })
+        .where("student_id", "=", student_id)
+        .execute();
 
-  //     // Return the updated student information
-  //     const updatedStudent = await req.ctx.db
-  //       .from("student")
-  //       .select("*")
-  //       .where("id", student_id)
-  //       .first();
+      // Return the updated student information
+      const updatedStudent = req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .where("student_id", "=", student_id);
+      //.first();
 
-  //     return updatedStudent;
-  //   }),
+      return updatedStudent;
+    }),
 
   /**
    * Edits the given student in the CM's roster. Throws an error if the student was not found in the db.
