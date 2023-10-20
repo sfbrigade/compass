@@ -1,4 +1,3 @@
-import { SvgIconComponent } from "@mui/icons-material";
 import CloseIcon from "@mui/icons-material/Close";
 import CoPresent from "@mui/icons-material/CoPresent";
 import Logout from "@mui/icons-material/Logout";
@@ -17,7 +16,15 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
+
+interface NavItemProps {
+  href?: string;
+  icon: React.ReactNode;
+  text: string;
+  onClick?: MouseEventHandler<HTMLParagraphElement>;
+}
 
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -42,7 +49,7 @@ export default function NavBar() {
     </Link>
   );
 
-  const ToolbarMenu = ({ name }: SvgIconComponent) => (
+  const ToolbarMenu = ({ name }: { name: React.ReactNode }) => (
     <Toolbar className={$navbar.toolbar}>
       {logo}
       <IconButton
@@ -57,38 +64,28 @@ export default function NavBar() {
     </Toolbar>
   );
 
+  const NavItem = ({ href, icon, text, onClick }: NavItemProps) => (
+    <ListItem disablePadding className={$navbar.linkItem}>
+      <Link href={href || ""} className={$navbar.link}>
+        {icon}
+        <p className={$navbar.linkTitle} onClick={onClick}>
+          {text}
+        </p>
+      </Link>
+    </ListItem>
+  );
+
   const drawer = (
     <div className={$navbar.sidebar}>
-      <List className={$navbar.list}>
-        <ListItem disablePadding className={$navbar.linkItem}>
-          <Link href="/students" className={$navbar.link}>
-            <PeopleOutline />
-            <p className={$navbar.linkTitle}>Students</p>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding className={$navbar.linkItem}>
-          <Link href="/staff" className={$navbar.link}>
-            <CoPresent />
-            <p className={$navbar.linkTitle}>Staff</p>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding className={$navbar.linkItem}>
-          <Link href="/settings" className={$navbar.link}>
-            <Settings />
-            <p className={$navbar.linkTitle}>Settings</p>
-          </Link>
-        </ListItem>
-        <ListItem disablePadding className={$navbar.linkItem}>
-          <Link href="" className={$navbar.link}>
-            <Logout />
-            <p
-              className={$navbar.linkTitle}
-              onClick={() => signOut({ callbackUrl: "/" })}
-            >
-              Logout
-            </p>
-          </Link>
-        </ListItem>
+      <List>
+        <NavItem href="/students" icon={<PeopleOutline />} text="Students" />
+        <NavItem href="/staff" icon={<CoPresent />} text="Staff" />
+        <NavItem href="/settings" icon={<Settings />} text="Settings" />
+        <NavItem
+          icon={<Logout />}
+          text="Logout"
+          onClick={() => signOut({ callbackUrl: "/" })}
+        />
       </List>
     </div>
   );
@@ -97,6 +94,20 @@ export default function NavBar() {
     <>
       {status === "authenticated" && (
         <Box sx={{ display: "flex" }}>
+          {/* Sidebar for screens > md size */}
+          <Box
+            component="nav"
+            aria-label="nav"
+            className={$navbar.sidebar}
+            sx={{
+              display: desktop ? "block" : "none",
+              width: "200px",
+            }}
+          >
+            {logo}
+            {drawer}
+          </Box>
+
           {/* Top nav for screen <= md size */}
           <AppBar
             position="fixed"
@@ -108,20 +119,6 @@ export default function NavBar() {
               name={<MenuIcon className={$navbar.burger} fontSize="large" />}
             />
           </AppBar>
-
-          {/* Sidebar for screens > md size */}
-          <Box
-            component="nav"
-            sx={{
-              display: desktop ? "block" : "none",
-              width: "200px",
-            }}
-            aria-label="nav"
-            className={$navbar.sidebar}
-          >
-            {logo}
-            {drawer}
-          </Box>
 
           {/* Modal for sidebar when screen is <= md size */}
           <Drawer
