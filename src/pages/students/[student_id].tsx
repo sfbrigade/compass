@@ -51,7 +51,8 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
-  const handleIepStartDateChange = (date: string) => {
+  const handleAutofillIepEndDate = (date: string) => {
+    //new IEP generally starts on same date annually, so end date autofills to the day before one year from start date
     setStartDate(date);
     const parsedDate: Date = parseISO(date);
     const datePlusOneYear: Date = addYears(parsedDate, 1);
@@ -209,7 +210,7 @@ const ViewStudentPage = () => {
                   placeholder="IEP start date"
                   value={startDate}
                   onChange={(e) => {
-                    handleIepStartDateChange(e.target.value);
+                    handleAutofillIepEndDate(e.target.value);
                   }}
                   required
                 />
