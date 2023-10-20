@@ -97,7 +97,7 @@ export const case_manager = router({
         .selectFrom("student")
         .selectAll()
         .where("student_id", "=", student_id);
-      //.first();
+      // .first();
 
       if (!existingStudent) {
         throw new Error("Student not found");
@@ -125,7 +125,7 @@ export const case_manager = router({
         .selectFrom("student")
         .selectAll()
         .where("student_id", "=", student_id);
-      //.first();
+      // .first();
 
       return updatedStudent;
     }),
