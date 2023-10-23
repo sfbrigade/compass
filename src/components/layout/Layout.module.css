@@ -11,7 +11,7 @@
   color: var(--on-background);
   height: 100%;
   width: 100%;
-  padding: 1em;
+  padding: 5em 3em 3em 3em;
 }
 
 .mainPurple {
@@ -24,18 +24,27 @@
   background-color: var(--grey-80);
 }
 
+/* @media only screen and (max-width: 480px) {
+  .main {
+    padding: 5em 3em 3em 3em;
+  }
+} */
+
 @media only screen and (min-width: 480px) {
+  .main {
+    padding: 5em 3em 3em 3em;
+  }
 }
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
+  .main {
+    padding: 5em 3em 3em 3em;
+  }
 }
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
-  .main {
-    padding: 5em;
-  }
 }
 
 /* Large Devices, Wide Screens */

@@ -66,6 +66,7 @@ body,
 #__next {
   height: 100%;
   overflow-x: auto;
+  padding-top: 0.5rem;
 }
 
 h1,
@@ -144,6 +145,11 @@ textarea {
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
+  html,
+  body,
+  #__next {
+    padding-top: 0;
+  }
 }
 
 /* Large Devices, Wide Screens */
