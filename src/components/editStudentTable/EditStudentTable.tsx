@@ -12,7 +12,8 @@ interface EditStudentTableProps {
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
   grade: string | number;
-  setGrade: Dispatch<SetStateAction<string | number>>;
+  setGrade: Dispatch<SetStateAction<number>>;
+  assignCaseManagerId?: string;
 }
 
 export default function EditStudentTable({
