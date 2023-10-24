@@ -81,7 +81,7 @@ export const case_manager = router({
   editStudent: authenticatedProcedure
     .input(
       z.object({
-        student_id: z.string(), // Add a field to specify the student to edit
+        student_id: z.string(), // Add a field to specify the pre-existing student to edit
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
@@ -92,24 +92,19 @@ export const case_manager = router({
       const { student_id, first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth; // case manager id
 
-      // Check if the student exists
+      // Check if the student exists and if the case manager is assigned to the student
       const existingStudent = req.ctx.db
         .selectFrom("student")
         .selectAll()
-        .where("student_id", "=", student_id);
-      // .first();
+        .where("student_id", "=", student_id)
+        .where("assigned_case_manager_id", "=", userId);
 
       if (!existingStudent) {
         throw new Error("Student not found");
       }
 
-      // Check if the authenticated user has the necessary permissions to edit this student
-      if (existingStudent.assigned_case_manager_id !== userId) {
-        throw new Error("You don't have permission to edit this student");
-      }
-
       // Update the student's information
-      await req.ctx.db
+      return await req.ctx.db
         .updateTable("student")
         .set({
           first_name,
@@ -118,16 +113,8 @@ export const case_manager = router({
           grade,
         })
         .where("student_id", "=", student_id)
-        .execute();
-
-      // Return the updated student information
-      const updatedStudent = req.ctx.db
-        .selectFrom("student")
-        .selectAll()
-        .where("student_id", "=", student_id);
-      // .first();
-
-      return updatedStudent;
+        .returningAll()
+        .executeTakeFirstOrThrow();
     }),
 
   /**

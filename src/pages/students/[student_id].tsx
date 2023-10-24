@@ -48,16 +48,28 @@ const ViewStudentPage = () => {
   const [firstName, setFirstName] = useState(student?.first_name || "");
   const [lastName, setLastName] = useState(student?.last_name || "");
   const [email, setEmail] = useState(student?.email || "");
-  const [grade, setGrade] = useState(student?.grade || "");
+  const [grade, setGrade] = useState(student?.grade || 0);
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id), retry: false }
   );
 
-  const handleEditStudent = () => {
-    console.log("edit student placeholder");
-    alert("placeholder for edit student");
+  const editMutation = trpc.case_manager.editStudent.useMutation();
+
+  const handleEditStudent = async () => {
+    if (!student) {
+      return; // TODO: improve error handling
+    }
+    await editMutation.mutateAsync({
+      student_id: student.student_id,
+      first_name: firstName,
+      last_name: lastName,
+      email: email,
+      grade: grade,
+    });
+    handleMainState();
+    document.location.reload();
   };
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
