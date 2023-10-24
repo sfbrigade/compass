@@ -16,10 +16,13 @@ import $Form from "../../styles/Form.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import $Image from "../../styles/Image.module.css";
+import { parseISO, addYears, subDays, format } from "date-fns";
 
 const ViewStudentPage = () => {
   const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
 
   const utils = trpc.useContext();
   const router = useRouter();
@@ -48,6 +51,16 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
+  const handleAutofillIepEndDate = (date: string) => {
+    //new IEP generally starts on same date annually, so end date autofills to the day before one year from start date
+    setStartDate(date);
+    const parsedDate: Date = parseISO(date);
+    const datePlusOneYear: Date = addYears(parsedDate, 1);
+    const finalDate: Date = subDays(datePlusOneYear, 1);
+    const formattedEndDate: string = format(finalDate, "yyyy-MM-dd");
+    setEndDate(formattedEndDate);
+  };
+
   const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -57,8 +70,8 @@ const ViewStudentPage = () => {
     }
     iepMutation.mutate({
       student_id: student.student_id,
-      start_date: new Date(data.get("start_date") as string),
-      end_date: new Date(data.get("end_date") as string),
+      start_date: new Date(parseISO(data.get("start_date") as string)),
+      end_date: new Date(parseISO(data.get("end_date") as string)),
     });
 
     setCreateIepModal(false);
@@ -195,6 +208,10 @@ const ViewStudentPage = () => {
                   type="date"
                   name="start_date"
                   placeholder="IEP start date"
+                  value={startDate}
+                  onChange={(e) => {
+                    handleAutofillIepEndDate(e.target.value);
+                  }}
                   required
                 />
               </Box>
@@ -204,6 +221,7 @@ const ViewStudentPage = () => {
                   type="date"
                   name="end_date"
                   placeholder="IEP end date"
+                  value={endDate}
                   required
                 />
               </Box>
