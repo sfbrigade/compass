@@ -45,6 +45,12 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id) }
   );
 
+  const buttonSX = {
+    "&:hover": {
+      background: "#5347d7",
+    },
+  };
+
   const [firstName, setFirstName] = useState(student?.first_name || "");
   const [lastName, setLastName] = useState(student?.last_name || "");
   const [email, setEmail] = useState(student?.email || "");
@@ -126,7 +132,19 @@ const ViewStudentPage = () => {
 
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
-            <Button onClick={handleEditState} variant="outlined">
+            <Button
+              className={`${$button.default} ${$home.bold}`}
+              variant="outlined"
+              sx={{
+                color: "#5347d7",
+                borderColor: "#5347d7",
+                borderRadius: "8px",
+                fontFamily: "Quicksand",
+                fontSize: "1em",
+                textTransform: "capitalize",
+              }}
+              onClick={handleEditState}
+            >
               Edit
             </Button>
           )}
@@ -134,10 +152,39 @@ const ViewStudentPage = () => {
           {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
           {viewState === VIEW_STATES.EDIT && (
             <Box className={$StudentPage.displayBoxGap}>
-              <Button onClick={handleMainState} variant="outlined">
+              <Button
+                onClick={handleMainState}
+                className={`${$button.default} ${$home.bold}`}
+                variant="outlined"
+                sx={{
+                  color: "#5347d7",
+                  borderColor: "#5347d7",
+                  borderRadius: "8px",
+                  fontFamily: "Quicksand",
+                  textTransform: "capitalize",
+                  fontSize: "1em",
+                }}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleEditStudent} variant="outlined">
+              <Button
+                className={`${$button.default} ${$home.bold}`}
+                sx={[
+                  {
+                    backgroundColor: "#5347d7",
+                    borderRadius: "8px",
+                    border: "none",
+                    color: "#ffffff",
+                    fontFamily: "Quicksand",
+                    textTransform: "capitalize",
+                    fontSize: "1em",
+                  },
+                  buttonSX,
+                ]}
+                type="submit"
+                onClick={handleEditStudent}
+                variant="contained"
+              >
                 Save
               </Button>
             </Box>
@@ -182,13 +229,23 @@ const ViewStudentPage = () => {
             </Box>
           </Container>
           <Container>
-            <Button
-              onClick={() => setArchivePrompt(true)}
-              className={`${$button.default} ${$home.bold}`}
-              variant="outlined"
-            >
-              Archive Student
-            </Button>
+            <Box textAlign="center">
+              <Button
+                onClick={() => setArchivePrompt(true)}
+                className={`${$button.default} ${$home.bold}`}
+                variant="outlined"
+                sx={{
+                  color: "#5347d7",
+                  borderColor: "#5347d7",
+                  borderRadius: "8px",
+                  fontFamily: "Quicksand",
+                  textTransform: "capitalize",
+                  fontSize: "1em",
+                }}
+              >
+                Archive {student?.first_name} {student?.last_name}
+              </Button>
+            </Box>
           </Container>
         </Stack>
       ) : !activeIep ? (
