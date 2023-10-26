@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import EditStudentTable from "@/components/editStudentTable/EditStudentTable";
+import EditStudentRow from "@/components/editStudentRow/EditStudentRow";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
@@ -47,7 +47,7 @@ const ViewStudentPage = () => {
 
   const buttonSX = {
     "&:hover": {
-      background: "#5347d7",
+      background: "#3023B8",
     },
   };
 
@@ -124,7 +124,10 @@ const ViewStudentPage = () => {
 
   return (
     <Stack spacing={2}>
-      <Container className={$StudentPage.studentInfoContainer}>
+      <Container
+        className={$StudentPage.studentInfoContainer}
+        sx={{ marginBottom: "1rem" }}
+      >
         <Box className={$StudentPage.displayBox}>
           <p className={$StudentPage.studentName}>
             {student?.first_name} {student?.last_name}
@@ -213,22 +216,44 @@ const ViewStudentPage = () => {
       </Container>
 
       {viewState === VIEW_STATES.EDIT ? (
-        <Stack gap={4} sx={{ justifyContent: "center" }}>
+        <Stack gap={0.5} sx={{ justifyContent: "center" }}>
           <Container className={$StudentPage.studentInfoContainer}>
-            <Box gap={10} className={$StudentPage.infoBox}>
-              <EditStudentTable
-                firstName={firstName}
-                setFirstName={setFirstName}
-                lastName={lastName}
-                setLastName={setLastName}
-                email={email}
-                setEmail={setEmail}
-                grade={grade}
-                setGrade={setGrade}
-              />
+            <Box>
+              <EditStudentRow
+                label={"First Name"}
+                value={firstName}
+                handleInputChange={(e) => setFirstName(e.target.value)}
+              ></EditStudentRow>
             </Box>
           </Container>
-          <Container>
+          <Container className={$StudentPage.studentInfoContainer}>
+            <Box>
+              <EditStudentRow
+                label={"Last Name"}
+                value={lastName}
+                handleInputChange={(e) => setLastName(e.target.value)}
+              ></EditStudentRow>
+            </Box>
+          </Container>
+          <Container className={$StudentPage.studentInfoContainer}>
+            <Box>
+              <EditStudentRow
+                label={"Grade"}
+                value={grade}
+                handleInputChange={(e) => setGrade(parseInt(e.target.value))}
+              ></EditStudentRow>
+            </Box>
+          </Container>
+          <Container className={$StudentPage.studentInfoContainer}>
+            <Box>
+              <EditStudentRow
+                label={"Email Address"}
+                value={email}
+                handleInputChange={(e) => setEmail(e.target.value)}
+              ></EditStudentRow>
+            </Box>
+          </Container>
+          <Container sx={{ marginTop: "2rem" }}>
             <Box textAlign="center">
               <Button
                 onClick={() => setArchivePrompt(true)}
