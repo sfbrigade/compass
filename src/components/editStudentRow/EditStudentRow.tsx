@@ -1,7 +1,6 @@
 import React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
-import TextField from "@mui/material/TextField";
 
 interface EditStudentRowProps {
   label: string;
@@ -18,7 +17,8 @@ export default function EditStudentRow({
     <TableRow
       sx={{
         display: "grid",
-        gridTemplateColumns: "300px 20px 300px",
+        gridTemplateColumns: "200px 30px 300px",
+        padding: "8px 0px",
       }}
       key={label}
     >
@@ -35,15 +35,17 @@ export default function EditStudentRow({
         padding="none"
         sx={{ borderBottom: "none", paddingBottom: "none" }}
       >
-        <TextField
-          size="small"
+        <input
           placeholder={value.toString()}
+          style={{
+            border: "none",
+            borderBottom: "none",
+            width: "100%",
+            outline: "none",
+            fontSize: "16px",
+          }}
           onChange={handleInputChange}
-          sx={{ paddingBottom: "0px" }}
-          fullWidth
-          variant="standard"
-          InputProps={{ disableUnderline: true }}
-        ></TextField>
+        ></input>
       </TableCell>
     </TableRow>
   );
