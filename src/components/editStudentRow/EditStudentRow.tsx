@@ -2,6 +2,7 @@ import React from "react";
 import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
+import Table from "@mui/material/Table";
 
 interface EditStudentRowProps {
   label: string;
@@ -15,36 +16,36 @@ export default function EditStudentRow({
   handleInputChange,
 }: EditStudentRowProps) {
   return (
-    <TableRow
-      sx={{
-        display: "grid",
-        gridTemplateColumns: "300px 20px 300px",
-      }}
-      key={label}
-    >
-      <TableCell
-        padding="none"
-        sx={{ alignItems: "center", borderBottom: "none" }}
+    <Table>
+      <TableRow
+        sx={{
+          display: "grid",
+          gridTemplateColumns: "300px 20px 300px",
+          alignItems: "center",
+        }}
+        key={label}
       >
-        {label}
-      </TableCell>
-      <TableCell padding="none" sx={{ width: "16px", borderBottom: "none" }}>
-        :
-      </TableCell>
-      <TableCell
-        padding="none"
-        sx={{ borderBottom: "none", paddingBottom: "none" }}
-      >
-        <TextField
-          size="small"
-          placeholder={value.toString()}
-          onChange={handleInputChange}
-          sx={{ paddingBottom: "0px" }}
-          fullWidth
-          variant="standard"
-          InputProps={{ disableUnderline: true }}
-        ></TextField>
-      </TableCell>
-    </TableRow>
+        <TableCell
+          padding="none"
+          sx={{ verticalAlign: "center", borderBottom: "none" }}
+        >
+          {label}
+        </TableCell>
+        <TableCell padding="none" sx={{ borderBottom: "none" }}>
+          :
+        </TableCell>
+        <TableCell padding="none" sx={{ borderBottom: "none" }}>
+          <TextField
+            size="small"
+            defaultValue={value.toString()}
+            onChange={handleInputChange}
+            sx={{ paddingBottom: "0px" }}
+            fullWidth
+            variant="standard"
+            InputProps={{ disableUnderline: true }}
+          ></TextField>
+        </TableCell>
+      </TableRow>
+    </Table>
   );
 }
