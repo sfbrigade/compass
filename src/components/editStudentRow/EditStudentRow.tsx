@@ -3,6 +3,7 @@ import TableCell from "@mui/material/TableCell";
 import TableRow from "@mui/material/TableRow";
 import TextField from "@mui/material/TextField";
 import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
 
 interface EditStudentRowProps {
   label: string;
@@ -17,35 +18,37 @@ export default function EditStudentRow({
 }: EditStudentRowProps) {
   return (
     <Table>
-      <TableRow
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "300px 20px 300px",
-          alignItems: "center",
-        }}
-        key={label}
-      >
-        <TableCell
-          padding="none"
-          sx={{ verticalAlign: "center", borderBottom: "none" }}
+      <TableBody>
+        <TableRow
+          sx={{
+            display: "grid",
+            gridTemplateColumns: "300px 20px 300px",
+            alignItems: "center",
+          }}
+          key={label}
         >
-          {label}
-        </TableCell>
-        <TableCell padding="none" sx={{ borderBottom: "none" }}>
-          :
-        </TableCell>
-        <TableCell padding="none" sx={{ borderBottom: "none" }}>
-          <TextField
-            size="small"
-            defaultValue={value.toString()}
-            onChange={handleInputChange}
-            sx={{ paddingBottom: "0px" }}
-            fullWidth
-            variant="standard"
-            InputProps={{ disableUnderline: true }}
-          ></TextField>
-        </TableCell>
-      </TableRow>
+          <TableCell
+            padding="none"
+            sx={{ verticalAlign: "center", borderBottom: "none" }}
+          >
+            {label}
+          </TableCell>
+          <TableCell padding="none" sx={{ borderBottom: "none" }}>
+            :
+          </TableCell>
+          <TableCell padding="none" sx={{ borderBottom: "none" }}>
+            <TextField
+              size="small"
+              defaultValue={value.toString()}
+              onChange={handleInputChange}
+              sx={{ paddingBottom: "0px" }}
+              fullWidth
+              variant="standard"
+              InputProps={{ disableUnderline: true }}
+            ></TextField>
+          </TableCell>
+        </TableRow>
+      </TableBody>
     </Table>
   );
 }
