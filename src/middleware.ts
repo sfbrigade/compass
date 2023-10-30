@@ -9,7 +9,11 @@ import { NextRequest, NextResponse } from "next/server";
  * However, their middleware doesn't yet work with database sessions.
  */
 export function middleware(request: NextRequest) {
-  if (!request.cookies.get("next-auth.session-token")) {
+  const sessionToken =
+    request.cookies.get("next-auth.session-token") ??
+    request.cookies.get("__Secure-next-auth.session-token");
+
+  if (!sessionToken) {
     const url = request.nextUrl.clone();
     url.pathname = "/signInPage";
     return NextResponse.redirect(url);
