@@ -35,7 +35,7 @@ const ViewStudentPage = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id) }
+    { enabled: Boolean(student_id), retry: false }
   );
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
