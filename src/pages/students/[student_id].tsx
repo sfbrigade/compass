@@ -123,7 +123,14 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack
+      spacing={2}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
       <Container
         className={$StudentPage.studentInfoContainer}
         sx={{ marginBottom: "1rem" }}
