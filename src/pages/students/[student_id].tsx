@@ -123,14 +123,7 @@ const ViewStudentPage = () => {
   }
 
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
+    <Stack spacing={2}>
       <Container
         className={$StudentPage.studentInfoContainer}
         sx={{ marginBottom: "1rem" }}
@@ -281,24 +274,26 @@ const ViewStudentPage = () => {
           </Container>
         </Stack>
       ) : !activeIep ? (
-        <Container className={$StudentPage.noIepContainer}>
-          <Box className={$StudentPage.noIepBox}>
-            <Image
-              src={noGoals}
-              alt="no IEP image"
-              className={$Image.fitContent}
-            />
-            <p className={$StudentPage.textSpacing}>
-              This student does not have an active IEP. Please create one.
-            </p>
-            <button
-              onClick={() => setCreateIepModal(true)}
-              className={`${$button.default}`}
-            >
-              Create IEP
-            </button>
-          </Box>
-        </Container>
+        <Stack>
+          <Container className={$StudentPage.noIepContainer}>
+            <Box className={$StudentPage.noIepBox}>
+              <Image
+                src={noGoals}
+                alt="no IEP image"
+                className={$Image.fitContent}
+              />
+              <p className={$StudentPage.textSpacing}>
+                This student does not have an active IEP. Please create one.
+              </p>
+              <button
+                onClick={() => setCreateIepModal(true)}
+                className={`${$button.default}`}
+              >
+                Create IEP
+              </button>
+            </Box>
+          </Container>
+        </Stack>
       ) : (
         // Active IEP is in db
         <Iep iep_id={activeIep.iep_id} />
