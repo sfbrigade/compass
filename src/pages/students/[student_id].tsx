@@ -61,7 +61,9 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id), retry: false }
   );
 
-  const editMutation = trpc.case_manager.editStudent.useMutation();
+  const editMutation = trpc.case_manager.editStudent.useMutation({
+    onSuccess: () => utils.student.getStudentById.invalidate(),
+  });
 
   const handleEditStudent = async () => {
     if (!student) {
@@ -75,7 +77,7 @@ const ViewStudentPage = () => {
       grade: grade,
     });
     handleMainState();
-    document.location.reload();
+    // document.location.reload();
   };
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
@@ -125,11 +127,12 @@ const ViewStudentPage = () => {
   return (
     <Stack
       spacing={2}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
+      // sx={{
+      //   display: "flex",
+      //   flexDirection: "column",
+      //   alignItems: "center",
+      //   width: "100vu",
+      // }}
     >
       <Container
         className={$StudentPage.studentInfoContainer}
