@@ -19,6 +19,9 @@ import $table from "./Table.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
 import { SelectableForTable } from "zapatos/schema";
+import emptyState from "../../public/img/empty-state.png";
+import Container from "@mui/material/Container";
+import Image from "next/image";
 
 export type StudentWithIep = SelectableForTable<"student"> &
   SelectableForTable<"iep">;
@@ -117,7 +120,7 @@ function EnhancedTableHead<Column extends HeadCell>({
 
 interface EnhancedTableToolbarProps {
   totalRows: number;
-  type: "Student" | "Staff";
+  type: "Students" | "Staff";
   onOpenInput: () => void;
   searchParam: string;
   onSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -131,57 +134,63 @@ function EnhancedTableToolbar({
   onSearch,
 }: EnhancedTableToolbarProps) {
   return (
-    <Toolbar
-      sx={{
-        pl: { xs: 0 },
-        pr: { xs: 0 },
-        flexDirection: "column",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
+    <>
+      {totalRows === 0 ? (
         <h2 className={$table.tableTitle}>{type}</h2>
-        <button onClick={onOpenInput} className={$button.default}>
-          Add {type}
-        </button>
-      </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          width: "100%",
-        }}
-      >
-        <Typography color="inherit" variant="subtitle1" component="div">
-          {`Total: ${totalRows}`}
-        </Typography>
-        <TextField
-          id="search-input"
-          placeholder="Search"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
+      ) : (
+        <Toolbar
+          sx={{
+            pl: { xs: 0 },
+            pr: { xs: 0 },
+            flexDirection: "column",
           }}
-          variant="standard"
-          value={searchParam}
-          onChange={onSearch}
-        />
-      </div>
-    </Toolbar>
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <h2 className={$table.tableTitle}>{type}</h2>
+            <button onClick={onOpenInput} className={$button.default}>
+              Add {type}
+            </button>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              width: "100%",
+            }}
+          >
+            <Typography color="inherit" variant="subtitle1" component="div">
+              {`Total: ${totalRows}`}
+            </Typography>
+            <TextField
+              id="search-input"
+              placeholder="Search"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                ),
+              }}
+              variant="standard"
+              value={searchParam}
+              onChange={onSearch}
+            />
+          </div>
+        </Toolbar>
+      )}
+    </>
   );
 }
 
 interface EnhancedTableInputProps<Column> {
   inputCells: Column[];
-  type: "Student" | "Staff";
+  type: "Students" | "Staff";
   onCloseInput: () => void;
 }
 
@@ -243,7 +252,7 @@ interface EnhancedTableProps<Person, Column> {
   people: Person[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   headCells: Column[];
-  type: "Student" | "Staff";
+  type: "Students" | "Staff";
 }
 
 /**
@@ -325,60 +334,87 @@ export default function EnhancedTable<
         searchParam={searchParam}
         onSearch={handleSearch}
       />
-      <TableContainer>
-        <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
-          <EnhancedTableHead
-            headCells={headCells}
-            order={order}
-            orderBy={orderBy as string}
-            onRequestSort={handleRequestSort}
-          />
-          <TableBody>
-            {showInput && (
-              <EnhancedTableInput
-                inputCells={headCells}
-                type={type}
-                onCloseInput={handleCloseInput}
-              />
-            )}
-            {visibleRows.map((row) => {
-              const labelId = row.email;
+      {people.length === 0 && !showInput && (
+        <Container sx={{ marginTop: "4rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+            }}
+            gap={1.5}
+          >
+            <Image src={emptyState} alt="empty roster image" width={250} />
+            <p style={{ fontWeight: "semibold" }}>You have no students yet</p>
+            <p style={{ color: "var(--grey-20)" }}>
+              Start building your class roster by adding a student.
+            </p>
+            <button
+              onClick={() => setShowInput(true)}
+              className={`${$button.default}`}
+            >
+              Add Student
+            </button>
+          </Box>
+        </Container>
+      )}
 
-              return (
-                <StyledTableRow
-                  hover
-                  role="link"
-                  tabIndex={-1}
-                  key={row.email}
-                  sx={{ cursor: "pointer" }}
-                  onClick={() =>
-                    handleLinkToPage(
-                      isStudentWithIep(row)
-                        ? `../students/${row.student_id || ""}`
-                        : `../staff/${row.user_id || ""}`
-                    )
-                  }
-                >
-                  <TableCell component="th" id={labelId} scope="row">
-                    {row.first_name}
-                  </TableCell>
-                  <TableCell align={"left"}>{row.last_name}</TableCell>
-                  <TableCell align={"left"}>{row.email}</TableCell>
+      {(people.length || showInput) && (
+        <TableContainer>
+          <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
+            <EnhancedTableHead
+              headCells={headCells}
+              order={order}
+              orderBy={orderBy as string}
+              onRequestSort={handleRequestSort}
+            />
+            <TableBody>
+              {showInput && (
+                <EnhancedTableInput
+                  inputCells={headCells}
+                  type={type}
+                  onCloseInput={handleCloseInput}
+                />
+              )}
+              {visibleRows.map((row) => {
+                const labelId = row.email;
 
-                  {isStudentWithIep(row) && (
-                    <>
-                      <TableCell align={"left"}>{row.grade}</TableCell>
-                      <TableCell align={"left"}>
-                        {row.end_date?.toDateString().slice(4) || "None"}
-                      </TableCell>
-                    </>
-                  )}
-                </StyledTableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
-      </TableContainer>
+                return (
+                  <StyledTableRow
+                    hover
+                    role="link"
+                    tabIndex={-1}
+                    key={row.email}
+                    sx={{ cursor: "pointer" }}
+                    onClick={() =>
+                      handleLinkToPage(
+                        isStudentWithIep(row)
+                          ? `../students/${row.student_id || ""}`
+                          : `../staff/${row.user_id || ""}`
+                      )
+                    }
+                  >
+                    <TableCell component="th" id={labelId} scope="row">
+                      {row.first_name}
+                    </TableCell>
+                    <TableCell align={"left"}>{row.last_name}</TableCell>
+                    <TableCell align={"left"}>{row.email}</TableCell>
+
+                    {isStudentWithIep(row) && (
+                      <>
+                        <TableCell align={"left"}>{row.grade}</TableCell>
+                        <TableCell align={"left"}>
+                          {row.end_date?.toDateString().slice(4) || "None"}
+                        </TableCell>
+                      </>
+                    )}
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      )}
     </Box>
   );
 }
