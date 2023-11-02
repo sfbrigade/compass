@@ -77,11 +77,13 @@ export const case_manager = router({
         .executeTakeFirstOrThrow();
     }),
 
-  // TODO: create editStudent authenticated procedure. This is a possible example, but NOT WORKING YET. Also, could be .updateTable instead of .update
+  /**
+   * Edits the given student in the CM's roster. Throws an error if the student was not found in the db.
+   */
   editStudent: authenticatedProcedure
     .input(
       z.object({
-        student_id: z.string(), // Add a field to specify the pre-existing student to edit
+        student_id: z.string(),
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
