@@ -1,4 +1,22 @@
-import React from "react";
+import CloseIcon from "@mui/icons-material/Close";
+import CoPresent from "@mui/icons-material/CoPresent";
+import Logout from "@mui/icons-material/Logout";
+import MenuIcon from "@mui/icons-material/Menu";
+import PeopleOutline from "@mui/icons-material/PeopleOutline";
+import Settings from "@mui/icons-material/Settings";
+import AppBar from "@mui/material/AppBar";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import Toolbar from "@mui/material/Toolbar";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
+import * as React from "react";
+import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
 import Link from "next/link";
 import Image from "next/image";
@@ -7,7 +25,6 @@ import {
   CoPresent,
   Settings,
   Logout,
-  Info,
 } from "@mui/icons-material";
 import { signOut } from "next-auth/react";
 import { useSession } from "next-auth/react";
@@ -19,7 +36,7 @@ const NavBar = () => {
     <>
       {status === "authenticated" && (
         <nav className={$navbar.sidebar}>
-          <Link href="/about">
+          <Link href="/">
             <Image
               src="/img/compass-logo-white.svg"
               alt="logo"
@@ -47,11 +64,6 @@ const NavBar = () => {
               <p className={$navbar.linkTitle}>Settings</p>
             </Link>
             <br />
-            <Link href="/about" className={$navbar.link}>
-              <Info className={$navbar.icon} />
-              <p className={$navbar.linkTitle}>About</p>
-            </Link>
-            <br />
             <Link href="" className={$navbar.link}>
               <Logout className={$navbar.icon} />
               <p
@@ -67,5 +79,3 @@ const NavBar = () => {
     </>
   );
 };
-
-export default NavBar;

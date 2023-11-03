@@ -1,8 +1,11 @@
 import GoogleProvider from "next-auth/providers/google";
 import { createPersistedAuthAdapter } from "@/backend/auth/adapter";
 import { KyselyDatabaseInstance } from "../lib";
+import type { NextAuthOptions } from "next-auth";
 
-export const getNextAuthOptions = (db: KyselyDatabaseInstance) => ({
+export const getNextAuthOptions = (
+  db: KyselyDatabaseInstance
+): NextAuthOptions => ({
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -10,4 +13,7 @@ export const getNextAuthOptions = (db: KyselyDatabaseInstance) => ({
     }),
   ],
   adapter: createPersistedAuthAdapter(db),
+  pages: {
+    signIn: "/signInPage",
+  },
 });
