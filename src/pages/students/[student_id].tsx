@@ -222,15 +222,18 @@ const ViewStudentPage = () => {
       </Container>
 
       {viewState === VIEW_STATES.EDIT ? (
-        <Stack gap={0.5} sx={{ justifyContent: "center" }}>
-          <form id="edit" onSubmit={handleEditStudent}>
+        <Stack gap={0.5} sx={{ width: "100%" }}>
+          <form
+            className={$StudentPage.editForm}
+            id="edit"
+            onSubmit={handleEditStudent}
+          >
             <Stack gap={0.5}>
               <Container
                 className={$StudentPage.studentEditContainer}
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
-                  padding: "8px 0px",
                 }}
               >
                 <label>First Name</label>
@@ -247,7 +250,6 @@ const ViewStudentPage = () => {
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
-                  padding: "8px 0px",
                 }}
               >
                 <label>Last Name</label>
@@ -264,7 +266,6 @@ const ViewStudentPage = () => {
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
-                  padding: "8px 0px",
                 }}
               >
                 <label>Grade</label>
@@ -281,7 +282,6 @@ const ViewStudentPage = () => {
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
-                  padding: "8px 0px",
                 }}
               >
                 <label>Email</label>
@@ -294,7 +294,6 @@ const ViewStudentPage = () => {
                 />
               </Container>
             </Stack>
-            {/* <button type="submit">Submit</button> */}
           </form>
 
           <Container sx={{ marginTop: "2rem" }}>
