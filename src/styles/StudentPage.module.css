@@ -4,6 +4,12 @@
   padding: 0.5rem;
 }
 
+.studentEditContainer {
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
 .displayBox {
   display: flex;
   justify-content: space-between;

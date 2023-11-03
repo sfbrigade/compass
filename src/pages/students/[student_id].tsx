@@ -1,5 +1,4 @@
 import { trpc } from "@/client/lib/trpc";
-import EditStudentRow from "@/components/editStudentRow/EditStudentRow";
 import $button from "@/styles/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
@@ -51,11 +50,6 @@ const ViewStudentPage = () => {
     },
   };
 
-  const [firstName, setFirstName] = useState(student?.first_name || "");
-  const [lastName, setLastName] = useState(student?.last_name || "");
-  const [email, setEmail] = useState(student?.email || "");
-  const [grade, setGrade] = useState(student?.grade || 0);
-
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id), retry: false }
@@ -65,19 +59,21 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getStudentById.invalidate(),
   });
 
-  const handleEditStudent = async () => {
+  const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+
     if (!student) {
       return; // TODO: improve error handling
     }
-    await editMutation.mutateAsync({
+    editMutation.mutate({
       student_id: student.student_id,
-      first_name: firstName,
-      last_name: lastName,
-      email: email,
-      grade: grade,
+      first_name: data.get("firstName") as string,
+      last_name: data.get("lastName") as string,
+      email: data.get("email") as string,
+      grade: Number(data.get("grade")) || 0,
     });
     handleMainState();
-    // document.location.reload();
   };
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
@@ -180,7 +176,7 @@ const ViewStudentPage = () => {
               >
                 Cancel
               </Button>
-              <Button
+              {/* <Button
                 className={`${$button.default} ${$home.bold}`}
                 sx={[
                   {
@@ -199,7 +195,7 @@ const ViewStudentPage = () => {
                 variant="contained"
               >
                 Save
-              </Button>
+              </Button> */}
             </Box>
           )}
         </Box>
@@ -227,42 +223,80 @@ const ViewStudentPage = () => {
 
       {viewState === VIEW_STATES.EDIT ? (
         <Stack gap={0.5} sx={{ justifyContent: "center" }}>
-          <Container className={$StudentPage.studentInfoContainer}>
-            <Box>
-              <EditStudentRow
-                label={"First Name"}
-                value={firstName}
-                handleInputChange={(e) => setFirstName(e.target.value)}
-              ></EditStudentRow>
-            </Box>
-          </Container>
-          <Container className={$StudentPage.studentInfoContainer}>
-            <Box>
-              <EditStudentRow
-                label={"Last Name"}
-                value={lastName}
-                handleInputChange={(e) => setLastName(e.target.value)}
-              ></EditStudentRow>
-            </Box>
-          </Container>
-          <Container className={$StudentPage.studentInfoContainer}>
-            <Box>
-              <EditStudentRow
-                label={"Grade"}
-                value={grade}
-                handleInputChange={(e) => setGrade(parseInt(e.target.value))}
-              ></EditStudentRow>
-            </Box>
-          </Container>
-          <Container className={$StudentPage.studentInfoContainer}>
-            <Box>
-              <EditStudentRow
-                label={"Email Address"}
-                value={email}
-                handleInputChange={(e) => setEmail(e.target.value)}
-              ></EditStudentRow>
-            </Box>
-          </Container>
+          <form onSubmit={handleEditStudent}>
+            <Stack gap={0.5}>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                  padding: "8px 0px",
+                }}
+              >
+                <label>First Name</label>
+                <p>:</p>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder={student?.first_name || ""}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                  padding: "8px 0px",
+                }}
+              >
+                <label>Last Name</label>
+                <p>:</p>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder={student?.last_name || ""}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                  padding: "8px 0px",
+                }}
+              >
+                <label>Grade</label>
+                <p>:</p>
+                <input
+                  type="text"
+                  name="grade"
+                  placeholder={(student?.grade || 0).toString()}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                  padding: "8px 0px",
+                }}
+              >
+                <label>Email</label>
+                <p>:</p>
+                <input
+                  type="text"
+                  name="email"
+                  placeholder={student?.email || ""}
+                  required
+                />
+              </Container>
+            </Stack>
+            <button type="submit">Submit</button>
+          </form>
+
           <Container sx={{ marginTop: "2rem" }}>
             <Box textAlign="center">
               <Button
