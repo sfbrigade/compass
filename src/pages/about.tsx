@@ -1,9 +1,6 @@
-import Image from "next/image";
-import $typo from "@/styles/Typography.module.css";
-
 const About = () => {
   return (
-    <>
+    <div>
       <h2>About Compass</h2>
 
       <div>
@@ -11,8 +8,7 @@ const About = () => {
         School District. The app seeks to assist Teachers with setting and
         tracking goals for students with disabilities.
       </div>
-      <div></div>
-    </>
+    </div>
   );
 };
 
