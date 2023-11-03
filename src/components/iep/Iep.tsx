@@ -43,7 +43,7 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <Stack>
+    <Stack sx={{ width: 1 }}>
       <Container>
         <Box className={$Iep.goalBox}>
           <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>

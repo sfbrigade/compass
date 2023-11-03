@@ -123,12 +123,12 @@ const ViewStudentPage = () => {
   return (
     <Stack
       spacing={2}
-      // sx={{
-      //   display: "flex",
-      //   flexDirection: "column",
-      //   alignItems: "center",
-      //   width: "100vu",
-      // }}
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        width: "100%",
+      }}
     >
       <Container
         className={$StudentPage.studentInfoContainer}
@@ -176,7 +176,7 @@ const ViewStudentPage = () => {
               >
                 Cancel
               </Button>
-              {/* <Button
+              <Button
                 className={`${$button.default} ${$home.bold}`}
                 sx={[
                   {
@@ -191,11 +191,11 @@ const ViewStudentPage = () => {
                   buttonSX,
                 ]}
                 type="submit"
-                onClick={handleEditStudent}
+                form="edit"
                 variant="contained"
               >
                 Save
-              </Button> */}
+              </Button>
             </Box>
           )}
         </Box>
@@ -223,7 +223,7 @@ const ViewStudentPage = () => {
 
       {viewState === VIEW_STATES.EDIT ? (
         <Stack gap={0.5} sx={{ justifyContent: "center" }}>
-          <form onSubmit={handleEditStudent}>
+          <form id="edit" onSubmit={handleEditStudent}>
             <Stack gap={0.5}>
               <Container
                 className={$StudentPage.studentEditContainer}
@@ -294,7 +294,7 @@ const ViewStudentPage = () => {
                 />
               </Container>
             </Stack>
-            <button type="submit">Submit</button>
+            {/* <button type="submit">Submit</button> */}
           </form>
 
           <Container sx={{ marginTop: "2rem" }}>
