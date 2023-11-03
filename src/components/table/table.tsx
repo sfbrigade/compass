@@ -344,9 +344,9 @@ export default function EnhancedTable<
             }}
             gap={1.5}
           >
-            <Image src={emptyState} alt="empty roster image" width={250} />
-            <p style={{ fontWeight: "semibold" }}>You have no students yet</p>
-            <p style={{ color: "var(--grey-20)" }}>
+            <Image src={emptyState} alt="empty roster" width={250} />
+            <p>You have no students yet</p>
+            <p style={{ color: "var(--grey-20)", textAlign: "center" }}>
               Start building your class roster by adding a student.
             </p>
             <button
