@@ -135,7 +135,7 @@ function EnhancedTableToolbar({
 }: EnhancedTableToolbarProps) {
   return (
     <>
-      {totalRows === 0 ? (
+      {totalRows === 0 && type === "Students" ? (
         <h2 className={$table.tableTitle}>{type}</h2>
       ) : (
         <Toolbar
@@ -334,7 +334,7 @@ export default function EnhancedTable<
         searchParam={searchParam}
         onSearch={handleSearch}
       />
-      {people.length === 0 && !showInput && (
+      {people.length === 0 && !showInput && type === "Students" && (
         <Container sx={{ marginTop: "4rem" }}>
           <Box
             sx={{
@@ -359,7 +359,7 @@ export default function EnhancedTable<
         </Container>
       )}
 
-      {(people.length || showInput) && (
+      {(people.length || showInput || type === "Staff") && (
         <TableContainer>
           <Table sx={{ minWidth: 750 }} aria-labelledby={`Table of ${type}s`}>
             <EnhancedTableHead
