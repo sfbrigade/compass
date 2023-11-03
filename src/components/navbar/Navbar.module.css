@@ -16,7 +16,6 @@
 .linkItem {
   padding: 1.25rem 0 1.25rem calc(45% - 1.5rem * 1.5);
 }
-
 .link {
   color: var(--on-primary);
   text-decoration: none;
@@ -34,7 +33,6 @@
 .burger {
   color: var(--primary-99);
 }
-
 @media (min-width: 992px) {
   .linkItem {
     padding-left: 9%;
