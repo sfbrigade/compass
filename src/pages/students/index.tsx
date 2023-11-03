@@ -74,7 +74,7 @@ const Students = () => {
       people={students as StudentWithIep[]}
       onSubmit={handleSubmit}
       headCells={headCells}
-      type="Student"
+      type="Students"
     />
   );
 };
