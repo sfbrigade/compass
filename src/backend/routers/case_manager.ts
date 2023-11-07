@@ -78,6 +78,48 @@ export const case_manager = router({
     }),
 
   /**
+   * Edits the given student in the CM's roster. Throws an error if the student was not found in the db.
+   */
+  editStudent: authenticatedProcedure
+    .input(
+      z.object({
+        student_id: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+        grade: z.number(),
+      })
+    )
+    .mutation(async (req) => {
+      const { student_id, first_name, last_name, email, grade } = req.input;
+      const { userId } = req.ctx.auth; // case manager id
+
+      // Check if the student exists and if the case manager is assigned to the student
+      const existingStudent = req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .where("student_id", "=", student_id)
+        .where("assigned_case_manager_id", "=", userId);
+
+      if (!existingStudent) {
+        throw new Error("Student not found");
+      }
+
+      // Update the student's information
+      return await req.ctx.db
+        .updateTable("student")
+        .set({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+          grade,
+        })
+        .where("student_id", "=", student_id)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
+
+  /**
    * Removes the case manager associated with this student.
    */
   removeStudent: authenticatedProcedure
