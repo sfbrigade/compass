@@ -115,6 +115,13 @@ textarea {
   resize: vertical;
 }
 
+input[type="text"],
+input[type="password"],
+textarea {
+  border: none;
+  outline: none;
+}
+
 /* Breakpoints recommended by Bootstrap */
 /* Custom, iPhone Retina */
 @media only screen and (min-width: 320px) {
