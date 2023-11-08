@@ -48,6 +48,8 @@ export const para = router({
         .selectAll()
         .executeTakeFirst();
 
+      const caseManagerName = req.ctx.auth.session.user?.name ?? "";
+
       if (!paraData) {
         paraData = await req.ctx.db
           .insertInto("user")
@@ -66,10 +68,10 @@ export const para = router({
           to: email,
           subject: "Para-professional email confirmation",
           text: "Email confirmation",
-          html: "<h1>Email confirmation</h1><p>Please confirm your email by going to the following link: <a>no link yet</a></p>",
+          html: `<p>Dear ${first_name},</p><p>Welcome to the data collection team for SFUSD.EDU!</p><p>I am writing to invite you to join our data collection efforts for our students. We are using an online platform called <strong>Project Compass</strong> to track and monitor student progress, and your participation is crucial to the success of this initiative.</p><p>To access Project Compass and begin collecting data, please follow these steps:</p><ul><li>Go to the website: (<a href="https://staging.compassiep.com/">https://staging.compassiep.com/</a>)</li> <li>Login using your provided username and password</li><li>Once logged in, navigate to the dashboard where you would see the student goals page</li></ul><p>By clicking on the <strong>data collection</strong> button, you will be directed to the instructions outlining the necessary steps for data collection. Simply follow the provided instructions and enter the required data points accurately.</p><p>If you encounter any difficulties or have any questions, please feel free to reach out to me. I am here to assist you throughout the process and ensure a smooth data collection experience. Your dedication and contribution will make a meaningful impact on our students' educational journeys.</p><p>Thank you,</p><p>${caseManagerName}<br>Case Manager</p>`,
         });
-        // TODO: when site is deployed, add url to html above
-        // to do elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
+        // TODO: when site is deployed, add new url to html above
+        // TODO elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
       }
 
       return paraData;

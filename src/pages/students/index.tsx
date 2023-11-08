@@ -19,6 +19,10 @@ const Students = () => {
       ),
   });
 
+  // create editStudent
+
+  // make a separate handleEdit??
+
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

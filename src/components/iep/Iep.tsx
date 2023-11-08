@@ -5,10 +5,11 @@ import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
+import Stack from "@mui/material/Stack";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
-import $Iep from "./Iep.module.css";
 import $Image from "../../styles/Image.module.css";
+import $Iep from "./Iep.module.css";
 
 interface IepProps {
   iep_id: string;
@@ -42,7 +43,7 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <>
+    <Stack sx={{ width: 1 }}>
       <Container>
         <Box className={$Iep.goalBox}>
           <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
@@ -104,7 +105,7 @@ const Iep = ({ iep_id }: IepProps) => {
           </Box>
         </Container>
       )}
-    </>
+    </Stack>
   );
 };
 export default Iep;
