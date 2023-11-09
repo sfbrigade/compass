@@ -215,6 +215,23 @@ export const iep = router({
       return result;
     }),
 
+  getSubgoal: authenticatedProcedure
+    .input(
+      z.object({
+        subgoal_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { subgoal_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("subgoal")
+        .where("subgoal.subgoal_id", "=", subgoal_id)
+        .selectAll()
+        .execute();
+      return result;
+    }),
+
   getSubgoalsByAssignee: authenticatedProcedure
     .input(
       z.object({

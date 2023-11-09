@@ -18,12 +18,22 @@ import { useState } from "react";
 interface SubgoalAssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
+  subgoal_id: string;
 }
 
 export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
   const myParasQuery = trpc.case_manager.getMyParas.useQuery();
-
+  const { data: subgoal } = trpc.iep.getSubgoal.useQuery({
+    subgoal_id: props.subgoal_id,
+  });
+  console.log("subgoal", subgoal);
+  // // const description = subgoal[0]?.description;
+  // if (subgoal && subgoal[0]) {
+  //   console.log("subgoal", subgoal);
+  //   const { description } = subgoal[0];
+  //   console.log("description", description);
+  // }
   const handleParaToggle = (paraId: string) => () => {
     setSelectedParaIds((prev) => {
       if (prev.includes(paraId)) {
@@ -34,6 +44,7 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
     });
   };
 
+  //onClose, keep data in state? or have notification to verify navigation away from page.
   const handleClose = () => {
     props.onClose();
     setSelectedParaIds([]);
@@ -46,9 +57,8 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
       <Box sx={{ px: 2, pb: 2 }}>
         <Alert severity="info" sx={{ mb: 2 }}>
           <AlertTitle>Benchmark</AlertTitle>
-          By October, when given a list of 20 unfamiliar words that contain
-          short-vowel sounds, the student will correctly pronounce 18 of the 20
-          words with 90% accuracy in 3 out of 4 trials.
+          {/* could not determine a way to do this without mapping since it despised the subgoal[0] options */}
+          {subgoal?.map((datapoint) => datapoint.description)}
         </Alert>
         Select one or more paras:
         <Box
