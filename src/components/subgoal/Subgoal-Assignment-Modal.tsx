@@ -27,13 +27,7 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const { data: subgoal } = trpc.iep.getSubgoal.useQuery({
     subgoal_id: props.subgoal_id,
   });
-  console.log("subgoal", subgoal);
-  // // const description = subgoal[0]?.description;
-  // if (subgoal && subgoal[0]) {
-  //   console.log("subgoal", subgoal);
-  //   const { description } = subgoal[0];
-  //   console.log("description", description);
-  // }
+
   const handleParaToggle = (paraId: string) => () => {
     setSelectedParaIds((prev) => {
       if (prev.includes(paraId)) {
