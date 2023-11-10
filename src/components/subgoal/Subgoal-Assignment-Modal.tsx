@@ -14,6 +14,7 @@ import {
   ListItemText,
 } from "@mui/material";
 import { useState } from "react";
+import $subgoal from "./Subgoal-Assignment-Modal.module.css";
 
 interface SubgoalAssignmentModalProps {
   isOpen: boolean;
@@ -45,27 +46,40 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   };
 
   return (
-    <Dialog open={props.isOpen} onClose={handleClose}>
-      <DialogTitle>Assign to benchmark</DialogTitle>
+    <Dialog
+      open={props.isOpen}
+      onClose={handleClose}
+      className={$subgoal.assignSubgoalModal}
+    >
+      <DialogTitle className={$subgoal.assignSubgoalModalTitle}>
+        Assign to benchmark
+      </DialogTitle>
 
       <Box sx={{ px: 2, pb: 2 }}>
-        <Alert severity="info" sx={{ mb: 2 }}>
-          <AlertTitle>Benchmark</AlertTitle>
-          {/* could not determine a way to do this without mapping since it despised the subgoal[0] options */}
-          {subgoal?.map((datapoint) => datapoint.description)}
-        </Alert>
-        Select one or more paras:
+        <Box className={$subgoal.subgoalDescriptionBox}>
+          <p className={$subgoal.subgoalTitle}>Benchmark</p>
+          {subgoal?.map((thisSubgoal) => (
+            <p
+              className={$subgoal.subgoalDescription}
+              key="thisSubgoal.description"
+            >
+              {thisSubgoal.description}
+            </p>
+          ))}
+        </Box>
+        <p>Select one or more paras:</p>
         <Box
           sx={{
             my: 2,
             maxHeight: "10rem",
-            overflow: "scroll",
+            overflow: "auto",
             border: "1px solid #d6dde1",
             borderRadius: 1,
           }}
         >
-          <List sx={{ p: 0 }}>
+          <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
             {myParasQuery.data?.map((para) => (
+              // CSS ask is to reorder the mapped staff so that the selected staff are moved to the top of the list
               <ListItem key={para.para_id} sx={{ px: 0, py: 0 }}>
                 <ListItemButton dense onClick={handleParaToggle(para.para_id)}>
                   <ListItemIcon sx={{ minWidth: "auto" }}>
@@ -85,7 +99,11 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
           </List>
         </Box>
         <Box sx={{ display: "flex", justifyContent: "end" }}>
-          <Button variant="contained" onClick={handleClose}>
+          <Button
+            variant="contained"
+            onClick={handleClose}
+            className={$subgoal.button}
+          >
             Next
           </Button>
         </Box>
