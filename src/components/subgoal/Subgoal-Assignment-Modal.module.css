@@ -2,6 +2,8 @@
 .assignSubgoalModal {
   max-width: 360px;
   width: 360px;
+  max-height: 580px;
+  height: 800px;
   margin: auto;
   font-size: 16px;
   text-align: left;
