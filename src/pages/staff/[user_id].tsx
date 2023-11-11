@@ -4,14 +4,12 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import $home from "@/styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
-import { user } from "@/backend/routers/user";
 
 const ViewParaPage = () => {
   const [unassignParaPrompt, setUnassignParaPrompt] = useState(false);
   const router = useRouter();
   const { user_id } = router.query;
   const { data: me } = trpc.user.getMe.useQuery();
-  console.log(me);
 
   const { data: para, isLoading } = trpc.para.getParaById.useQuery(
     { user_id: user_id as string },
