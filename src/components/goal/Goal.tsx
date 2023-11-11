@@ -35,7 +35,7 @@ const Goals = ({ goal }: GoalProps) => {
   }
 
   return (
-    <div>
+    <div className={$goal.goal}>
       <p className={$goal.description}>{goal.description}</p>
 
       <div className={$goal.tab}>

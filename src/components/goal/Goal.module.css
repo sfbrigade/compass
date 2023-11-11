@@ -31,3 +31,11 @@
   /* font-family: "Quicksand", sans-serif; */
   margin: 4px;
 }
+
+.goal {
+  display: flex;
+  padding: 24px;
+  align-items: center;
+  gap: 40px;
+  align-self: stretch;
+}
