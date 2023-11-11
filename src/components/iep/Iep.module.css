@@ -23,6 +23,13 @@
   border-radius: 10px;
 }
 
+.goalsColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+}
+
 .noGoalBox {
   position: relative;
   display: flex;

@@ -1,15 +1,17 @@
 import { trpc } from "@/client/lib/trpc";
-import Goals from "@/components/goal/Goal";
+import Goal from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import Stack from "@mui/material/Stack";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
 import $Image from "../../styles/Image.module.css";
 import $Iep from "./Iep.module.css";
+import { useState } from "react";
 
 interface IepProps {
   iep_id: string;
@@ -22,6 +24,8 @@ const Iep = ({ iep_id }: IepProps) => {
     { iep_id: iep_id },
     { enabled: Boolean(iep_id) }
   );
+
+  const [showAddGoalForm, setShowAddGoalForm] = useState(false);
 
   const goalMutation = trpc.iep.addGoal.useMutation({
     onSuccess: () => utils.iep.getGoals.invalidate(),
@@ -38,6 +42,10 @@ const Iep = ({ iep_id }: IepProps) => {
     });
   };
 
+  const revealAddGoalForm = () => {
+    setShowAddGoalForm(true);
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -48,7 +56,7 @@ const Iep = ({ iep_id }: IepProps) => {
         <Box className={$Iep.goalBox}>
           <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
           {/* adding new goals // TODO: extract this content elsewhere */}
-          <form
+          {/* <form
             style={{
               display: "flex",
               gap: "1rem",
@@ -69,23 +77,40 @@ const Iep = ({ iep_id }: IepProps) => {
               <option value="math">math</option>
               <option value="other">other</option>
             </select>
+            
             <button type="submit" className={$Iep.addGoalButton}>
               Add Goal
             </button>
-          </form>
+          </form> */}
+          {!showAddGoalForm && (
+            <button onClick={revealAddGoalForm} className={$Iep.addGoalButton}>
+              Add Goal
+            </button>
+          )}
         </Box>
       </Container>
 
       {/* List of goals */}
       {goals?.length ? (
         <Container className={$Iep.goalsContainer}>
-          <ul>
+          <List>
             {goals.map((goal) => (
-              <List key={goal.goal_id}>
-                <Goals goal={goal} />
-              </List>
+              <ListItem key={goal.goal_id}>
+                <Goal goal={goal} />
+              </ListItem>
             ))}
-          </ul>
+          </List>
+          {showAddGoalForm && (
+            <div
+              style={{
+                width: "100%",
+                height: "100%",
+                transform: "rotate(-90deg)",
+                transformOrigin: "0 0",
+                border: "1px #D6DDE1 solid",
+              }}
+            ></div>
+          )}
         </Container>
       ) : (
         // No Goal in DB yet
