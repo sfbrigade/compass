@@ -29,7 +29,16 @@
 
 .description {
   /* font-family: "Quicksand", sans-serif; */
-  margin: 4px;
+  /* margin: 4px; */
+
+  color: var(--grey-202-a-333-c, #2A333C);
+
+  /* Body 1 */
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
 }
 
 .goal {
@@ -38,4 +47,35 @@
   align-items: center;
   gap: 40px;
   align-self: stretch;
+}
+
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+
+.subgoalCountBadge {
+  display: flex;
+  padding: 2px 8px;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 16px;
+  background: var(--grey-80-f-4-f-6-f-7, #F4F6F7);
+}
+
+.subgoalCount {
+  color: var(--grey-30586874, #586874);
+
+  /* Body 2 */
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
 }
