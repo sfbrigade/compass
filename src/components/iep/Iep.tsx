@@ -69,7 +69,7 @@ const Iep = ({ iep_id }: IepProps) => {
               <option value="math">math</option>
               <option value="other">other</option>
             </select>
-            <button type="submit" className={$button.default}>
+            <button type="submit" className={$Iep.addGoalButton}>
               Add Goal
             </button>
           </form>

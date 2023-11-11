@@ -38,3 +38,24 @@
 .noGoalTextSmall {
   margin-bottom: 1rem;
 }
+
+.addGoalButton {
+  display: inline-flex;
+  height: 36px;
+  padding: 8px;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+  border-radius: 8px;
+  background: var(--system-primary-primary-20159-e, #20159E);
+
+  color: var(--system-primary-on-primary-ffffff, #FFF);
+  text-align: center;
+  /* Button */
+  font-family: Quicksand;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 150%; /* 24px */
+}
