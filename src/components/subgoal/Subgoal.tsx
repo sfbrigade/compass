@@ -74,6 +74,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
       <SubgoalAssignmentModal
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
+        subgoal_id={subgoal.subgoal_id}
       />
     </>
   );
