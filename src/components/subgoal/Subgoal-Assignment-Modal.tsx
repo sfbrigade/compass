@@ -10,9 +10,15 @@ import {
   ListItemIcon,
   Checkbox,
   ListItemText,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import { useState } from "react";
 import $subgoal from "./Subgoal-Assignment-Modal.module.css";
+import {
+  AssignmentDuration,
+  DurationSelectionStep,
+} from "./Duration-Selection-Step";
 
 interface SubgoalAssignmentModalProps {
   isOpen: boolean;
@@ -20,13 +26,21 @@ interface SubgoalAssignmentModalProps {
   subgoal_id: string;
 }
 
+const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
+type Step = (typeof STEPS)[number];
+
 export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
-  const [currentModalSelection, setCurrentModalSelection] = useState(1);
+  const [assignmentDuration, setAssignmentDuration] =
+    useState<AssignmentDuration>({ type: "forever" });
+  const [currentModalSelection, setCurrentModalSelection] =
+    useState<Step>("PARA_SELECTION");
   const myParasQuery = trpc.case_manager.getMyParas.useQuery();
   const { data: subgoal } = trpc.iep.getSubgoal.useQuery({
     subgoal_id: props.subgoal_id,
   });
+
+  const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
 
   const handleParaToggle = (paraId: string) => () => {
     setSelectedParaIds((prev) => {
@@ -41,7 +55,39 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const handleClose = () => {
     props.onClose();
     setSelectedParaIds([]);
-    setCurrentModalSelection(1);
+    setCurrentModalSelection("PARA_SELECTION");
+  };
+
+  const handleBack = () => {
+    const currentStepIndex = STEPS.indexOf(currentModalSelection);
+    const previousStep = STEPS[currentStepIndex - 1];
+    if (previousStep) {
+      setCurrentModalSelection(previousStep);
+    }
+  };
+
+  const handleNext = async () => {
+    const currentStepIndex = STEPS.indexOf(currentModalSelection);
+    const nextStep = STEPS[currentStepIndex + 1];
+    if (nextStep) {
+      setCurrentModalSelection(nextStep);
+    } else {
+      // Reached end, save
+      await assignTaskToPara.mutateAsync({
+        subgoal_id: props.subgoal_id,
+        para_ids: selectedParaIds,
+        due_date:
+          assignmentDuration.type === "until_date"
+            ? assignmentDuration.date
+            : undefined,
+        trial_count:
+          assignmentDuration.type === "minimum_number_of_collections"
+            ? assignmentDuration.minimumNumberOfCollections
+            : undefined,
+      });
+
+      handleClose();
+    }
   };
 
   return (
@@ -49,12 +95,14 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
       open={props.isOpen}
       onClose={handleClose}
       className={$subgoal.assignSubgoalModal}
+      maxWidth="sm"
+      fullWidth
     >
       <DialogTitle className={$subgoal.assignSubgoalModalTitle}>
         Assign to benchmark
       </DialogTitle>
 
-      <Box sx={{ px: 2, pb: 2 }}>
+      <DialogContent>
         <Box className={$subgoal.subgoalDescriptionBox}>
           <p className={$subgoal.subgoalTitle}>Benchmark</p>
           {subgoal?.map((thisSubgoal) => (
@@ -67,7 +115,7 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
           ))}
         </Box>
         {/* we could make this and the 2nd selection process with a reusable component, e.g. labels in the <p> below could be from rendering {selectionLabel} but this is one solution to start */}
-        {currentModalSelection === 1 && (
+        {currentModalSelection === "PARA_SELECTION" && (
           <Box>
             <p>Select one or more paras:</p>
             <Box
@@ -106,17 +154,40 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
           </Box>
         )}
         {/* Enter 2nd selection process here, utilizing selected staff at the end of the process */}
-        {currentModalSelection === 2 && <Box></Box>}
-        <Box sx={{ display: "flex", justifyContent: "end" }}>
+        {currentModalSelection === "DURATION_SELECTION" && (
+          <Box>
+            <DurationSelectionStep
+              selectedDuration={assignmentDuration}
+              onDurationChange={setAssignmentDuration}
+              disabled={assignTaskToPara.isLoading}
+            />
+          </Box>
+        )}
+        <DialogActions>
+          {currentModalSelection !== STEPS[0] && (
+            <Button
+              variant="contained"
+              className={$subgoal.button}
+              onClick={handleBack}
+              sx={{ mr: "auto" }}
+              disabled={assignTaskToPara.isLoading}
+            >
+              Back
+            </Button>
+          )}
+
           <Button
             variant="contained"
-            onClick={() => setCurrentModalSelection(2)} //hide first selection process and open second
             className={$subgoal.button}
+            onClick={handleNext}
+            disabled={assignTaskToPara.isLoading}
           >
-            Next
+            {currentModalSelection === STEPS[STEPS.length - 1]
+              ? "Save"
+              : "Next"}
           </Button>
-        </Box>
-      </Box>
+        </DialogActions>
+      </DialogContent>
     </Dialog>
   );
 };

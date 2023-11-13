@@ -82,6 +82,33 @@ export const iep = router({
 
       return result;
     }),
+  assignTaskToParas: authenticatedProcedure
+    .input(
+      z.object({
+        subgoal_id: z.string().uuid(),
+        para_ids: z.string().uuid().array(),
+        due_date: z.date().optional(),
+        trial_count: z.number().optional(),
+      })
+    )
+    .mutation(async (req) => {
+      const { subgoal_id, para_ids, due_date, trial_count } = req.input;
+
+      const result = await req.ctx.db
+        .insertInto("task")
+        .values(
+          para_ids.map((para_id) => ({
+            subgoal_id,
+            assignee_id: para_id,
+            due_date,
+            trial_count,
+          }))
+        )
+        .returningAll()
+        .executeTakeFirst();
+
+      return result;
+    }),
   //Temporary function to easily assign tasks to self for testing
   tempAddTaskToSelf: authenticatedProcedure
     .input(
