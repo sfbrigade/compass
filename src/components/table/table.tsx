@@ -378,6 +378,7 @@ export default function EnhancedTable<
               )}
               {visibleRows.map((row) => {
                 const labelId = row.email;
+                console.log("row ", row);
 
                 return (
                   <StyledTableRow
@@ -396,6 +397,9 @@ export default function EnhancedTable<
                   >
                     <TableCell component="th" id={labelId} scope="row">
                       {row.first_name}
+                      {!isStudentWithIep(row) &&
+                        row.role === "admin" &&
+                        " (me)"}
                     </TableCell>
                     <TableCell align={"left"}>{row.last_name}</TableCell>
                     <TableCell align={"left"}>{row.email}</TableCell>
