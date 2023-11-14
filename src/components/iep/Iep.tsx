@@ -42,8 +42,12 @@ const Iep = ({ iep_id }: IepProps) => {
     goalMutation.mutate({
       iep_id: iep_id,
       description: data.get("description") as string,
-      category: data.get("category") as string,
+      category: "other",
+      // category: data.get("category") as string,
     });
+
+    setAddGoalInput("");
+    setShowAddGoalForm(false);
   };
 
   const cancelAddGoal = () => {
@@ -116,22 +120,18 @@ const Iep = ({ iep_id }: IepProps) => {
               <div className={$Iep.addGoalFormHeading}>Add IEP goal</div>
               <p>Enter the goal as it appears on the student’s IEP</p>
               <form onSubmit={handleGoalSubmit}>
-                <label>Student Goal</label>
+                <label htmlFor="description">Student Goal</label>
                 <textarea
                   value={addGoalInput}
+                  name="description"
+                  placeholder="Goal description"
                   onChange={(e) => {
                     setAddGoalInput(e.target.value);
                   }}
                   className={$Iep.addGoalFormTextArea}
                 />
                 <button onClick={cancelAddGoal}>Cancel</button>
-                <button
-                  onClick={() => {
-                    console.log(addGoalInput);
-                  }}
-                >
-                  Save
-                </button>
+                <button type="submit">Save</button>
               </form>
             </Grid>
           )}

@@ -7,7 +7,11 @@ import { useState } from "react";
 
 type ControlCaratProps = {
   direction: "down" | "right" | "left" | "up";
-  handleClick: (e: React.MouseEvent) => void;
+  handleClick?: (e: React.MouseEvent) => void;
+};
+
+const handleNull = (e: React.MouseEvent) => {
+  return;
 };
 
 const ControlCarat = ({ handleClick, direction }: ControlCaratProps) => {
@@ -32,7 +36,10 @@ const ControlCarat = ({ handleClick, direction }: ControlCaratProps) => {
   }
 
   return (
-    <div onClick={handleClick} className={$goal.controlCarat}>
+    <div
+      onClick={handleClick ? handleClick : handleNull}
+      className={$goal.controlCarat}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -115,12 +122,7 @@ const Goals = ({ goal }: GoalProps) => {
         )}
       </div>
 
-      {!expandSubgoals && (
-        <ControlCarat handleClick={showSubgoals} direction="down" />
-      )}
-      {expandSubgoals && (
-        <ControlCarat handleClick={hideSubgoals} direction="up" />
-      )}
+      <ControlCarat direction="right" />
     </div>
 
     // <div className={$goal.goal}>
