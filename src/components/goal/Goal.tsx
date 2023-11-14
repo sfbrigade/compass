@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import Subgoals from "../subgoal/Subgoal";
 import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
@@ -9,6 +9,7 @@ interface GoalProps {
 }
 
 const Goals = ({ goal }: GoalProps) => {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const utils = trpc.useContext();
   const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
     goal_id: goal.goal_id,
@@ -20,14 +21,33 @@ const Goals = ({ goal }: GoalProps) => {
 
   const handleSubGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
-    subgoal.mutate({
-      goal_id: goal.goal_id,
-      description: data.get("description") as string,
-      instructions: data.get("instructions") as string,
-      target_max_attempts: Number(data.get("target_max_attempts")) || null,
-    });
+    if (formRef.current) {
+      const formData = new FormData(formRef.current);
+      const description = formData.get("description") as string;
+      const instructions = formData.get("instructions") as string;
+      const target_max_attempts =
+        Number(formData.get("target_max_attempts")) || null;
+
+      subgoal.mutate({
+        goal_id: goal.goal_id,
+        description,
+        instructions,
+        target_max_attempts,
+      });
+
+      (
+        formRef.current.elements.namedItem("description") as HTMLInputElement
+      ).value = "";
+      (
+        formRef.current.elements.namedItem("instructions") as HTMLInputElement
+      ).value = "";
+      (
+        formRef.current.elements.namedItem(
+          "target_max_attempts"
+        ) as HTMLInputElement
+      ).value = "";
+    }
   };
 
   if (isLoading) {
@@ -48,18 +68,29 @@ const Goals = ({ goal }: GoalProps) => {
           ))}
         </ul>
         <br />
-        <form onSubmit={handleSubGoalSubmit} className={$goal.createInput}>
+        <form
+          ref={formRef}
+          onSubmit={handleSubGoalSubmit}
+          className={$goal.createInput}
+        >
           <input
             type="text"
             name="description"
             placeholder="Subgoal description"
             required
           />
-          <input type="text" name="instructions" placeholder="Instructions" />
+          <input
+            type="text"
+            name="instructions"
+            placeholder="Instructions"
+            required
+          />
           <input
             type="number"
             name="target_max_attempts"
             placeholder="# of attempts"
+            min="1"
+            required
           />
 
           <button type="submit" className={$goal.createButton}>

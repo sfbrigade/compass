@@ -10,12 +10,14 @@ import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
 import $Image from "../../styles/Image.module.css";
 import $Iep from "./Iep.module.css";
+import { useRef } from "react";
 
 interface IepProps {
   iep_id: string;
 }
 
 const Iep = ({ iep_id }: IepProps) => {
+  const formRef = useRef<HTMLFormElement | null>(null);
   const utils = trpc.useContext();
 
   const { data: goals, isLoading } = trpc.iep.getGoals.useQuery(
@@ -29,13 +31,25 @@ const Iep = ({ iep_id }: IepProps) => {
 
   const handleGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
 
-    goalMutation.mutate({
-      iep_id: iep_id,
-      description: data.get("description") as string,
-      category: data.get("category") as string,
-    });
+    if (formRef.current) {
+      const formData = new FormData(formRef.current);
+      const description = formData.get("description") as string;
+      const category = formData.get("category") as string;
+
+      goalMutation.mutate({
+        iep_id,
+        description,
+        category,
+      });
+
+      (
+        formRef.current.elements.namedItem("description") as HTMLInputElement
+      ).value = "";
+      (
+        formRef.current.elements.namedItem("category") as HTMLInputElement
+      ).value = "writing";
+    }
   };
 
   if (isLoading) {
@@ -49,6 +63,7 @@ const Iep = ({ iep_id }: IepProps) => {
           <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
           {/* adding new goals // TODO: extract this content elsewhere */}
           <form
+            ref={formRef}
             style={{
               display: "flex",
               gap: "1rem",
