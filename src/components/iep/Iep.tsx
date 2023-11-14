@@ -6,6 +6,9 @@ import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
+
+import Grid from "@mui/material/Grid";
+
 import Stack from "@mui/material/Stack";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
@@ -26,6 +29,7 @@ const Iep = ({ iep_id }: IepProps) => {
   );
 
   const [showAddGoalForm, setShowAddGoalForm] = useState(false);
+  const [addGoalInput, setAddGoalInput] = useState("");
 
   const goalMutation = trpc.iep.addGoal.useMutation({
     onSuccess: () => utils.iep.getGoals.invalidate(),
@@ -40,6 +44,11 @@ const Iep = ({ iep_id }: IepProps) => {
       description: data.get("description") as string,
       category: data.get("category") as string,
     });
+  };
+
+  const cancelAddGoal = () => {
+    setAddGoalInput("");
+    setShowAddGoalForm(false);
   };
 
   const revealAddGoalForm = () => {
@@ -91,29 +100,45 @@ const Iep = ({ iep_id }: IepProps) => {
       </Container>
 
       {/* List of goals */}
-      {goals?.length ? (
-        <Container className={$Iep.goalsContainer}>
-          <List>
-            {goals.map((goal) => (
-              <ListItem key={goal.goal_id}>
-                <Goal goal={goal} />
-              </ListItem>
-            ))}
-          </List>
+      {(goals || showAddGoalForm) && (
+        <Grid container className={$Iep.goalsContainer}>
+          <Grid item md={showAddGoalForm ? 5 : 12}>
+            <List>
+              {goals?.map((goal) => (
+                <ListItem key={goal.goal_id}>
+                  <Goal goal={goal} />
+                </ListItem>
+              ))}
+            </List>
+          </Grid>
           {showAddGoalForm && (
-            <div
-              style={{
-                width: "100%",
-                height: "100%",
-                transform: "rotate(-90deg)",
-                transformOrigin: "0 0",
-                border: "1px #D6DDE1 solid",
-              }}
-            ></div>
+            <Grid item className={$Iep.addGoalFormContainer} md={7}>
+              <div className={$Iep.addGoalFormHeading}>Add IEP goal</div>
+              <p>Enter the goal as it appears on the student’s IEP</p>
+              <form onSubmit={handleGoalSubmit}>
+                <label>Student Goal</label>
+                <textarea
+                  value={addGoalInput}
+                  onChange={(e) => {
+                    setAddGoalInput(e.target.value);
+                  }}
+                  className={$Iep.addGoalFormTextArea}
+                />
+                <button onClick={cancelAddGoal}>Cancel</button>
+                <button
+                  onClick={() => {
+                    console.log(addGoalInput);
+                  }}
+                >
+                  Save
+                </button>
+              </form>
+            </Grid>
           )}
-        </Container>
-      ) : (
-        // No Goal in DB yet
+        </Grid>
+      )}
+      {/* No Goal in DB yet */}
+      {!goals && !showAddGoalForm && (
         <Container className={$Iep.goalsContainer}>
           <Box className={$Iep.noGoalBox}>
             <Image

@@ -20,7 +20,7 @@
   min-height: 50vh;
   max-height: 70vh;
   overflow-y: auto;
-  border-radius: 10px;
+  border-radius: 0px 10px 10px 10px;
 }
 
 .goalsColumn {
@@ -65,4 +65,35 @@
   font-style: normal;
   font-weight: 600;
   line-height: 150%; /* 24px */
+}
+
+.addGoalButton:hover {
+  cursor: pointer;
+}
+
+.addGoalFormContainer {
+  border-left: 1px #D6DDE1 solid;
+  padding: 2rem;
+}
+
+.addGoalFormHeading {
+  color: #021426;
+  font-size: 24px;
+  font-family: Quicksand;
+  font-weight: 600;
+  line-height: 24px;
+  word-wrap: break-word
+}
+
+.addGoalFormTextArea {
+  display: flex;
+  height: 128px;
+  width: 100%;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: #F5F5F5;
+  resize: none;
 }

@@ -48,11 +48,12 @@
   align-items: center;
   gap: 40px;
   align-self: stretch;
+  width: 100%;
 }
 
 
 .textContainer {
-  display: flex;
+  /* display: flex; */
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
@@ -61,6 +62,7 @@
 }
 
 .subgoalCountBadge {
+  width: fit-content;
   display: flex;
   padding: 2px 8px;
   align-items: center;
