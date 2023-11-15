@@ -186,7 +186,7 @@ test("getMyParas", async (t) => {
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.length, 1);
 
   await db
     .insertInto("paras_assigned_to_case_manager")
@@ -197,7 +197,7 @@ test("getMyParas", async (t) => {
     .execute();
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.length, 2);
 });
 
 test("addPara", async (t) => {
@@ -206,14 +206,14 @@ test("addPara", async (t) => {
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.length, 1);
 
   await trpc.case_manager.addPara.mutate({
     para_id: seed.para.user_id,
   });
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.length, 2);
 });
 
 test("removePara", async (t) => {
@@ -230,12 +230,12 @@ test("removePara", async (t) => {
     .execute();
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.length, 2);
 
   await trpc.case_manager.removePara.mutate({
     para_id: seed.para.user_id,
   });
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.length, 1);
 });

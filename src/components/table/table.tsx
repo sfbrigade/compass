@@ -396,6 +396,12 @@ export default function EnhancedTable<
                   >
                     <TableCell component="th" id={labelId} scope="row">
                       {row.first_name}
+                      {/* This condition ONLY refers to case managers assuming
+                      that case manager object has 2 less keys than a para.
+                      Can change as needed*/}
+                      {!isStudentWithIep(row) &&
+                        Object.keys(row).length < 9 &&
+                        " (me)"}
                     </TableCell>
                     <TableCell align={"left"}>{row.last_name}</TableCell>
                     <TableCell align={"left"}>{row.email}</TableCell>
