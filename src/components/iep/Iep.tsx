@@ -108,8 +108,27 @@ const Iep = ({ iep_id }: IepProps) => {
         <Grid container className={$Iep.goalsContainer}>
           <Grid item md={showAddGoalForm ? 5 : 12}>
             <List>
+              {showAddGoalForm && (
+                <ListItem
+                  key="adding-goal"
+                  style={{ borderBottom: "1px solid #D6DDE1" }}
+                >
+                  <div
+                    style={{
+                      padding: "24px",
+                      fontStyle: "italic",
+                      color: "#788591",
+                    }}
+                  >
+                    Adding new goal...
+                  </div>
+                </ListItem>
+              )}
               {goals?.map((goal) => (
-                <ListItem key={goal.goal_id}>
+                <ListItem
+                  key={goal.goal_id}
+                  style={{ borderBottom: "1px solid #D6DDE1" }}
+                >
                   <Goal goal={goal} />
                 </ListItem>
               ))}
