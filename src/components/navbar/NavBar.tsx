@@ -15,6 +15,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
@@ -29,6 +30,7 @@ interface NavItemProps {
 export default function NavBar() {
   const [mobileOpen, setMobileOpen] = React.useState(false);
   const desktop = useMediaQuery("(min-width: 992px)");
+  const router = useRouter();
 
   const { status } = useSession();
 
@@ -64,16 +66,26 @@ export default function NavBar() {
     </Toolbar>
   );
 
-  const NavItem = ({ href, icon, text, onClick }: NavItemProps) => (
-    <ListItem disablePadding className={$navbar.linkItem}>
-      <Link href={href || ""} className={$navbar.link}>
-        {icon}
-        <p className={$navbar.linkTitle} onClick={onClick}>
-          {text}
-        </p>
+  const NavItem = ({ href, icon, text, onClick }: NavItemProps) => {
+    const currentPath = router.pathname;
+    const selectedPath = currentPath.includes(text.toLowerCase());
+
+    return (
+      <Link
+        href={href || ""}
+        className={`${$navbar.link} ${
+          selectedPath ? $navbar.linkSelected : ""
+        }`}
+      >
+        <ListItem disablePadding className={$navbar.linkItem}>
+          {icon}
+          <p className={$navbar.linkTitle} onClick={onClick}>
+            {text}
+          </p>
+        </ListItem>
       </Link>
-    </ListItem>
-  );
+    );
+  };
 
   const drawer = (
     <div className={$navbar.sidebar}>
