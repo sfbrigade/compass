@@ -27,15 +27,21 @@ const Iep = ({ iep_id }: IepProps) => {
     onSuccess: () => utils.iep.getGoals.invalidate(),
   });
 
-  const handleGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleGoalSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    goalMutation.mutate({
-      iep_id: iep_id,
-      description: data.get("description") as string,
-      category: data.get("category") as string,
-    });
+    try {
+      await goalMutation.mutateAsync({
+        iep_id: iep_id,
+        description: data.get("description") as string,
+        category: data.get("category") as string,
+      });
+
+      (event.target as HTMLFormElement).reset();
+    } catch (err) {
+      console.log("error: ", err);
+    }
   };
 
   if (isLoading) {
