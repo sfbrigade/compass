@@ -20,10 +20,20 @@ interface SubgoalAssignmentModalProps {
   subgoal_id: string;
 }
 
+interface ParaProps {
+  role: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  user_id: string;
+  email_verified_at: Date | null;
+  image_url: string | null;
+}
+
 export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
   const [currentModalSelection, setCurrentModalSelection] = useState(1);
-  const myParasQuery = trpc.case_manager.getMyParas.useQuery();
+  const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
   const { data: subgoal } = trpc.iep.getSubgoal.useQuery({
     subgoal_id: props.subgoal_id,
   });
@@ -80,27 +90,29 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
               }}
             >
               <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
-                {myParasQuery.data?.map((para) => (
-                  // CSS ask is to reorder the mapped staff so that the selected staff are moved to the top of the list
-                  <ListItem key={para.para_id} sx={{ px: 0, py: 0 }}>
-                    <ListItemButton
-                      dense
-                      onClick={handleParaToggle(para.para_id)}
-                    >
-                      <ListItemIcon sx={{ minWidth: "auto" }}>
-                        <Checkbox
-                          edge="start"
-                          disableRipple
-                          tabIndex={-1}
-                          checked={selectedParaIds.includes(para.para_id)}
-                        />
-                      </ListItemIcon>
-                      <ListItemText>
-                        {para.first_name} {para.last_name}
-                      </ListItemText>
-                    </ListItemButton>
-                  </ListItem>
-                ))}
+                {myParas
+                  ?.filter((para): para is ParaProps => para !== undefined)
+                  .map((para) => (
+                    // CSS ask is to reorder the mapped staff so that the selected staff are moved to the top of the list
+                    <ListItem key={para.user_id} sx={{ px: 0, py: 0 }}>
+                      <ListItemButton
+                        dense
+                        onClick={handleParaToggle(para.user_id)}
+                      >
+                        <ListItemIcon sx={{ minWidth: "auto" }}>
+                          <Checkbox
+                            edge="start"
+                            disableRipple
+                            tabIndex={-1}
+                            checked={selectedParaIds.includes(para.user_id)}
+                          />
+                        </ListItemIcon>
+                        <ListItemText>
+                          {para.first_name} {para.last_name}
+                        </ListItemText>
+                      </ListItemButton>
+                    </ListItem>
+                  ))}
               </List>
             </Box>
           </Box>
