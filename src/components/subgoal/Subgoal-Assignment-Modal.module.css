@@ -1,0 +1,30 @@
+/* Styles for Assign Subgoal Modal Component */
+.assignSubgoalModal {
+  margin: auto;
+  font-size: 16px;
+  text-align: left;
+}
+
+.assignSubgoalModalTitle {
+  font-size: 24px;
+}
+
+.subgoalDescriptionBox {
+  border-radius: 8px;
+  background-color: #f6f5ff;
+  padding: 8px 16px;
+}
+
+.subgoalTitle {
+  font-size: 20px;
+}
+
+.subgoalDescription,
+.staffListItemText {
+  font-size: 16px;
+}
+
+/* We may have to set up a theme to override the MUI styles so we can achieve our design systems setups since this does not work, or build our own global buttons and use those */
+.button {
+  background-color: #20159e;
+}

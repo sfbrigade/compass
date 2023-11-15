@@ -91,8 +91,8 @@ CREATE TABLE "task" (
   task_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
   subgoal_id UUID REFERENCES "subgoal" (subgoal_id),
   assignee_id UUID REFERENCES "user" (user_id),
-  due_date TIMESTAMPTZ NOT NULL,
-  trial_count INTEGER NOT NULL,
+  due_date TIMESTAMPTZ,
+  trial_count INTEGER,
   seen BOOLEAN NOT NULL DEFAULT FALSE
 );
 

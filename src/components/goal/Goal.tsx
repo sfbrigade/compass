@@ -18,16 +18,24 @@ const Goals = ({ goal }: GoalProps) => {
     onSuccess: () => utils.iep.getSubgoals.invalidate(),
   });
 
-  const handleSubGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubGoalSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    subgoal.mutate({
-      goal_id: goal.goal_id,
-      description: data.get("description") as string,
-      instructions: data.get("instructions") as string,
-      target_max_attempts: Number(data.get("target_max_attempts")) || null,
-    });
+    try {
+      await subgoal.mutateAsync({
+        goal_id: goal.goal_id,
+        description: data.get("description") as string,
+        instructions: data.get("instructions") as string,
+        target_max_attempts: Number(data.get("target_max_attempts")) || null,
+      });
+
+      (event.target as HTMLFormElement).reset();
+    } catch (err) {
+      console.log("error: ", err);
+    }
   };
 
   if (isLoading) {
@@ -55,11 +63,18 @@ const Goals = ({ goal }: GoalProps) => {
             placeholder="Subgoal description"
             required
           />
-          <input type="text" name="instructions" placeholder="Instructions" />
+          <input
+            type="text"
+            name="instructions"
+            placeholder="Instructions"
+            required
+          />
           <input
             type="number"
             name="target_max_attempts"
             placeholder="# of attempts"
+            min="1"
+            required
           />
 
           <button type="submit" className={$goal.createButton}>
