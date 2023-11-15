@@ -95,7 +95,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             ? assignmentDuration.minimumNumberOfCollections
             : undefined,
       });
-
       handleClose();
     }
   };

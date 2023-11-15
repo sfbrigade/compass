@@ -8,7 +8,6 @@ import noBenchmarks from "../../public/img/no-benchmarks.png";
 
 function Benchmarks() {
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
-  console.log("tasks ", tasks);
 
   if (isLoading) {
     return <div>Loading...</div>;
