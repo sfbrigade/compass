@@ -15,9 +15,9 @@ interface ParaTaskCard {
   description: string;
   instructions: string | null;
   target_max_attempts: number | null;
-  due_date: Date;
+  due_date: Date | null;
   seen: boolean;
-  trial_count: number;
+  trial_count: number | null;
   completed_trials: string | number | bigint | null;
 }
 
@@ -28,7 +28,7 @@ interface TaskCardProps {
 const TaskCard = ({ task }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
-    const calculatedRate = Math.floor((num / task.trial_count) * 100);
+    const calculatedRate = Math.floor((num / (task.trial_count ?? 1)) * 100);
     return calculatedRate;
   }, [task.completed_trials, task.trial_count]);
 
@@ -39,7 +39,10 @@ const TaskCard = ({ task }: TaskCardProps) => {
     }
     //Temporary until time period is given
     //Checks if due date is less than a week away
-    else if (differenceInWeeks(task.due_date, new Date()) <= 0) {
+    else if (
+      task.due_date &&
+      differenceInWeeks(task.due_date, new Date()) <= 0
+    ) {
       return $taskCard.dateFloaterRed;
     } else {
       return $taskCard.dateFloater;
@@ -53,7 +56,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
           ? "NEW"
           : completionRate >= 100
           ? "DONE"
-          : `DUE: ${format(task.due_date, "MM-dd-yyyy")}`}
+          : `DUE: ${task.due_date ? format(task.due_date, "MM-dd-yyyy") : ""}`}
       </div>
       <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
