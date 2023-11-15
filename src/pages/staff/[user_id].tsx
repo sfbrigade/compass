@@ -13,34 +13,44 @@ const ViewParaPage = () => {
 
   const { data: para, isLoading } = trpc.para.getParaById.useQuery(
     { user_id: user_id as string },
-    { enabled: Boolean(user_id) }
+    {
+      enabled: Boolean(user_id),
+      retry: false,
+      onError: () => returnToStaffList(),
+    }
   );
 
   const unassignPara = trpc.case_manager.removePara.useMutation({
     onError: (error) => console.log(error.message),
   });
 
+  const returnToStaffList = async () => {
+    await router.push(`/staff`);
+  };
+
   const handleUnassignPara = async () => {
     if (!para) return;
 
     await unassignPara.mutateAsync({ para_id: para.user_id });
-    await router.push(`/staff`);
+    await returnToStaffList();
   };
 
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
+  if (!para) return;
+
   return (
     <div>
       <h1>
-        {para?.first_name} {para?.last_name}
+        {para.first_name} {para.last_name}
       </h1>
       <p>
-        <b>Para ID:</b> {para?.user_id}
+        <b>Para ID:</b> {para.user_id}
       </p>
       <p>
-        <b>Para Email:</b> {para?.email}
+        <b>Para Email:</b> {para.email}
       </p>
 
       {me?.user_id !== user_id && (
@@ -55,8 +65,7 @@ const ViewParaPage = () => {
       {unassignParaPrompt ? (
         <div>
           <p>
-            Are you sure you want to unassign
-            {para?.first_name} {para?.last_name}?
+            {`Are you sure you want to unassign ${para.first_name} ${para.last_name}?`}
           </p>
           <button
             className={`${$button.default} ${$home.bold}`}
