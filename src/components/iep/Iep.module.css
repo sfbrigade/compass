@@ -46,6 +46,7 @@
   margin-bottom: 1rem;
 }
 
+/* currently unused, replaced by button.primary */
 .addGoalButton {
   display: inline-flex;
   height: 36px;
@@ -82,7 +83,9 @@
   font-family: Quicksand;
   font-weight: 600;
   line-height: 24px;
-  word-wrap: break-word
+  word-wrap: break-word;
+  margin-bottom: 2rem;
+
 }
 
 .addGoalFormTextArea {

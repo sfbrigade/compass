@@ -96,7 +96,7 @@ const Iep = ({ iep_id }: IepProps) => {
             </button>
           </form> */}
           {!showAddGoalForm && (
-            <button onClick={revealAddGoalForm} className={$Iep.addGoalButton}>
+            <button onClick={revealAddGoalForm} className={$button.default}>
               Add Goal
             </button>
           )}
@@ -104,7 +104,7 @@ const Iep = ({ iep_id }: IepProps) => {
       </Container>
 
       {/* List of goals */}
-      {(goals || showAddGoalForm) && (
+      {((goals && goals?.length >= 1) || showAddGoalForm) && (
         <Grid container className={$Iep.goalsContainer}>
           <Grid item md={showAddGoalForm ? 5 : 12}>
             <List>
@@ -119,7 +119,7 @@ const Iep = ({ iep_id }: IepProps) => {
             <Grid item className={$Iep.addGoalFormContainer} md={7}>
               <div className={$Iep.addGoalFormHeading}>Add IEP goal</div>
               <p>Enter the goal as it appears on the student’s IEP</p>
-              <form onSubmit={handleGoalSubmit}>
+              <form style={{ marginTop: "1rem" }} onSubmit={handleGoalSubmit}>
                 <label htmlFor="description">Student Goal</label>
                 <textarea
                   value={addGoalInput}
@@ -130,15 +130,28 @@ const Iep = ({ iep_id }: IepProps) => {
                   }}
                   className={$Iep.addGoalFormTextArea}
                 />
-                <button onClick={cancelAddGoal}>Cancel</button>
-                <button type="submit">Save</button>
+                <Grid container justifyContent="space-between" marginTop={1}>
+                  <Grid item>
+                    <button
+                      className={$button.secondary}
+                      onClick={cancelAddGoal}
+                    >
+                      Cancel
+                    </button>
+                  </Grid>
+                  <Grid item>
+                    <button className={$button.default} type="submit">
+                      Save
+                    </button>
+                  </Grid>
+                </Grid>
               </form>
             </Grid>
           )}
         </Grid>
       )}
       {/* No Goal in DB yet */}
-      {!goals && !showAddGoalForm && (
+      {goals?.length == 0 && !showAddGoalForm && (
         <Container className={$Iep.goalsContainer}>
           <Box className={$Iep.noGoalBox}>
             <Image
@@ -150,8 +163,9 @@ const Iep = ({ iep_id }: IepProps) => {
             <p className={$Iep.noGoalTextSmall}>
               Start adding goals to set up your student&#39;s profile
             </p>
-            {/* // TODO: Modify add goal function here. */}
-            <button className={`${$button.default}`}>Add goal</button>
+            <button onClick={revealAddGoalForm} className={$button.default}>
+              Add Goal
+            </button>
           </Box>
         </Container>
       )}
