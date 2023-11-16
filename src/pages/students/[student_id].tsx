@@ -41,8 +41,16 @@ const ViewStudentPage = () => {
 
   const { data: student, isLoading } = trpc.student.getStudentById.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id) }
+    {
+      enabled: Boolean(student_id),
+      retry: false,
+      onError: () => returnToStudentList(),
+    }
   );
+
+  const returnToStudentList = async () => {
+    await router.push(`/students`);
+  };
 
   const buttonSX = {
     "&:hover": {
@@ -83,7 +91,7 @@ const ViewStudentPage = () => {
       return;
     }
     await archiveMutation.mutateAsync({ student_id: student.student_id });
-    await router.push(`/students`);
+    await returnToStudentList();
   };
 
   const iepMutation = trpc.student.addIep.useMutation({
@@ -119,6 +127,8 @@ const ViewStudentPage = () => {
   if (isLoading) {
     return <div>Loading...</div>;
   }
+
+  if (!student) return;
 
   return (
     <Stack
