@@ -15,6 +15,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import $subgoal from "./Subgoal-Assignment-Modal.module.css";
+import $button from "@/styles/Button.module.css";
+
 import {
   AssignmentDuration,
   DurationSelectionStep,
@@ -177,10 +179,26 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
         <DialogActions>
           {currentModalSelection !== STEPS[0] && (
             <Button
-              variant="contained"
+              variant="outlined"
               className={$subgoal.button}
               onClick={handleBack}
-              sx={{ mr: "auto" }}
+              sx={{
+                mr: "auto",
+                height: "24px",
+                flex: "flex-end",
+                width: "auto",
+                padding: "20px 10px",
+                backgroundColor: "#fff ",
+                borderWidth: "1px",
+                borderColor: "#20159E",
+                borderRadius: "8px",
+                color: "#20159E",
+                fontFamily: "Quicksand",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "#F6F5FF",
+                },
+              }}
               disabled={assignTaskToPara.isLoading}
             >
               Back
@@ -188,11 +206,33 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
           )}
 
           <Button
+            sx={{
+              height: "24px",
+              flex: "flex-end",
+              width: "auto",
+              padding: "20px 10px",
+              backgroundColor: "#20159E ",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontFamily: "Quicksand",
+              textTransform: "none",
+              boxShadow: "none",
+              "&:hover": {
+                backgroundColor: "#20159E ",
+                boxShadow: "0px 1px 3px 1px rgba(0, 0, 0, .30)",
+              },
+              "&:focus": {
+                backgroundColor: "#5347D7",
+              },
+              "&:active": {
+                backgroundColor: "#140B7A",
+              },
+            }}
             variant="contained"
-            className={$subgoal.button}
             onClick={handleNext}
             disabled={assignTaskToPara.isLoading}
           >
+            {/* need 2 things here: 1. to disable "Next" button unless a staff member has been selected and 2. to change out buttons entirely or reset active state since on clicking "Next", the "save" button reflect focused CSS*/}
             {currentModalSelection === STEPS[STEPS.length - 1]
               ? "Save"
               : "Next"}
