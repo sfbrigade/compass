@@ -21,7 +21,8 @@ const Layout = ({ children }: LayoutProps) => {
       <NavBar />
       <main
         className={`${isPurpleBg ? $layout.mainPurple : $layout.main}
-        ${router.query.student_id ? $layout.mainStudent : ""}`}
+        ${router.query.student_id ? $layout.mainStudent : ""}
+        ${router.query.goal_id ? $layout.mainGoal : ""}`}
       >
         {children}
       </main>
