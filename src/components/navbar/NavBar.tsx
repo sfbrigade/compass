@@ -68,14 +68,13 @@ export default function NavBar() {
 
   const NavItem = ({ href, icon, text, onClick }: NavItemProps) => {
     const currentPath = router.pathname;
-    const selectedPath = currentPath.includes(text.toLowerCase());
+    const selectedPath = currentPath.includes(href as string);
 
     return (
       <Link
         href={href || ""}
-        className={`${$navbar.link} ${
-          selectedPath ? $navbar.linkSelected : ""
-        }`}
+        className={`${$navbar.link}
+          ${selectedPath ? $navbar.linkSelected : ""}`}
       >
         <ListItem disablePadding className={$navbar.linkItem}>
           {icon}
