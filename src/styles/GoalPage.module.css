@@ -40,3 +40,17 @@
 .benchmarksTab:hover {
   cursor: pointer;
 }
+
+.editGoalFormTextArea {
+  display: flex;
+  height: 128px;
+  width: 100%;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: #F5F5F5;
+  resize: none;
+  border: solid 1px var(--primary);
+}
