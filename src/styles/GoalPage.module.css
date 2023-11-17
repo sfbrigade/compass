@@ -1,10 +1,8 @@
 
 .goalDescriptionContainer {
   background-color: #ffffff;
-  padding-bottom: 2rem;
-  max-height: 70vh;
-  overflow-y: auto;
   border-radius: 10px;
+  padding: 0.5rem;
 }
 
 .benchmarksContainer {
@@ -14,4 +12,31 @@
   max-height: 70vh;
   overflow-y: auto;
   border-radius: 0px 10px 10px 10px;
+}
+
+.benchmarksBox {
+  display: flex;
+  justify-content: space-between;
+}
+
+.benchmarksTab {
+  /* margin-left: -24px; */
+  margin-right: 1rem;
+  display: inline-flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px 8px 0px 0px;
+  background: #E0E0E0;
+  color: #586874; 
+}
+
+.benchmarksTabSelected {
+  background: #FFF;
+  color: var(--system-primary-primary-20159-e, #20159E);
+}
+
+.benchmarksTab:hover {
+  cursor: pointer;
 }
