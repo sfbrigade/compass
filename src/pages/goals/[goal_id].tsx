@@ -46,6 +46,8 @@ const SelectableTab = ({
 };
 
 const ViewGoalPage = () => {
+  const utils = trpc.useContext();
+
   const router = useRouter();
   const { goal_id } = router.query;
 
@@ -65,8 +67,19 @@ const ViewGoalPage = () => {
     setEditGoalInput(goal?.description || "");
   };
 
+  const editMutation = trpc.iep.editGoal.useMutation({
+    onSuccess: () => utils.iep.getGoal.invalidate(),
+  });
+
   const submitEditGoal = () => {
-    // trpc edit
+    // trpc.iep.editGoal.useMutation.mutate({
+    //   goal_id: goal_id,
+    //   description: editGoalInput
+    // })
+    editMutation.mutate({
+      goal_id: goal_id as string,
+      description: editGoalInput,
+    });
     setEditGoal(false);
     setEditGoalInput("");
   };
@@ -104,7 +117,11 @@ const ViewGoalPage = () => {
         {!editGoal && (
           <>
             <p>{goal?.description}</p>
-            <button className={$button.default} onClick={showEditGoal}>
+            <button
+              className={$button.default}
+              onClick={showEditGoal}
+              style={{ margin: "auto" }}
+            >
               Edit Goal
             </button>
           </>

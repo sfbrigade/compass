@@ -30,6 +30,28 @@ export const iep = router({
       return result;
     }),
 
+  editGoal: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+        description: z.string(),
+      })
+    )
+    .mutation(async (req) => {
+      const { goal_id, description } = req.input;
+
+      const result = await req.ctx.db
+        .updateTable("goal")
+        .set({
+          description: description,
+        })
+        .where("goal_id", "=", goal_id)
+        .returningAll()
+        .executeTakeFirst();
+
+      return result;
+    }),
+
   addSubgoal: authenticatedProcedure
     .input(
       z.object({
