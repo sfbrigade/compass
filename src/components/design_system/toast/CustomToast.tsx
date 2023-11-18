@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import styles from "./components/design_system/toast/Toast.module.css";
+import styles from "./Toast.module.css";
 import Image from "next/image";
 
 interface CustomToastProps {

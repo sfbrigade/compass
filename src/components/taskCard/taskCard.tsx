@@ -4,7 +4,7 @@ import $taskCard from "./TaskCard.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $box from "@/components/design_system/box/Box.module.css";
 import Link from "next/link";
-import ProgressBar from "../progressBar/progressBar";
+import ProgressBar from "../design_system/progressBar/progressBar";
 import { differenceInWeeks, format } from "date-fns";
 
 interface ParaTaskCard {

@@ -10,7 +10,7 @@ import { QueryCache } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
-import CustomToast from "@/components/CustomToast";
+import CustomToast from "@/components/design_system/toast/CustomToast";
 import Layout from "@/components/layout/Layout";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
