@@ -103,6 +103,8 @@ const ViewGoalPage = () => {
         flexDirection: "column",
         alignItems: "center",
         width: "100%",
+        maxWidth: "1200px",
+        margin: "auto",
       }}
     >
       <Grid container justifyContent="space-between">
@@ -122,7 +124,12 @@ const ViewGoalPage = () => {
             <button
               className={$button.default}
               onClick={showEditGoal}
-              style={{ margin: "auto" }}
+              style={{
+                // "marginX": "auto",
+                margin: "auto",
+                marginTop: "1rem",
+                marginBottom: "1rem",
+              }}
             >
               Edit Goal
             </button>
