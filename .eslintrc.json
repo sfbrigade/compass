@@ -1,10 +1,18 @@
 {
   "parser": "@typescript-eslint/parser",
-  "extends": "next/core-web-vitals",
-  "ignorePatterns": ["*.json"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:storybook/recommended"
+  ],
+  "ignorePatterns": [
+    "*.json"
+  ],
   "overrides": [
     {
-      "files": ["*.ts", "*.tsx"],
+      "files": [
+        "*.ts",
+        "*.tsx"
+      ],
       "extends": [
         "eslint:recommended",
         "plugin:@next/next/recommended",
@@ -12,7 +20,9 @@
         "plugin:@typescript-eslint/recommended-requiring-type-checking"
       ],
       "parserOptions": {
-        "project": ["./tsconfig.json"]
+        "project": [
+          "./tsconfig.json"
+        ]
       },
       "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -21,8 +31,13 @@
     }
   ],
   "rules": {
-    "@next/next/no-html-link-for-pages": ["error", "src/pages/"]
+    "@next/next/no-html-link-for-pages": [
+      "error",
+      "src/pages/"
+    ]
   },
-  "plugins": ["@typescript-eslint"],
+  "plugins": [
+    "@typescript-eslint"
+  ],
   "root": true
 }
