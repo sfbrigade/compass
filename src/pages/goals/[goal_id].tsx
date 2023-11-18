@@ -67,8 +67,10 @@ const ViewGoalPage = () => {
     setEditGoalInput(goal?.description || "");
   };
 
+  // TODO: modify callbacks for toast notification
   const editMutation = trpc.iep.editGoal.useMutation({
     onSuccess: () => utils.iep.getGoal.invalidate(),
+    onError: (err) => console.log({ err }),
   });
 
   const submitEditGoal = () => {

@@ -3,6 +3,7 @@ import { authenticatedProcedure, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
+import { TRPCError } from "@trpc/server";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
@@ -39,6 +40,23 @@ export const iep = router({
     )
     .mutation(async (req) => {
       const { goal_id, description } = req.input;
+      const { userId } = req.ctx.auth;
+
+      // make sure that this goal belongs to this case manager
+      const authCheck = await req.ctx.db
+        .selectFrom("goal")
+        .fullJoin("iep", "iep.iep_id", "goal.goal_id")
+        .fullJoin("student", "student.student_id", "iep.student_id")
+        .where("student.assigned_case_manager_id", "=", userId)
+        .selectAll()
+        .executeTakeFirst();
+
+      if (!authCheck) {
+        throw new TRPCError({
+          code: "UNAUTHORIZED",
+          message: "Could not find a matching goal for a student of yours",
+        });
+      }
 
       const result = await req.ctx.db
         .updateTable("goal")
