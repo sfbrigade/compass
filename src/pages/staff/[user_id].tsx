@@ -16,6 +16,7 @@ const ViewParaPage = () => {
   const [archiveParaPrompt, setArchiveParaPrompt] = useState(false);
   const [viewState, setViewState] = useState(0);
 
+  const utils = trpc.useContext();
   const router = useRouter();
   const { user_id } = router.query;
   const { data: me } = trpc.user.getMe.useQuery();
@@ -43,6 +44,26 @@ const ViewParaPage = () => {
     "&:hover": {
       background: "#3023B8",
     },
+  };
+
+  const editMutation = trpc.case_manager.editPara.useMutation({
+    onSuccess: () => utils.para.getParaById.invalidate(),
+  });
+
+  const handleEditPara = (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const data = new FormData(e.currentTarget);
+
+    if (!para) {
+      return; // TODO: improve error handling
+    }
+    editMutation.mutate({
+      para_id: para.user_id,
+      first_name: data.get("firstName") as string,
+      last_name: data.get("lastName") as string,
+      email: data.get("email") as string,
+    });
+    handleMainState();
   };
 
   const archivePara = trpc.case_manager.removePara.useMutation({
@@ -166,11 +187,11 @@ const ViewParaPage = () => {
           <form
             className={$StaffPage.editForm}
             id="edit"
-            onSubmit={() => alert("Edit Staff placeholder")}
+            onSubmit={handleEditPara}
           >
             <Stack gap={0.5}>
               <Container
-                className={$StaffPage.studentEditContainer}
+                className={$StaffPage.staffEditContainer}
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
@@ -186,7 +207,7 @@ const ViewParaPage = () => {
                 />
               </Container>
               <Container
-                className={$StaffPage.studentEditContainer}
+                className={$StaffPage.staffEditContainer}
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",
@@ -202,7 +223,7 @@ const ViewParaPage = () => {
                 />
               </Container>
               <Container
-                className={$StaffPage.studentEditContainer}
+                className={$StaffPage.staffEditContainer}
                 sx={{
                   display: "grid",
                   gridTemplateColumns: "200px 30px 300px",

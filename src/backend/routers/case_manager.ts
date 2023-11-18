@@ -177,6 +177,47 @@ export const case_manager = router({
         .execute();
     }),
 
+  editPara: authenticatedProcedure
+    .input(
+      z.object({
+        para_id: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+      })
+    )
+    .mutation(async (req) => {
+      const { para_id, first_name, last_name, email } = req.input;
+      const { userId } = req.ctx.auth;
+
+      // Check if the para exists and if the case manager is assigned to the para
+      const existingPara = req.ctx.db
+        .selectFrom("user")
+        .innerJoin(
+          "paras_assigned_to_case_manager",
+          "user.user_id",
+          "paras_assigned_to_case_manager.para_id"
+        )
+        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
+        .selectAll();
+
+      if (!existingPara) {
+        throw new Error("Para not found");
+      }
+
+      // Update the para's information
+      return await req.ctx.db
+        .updateTable("user")
+        .set({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+        })
+        .where("user_id", "=", para_id)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
+
   removePara: authenticatedProcedure
     .input(
       z.object({
