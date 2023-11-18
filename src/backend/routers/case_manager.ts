@@ -141,12 +141,6 @@ export const case_manager = router({
   getMyParas: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 
-    const me = await req.ctx.db
-      .selectFrom("user")
-      .where("user_id", "=", userId)
-      .selectAll()
-      .executeTakeFirst();
-
     const result = await req.ctx.db
       .selectFrom("user")
       .innerJoin(
@@ -158,7 +152,7 @@ export const case_manager = router({
       .selectAll()
       .execute();
 
-    return [me, ...result];
+    return result;
   }),
 
   addPara: authenticatedProcedure
