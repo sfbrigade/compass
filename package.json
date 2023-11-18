@@ -83,7 +83,7 @@
     "rewiremock": "^3.14.5",
     "testcontainers": "^9.8.0",
     "type-fest": "^3.5.4",
-    "typed-css-modules": "^0.7.2",
+    "typed-css-modules": "^0.8.1",
     "typescript": "^4.9.5"
   },
   "engines": {
