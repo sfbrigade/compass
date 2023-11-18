@@ -13,8 +13,9 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import $subgoal from "./Subgoal-Assignment-Modal.module.css";
+
 import {
   AssignmentDuration,
   DurationSelectionStep,
@@ -41,6 +42,7 @@ type Step = (typeof STEPS)[number];
 
 export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [assignmentDuration, setAssignmentDuration] =
     useState<AssignmentDuration>({ type: "forever" });
   const [currentModalSelection, setCurrentModalSelection] =
@@ -77,6 +79,9 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   };
 
   const handleNext = async () => {
+    if (nextButtonRef.current) {
+      nextButtonRef.current.blur();
+    }
     const currentStepIndex = STEPS.indexOf(currentModalSelection);
     const nextStep = STEPS[currentStepIndex + 1];
     if (nextStep) {
@@ -123,7 +128,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             </p>
           ))}
         </Box>
-        {/* we could make this and the 2nd selection process with a reusable component, e.g. labels in the <p> below could be from rendering {selectionLabel} but this is one solution to start */}
         {currentModalSelection === "PARA_SELECTION" && (
           <Box>
             <p>Select one or more paras:</p>
@@ -136,11 +140,11 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                 borderRadius: 1,
               }}
             >
+              {/* Design ask is to reorder the mapped staff so that the selected staff are moved to the top of the list */}
               <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
                 {myParas
                   ?.filter((para): para is ParaProps => para !== undefined)
                   .map((para) => (
-                    // CSS ask is to reorder the mapped staff so that the selected staff are moved to the top of the list
                     <ListItem key={para.user_id} sx={{ px: 0, py: 0 }}>
                       <ListItemButton
                         dense
@@ -164,7 +168,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             </Box>
           </Box>
         )}
-        {/* Enter 2nd selection process here, utilizing selected staff at the end of the process */}
         {currentModalSelection === "DURATION_SELECTION" && (
           <Box>
             <DurationSelectionStep
@@ -177,21 +180,61 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
         <DialogActions>
           {currentModalSelection !== STEPS[0] && (
             <Button
-              variant="contained"
+              variant="outlined"
               className={$subgoal.button}
               onClick={handleBack}
-              sx={{ mr: "auto" }}
+              sx={{
+                mr: "auto",
+                height: "24px",
+                flex: "flex-end",
+                width: "auto",
+                padding: "20px 10px",
+                backgroundColor: "#fff ",
+                borderWidth: "1px",
+                borderColor: "#20159E",
+                borderRadius: "8px",
+                color: "#20159E",
+                fontFamily: "Quicksand",
+                textTransform: "none",
+                "&:hover": {
+                  backgroundColor: "#F6F5FF",
+                },
+              }}
               disabled={assignTaskToPara.isLoading}
             >
               Back
             </Button>
           )}
-
+          {/* we should have reusable variables/classNames for all of this sx:CSS once the global themes are resolved */}
           <Button
+            sx={{
+              height: "24px",
+              flex: "flex-end",
+              width: "auto",
+              padding: "20px 10px",
+              backgroundColor: "#20159E ",
+              borderRadius: "8px",
+              color: "#FFFFFF",
+              fontFamily: "Quicksand",
+              textTransform: "none",
+              boxShadow: "none",
+              "&:hover": {
+                backgroundColor: "#20159E ",
+                boxShadow: "0px 1px 3px 1px rgba(0, 0, 0, .30)",
+              },
+              "&:focus": {
+                backgroundColor: "#5347D7",
+              },
+              "&:active": {
+                backgroundColor: "#140B7A",
+              },
+            }}
             variant="contained"
-            className={$subgoal.button}
             onClick={handleNext}
-            disabled={assignTaskToPara.isLoading}
+            ref={nextButtonRef}
+            disabled={
+              assignTaskToPara.isLoading || selectedParaIds.length === 0
+            }
           >
             {currentModalSelection === STEPS[STEPS.length - 1]
               ? "Save"
