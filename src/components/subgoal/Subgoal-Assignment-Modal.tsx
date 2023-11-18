@@ -13,9 +13,8 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import $subgoal from "./Subgoal-Assignment-Modal.module.css";
-import $button from "@/styles/Button.module.css";
 
 import {
   AssignmentDuration,
@@ -43,6 +42,7 @@ type Step = (typeof STEPS)[number];
 
 export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
+  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [assignmentDuration, setAssignmentDuration] =
     useState<AssignmentDuration>({ type: "forever" });
   const [currentModalSelection, setCurrentModalSelection] =
@@ -79,6 +79,9 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
   };
 
   const handleNext = async () => {
+    if (nextButtonRef.current) {
+      nextButtonRef.current.blur();
+    }
     const currentStepIndex = STEPS.indexOf(currentModalSelection);
     const nextStep = STEPS[currentStepIndex + 1];
     if (nextStep) {
@@ -125,7 +128,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             </p>
           ))}
         </Box>
-        {/* we could make this and the 2nd selection process with a reusable component, e.g. labels in the <p> below could be from rendering {selectionLabel} but this is one solution to start */}
         {currentModalSelection === "PARA_SELECTION" && (
           <Box>
             <p>Select one or more paras:</p>
@@ -138,11 +140,11 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                 borderRadius: 1,
               }}
             >
+              {/* Design ask is to reorder the mapped staff so that the selected staff are moved to the top of the list */}
               <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
                 {myParas
                   ?.filter((para): para is ParaProps => para !== undefined)
                   .map((para) => (
-                    // CSS ask is to reorder the mapped staff so that the selected staff are moved to the top of the list
                     <ListItem key={para.user_id} sx={{ px: 0, py: 0 }}>
                       <ListItemButton
                         dense
@@ -166,7 +168,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             </Box>
           </Box>
         )}
-        {/* Enter 2nd selection process here, utilizing selected staff at the end of the process */}
         {currentModalSelection === "DURATION_SELECTION" && (
           <Box>
             <DurationSelectionStep
@@ -204,7 +205,7 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
               Back
             </Button>
           )}
-
+          {/* we should have reusable variables/classNames for all of this sx:CSS once the global themes are resolved */}
           <Button
             sx={{
               height: "24px",
@@ -230,9 +231,11 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
             }}
             variant="contained"
             onClick={handleNext}
-            disabled={assignTaskToPara.isLoading}
+            ref={nextButtonRef}
+            disabled={
+              assignTaskToPara.isLoading || selectedParaIds.length === 0
+            }
           >
-            {/* need 2 things here: 1. to disable "Next" button unless a staff member has been selected and 2. to change out buttons entirely or reset active state since on clicking "Next", the "save" button reflect focused CSS*/}
             {currentModalSelection === STEPS[STEPS.length - 1]
               ? "Save"
               : "Next"}
