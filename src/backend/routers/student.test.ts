@@ -100,7 +100,7 @@ test("getActiveStudentIep - return only one iep object", async (t) => {
   });
 
   t.deepEqual(typeof studentWithIep, "object");
-  t.is(studentWithIep.student_id, seed.student.student_id);
-  t.deepEqual(studentWithIep.start_date, addedIep.start_date);
-  t.deepEqual(studentWithIep.end_date, addedIep.end_date);
+  t.is(studentWithIep?.student_id, seed.student.student_id);
+  t.deepEqual(studentWithIep?.start_date, addedIep.start_date);
+  t.deepEqual(studentWithIep?.end_date, addedIep.end_date);
 });
