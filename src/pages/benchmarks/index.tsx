@@ -1,7 +1,7 @@
 import React from "react";
 import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
-import $typo from "@/styles/Typography.module.css";
+import $typo from "@/components/design_system/typography/Typography.module.css";
 import { Container, Box } from "@mui/material";
 import Image from "next/image";
 import noBenchmarks from "../../public/img/no-benchmarks.png";

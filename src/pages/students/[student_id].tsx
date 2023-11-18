@@ -1,7 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $home from "@/styles/Home.module.css";
-import $input from "@/styles/Input.module.css";
+import $input from "@/components/design_system/input/Input.module.css";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -13,9 +13,9 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
-import $Form from "../../styles/Form.module.css";
-import $Image from "../../styles/Image.module.css";
-import $Modal from "../../styles/Modal.module.css";
+import $Form from "../../components/design_system/form/Form.module.css";
+import $Image from "../../components/design_system/image/Image.module.css";
+import $Modal from "../../components/design_system/modal/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
 const ViewStudentPage = () => {

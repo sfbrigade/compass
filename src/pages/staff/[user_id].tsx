@@ -3,7 +3,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import $home from "@/styles/Home.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 
 const ViewParaPage = () => {
   const [unassignParaPrompt, setUnassignParaPrompt] = useState(false);
