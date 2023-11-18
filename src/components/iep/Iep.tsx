@@ -1,7 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
 import Goal from "@/components/goal/Goal";
 import $button from "@/styles/Button.module.css";
-import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
@@ -15,6 +14,7 @@ import noGoals from "../../public/img/no-goals-icon.png";
 import $Image from "../../styles/Image.module.css";
 import $Iep from "./Iep.module.css";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 interface IepProps {
   iep_id: string;
@@ -27,6 +27,8 @@ const Iep = ({ iep_id }: IepProps) => {
     { iep_id: iep_id },
     { enabled: Boolean(iep_id) }
   );
+
+  const router = useRouter();
 
   const [showAddGoalForm, setShowAddGoalForm] = useState(false);
   const [addGoalInput, setAddGoalInput] = useState("");
@@ -64,7 +66,7 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <Stack sx={{ width: 1 }}>
+    <Stack sx={{ width: 1 }} style={{ maxWidth: "1200px", margin: "auto" }}>
       <Container>
         <Box className={$Iep.goalBox}>
           <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
@@ -127,9 +129,15 @@ const Iep = ({ iep_id }: IepProps) => {
               {goals?.map((goal) => (
                 <ListItem
                   key={goal.goal_id}
-                  style={{ borderBottom: "1px solid #D6DDE1" }}
+                  style={{ padding: 0 }}
+                  className={$Iep.listGoal}
+                  onClick={async () => {
+                    await router.push(`/goals/${goal.goal_id}`);
+                  }}
                 >
-                  <Goal goal={goal} />
+                  <Container>
+                    <Goal goal={goal} />
+                  </Container>
                 </ListItem>
               ))}
             </List>

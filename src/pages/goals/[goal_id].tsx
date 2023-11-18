@@ -125,7 +125,6 @@ const ViewGoalPage = () => {
               className={$button.default}
               onClick={showEditGoal}
               style={{
-                // "marginX": "auto",
                 margin: "auto",
                 marginTop: "1rem",
                 marginBottom: "1rem",
@@ -203,7 +202,7 @@ const ViewGoalPage = () => {
           />
         </Box>
 
-        {/* Benchmarks container */}
+        {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
           <Grid item>
             <List>{/*  */}</List>

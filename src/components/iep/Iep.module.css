@@ -100,3 +100,12 @@
   background: #F5F5F5;
   resize: none;
 }
+
+.listGoal {
+  border-bottom: 1px solid #D6DDE1;
+}
+
+.listGoal :hover {
+  cursor: pointer;
+  background-color: lightgray;
+}
