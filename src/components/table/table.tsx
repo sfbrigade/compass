@@ -345,15 +345,15 @@ export default function EnhancedTable<
             gap={1.5}
           >
             <Image src={emptyState} alt="empty roster" width={250} />
-            <p>You have no students yet</p>
+            <p>You have no {type.toLowerCase()} yet</p>
             <p style={{ color: "var(--grey-20)", textAlign: "center" }}>
-              Start building your class roster by adding a student.
+              Start building your roster by adding a {type.toLocaleLowerCase()}.
             </p>
             <button
               onClick={() => setShowInput(true)}
               className={`${$button.default}`}
             >
-              Add Student
+              Add {type}
             </button>
           </Box>
         </Container>
