@@ -1,10 +1,5 @@
-.goalBox {
-  display: flex;
-  justify-content: space-between;
-}
-
 .goalTab {
-  margin-left: -24px;
+  /* margin-left: -24px; */
   display: inline-flex;
   padding: 16px;
   flex-direction: column;
@@ -21,6 +16,7 @@
   max-height: 70vh;
   overflow-y: auto;
   border-radius: 0px 10px 10px 10px;
+  /* padding: 0; */
 }
 
 .goalsColumn {
