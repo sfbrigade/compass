@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
+import Breadcrumbs from "../breadcrumbs/breadcrumbs";
 
 interface NavItemProps {
   href?: string;
@@ -57,9 +58,8 @@ export default function NavBar() {
       <IconButton
         color="inherit"
         aria-label="open drawer"
-        edge="start"
         onClick={handleDrawerToggle}
-        sx={{ mr: 2, display: desktop ? "none" : "" }}
+        sx={{ mr: 2 }}
       >
         {name}
       </IconButton>
@@ -87,7 +87,7 @@ export default function NavBar() {
   };
 
   const drawer = (
-    <div className={$navbar.sidebar}>
+    <div className={$navbar.navbarDropdown}>
       <List>
         <NavItem href="/students" icon={<PeopleOutline />} text="Students" />
         <NavItem href="/staff" icon={<CoPresent />} text="Staff" />
@@ -105,51 +105,49 @@ export default function NavBar() {
     <>
       {status === "authenticated" && (
         <Box sx={{ display: "flex" }}>
-          {/* Sidebar for screens > md size */}
-          <Box
-            component="nav"
-            aria-label="nav"
-            className={$navbar.sidebar}
-            sx={{
-              display: desktop ? "block" : "none",
-              width: "200px",
-            }}
-          >
-            {logo}
-            {drawer}
-          </Box>
+          {desktop ? (
+            <>
+              {/* Sidebar for screens & breadcrumbs > md size */}
+              <Box component="nav" aria-label="nav" className={$navbar.sidebar}>
+                {logo}
+                {drawer}
+              </Box>
+              <Breadcrumbs />
+            </>
+          ) : (
+            <>
+              {/* Top nav for screen <= md size */}
+              <AppBar position="fixed" sx={{ display: "block" }}>
+                <ToolbarMenu
+                  name={
+                    <MenuIcon className={$navbar.burger} fontSize="large" />
+                  }
+                />
+              </AppBar>
 
-          {/* Top nav for screen <= md size */}
-          <AppBar
-            position="fixed"
-            sx={{
-              display: desktop ? "none" : "block",
-            }}
-          >
-            <ToolbarMenu
-              name={<MenuIcon className={$navbar.burger} fontSize="large" />}
-            />
-          </AppBar>
-
-          {/* Modal for sidebar when screen is <= md size */}
-          <Drawer
-            variant="temporary"
-            anchor="top"
-            open={mobileOpen}
-            onClick={handleDrawerToggle}
-            sx={{
-              display: desktop ? "none" : "block",
-              "& .MuiDrawer-paper": {
-                boxSizing: "border-box",
-                width: "full",
-              },
-            }}
-          >
-            <ToolbarMenu
-              name={<CloseIcon className={$navbar.burger} fontSize="large" />}
-            />
-            {drawer}
-          </Drawer>
+              {/* Modal for sidebar when screen is <= md size */}
+              <Drawer
+                variant="temporary"
+                anchor="top"
+                open={mobileOpen}
+                onClick={handleDrawerToggle}
+                sx={{
+                  display: "block",
+                  "& .MuiDrawer-paper": {
+                    boxSizing: "border-box",
+                    width: "full",
+                  },
+                }}
+              >
+                <ToolbarMenu
+                  name={
+                    <CloseIcon className={$navbar.burger} fontSize="large" />
+                  }
+                />
+                {drawer}
+              </Drawer>
+            </>
+          )}
         </Box>
       )}
     </>
