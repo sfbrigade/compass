@@ -158,7 +158,6 @@ const ViewStudentPage = () => {
                 color: "#5347d7",
                 borderColor: "#5347d7",
                 borderRadius: "8px",
-                fontFamily: "Quicksand",
                 fontSize: "1em",
                 textTransform: "capitalize",
               }}
@@ -179,7 +178,6 @@ const ViewStudentPage = () => {
                   color: "#5347d7",
                   borderColor: "#5347d7",
                   borderRadius: "8px",
-                  fontFamily: "Quicksand",
                   textTransform: "capitalize",
                   fontSize: "1em",
                 }}
@@ -194,7 +192,6 @@ const ViewStudentPage = () => {
                     borderRadius: "8px",
                     border: "none",
                     color: "#ffffff",
-                    fontFamily: "Quicksand",
                     textTransform: "capitalize",
                     fontSize: "1em",
                   },
@@ -316,7 +313,6 @@ const ViewStudentPage = () => {
                   color: "#5347d7",
                   borderColor: "#5347d7",
                   borderRadius: "8px",
-                  fontFamily: "Quicksand",
                   textTransform: "capitalize",
                   fontSize: "1em",
                 }}

@@ -4,7 +4,6 @@
 
 .listNames {
   list-style-type: none;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createButton {
@@ -16,7 +15,6 @@
   border: none;
   color: var(--on-primary);
   cursor: pointer;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createInput input {
@@ -24,10 +22,8 @@
   border: 1px solid #ccc;
   margin: 2px 4px;
   padding: 4px 2px;
-  font-family: "Quicksand", sans-serif;
 }
 
 .description {
-  /* font-family: "Quicksand", sans-serif; */
   margin: 4px;
 }

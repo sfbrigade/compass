@@ -48,7 +48,6 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
                 borderColor: "#20159E",
                 borderRadius: "8px",
                 color: "#20159E",
-                fontFamily: "Quicksand",
                 textTransform: "none",
                 "&:hover": {
                   backgroundColor: "#F6F5FF",

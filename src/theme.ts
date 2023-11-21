@@ -1,6 +1,9 @@
 import { createTheme } from "@mui/material";
 
+const { breakpoints } = createTheme();
+
 export const theme = createTheme({
+  breakpoints,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   shadows: [
     "none",
@@ -12,4 +15,76 @@ export const theme = createTheme({
     ...new Array(20).map(() => "none"),
     // type requires 20+ elements
   ] as any,
+  typography: {
+    allVariants: {
+      letterSpacing: "normal",
+      lineHeight: "100%",
+    },
+    h1: {
+      fontWeight: 600,
+      fontSize: "2.5em",
+      fontFamily: "Quicksand, sans-serif",
+      [breakpoints.down("md")]: {
+        fontSize: "2em",
+      },
+    },
+    h2: {
+      fontWeight: 600,
+      fontSize: "2em",
+      fontFamily: "Quicksand, sans-serif",
+      [breakpoints.down("md")]: {
+        fontSize: "1.5em",
+      },
+    },
+    h3: {
+      fontWeight: 600,
+      fontSize: "1.5em",
+      fontFamily: "Quicksand, sans-serif",
+      [breakpoints.down("md")]: {
+        fontSize: "1.25em",
+      },
+    },
+    h4: {
+      fontWeight: 600,
+      fontSize: "1.25em",
+      fontFamily: "Quicksand, sans-serif",
+      [breakpoints.down("md")]: {
+        fontWeight: 500,
+      },
+    },
+    h5: {
+      fontWeight: 700,
+      fontSize: "1em",
+      fontFamily: "Inter, sans-serif",
+    },
+    body1: {
+      fontWeight: 400,
+      fontSize: "1em",
+      fontFamily: "Inter, sans-serif",
+      lineHeight: "150%",
+    },
+    body2: {
+      fontWeight: 500,
+      fontSize: "0.875em",
+      fontFamily: "Inter, sans-serif",
+      lineHeight: "150%",
+    },
+    button: {
+      fontWeight: 600,
+      fontSize: "1em",
+      fontFamily: "Quicksand, sans-serif",
+      lineHeight: "150%",
+    },
+    caption: {
+      fontWeight: 400,
+      fontSize: "0.75em",
+      fontFamily: "Inter, sans-serif",
+      lineHeight: "150%",
+    },
+    overline: {
+      fontWeight: 600,
+      fontSize: "0.75em",
+      fontFamily: "Inter, sans-serif",
+    },
+  },
 });

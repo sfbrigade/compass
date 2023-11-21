@@ -16,6 +16,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { theme } from "@/theme";
+import { FontProvider } from "@/components/font-provider";
 
 interface CustomPageProps {
   session: Session;
@@ -83,22 +84,26 @@ export default function App({
         <meta name="description" content="Make IEPs easier" />
         <link rel="icon" href="/img/favicon.png" />
       </Head>
-      <ThemeProvider theme={theme}>
+      <FontProvider>
         <StyledEngineProvider injectFirst>
-          <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <trpc.Provider client={trpcClient} queryClient={queryClient}>
-              <QueryClientProvider client={queryClient}>
-                <SessionProvider session={pageProps.session}>
-                  {errorMessage && <CustomToast errorMessage={errorMessage} />}
-                  <Layout>
-                    <Component {...pageProps} showErrorToast={toast.error} />
-                  </Layout>
-                </SessionProvider>
-              </QueryClientProvider>
-            </trpc.Provider>
-          </LocalizationProvider>
+          <ThemeProvider theme={theme}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <trpc.Provider client={trpcClient} queryClient={queryClient}>
+                <QueryClientProvider client={queryClient}>
+                  <SessionProvider session={pageProps.session}>
+                    {errorMessage && (
+                      <CustomToast errorMessage={errorMessage} />
+                    )}
+                    <Layout>
+                      <Component {...pageProps} showErrorToast={toast.error} />
+                    </Layout>
+                  </SessionProvider>
+                </QueryClientProvider>
+              </trpc.Provider>
+            </LocalizationProvider>
+          </ThemeProvider>
         </StyledEngineProvider>
-      </ThemeProvider>
+      </FontProvider>
     </>
   );
 }

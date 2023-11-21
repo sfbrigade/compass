@@ -1,5 +1,3 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Quicksand:wght@600&display=swap");
-
 :root {
   --primary: #5347d7;
   --on-primary: #ffffff;
@@ -49,9 +47,6 @@
   --grey-80: #f4f6f7;
   --grey-90: #f6f8f9;
   --grey-100: #ffffff;
-
-  --quicksand: "Quicksand", sans-serif;
-  --inter: "Inter", sans-serif;
 }
 
 * {
@@ -69,7 +64,7 @@ body,
   padding-top: 0.5rem;
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4 {
@@ -101,11 +96,7 @@ h5 {
 p {
   font-size: 1em;
   font-weight: 500;
-}
-
-button {
-  font-family: var(--quicksand);
-}
+} */
 
 strong {
   font-weight: 700;
@@ -133,7 +124,7 @@ textarea {
 
 /* Small Devices, Tablets */
 @media only screen and (min-width: 768px) {
-  h1 {
+  /* h1 {
     font-size: 2em;
   }
 
@@ -147,7 +138,7 @@ textarea {
 
   h4 {
     font-size: 1.25em;
-  }
+  } */
 }
 
 /* Medium Devices, Desktops */
