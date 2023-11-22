@@ -19,7 +19,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
-import Breadcrumbs from "../breadcrumbs/breadcrumbs";
+import BreadcrumbsNav from "../breadcrumbs/BreadcrumbsNav";
 
 interface NavItemProps {
   href?: string;
@@ -112,7 +112,7 @@ export default function NavBar() {
                 {logo}
                 {drawer}
               </Box>
-              <Breadcrumbs />
+              <BreadcrumbsNav />
             </>
           ) : (
             <>
