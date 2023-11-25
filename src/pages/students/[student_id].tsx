@@ -152,16 +152,7 @@ const ViewStudentPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.default} ${$home.bold}`}
-              variant="outlined"
-              sx={{
-                color: "#5347d7",
-                borderColor: "#5347d7",
-                borderRadius: "8px",
-                fontFamily: "Quicksand",
-                fontSize: "1em",
-                textTransform: "capitalize",
-              }}
+              className={`${$button.secondary} ${$home.bold}`}
               onClick={handleEditState}
             >
               Edit
