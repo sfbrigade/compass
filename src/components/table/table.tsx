@@ -16,7 +16,7 @@ import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import $table from "./Table.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/button/Button.module.css";
 import { useRouter } from "next/router";
 import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
