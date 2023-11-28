@@ -66,7 +66,7 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <Stack sx={{ width: 1 }} style={{ maxWidth: "1200px", margin: "auto" }}>
+    <Stack sx={{ width: 1 }} style={{ maxWidth: "1200px" }}>
       <Grid container justifyContent="space-between">
         <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
         {/* adding new goals // TODO: extract this content elsewhere */}
