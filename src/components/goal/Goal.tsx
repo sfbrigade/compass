@@ -4,6 +4,7 @@ import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";
 import { useState } from "react";
+import Link from "next/link";
 
 type ControlCaratProps = {
   direction: "down" | "right" | "left" | "up";
@@ -103,9 +104,39 @@ const Goals = ({ goal }: GoalProps) => {
         <p className={$goal.description}>{goal?.description}</p>
 
         {!expandSubgoals && (
-          <div className={$goal.subgoalCountBadge}>
-            <div className={$goal.subgoalCount}>
-              {subgoals?.length} active benchmark{subgoals?.length !== 1 && "s"}
+          <div style={{ marginTop: "8px", display: "flex", gap: "16px" }}>
+            <div className={$goal.subgoalCountBadge}>
+              <div className={$goal.subgoalCount}>
+                {subgoals?.length} active benchmark
+                {subgoals?.length !== 1 && "s"}
+              </div>
+            </div>
+            <div
+              style={{
+                display: "flex",
+                height: "40px",
+                padding: "10px 24px",
+                justifyContent: "center",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              <Link
+                href={`/goals/${goal.goal_id}/addSubgoal`}
+                style={{
+                  textAlign: "center",
+                  color: "#20159E",
+                  fontSize: "16px",
+                  fontFamily: "Quicksand",
+                  fontWeight: "600",
+                  lineHeight: "24px",
+                  wordWrap: "break-word",
+                  borderRadius: "8px",
+                  textDecoration: "none",
+                }}
+              >
+                Add benchmark
+              </Link>
             </div>
           </div>
         )}
