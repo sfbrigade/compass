@@ -345,15 +345,15 @@ export default function EnhancedTable<
             gap={1.5}
           >
             <Image src={emptyState} alt="empty roster" width={250} />
-            <p>You have no students yet</p>
+            <p>You have no {type.toLowerCase()} yet</p>
             <p style={{ color: "var(--grey-20)", textAlign: "center" }}>
-              Start building your class roster by adding a student.
+              Start building your roster by adding a {type.toLocaleLowerCase()}.
             </p>
             <button
               onClick={() => setShowInput(true)}
               className={`${$button.default}`}
             >
-              Add Student
+              Add {type}
             </button>
           </Box>
         </Container>
@@ -396,6 +396,12 @@ export default function EnhancedTable<
                   >
                     <TableCell component="th" id={labelId} scope="row">
                       {row.first_name}
+                      {/* This condition ONLY refers to case managers assuming
+                      that case manager object has 2 less keys than a para.
+                      Can change as needed*/}
+                      {!isStudentWithIep(row) &&
+                        Object.keys(row).length < 9 &&
+                        " (me)"}
                     </TableCell>
                     <TableCell align={"left"}>{row.last_name}</TableCell>
                     <TableCell align={"left"}>{row.email}</TableCell>

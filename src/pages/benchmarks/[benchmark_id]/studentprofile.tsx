@@ -29,7 +29,7 @@ const StudentProfilePage = () => {
           {student.first_name} {student.last_name}
         </h4>
         <div className={$taskCard.dateFloater}>
-          Due: {format(student.due_date, "MM-dd-yyyy")}
+          Due: {student.due_date ? format(student.due_date, "MM-dd-yyyy") : ""}
         </div>
       </div>
       <div className={$box.default}>

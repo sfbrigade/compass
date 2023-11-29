@@ -1757,15 +1757,15 @@ declare module 'zapatos/schema' {
       /**
       * **task.due_date**
       * - `timestamptz` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      due_date: Date;
+      due_date: Date | null;
       /**
       * **task.trial_count**
       * - `int4` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      trial_count: number;
+      trial_count: number | null;
       /**
       * **task.seen**
       * - `bool` in database
@@ -1795,15 +1795,15 @@ declare module 'zapatos/schema' {
       /**
       * **task.due_date**
       * - `timestamptz` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      due_date: db.TimestampTzString;
+      due_date: db.TimestampTzString | null;
       /**
       * **task.trial_count**
       * - `int4` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      trial_count: number;
+      trial_count: number | null;
       /**
       * **task.seen**
       * - `bool` in database
@@ -1833,13 +1833,13 @@ declare module 'zapatos/schema' {
       /**
       * **task.due_date**
       * - `timestamptz` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
       due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
       * **task.trial_count**
       * - `int4` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
       trial_count?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
@@ -1871,15 +1871,15 @@ declare module 'zapatos/schema' {
       /**
       * **task.due_date**
       * - `timestamptz` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      due_date: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment;
+      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment;
       /**
       * **task.trial_count**
       * - `int4` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      trial_count: number | db.Parameter<number> | db.SQLFragment;
+      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
       /**
       * **task.seen**
       * - `bool` in database
@@ -1909,15 +1909,15 @@ declare module 'zapatos/schema' {
       /**
       * **task.due_date**
       * - `timestamptz` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment>;
+      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **task.trial_count**
       * - `int4` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      trial_count?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **task.seen**
       * - `bool` in database

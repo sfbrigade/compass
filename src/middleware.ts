@@ -22,4 +22,4 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-export const config = { matcher: ["/((?!img|_next|api|signInPage).*)"] };
+export const config = { matcher: ["/((?!img|_next|api|signInPage|about).*)"] };
