@@ -155,40 +155,6 @@ const Goals = ({ goal }: GoalProps) => {
 
       <ControlCarat direction="right" />
     </div>
-
-    // <div className={$goal.goal}>
-    //   <p className={$goal.description}>{goal.description}</p>
-
-    //   <div className={$goal.tab}>
-    // <ul className={$goal.listNames}>
-    //   {subgoals?.map((subgoal) => (
-    //     <li key={subgoal.subgoal_id}>
-    //       <br />
-    //       <Subgoals subgoal={subgoal} />
-    //     </li>
-    //   ))}
-    // </ul>
-    //     <br />
-    //     <form onSubmit={handleSubGoalSubmit} className={$goal.createInput}>
-    //       <input
-    //         type="text"
-    //         name="description"
-    //         placeholder="Subgoal description"
-    //         required
-    //       />
-    //       <input type="text" name="instructions" placeholder="Instructions" />
-    //       <input
-    //         type="number"
-    //         name="target_max_attempts"
-    //         placeholder="# of attempts"
-    //       />
-
-    //       <button type="submit" className={$goal.createButton}>
-    //         Add SubGoal
-    //       </button>
-    //     </form>
-    //   </div>
-    // </div>
   );
 };
 
