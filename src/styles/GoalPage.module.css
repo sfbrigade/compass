@@ -16,7 +16,6 @@
 
 .benchmarksBox {
   display: flex;
-  justify-content: space-between;
 }
 
 .benchmarksTab {
