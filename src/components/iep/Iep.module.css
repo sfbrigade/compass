@@ -1,5 +1,4 @@
 .goalTab {
-  /* margin-left: -24px; */
   display: inline-flex;
   padding: 16px;
   flex-direction: column;
@@ -16,7 +15,6 @@
   max-height: 70vh;
   overflow-y: auto;
   border-radius: 0px 10px 10px 10px;
-  /* padding: 0; */
 }
 
 .goalsColumn {
@@ -42,32 +40,6 @@
   margin-bottom: 1rem;
 }
 
-/* currently unused, replaced by button.primary */
-.addGoalButton {
-  display: inline-flex;
-  height: 36px;
-  padding: 8px;
-  justify-content: center;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-  border-radius: 8px;
-  background: var(--system-primary-primary-20159-e, #20159E);
-
-  color: var(--system-primary-on-primary-ffffff, #FFF);
-  text-align: center;
-  /* Button */
-  font-family: Quicksand;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%; /* 24px */
-}
-
-.addGoalButton:hover {
-  cursor: pointer;
-}
-
 .addGoalFormContainer {
   border-left: 1px #D6DDE1 solid;
   padding: 2rem;
@@ -81,7 +53,6 @@
   line-height: 24px;
   word-wrap: break-word;
   margin-bottom: 2rem;
-
 }
 
 .addGoalFormTextArea {

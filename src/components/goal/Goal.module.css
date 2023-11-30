@@ -29,9 +29,6 @@
 }
 
 .description {
-  /* font-family: "Quicksand", sans-serif; */
-  /* margin: 4px; */
-
   color: var(--grey-202-a-333-c, #2A333C);
 
   /* Body 1 */
@@ -82,6 +79,7 @@
   font-weight: 500;
   line-height: 150%; /* 21px */
 }
+
 
 .controlCarat :hover {
   cursor: pointer;

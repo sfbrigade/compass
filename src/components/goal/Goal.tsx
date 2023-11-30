@@ -64,6 +64,10 @@ interface GoalProps {
 
 const Goals = ({ goal }: GoalProps) => {
   const utils = trpc.useContext();
+
+  // per current design, subgoals not currently showing in this component.
+  // trpc method, state for subgoals are here should that change, can be moved
+  // to different page/component as needed
   const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
     goal_id: goal.goal_id,
   });

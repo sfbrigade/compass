@@ -9,10 +9,6 @@ import List from "@mui/material/List";
 import $GoalPage from "../../styles/GoalPage.module.css";
 import $button from "@/styles/Button.module.css";
 
-// const ACTIVE = "ACTIVE";
-// const COMPLETED = "COMPLETED";
-// const DRAFTS = "DRAFTS";
-
 enum selectionValue {
   ACTIVE,
   COMPLETED,
@@ -74,10 +70,6 @@ const ViewGoalPage = () => {
   });
 
   const submitEditGoal = () => {
-    // trpc.iep.editGoal.useMutation.mutate({
-    //   goal_id: goal_id,
-    //   description: editGoalInput
-    // })
     editMutation.mutate({
       goal_id: goal_id as string,
       description: editGoalInput,
@@ -111,9 +103,6 @@ const ViewGoalPage = () => {
         <Grid item>
           <h2>Goal</h2>
         </Grid>
-        {/* <Grid item>
-          Added on {goal?.created_at.toDateString().slice(4)}
-        </Grid> */}
       </Grid>
 
       {/* Goal Description */}

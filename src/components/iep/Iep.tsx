@@ -41,6 +41,7 @@ const Iep = ({ iep_id }: IepProps) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
+    // removing category from input options, not part of MVP
     goalMutation.mutate({
       iep_id: iep_id,
       description: data.get("description") as string,
@@ -69,33 +70,6 @@ const Iep = ({ iep_id }: IepProps) => {
     <Stack sx={{ width: 1 }} style={{ maxWidth: "1200px" }}>
       <Grid container justifyContent="space-between">
         <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
-        {/* adding new goals // TODO: extract this content elsewhere */}
-        {/* <form
-          style={{
-            display: "flex",
-            gap: "1rem",
-            alignItems: "flex-end",
-          }}
-          onSubmit={handleGoalSubmit}
-        >
-          <input
-            type="text"
-            name="description"
-            placeholder="Goal description"
-            className={$input.default}
-            required
-          />
-          <select name="category">
-            <option value="writing">writing</option>
-            <option value="reading">reading</option>
-            <option value="math">math</option>
-            <option value="other">other</option>
-          </select>
-          
-          <button type="submit" className={$Iep.addGoalButton}>
-            Add Goal
-          </button>
-        </form> */}
         {!showAddGoalForm && (
           <div>
             <button onClick={revealAddGoalForm} className={$button.default}>
