@@ -50,14 +50,14 @@ const ViewParaPage = () => {
     onSuccess: () => utils.para.getParaById.invalidate(),
   });
 
-  const handleEditPara = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleEditPara = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
 
     if (!para) {
       return; // TODO: improve error handling
     }
-    editMutation.mutate({
+    await editMutation.mutateAsync({
       para_id: para.user_id,
       first_name: data.get("firstName") as string,
       last_name: data.get("lastName") as string,
@@ -76,6 +76,7 @@ const ViewParaPage = () => {
 
   const handleArchivePara = async () => {
     if (!para) return;
+    if (para.user_id === me?.user_id) alert("You cannot archive yourself!");
 
     await archivePara.mutateAsync({ para_id: para.user_id });
     await router.push(`/staff`);
