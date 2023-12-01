@@ -25,13 +25,13 @@
   align-items: center;
   gap: 8px;
   border-radius: 8px 8px 0px 0px;
-  background: #E0E0E0;
-  color: #586874; 
+  background: #e0e0e0;
+  color: #586874;
 }
 
 .benchmarksTabSelected {
-  background: #FFF;
-  color: var(--system-primary-primary-20159-e, #20159E);
+  background: #fff;
+  color: var(--system-primary-primary-20159-e, #20159e);
 }
 
 .benchmarksTab:hover {
@@ -47,7 +47,7 @@
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
-  background: #F5F5F5;
+  background: #f5f5f5;
   resize: none;
   border: solid 1px var(--primary);
 }
