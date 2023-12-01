@@ -73,3 +73,37 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
       .executeTakeFirstOrThrow()
   );
 });
+
+test("edit goal", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  // console.log({goal1}, {seed_case_manager_id: seed.case_manager.user_id}, {student_id: seed.student.student_id})
+  const student = await trpc.case_manager.addStudent.mutate({
+    first_name: seed.student.first_name,
+    last_name: seed.student.last_name,
+    email: seed.student.email,
+    grade: seed.student.grade,
+  });
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const goal = await trpc.iep.addGoal.mutate({
+    iep_id: iep.iep_id,
+    description: "goal 1",
+    category: "writing",
+  });
+
+  const modifiedGoal = await trpc.iep.editGoal.mutate({
+    description: "modified goal 1",
+    goal_id: goal!.goal_id,
+  });
+
+  t.is(modifiedGoal!.goal_id, goal!.goal_id);
+  t.is(modifiedGoal?.description, "modified goal 1");
+});
