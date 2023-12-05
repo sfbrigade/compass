@@ -52,12 +52,6 @@ const ViewStudentPage = () => {
     await router.push(`/students`);
   };
 
-  const buttonSX = {
-    "&:hover": {
-      background: "#3023B8",
-    },
-  };
-
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
     { enabled: Boolean(student_id), retry: false }
@@ -164,36 +158,14 @@ const ViewStudentPage = () => {
             <Box className={$StudentPage.displayBoxGap}>
               <Button
                 onClick={handleMainState}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.secondary} ${$home.bold}`}
               >
                 Cancel
               </Button>
               <Button
                 className={`${$button.default} ${$home.bold}`}
-                sx={[
-                  {
-                    backgroundColor: "#5347d7",
-                    borderRadius: "8px",
-                    border: "none",
-                    color: "#ffffff",
-                    fontFamily: "Quicksand",
-                    textTransform: "capitalize",
-                    fontSize: "1em",
-                  },
-                  buttonSX,
-                ]}
                 type="submit"
                 form="edit"
-                variant="contained"
               >
                 Save
               </Button>
@@ -302,15 +274,6 @@ const ViewStudentPage = () => {
               <Button
                 onClick={() => setArchivePrompt(true)}
                 className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
               >
                 Archive {student?.first_name} {student?.last_name}
               </Button>

@@ -10,11 +10,17 @@
   text-decoration: none;
   text-align: center;
   font-size: 16px;
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
 }
+
 .about {
   border: none;
   background-color: transparent;
 }
+
 .about {
   cursor: pointer;
 }
@@ -22,6 +28,7 @@
 .default:hover {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  background-color: var(--primary);
 }
 
 .default:active {
@@ -42,7 +49,7 @@
   display: block;
   border: 1px solid var(--primary);
   color: var(--primary-50);
-  padding: 5px 12px;
+  padding: 10px;
   border-radius: 4px;
   cursor: pointer;
   text-decoration: none;
@@ -51,8 +58,9 @@
   background-color: inherit;
   font-family: var(--quicksand);
   text-transform: none;
-  line-height: none;
-  letter-spacing: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
 }
 
 .secondary:hover {
