@@ -190,40 +190,22 @@ export const case_manager = router({
       const { para_id, first_name, last_name, email } = req.input;
       const { userId } = req.ctx.auth;
 
-      // if userId is of type "para" and userID !== para_id, then they cannot edit another para's info - throw an error
+      if (userId !== para_id) {
+        const existingPara = req.ctx.db
+          .selectFrom("user")
+          .innerJoin(
+            "paras_assigned_to_case_manager",
+            "user.user_id",
+            "paras_assigned_to_case_manager.para_id"
+          )
+          .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
+          .selectAll();
 
-      // if userId is of type "para" and userID === para_id, then they can edit their own info
-      if (userId === para_id) {
-        return await req.ctx.db
-          .updateTable("user")
-          .set({
-            first_name,
-            last_name,
-            email: email.toLowerCase(),
-          })
-          .where("user_id", "=", para_id)
-          .returningAll()
-          .executeTakeFirstOrThrow();
-      }
-      // Then at this point, continue by checking if the para exists and if the case manager is assigned to the para.
-      const existingPara = req.ctx.db
-        .selectFrom("user")
-        .innerJoin(
-          "paras_assigned_to_case_manager",
-          "user.user_id",
-          "paras_assigned_to_case_manager.para_id"
-        )
-        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
-        .selectAll();
-
-      // if userId is of type "case_manager" and they are not assigned to the para, then they cannot edit the para's (para_id) info - throw an error
-
-      // if userId is of type "case_manager" and they are assigned to the para, then they can edit the para's (para_id) info
-      if (!existingPara) {
-        throw new Error("Para not found");
+        if (!existingPara) {
+          throw new Error("Para not found");
+        }
       }
 
-      // Update the para's information
       return await req.ctx.db
         .updateTable("user")
         .set({
