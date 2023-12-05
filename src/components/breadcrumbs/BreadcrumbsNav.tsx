@@ -14,11 +14,11 @@ const BreadcrumbsNav = () => {
 
   const { data: student } = trpc.student.getStudentById.useQuery(
     { student_id: paths[2] },
-    { enabled: Boolean(paths[2]), retry: false }
+    { enabled: Boolean(paths[2] && paths[1] === "students") }
   );
   const { data: para } = trpc.para.getParaById.useQuery(
     { user_id: paths[2] },
-    { enabled: Boolean(paths[2]), retry: false }
+    { enabled: Boolean(paths[2] && paths[1] === "staff") }
   );
 
   const personData: Student | Para | undefined = student || para;
