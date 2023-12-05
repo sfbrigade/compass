@@ -5,28 +5,23 @@ import { useRouter } from "next/router";
 import { SelectableForTable } from "zapatos/schema";
 import $breadcrumbs from "./Breadcrumbs.module.css";
 
+type Student = SelectableForTable<"student">;
+type Para = SelectableForTable<"user">;
+
 const BreadcrumbsNav = () => {
   const router = useRouter();
   const paths = router.asPath.split("/");
 
-  let personData:
-    | SelectableForTable<"student">
-    | SelectableForTable<"user">
-    | undefined;
+  const { data: student } = trpc.student.getStudentById.useQuery(
+    { student_id: paths[2] },
+    { enabled: Boolean(paths[2]), retry: false }
+  );
+  const { data: para } = trpc.para.getParaById.useQuery(
+    { user_id: paths[2] },
+    { enabled: Boolean(paths[2]), retry: false }
+  );
 
-  if (paths[1] === "students" && paths[2]) {
-    const { data } = trpc.student.getStudentById.useQuery(
-      { student_id: paths[2] },
-      { enabled: Boolean(paths[2]), retry: false }
-    );
-    personData = data;
-  } else if (paths[1] === "staff" && paths[2]) {
-    const { data } = trpc.para.getParaById.useQuery(
-      { user_id: paths[2] },
-      { enabled: Boolean(paths[2]), retry: false }
-    );
-    personData = data;
-  }
+  const personData: Student | Para | undefined = student || para;
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
   const breadcrumbs = paths.map((path, index) => {
