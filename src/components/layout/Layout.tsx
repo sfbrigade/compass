@@ -22,7 +22,8 @@ const Layout = ({ children }: LayoutProps) => {
       <main
         className={`${isPurpleBg ? $layout.mainPurple : $layout.main}
         ${router.query.student_id ? $layout.mainStudent : ""}
-        ${router.query.goal_id ? $layout.mainGoal : ""}`}
+        ${router.query.goal_id ? $layout.mainGoal : ""} 
+        ${router.query.user_id ? $layout.mainStaff : ""}`}
       >
         {children}
       </main>

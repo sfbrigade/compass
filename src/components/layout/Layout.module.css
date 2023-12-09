@@ -19,7 +19,8 @@
   background-color: var(--primary-container);
 }
 
-.mainStudent {
+.mainStudent,
+.mainStaff {
   composes: main;
   background-color: var(--grey-80);
 }
