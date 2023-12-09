@@ -75,12 +75,11 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
 });
 
 test("edit goal", async (t) => {
-  const { trpc, db, seed } = await getTestServer(t, {
+  const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
-  // console.log({goal1}, {seed_case_manager_id: seed.case_manager.user_id}, {student_id: seed.student.student_id})
-  const student = await trpc.case_manager.addStudent.mutate({
+  await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
     email: seed.student.email,
