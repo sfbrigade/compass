@@ -142,12 +142,12 @@ const ViewGoalPage = () => {
             >
               <Grid item>
                 <button className={$button.secondary} onClick={cancelEditGoal}>
-                  Cancel Changes
+                  Cancel
                 </button>
               </Grid>
               <Grid item>
                 <button className={$button.default} type="submit">
-                  Save Changes
+                  Save
                 </button>
               </Grid>
             </Grid>
