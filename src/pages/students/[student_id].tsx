@@ -251,7 +251,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder={student?.first_name || ""}
+                  defaultValue={student?.first_name || ""}
                   required
                 />
               </Container>
@@ -267,7 +267,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="lastName"
-                  placeholder={student?.last_name || ""}
+                  defaultValue={student?.last_name || ""}
                   required
                 />
               </Container>
@@ -283,7 +283,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="grade"
-                  placeholder={(student?.grade || 0).toString()}
+                  defaultValue={(student?.grade || 0).toString()}
                   required
                 />
               </Container>
@@ -299,7 +299,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder={student?.email || ""}
+                  defaultValue={student?.email || ""}
                   required
                 />
               </Container>
