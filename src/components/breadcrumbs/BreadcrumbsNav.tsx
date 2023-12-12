@@ -13,7 +13,7 @@ const BreadcrumbsNav = () => {
   const paths = router.asPath.split("/");
 
   // student and para queries will only runs if enabled options are both true
-  // Only 1 of these will run at a time
+  // Only 1 of these will run at a time based on the conditions
   const { data: student } = trpc.student.getStudentById.useQuery(
     { student_id: paths[2] },
     { enabled: Boolean(paths[2] && paths[1] === "students") }
@@ -27,7 +27,6 @@ const BreadcrumbsNav = () => {
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
   const breadcrumbs = paths.map((path, index) => {
-    console.log("path ", path, index);
     // 0th index seems to only be empty string
     if (index === 0) return "";
     // 1st index currently is either students or staff
