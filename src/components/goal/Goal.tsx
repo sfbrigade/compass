@@ -4,14 +4,14 @@ import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";
 import { useState } from "react";
-import Link from "next/link";
+import { useRouter } from "next/router";
 
 type ControlCaratProps = {
   direction: "down" | "right" | "left" | "up";
   handleClick?: (e: React.MouseEvent) => void;
 };
 
-const handleNull = (e: React.MouseEvent) => {
+const handleNull = () => {
   return;
 };
 
@@ -64,6 +64,7 @@ interface GoalProps {
 
 const Goals = ({ goal }: GoalProps) => {
   const utils = trpc.useContext();
+  const router = useRouter();
 
   // per current design, subgoals not currently showing in this component.
   // trpc method, state for subgoals are here should that change, can be moved
@@ -133,22 +134,29 @@ const Goals = ({ goal }: GoalProps) => {
                 gap: "8px",
               }}
             >
-              <Link
-                href={`/goals/${goal.goal_id}/addSubgoal`}
+              <button
+                // standin for tertiary button style
                 style={{
-                  textAlign: "center",
-                  color: "#20159E",
-                  fontSize: "16px",
-                  fontFamily: "Quicksand",
-                  fontWeight: "600",
-                  lineHeight: "24px",
-                  wordWrap: "break-word",
+                  display: "inline-flex",
+                  height: "40px",
+                  padding: "10px 24px",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "8px",
+                  flexShrink: "0",
+                  fontSize: "14px",
                   borderRadius: "8px",
-                  textDecoration: "none",
+                  backgroundColor: "white",
+                  color: "#20159E",
+                  border: "none",
+                }}
+                onClick={async (e) => {
+                  e.stopPropagation();
+                  await router.push(`/goals/${goal.goal_id}/addSubgoal`);
                 }}
               >
                 Add benchmark
-              </Link>
+              </button>
             </div>
           </div>
         )}
