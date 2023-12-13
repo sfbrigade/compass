@@ -203,7 +203,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder={para?.first_name || ""}
+                  defaultValue={para?.first_name || ""}
                   required
                 />
               </Container>
@@ -219,7 +219,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="lastName"
-                  placeholder={para?.last_name || ""}
+                  defaultValue={para?.last_name || ""}
                   required
                 />
               </Container>
@@ -235,7 +235,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder={para?.email || ""}
+                  defaultValue={para?.email || ""}
                   required
                 />
               </Container>

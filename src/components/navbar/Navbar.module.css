@@ -7,10 +7,17 @@
   display: flex;
   justify-content: space-between;
   box-shadow: 0;
+  padding: 0;
+}
+
+.navbarDropdown {
+  background-color: var(--primary-40);
 }
 
 .sidebar {
   background-color: var(--primary-40);
+  display: block;
+  width: 200px;
 }
 
 .link {
