@@ -110,16 +110,7 @@ const ViewParaPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.default} ${$home.bold}`}
-              variant="outlined"
-              sx={{
-                color: "#5347d7",
-                borderColor: "#5347d7",
-                borderRadius: "8px",
-                fontFamily: "Quicksand",
-                fontSize: "1em",
-                textTransform: "capitalize",
-              }}
+              className={`${$button.secondary} ${$home.bold}`}
               onClick={handleEditState}
             >
               Edit
@@ -130,36 +121,14 @@ const ViewParaPage = () => {
             <Box className={$StaffPage.displayBoxGap}>
               <Button
                 onClick={handleMainState}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.secondary}`}
               >
                 Cancel
               </Button>
               <Button
-                className={`${$button.default} ${$home.bold}`}
-                sx={[
-                  {
-                    backgroundColor: "#5347d7",
-                    borderRadius: "8px",
-                    border: "none",
-                    color: "#ffffff",
-                    fontFamily: "Quicksand",
-                    textTransform: "capitalize",
-                    fontSize: "1em",
-                  },
-                  buttonSX,
-                ]}
+                className={`${$button.default}`}
                 type="submit"
                 form="edit"
-                variant="contained"
               >
                 Save
               </Button>
@@ -246,16 +215,7 @@ const ViewParaPage = () => {
             <Box textAlign="center">
               <Button
                 onClick={() => setArchiveParaPrompt(true)}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.default}`}
               >
                 Archive {para?.first_name} {para?.last_name}
               </Button>
