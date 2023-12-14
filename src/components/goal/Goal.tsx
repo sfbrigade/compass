@@ -3,6 +3,7 @@ import Subgoals from "../subgoal/Subgoal";
 import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 
 interface GoalProps {
   goal: Goal;
@@ -77,7 +78,7 @@ const Goals = ({ goal }: GoalProps) => {
             required
           />
 
-          <button type="submit" className={$goal.createButton}>
+          <button type="submit" className={$button.default}>
             Add SubGoal
           </button>
         </form>
