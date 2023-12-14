@@ -6,7 +6,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import { useDebounce } from "react-use";
 import $box from "@/styles/Box.module.css";
-import $button from "@/components/button/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $typo from "@/styles/Typography.module.css";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";

@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import $button from "@/components/button/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";

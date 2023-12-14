@@ -1,6 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
 import Goals from "@/components/goal/Goal";
-import $button from "@/components/button/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";

@@ -1,7 +1,7 @@
 // import Image from "next/image";
 import React, { useMemo } from "react";
 import $taskCard from "./TaskCard.module.css";
-import $button from "@/components/button/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $box from "@/styles/Box.module.css";
 import Link from "next/link";
 import ProgressBar from "../progressBar/progressBar";
