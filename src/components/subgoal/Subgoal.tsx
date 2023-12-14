@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useState } from "react";
 import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
+import $button from "@/components/design_system/button/Button.module.css";
 
 interface SubgoalProps {
   subgoal: Subgoal;
@@ -38,23 +39,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           >
             <p>STAFF</p>
             <Button
-              sx={{
-                height: "24px",
-                flex: "flex-end",
-                width: "auto",
-                padding: "20px 10px",
-                backgroundColor: "#fff ",
-                borderWidth: "1px",
-                borderColor: "#20159E",
-                borderRadius: "8px",
-                color: "#20159E",
-                fontFamily: "Quicksand",
-                textTransform: "none",
-                "&:hover": {
-                  backgroundColor: "#F6F5FF",
-                },
-              }}
-              variant="outlined"
+              className={$button.secondary}
               onClick={() => setIsAssignmentModalOpen(true)}
             >
               Assign Staff
