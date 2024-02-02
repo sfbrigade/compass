@@ -21,6 +21,8 @@ import {
   AssignmentDuration,
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
+import DSCheckbox from "../design_system/checkbox/Checkbox";
+import { checked } from "../design_system/checkbox/Checkbox.module.css";
 
 interface SubgoalAssignmentModalProps {
   isOpen: boolean;
@@ -148,16 +150,55 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                 {myParas
                   ?.filter((para): para is ParaProps => para !== undefined)
                   .map((para) => (
-                    <ListItem key={para.user_id} sx={{ px: 0, py: 0 }}>
+                    <ListItem
+                      key={para.user_id}
+                      sx={{
+                        px: 0,
+                        py: 0,
+                      }}
+                    >
                       <ListItemButton
                         dense
+                        disableRipple //have to put this on to disable the ripple
                         onClick={handleParaToggle(para.user_id)}
+                        sx={{
+                          "&.MuiListItemButton-root:hover": {
+                            bgcolor: "transparent", //this disables the MUI hover color
+                          },
+                          "&.Mui-hover": {
+                            color: "#000",
+                          },
+                        }}
                       >
-                        <ListItemIcon sx={{ minWidth: "auto" }}>
-                          <Checkbox
+                        <ListItemIcon
+                          sx={{
+                            minWidth: "auto",
+                            color: "#20159e",
+                            "&.MuiListItemIcon-root:active": {
+                              color: "#c2bdf9",
+                            },
+                            borderRadius: "25px",
+                            "&.MuiListItemIcon-root:hover": {
+                              backgroundColor: "#f6f5ff",
+                            },
+                          }}
+                        >
+                          {/* <DSCheckbox
                             edge="start"
                             disableRipple
                             tabIndex={-1}
+                            checked={selectedParaIds.includes(para.user_id)}
+                          /> */}
+                          <Checkbox
+                            edge="start"
+                            disableRipple //there is a separate ripple this disables
+                            tabIndex={-1}
+                            sx={{
+                              color: "#20159e",
+                              "&.Mui-checked": {
+                                color: "#20159e",
+                              },
+                            }}
                             checked={selectedParaIds.includes(para.user_id)}
                           />
                         </ListItemIcon>
