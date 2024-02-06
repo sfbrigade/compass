@@ -4,8 +4,8 @@
   left: 50%;
   transform: translate(-50%);
   width: 400;
-  background-color: white;
-  border: 1px solid #000;
+  background-color: var(--grey-100);
+  border: 1px solid var(--grey-10);
   border-radius: 10px;
   box-shadow: 24;
   padding: 3rem;

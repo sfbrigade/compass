@@ -14,7 +14,7 @@
   row-gap: 8px;
   flex-wrap: wrap;
   border-radius: 4px;
-  background: #fef1f0;
+  background: var(--error-container);
   font-family: Inter;
   font-size: 16px;
   font-style: normal;
@@ -24,5 +24,5 @@
 
 .closeButton {
   border: none;
-  background: #fef1f0;
+  background: var(--error-container);
 }

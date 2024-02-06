@@ -4,7 +4,7 @@
 }
 
 .goalTab {
-  background-color: #ffffff;
+  background-color: var(--grey-100);
   width: fit-content;
   padding: 1rem;
   border-radius: 10px;
@@ -14,7 +14,7 @@
 }
 
 .goalsContainer {
-  background-color: #ffffff;
+  background-color: var(--grey-100);
   padding-bottom: 2rem;
   min-height: 50vh;
   max-height: 70vh;
