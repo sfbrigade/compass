@@ -2,7 +2,7 @@ import ParaNav from "@/components/paraNav/ParaNav";
 import React from "react";
 import $box from "@/styles/Box.module.css";
 import $taskCard from "@/components/taskCard/TaskCard.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import { format } from "date-fns";
