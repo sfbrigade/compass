@@ -1,2 +1,141 @@
-/* PLACEHOLDER FOR DESIGN SYSTEMS COMPONENT CSS
-see notes in component file */
+.default {
+  display: block;
+  background-color: var(--primary);
+  font-family: var(--quicksand);
+  border: none;
+  color: var(--on-primary);
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
+}
+
+.default:hover {
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+    0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  background-color: var(--primary-50);
+}
+
+.default:active {
+  background-color: var(--primary-60);
+}
+
+.default:disabled {
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  cursor: default;
+}
+
+.default:disabled:hover {
+  box-shadow: none;
+}
+
+.secondary {
+  display: block;
+  border: 1px solid var(--primary-50);
+  color: var(--primary-50);
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  font-size: 16px;
+  background-color: inherit;
+  font-family: var(--quicksand);
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
+}
+
+.secondary:hover {
+  background-color: var(--primary-container);
+}
+
+.about {
+  border: none;
+  background-color: transparent;
+}
+
+.about {
+  cursor: pointer;
+}
+
+.pilled {
+  border-radius: 20px;
+  padding: 5px 10px;
+}
+
+.circular {
+  aspect-ratio: 1 / 1;
+  padding: 2px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 0.5em;
+}
+
+.inactive {
+  background-color: var(--grey-70);
+  color: var(--grey-50);
+  pointer-events: none;
+}
+
+.switch {
+  color: var(--primary);
+  background-color: inherit;
+  border: 1px solid var(--grey-50);
+  padding: 10px;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+}
+
+.switchActive {
+  composes: switch;
+  background-color: var(--primary-90);
+  color: var(--primary-10);
+  border: 1px solid var(--primary-60);
+}
+
+.leftPill {
+  border-radius: 8px 0 0 8px;
+}
+
+.rightPill {
+  border-radius: 0 8px 8px 0;
+}
+
+.fixedToBottom {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+  right: 1em;
+}
+
+@media only screen and (min-width: 480px) {
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+  .fixedToBottom {
+    bottom: 3em;
+    left: 5em;
+    right: 5em;
+  }
+}
+
+/* Large Devices, Wide Screens */
+@media only screen and (min-width: 1200px) {
+}
