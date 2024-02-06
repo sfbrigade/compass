@@ -9,9 +9,9 @@
   padding: 10px;
   display: block;
   margin-bottom: 20px;
-  background-color: white;
+  background-color: var(--grey-100);
   color: rgb(131, 23, 202);
-  border: 1px solid #ffffffee;
+  border: 1px solid var(--outline);
   box-shadow: 0px 0px 1px 2px rgba(0, 0, 0, 0.2);
   font-size: 14px;
   font-family: "Lucida Grande", "Arial", sans-serif;

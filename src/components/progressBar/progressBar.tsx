@@ -12,8 +12,8 @@ const ProgressBar = ({ fillPercent }: ProgressBarProps) => {
         height: "5px",
         background:
           fillPercent === 100
-            ? "#788591"
-            : `linear-gradient(to right, #3023B8 0%, #3023B8 ${fillPercent}%, #9B93F1 ${fillPercent}%, #9B93F1 100%`,
+            ? "var(--grey-40)"
+            : `linear-gradient(to right, var(--primary-50) 0%, var(--primary-50) ${fillPercent}%, var(--primary-80) ${fillPercent}%, var(--primary-80) 100%`,
       }}
     ></div>
   );

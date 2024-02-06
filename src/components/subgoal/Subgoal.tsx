@@ -13,12 +13,12 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
   return (
-    <Box sx={{ border: "1px solid #B9C1C6" }}>
+    <Box sx={{ border: "1px solid var(--grey-60)" }}>
       <Box
         sx={{
           display: "flex-col",
           justifyContent: "space-between",
-          backgroundColor: "#fff",
+          backgroundColor: "var(--grey-100)",
           padding: "1rem",
         }}
       >
@@ -43,7 +43,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
                 flex: "flex-end",
                 width: "auto",
                 padding: "20px 10px",
-                backgroundColor: "#fff ",
+                backgroundColor: "var(--grey-100)",
                 borderWidth: "1px",
                 borderColor: "#20159E",
                 borderRadius: "8px",
