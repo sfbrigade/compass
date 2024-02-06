@@ -66,7 +66,14 @@ const Goals = ({ goal }: GoalProps) => {
         <p className={$goal.description}>{goal?.description}</p>
 
         {!expandSubgoals && (
-          <div style={{ marginTop: "8px", display: "flex", gap: "16px" }}>
+          <div
+            style={{
+              marginTop: "8px",
+              display: "flex",
+              flexWrap: "wrap",
+              gap: "16px",
+            }}
+          >
             <div className={$goal.subgoalCountBadge}>
               <div className={$goal.subgoalCount}>
                 {subgoals?.length} active benchmark
