@@ -40,12 +40,6 @@ const ViewParaPage = () => {
     }
   );
 
-  const buttonSX = {
-    "&:hover": {
-      background: "#3023B8",
-    },
-  };
-
   const editMutation = trpc.case_manager.editPara.useMutation({
     onSuccess: () => utils.para.getParaById.invalidate(),
   });
@@ -110,7 +104,7 @@ const ViewParaPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.secondary} ${$home.bold}`}
+              className={`${$button.secondary}`}
               onClick={handleEditState}
             >
               Edit
@@ -242,13 +236,13 @@ const ViewParaPage = () => {
           </p>
           <Box className={$StaffPage.archiveOptions}>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => handleArchivePara()}
             >
               Yes
             </button>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => setArchiveParaPrompt(false)}
             >
               No

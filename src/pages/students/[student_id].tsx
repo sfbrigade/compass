@@ -146,7 +146,7 @@ const ViewStudentPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.secondary} ${$home.bold}`}
+              className={`${$button.secondary}`}
               onClick={handleEditState}
             >
               Edit
@@ -158,12 +158,12 @@ const ViewStudentPage = () => {
             <Box className={$StudentPage.displayBoxGap}>
               <Button
                 onClick={handleMainState}
-                className={`${$button.secondary} ${$home.bold}`}
+                className={`${$button.secondary}`}
               >
                 Cancel
               </Button>
               <Button
-                className={`${$button.default} ${$home.bold}`}
+                className={`${$button.default}`}
                 type="submit"
                 form="edit"
               >
@@ -273,7 +273,7 @@ const ViewStudentPage = () => {
             <Box textAlign="center">
               <Button
                 onClick={() => setArchivePrompt(true)}
-                className={`${$button.default} ${$home.bold}`}
+                className={`${$button.default}`}
               >
                 Archive {student?.first_name} {student?.last_name}
               </Button>
@@ -322,13 +322,13 @@ const ViewStudentPage = () => {
           </p>
           <Box className={$StudentPage.archiveOptions}>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => handleArchiveStudent()}
             >
               Yes
             </button>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => setArchivePrompt(false)}
             >
               No
