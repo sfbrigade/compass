@@ -2,7 +2,7 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import React from "react";
 import $box from "@/styles/Box.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 
 const ReviewPage = () => {
   const router = useRouter();

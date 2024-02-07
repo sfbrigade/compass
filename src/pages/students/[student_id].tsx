@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $home from "@/styles/Home.module.css";
 import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
@@ -50,12 +50,6 @@ const ViewStudentPage = () => {
 
   const returnToStudentList = async () => {
     await router.push(`/students`);
-  };
-
-  const buttonSX = {
-    "&:hover": {
-      background: "#3023B8",
-    },
   };
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
@@ -152,16 +146,7 @@ const ViewStudentPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.default} ${$home.bold}`}
-              variant="outlined"
-              sx={{
-                color: "#5347d7",
-                borderColor: "#5347d7",
-                borderRadius: "8px",
-                fontFamily: "Quicksand",
-                fontSize: "1em",
-                textTransform: "capitalize",
-              }}
+              className={`${$button.secondary}`}
               onClick={handleEditState}
             >
               Edit
@@ -173,36 +158,14 @@ const ViewStudentPage = () => {
             <Box className={$StudentPage.displayBoxGap}>
               <Button
                 onClick={handleMainState}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.secondary}`}
               >
                 Cancel
               </Button>
               <Button
-                className={`${$button.default} ${$home.bold}`}
-                sx={[
-                  {
-                    backgroundColor: "#5347d7",
-                    borderRadius: "8px",
-                    border: "none",
-                    color: "#ffffff",
-                    fontFamily: "Quicksand",
-                    textTransform: "capitalize",
-                    fontSize: "1em",
-                  },
-                  buttonSX,
-                ]}
+                className={`${$button.default}`}
                 type="submit"
                 form="edit"
-                variant="contained"
               >
                 Save
               </Button>
@@ -251,7 +214,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder={student?.first_name || ""}
+                  defaultValue={student?.first_name || ""}
                   required
                 />
               </Container>
@@ -267,7 +230,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="lastName"
-                  placeholder={student?.last_name || ""}
+                  defaultValue={student?.last_name || ""}
                   required
                 />
               </Container>
@@ -283,7 +246,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="grade"
-                  placeholder={(student?.grade || 0).toString()}
+                  defaultValue={(student?.grade || 0).toString()}
                   required
                 />
               </Container>
@@ -299,7 +262,7 @@ const ViewStudentPage = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder={student?.email || ""}
+                  defaultValue={student?.email || ""}
                   required
                 />
               </Container>
@@ -310,16 +273,7 @@ const ViewStudentPage = () => {
             <Box textAlign="center">
               <Button
                 onClick={() => setArchivePrompt(true)}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.default}`}
               >
                 Archive {student?.first_name} {student?.last_name}
               </Button>
@@ -368,13 +322,13 @@ const ViewStudentPage = () => {
           </p>
           <Box className={$StudentPage.archiveOptions}>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => handleArchiveStudent()}
             >
               Yes
             </button>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => setArchivePrompt(false)}
             >
               No
