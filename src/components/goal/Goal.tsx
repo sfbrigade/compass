@@ -1,18 +1,15 @@
 import React from "react";
-import Subgoals from "../subgoal/Subgoal";
 import { trpc } from "@/client/lib/trpc";
 import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";
 import { useRouter } from "next/router";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import $button from "@/components/design_system/button/Button.module.css";
 
 interface GoalProps {
   goal: Goal;
 }
 
 const Goals = ({ goal }: GoalProps) => {
-  const utils = trpc.useContext();
   const router = useRouter();
 
   // per current design, subgoals not currently showing in this component.
