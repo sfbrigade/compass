@@ -1,6 +1,7 @@
 import { trpc } from "@/client/lib/trpc";
-import Goal from "@/components/goal/Goal";
-import $button from "@/styles/Button.module.css";
+import Goals from "@/components/goal/Goal";
+import $button from "@/components/design_system/button/Button.module.css";
+import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
@@ -110,7 +111,7 @@ const Iep = ({ iep_id }: IepProps) => {
                   }}
                 >
                   <Container>
-                    <Goal goal={goal} />
+                    <Goals goal={goal} />
                   </Container>
                 </ListItem>
               ))}

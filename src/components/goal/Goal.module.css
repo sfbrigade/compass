@@ -77,7 +77,3 @@
   font-weight: 500;
   line-height: 150%; /* 21px */
 }
-
-.controlCarat :hover {
-  cursor: pointer;
-}

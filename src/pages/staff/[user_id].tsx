@@ -2,7 +2,7 @@ import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import $home from "@/styles/Home.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import $StaffPage from "../../styles/StaffPage.module.css";
 import $Modal from "../../styles/Modal.module.css";
 
@@ -39,12 +39,6 @@ const ViewParaPage = () => {
       onError: () => returnToStaffList(),
     }
   );
-
-  const buttonSX = {
-    "&:hover": {
-      background: "#3023B8",
-    },
-  };
 
   const editMutation = trpc.case_manager.editPara.useMutation({
     onSuccess: () => utils.para.getParaById.invalidate(),
@@ -110,16 +104,7 @@ const ViewParaPage = () => {
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Button
-              className={`${$button.default} ${$home.bold}`}
-              variant="outlined"
-              sx={{
-                color: "#5347d7",
-                borderColor: "#5347d7",
-                borderRadius: "8px",
-                fontFamily: "Quicksand",
-                fontSize: "1em",
-                textTransform: "capitalize",
-              }}
+              className={`${$button.secondary}`}
               onClick={handleEditState}
             >
               Edit
@@ -130,36 +115,14 @@ const ViewParaPage = () => {
             <Box className={$StaffPage.displayBoxGap}>
               <Button
                 onClick={handleMainState}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.secondary}`}
               >
                 Cancel
               </Button>
               <Button
-                className={`${$button.default} ${$home.bold}`}
-                sx={[
-                  {
-                    backgroundColor: "#5347d7",
-                    borderRadius: "8px",
-                    border: "none",
-                    color: "#ffffff",
-                    fontFamily: "Quicksand",
-                    textTransform: "capitalize",
-                    fontSize: "1em",
-                  },
-                  buttonSX,
-                ]}
+                className={`${$button.default}`}
                 type="submit"
                 form="edit"
-                variant="contained"
               >
                 Save
               </Button>
@@ -203,7 +166,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="firstName"
-                  placeholder={para?.first_name || ""}
+                  defaultValue={para?.first_name || ""}
                   required
                 />
               </Container>
@@ -219,7 +182,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="lastName"
-                  placeholder={para?.last_name || ""}
+                  defaultValue={para?.last_name || ""}
                   required
                 />
               </Container>
@@ -235,7 +198,7 @@ const ViewParaPage = () => {
                 <input
                   type="text"
                   name="email"
-                  placeholder={para?.email || ""}
+                  defaultValue={para?.email || ""}
                   required
                 />
               </Container>
@@ -246,16 +209,7 @@ const ViewParaPage = () => {
             <Box textAlign="center">
               <Button
                 onClick={() => setArchiveParaPrompt(true)}
-                className={`${$button.default} ${$home.bold}`}
-                variant="outlined"
-                sx={{
-                  color: "#5347d7",
-                  borderColor: "#5347d7",
-                  borderRadius: "8px",
-                  fontFamily: "Quicksand",
-                  textTransform: "capitalize",
-                  fontSize: "1em",
-                }}
+                className={`${$button.default}`}
               >
                 Archive {para?.first_name} {para?.last_name}
               </Button>
@@ -282,13 +236,13 @@ const ViewParaPage = () => {
           </p>
           <Box className={$StaffPage.archiveOptions}>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => handleArchivePara()}
             >
               Yes
             </button>
             <button
-              className={`${$button.default} ${$home.bold}`}
+              className={`${$button.default}`}
               onClick={() => setArchiveParaPrompt(false)}
             >
               No
