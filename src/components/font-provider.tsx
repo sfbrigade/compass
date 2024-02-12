@@ -1,7 +1,11 @@
 import { Inter, Quicksand } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
-const quicksand = Quicksand({ weight: ["500", "600"], subsets: ["latin"] });
+const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const quicksand = Quicksand({
+  weight: ["500", "600"],
+  subsets: ["latin"],
+  variable: "--font-quicksand",
+});
 
 export const FontProvider = ({
   children,

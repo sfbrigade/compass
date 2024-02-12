@@ -5,6 +5,7 @@ import $home from "../styles/Home.module.css";
 import $button from "@/styles/Button.module.css";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import { Typography } from "@mui/material";
 
 const SignInPage = () => {
   const router = useRouter();
@@ -25,7 +26,7 @@ const SignInPage = () => {
           priority
         />
       </button>
-      <h1 className={$home.bold}>Welcome to Project Compass</h1>
+      <Typography variant="h3">Welcome to Project Compass</Typography>
       <div>Log in with your Google account to continue</div>
       <button
         className={$button.default}
