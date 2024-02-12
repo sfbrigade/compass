@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import $home from "../styles/Home.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";

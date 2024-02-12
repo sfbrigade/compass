@@ -1,10 +1,10 @@
-.studentInfoContainer {
+.staffInfoContainer {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 0.5rem;
 }
 
-.studentEditContainer {
+.staffEditContainer {
   background-color: #ffffff;
   border-radius: 10px;
   padding: 20px 50px;
@@ -24,7 +24,7 @@
   gap: 1rem;
 }
 
-.studentName {
+.staffName {
   font-size: xx-large;
 }
 
@@ -46,7 +46,7 @@
   padding-top: 10px;
 }
 
-.noIepContainer {
+.noStaffContainer {
   background-color: #ffffff;
   border-radius: 10px;
   margin-top: 2rem;
@@ -54,7 +54,7 @@
   max-height: 70vh;
 }
 
-.noIepBox {
+.noStaffBox {
   padding-top: 1rem;
   padding-bottom: 4rem;
   display: flex;

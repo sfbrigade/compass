@@ -3,28 +3,26 @@
   background-color: var(--primary);
   border: none;
   color: var(--on-primary);
-  padding: 10px;
-  border-radius: 4px;
+  padding: 10px 12px;
+  border-radius: 8px;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
   font-size: 16px;
-}
-.about {
-  border: none;
-  background-color: transparent;
-}
-.about {
-  cursor: pointer;
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
 }
 
 .default:hover {
   box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
+  background-color: var(--primary-50);
 }
 
 .default:active {
-  background-color: var(--primary-40);
+  background-color: var(--primary-60);
 }
 
 .default:disabled {
@@ -40,14 +38,32 @@
 .secondary {
   display: block;
   border: 1px solid var(--primary-50);
-  color: var(--primary);
-  padding: 10px;
-  border-radius: 4px;
+  color: var(--primary-50);
+  padding: 10px 12px;
+  border-radius: 8px;
   cursor: pointer;
   text-decoration: none;
   text-align: center;
   font-size: 16px;
   background-color: inherit;
+  font-family: var(--quicksand);
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
+}
+
+.secondary:hover {
+  background-color: var(--primary-container);
+}
+
+.about {
+  border: none;
+  background-color: transparent;
+}
+
+.about {
+  cursor: pointer;
 }
 
 .pilled {
