@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import List from "@mui/material/List";
 import $GoalPage from "../../styles/GoalPage.module.css";
-import $button from "@/styles/Button.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 
 enum selectionValue {
   ACTIVE,
