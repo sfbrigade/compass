@@ -33,6 +33,8 @@ interface ParaProps {
   first_name: string;
   last_name: string;
   email: string;
+  para_id: string;
+  case_manager_id: string;
   user_id: string;
   email_verified_at: Date | null;
   image_url: string | null;
