@@ -28,9 +28,11 @@ interface TaskCardProps {
 const TaskCard = ({ task }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
-    const calculatedRate = Math.floor((num / (task.trial_count ?? 1)) * 100);
+    const calculatedRate = Math.floor(
+      (num / (task.target_max_attempts ?? 1)) * 100
+    );
     return calculatedRate;
-  }, [task.completed_trials, task.trial_count]);
+  }, [task.completed_trials, task.target_max_attempts]);
 
   const getDateStyle = () => {
     //New or done should be green
@@ -56,7 +58,9 @@ const TaskCard = ({ task }: TaskCardProps) => {
           ? "NEW"
           : completionRate >= 100
           ? "DONE"
-          : `DUE: ${task.due_date ? format(task.due_date, "MM-dd-yyyy") : ""}`}
+          : `DUE: ${
+              task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
+            }`}
       </div>
       <div className={$taskCard.profile}>
         {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
