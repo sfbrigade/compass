@@ -68,6 +68,8 @@ const BenchmarkPage = () => {
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
 
+  const [trialAdded, setTrialAdded] = useState(false);
+
   const hasInputChanged =
     currentTrial?.notes !== notesInputValue ||
     currentTrial?.success !== successInputValue ||
@@ -103,6 +105,7 @@ const BenchmarkPage = () => {
   // Creates a new data collection instance (if there are none in progress)
   useEffect(() => {
     if (
+      !trialAdded &&
       !addTrialMutation.isLoading &&
       !taskIsLoading &&
       task &&
@@ -115,8 +118,9 @@ const BenchmarkPage = () => {
         unsuccess: 0,
         notes: "",
       });
+      setTrialAdded(true);
     }
-  }, [task, addTrialMutation, taskIsLoading]);
+  }, [task, addTrialMutation, taskIsLoading, trialAdded]);
 
   const handleUpdate = (updates: DataUpdate) => {
     //Can only update if we're on the most recent trial
