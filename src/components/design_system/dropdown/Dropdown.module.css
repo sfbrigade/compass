@@ -6,3 +6,15 @@ see notes in component file */
   /* padding: 10px; */
   max-width: 400px;
 }
+
+.default {
+  background-color: white;
+}
+
+.default:hover {
+  background-color: lightgreen;
+}
+
+.selected {
+  background-color: blanchedalmond;
+}
