@@ -1,20 +1,25 @@
-/* PLACEHOLDER FOR DESIGN SYSTEMS COMPONENT CSS
-see notes in component file */
-
-.myCustomClass {
-  /* background-color: lightblue; */
-  /* padding: 10px; */
-  max-width: 400px;
-}
-
 .default {
-  background-color: white;
-}
-
-.default:hover {
-  background-color: lightgreen;
+  margin: 0.5rem 2rem;
+  padding: 1rem 1rem;
 }
 
 .selected {
-  background-color: blanchedalmond;
+  background-color: var(--primary-99);
+  box-shadow: inset 6px 0px var(--primary-60);
+}
+
+.default:hover {
+  box-shadow: 0 6px 10px var(--grey-40);
+  background-color: var(--grey-100);
+}
+
+.default:active {
+  color: var(--primary-40);
+  background-color: var(--primary-99);
+}
+
+/* Defined in figma, but not sure the purpose */
+.default:focus {
+  border: 2px solid var(--primary-40);
+  border-radius: 5px;
 }
