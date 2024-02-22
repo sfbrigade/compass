@@ -7,7 +7,7 @@ import $dropdown from "../dropdown/Dropdown.module.css";
 
 // Both are strings to simplify the data processing.
 // If numbers are used, use them as strings instead.
-interface MenuitemClass {
+interface MenuItemProp {
   value: string;
   label: string;
 }
@@ -15,7 +15,7 @@ interface MenuitemClass {
 // selectedOption states are needed to define the chosen item
 // [OPTIONAL] labels, classNames, disable for customizations
 interface DropdownProps {
-  itemList: MenuitemClass[];
+  itemList: MenuItemProp[];
   selectedOption: string;
   setSelectedOption: React.Dispatch<React.SetStateAction<string>>;
   label?: string;
