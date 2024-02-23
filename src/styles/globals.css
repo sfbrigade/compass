@@ -49,7 +49,7 @@
   --grey-100: #ffffff;
 
   /* Easy Text Size Scaling */
-  --base-size: .875rem; /* equivalent to 14px */
+  --base-size: 0.875rem; /* 14px */
   --scale: 1.25;
   --h1: calc(var(--h2) * var(--scale));
   --h2: calc(var(--h3) * var(--scale));
@@ -65,7 +65,9 @@ html {
   box-sizing: border-box;
 }
 
-*, *:before, *:after {
+*,
+*:before,
+*:after {
   box-sizing: inherit;
   padding: 0;
   margin: 0;
@@ -96,27 +98,33 @@ textarea {
 }
 
 /* Scalable H elements with h classes that can be a substitute for H elements */
-h1, .h1 {
+h1,
+.h1 {
   font-size: var(--h1);
 }
 
-h2, .h2 {
+h2,
+.h2 {
   font-size: var(--h2);
 }
 
-h3, .h3 {
+h3,
+.h3 {
   font-size: var(--h3);
 }
 
-h4, .h4 {
+h4,
+.h4 {
   font-size: var(--h4);
 }
 
-h5, .h5 {
+h5,
+.h5 {
   font-size: var(--h5);
 }
 
-h6, .h6 {
+h6,
+.h6 {
   font-size: var(--h6);
 }
 
@@ -138,7 +146,7 @@ p {
 /* Small Devices, Phones & Tablet [long screen] */
 @media only screen and (min-width: 480px) {
   :root {
-    --base-size: .9375rem;
+    --base-size: 0.9375rem; /* 15px */
   }
 }
 
