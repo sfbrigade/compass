@@ -138,7 +138,7 @@ p {
 /* Small Devices, Phones & Tablet [long screen] */
 @media only screen and (min-width: 480px) {
   :root {
-    --base-size: .925rem;
+    --base-size: .9375rem;
   }
 }
 
