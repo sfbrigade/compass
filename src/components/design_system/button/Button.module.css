@@ -69,6 +69,7 @@
 .pilled {
   border-radius: 20px;
   padding: 5px 10px;
+  background-color: var(--primary-90);
 }
 
 .circular {

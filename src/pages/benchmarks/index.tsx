@@ -1,10 +1,15 @@
-import React from "react";
-import TaskCard from "@/components/taskCard/taskCard";
 import { trpc } from "@/client/lib/trpc";
+import TaskCard from "@/components/taskCard/taskCard";
 import $typo from "@/styles/Typography.module.css";
-import { Container, Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import Image from "next/image";
 import noBenchmarks from "../../public/img/no-benchmarks.png";
+import $box from "../../styles/Box.module.css";
+import $button from "../../components/design_system/button/Button.module.css";
+import Sort from "@mui/icons-material/Sort";
+import FilterAlt from "@mui/icons-material/FilterAlt";
+import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
+import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 
 function Benchmarks() {
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
@@ -33,15 +38,58 @@ function Benchmarks() {
           </Box>
         </Container>
       ) : (
-        <ul>
+        <Container sx={{ marginTop: "2rem" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <h3>Assigned Students</h3>
+            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
+              <span
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <CheckBoxOutlineBlankOutlinedIcon /> Show all benchmarks
+              </span>
+              <span
+                className={`${$button.pilled}`}
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <FilterAlt /> Filter <KeyboardArrowDown />
+              </span>
+              <span
+                className={`${$button.pilled}`}
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <Sort /> Sort <KeyboardArrowDown />
+              </span>
+            </div>
+          </Box>
           {tasks?.map((task) => {
             return (
-              <li key={task.task_id} className={$typo.noDecoration}>
+              <div key={task.task_id} className={$typo.noDecoration}>
                 <TaskCard task={task} />
-              </li>
+              </div>
             );
           })}
-        </ul>
+        </Container>
       )}
     </>
   );
