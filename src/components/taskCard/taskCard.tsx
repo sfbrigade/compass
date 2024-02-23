@@ -1,10 +1,10 @@
-import React, { useMemo } from "react";
-import $taskCard from "./TaskCard.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $box from "@/styles/Box.module.css";
-import Link from "next/link";
-import ProgressBar from "../progressBar/progressBar";
 import { differenceInWeeks, format } from "date-fns";
+import Link from "next/link";
+import { useMemo } from "react";
+import ProgressBar from "../progressBar/progressBar";
+import $taskCard from "./TaskCard.module.css";
 
 interface ParaTaskCard {
   task_id: string;
@@ -22,9 +22,10 @@ interface ParaTaskCard {
 
 interface TaskCardProps {
   task: ParaTaskCard;
+  isPara: boolean;
 }
 
-const TaskCard = ({ task }: TaskCardProps) => {
+const TaskCard = ({ task, isPara }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
     const calculatedRate = Math.floor(
@@ -49,8 +50,6 @@ const TaskCard = ({ task }: TaskCardProps) => {
       return $taskCard.dateFloater;
     }
   };
-
-  console.log("task ", task);
 
   return (
     <div className={completionRate >= 100 ? $box.inactive : $box.greyBg}>
@@ -79,12 +78,15 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </div>
 
         <div style={{ display: "flex", gap: "1rem" }}>
-          <Link
-            href={`/benchmarks/${task.task_id}`}
-            className={`${$button.secondary}`}
-          >
-            View benchmark
-          </Link>
+          {/* Para smaller screen view may click on card instead */}
+          {!isPara ? (
+            <Link
+              href={`/benchmarks/${task.task_id}`}
+              className={`${$button.secondary}`}
+            >
+              View benchmark
+            </Link>
+          ) : null}
 
           <Link
             href={`/benchmarks/${task.task_id}`}

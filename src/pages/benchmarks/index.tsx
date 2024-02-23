@@ -1,17 +1,24 @@
 import { trpc } from "@/client/lib/trpc";
 import TaskCard from "@/components/taskCard/taskCard";
 import $typo from "@/styles/Typography.module.css";
-import { Box, Container } from "@mui/material";
-import Image from "next/image";
-import noBenchmarks from "../../public/img/no-benchmarks.png";
-import $button from "../../components/design_system/button/Button.module.css";
-import Sort from "@mui/icons-material/Sort";
+import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import FilterAlt from "@mui/icons-material/FilterAlt";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
+import Sort from "@mui/icons-material/Sort";
+import { Box, Container } from "@mui/material";
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import $button from "../../components/design_system/button/Button.module.css";
+import noBenchmarks from "../../public/img/no-benchmarks.png";
 
 function Benchmarks() {
+  const [isPara, setIsPara] = useState(false);
   const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
+
+  const handleTogglePara = () => {
+    setIsPara(!isPara);
+  };
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -47,16 +54,22 @@ function Benchmarks() {
           >
             <h3>Assigned Students</h3>
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <span
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <CheckBoxOutlineBlankOutlinedIcon /> Show all benchmarks
-              </span>
+              <span>View - {isPara ? "Para" : "Case Manager"}</span>
+              <button onClick={() => handleTogglePara()}>Toggle View</button>
+
+              {/* May not be applicable to Para */}
+              {!isPara ? (
+                <span
+                  style={{
+                    display: "flex",
+                    maxWidth: "fit-content",
+                    alignItems: "center",
+                    gap: "4px",
+                  }}
+                >
+                  <CheckBoxOutlineBlankOutlinedIcon /> Show all benchmarks
+                </span>
+              ) : null}
               <span
                 className={`${$button.pilled}`}
                 style={{
@@ -86,7 +99,16 @@ function Benchmarks() {
             {tasks?.map((task) => {
               return (
                 <div key={task.task_id} className={$typo.noDecoration}>
-                  <TaskCard task={task} />
+                  {isPara ? (
+                    <Link
+                      href={`/benchmarks/${task.task_id}`}
+                      style={{ color: "black", textDecoration: "none" }}
+                    >
+                      <TaskCard task={task} isPara={isPara} />
+                    </Link>
+                  ) : (
+                    <TaskCard task={task} isPara={isPara} />
+                  )}
                 </div>
               );
             })}
