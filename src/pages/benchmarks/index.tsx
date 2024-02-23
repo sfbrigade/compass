@@ -4,7 +4,6 @@ import $typo from "@/styles/Typography.module.css";
 import { Box, Container } from "@mui/material";
 import Image from "next/image";
 import noBenchmarks from "../../public/img/no-benchmarks.png";
-import $box from "../../styles/Box.module.css";
 import $button from "../../components/design_system/button/Button.module.css";
 import Sort from "@mui/icons-material/Sort";
 import FilterAlt from "@mui/icons-material/FilterAlt";
@@ -82,13 +81,16 @@ function Benchmarks() {
               </span>
             </div>
           </Box>
-          {tasks?.map((task) => {
-            return (
-              <div key={task.task_id} className={$typo.noDecoration}>
-                <TaskCard task={task} />
-              </div>
-            );
-          })}
+
+          <Box sx={{ height: "75vh", overflowY: "scroll" }}>
+            {tasks?.map((task) => {
+              return (
+                <div key={task.task_id} className={$typo.noDecoration}>
+                  <TaskCard task={task} />
+                </div>
+              );
+            })}
+          </Box>
         </Container>
       )}
     </>

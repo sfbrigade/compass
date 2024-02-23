@@ -1,4 +1,3 @@
-// import Image from "next/image";
 import React, { useMemo } from "react";
 import $taskCard from "./TaskCard.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
@@ -51,6 +50,8 @@ const TaskCard = ({ task }: TaskCardProps) => {
     }
   };
 
+  console.log("task ", task);
+
   return (
     <div className={completionRate >= 100 ? $box.inactive : $box.greyBg}>
       <div className={getDateStyle()}>
@@ -63,15 +64,7 @@ const TaskCard = ({ task }: TaskCardProps) => {
             }`}
       </div>
       <div className={$taskCard.profile}>
-        {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
-        <div
-          className={
-            completionRate >= 100 ? $taskCard.imageDone : $taskCard.image
-          }
-        ></div>
-        <div>
-          {task.first_name} {task.last_name}
-        </div>
+        {task.first_name} {task.last_name}
       </div>
       <div>
         <p>
@@ -79,19 +72,30 @@ const TaskCard = ({ task }: TaskCardProps) => {
         </p>
       </div>
 
-      <div className={$taskCard.progressBar}>
-        {completionRate}% complete
-        <ProgressBar fillPercent={completionRate} />
-      </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <div className={$taskCard.progressBar}>
+          {completionRate}% complete
+          <ProgressBar fillPercent={completionRate} />
+        </div>
 
-      <Link
-        href={`/benchmarks/${task.task_id}`}
-        className={`${$button.default} ${
-          completionRate >= 100 ? $button.inactive : ""
-        }`}
-      >
-        Collect data
-      </Link>
+        <div style={{ display: "flex", gap: "1rem" }}>
+          <Link
+            href={`/benchmarks/${task.task_id}`}
+            className={`${$button.secondary}`}
+          >
+            View benchmark
+          </Link>
+
+          <Link
+            href={`/benchmarks/${task.task_id}`}
+            className={`${$button.default} ${
+              completionRate >= 100 ? $button.inactive : ""
+            }`}
+          >
+            Collect data
+          </Link>
+        </div>
+      </div>
     </div>
   );
 };
