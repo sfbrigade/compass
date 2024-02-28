@@ -6,21 +6,41 @@
  * 5) Push code to branch and do a PR referencing the specific issue task you took for issue # 255.
  * NOTE: If you want a css.d.ts file to be generated or updated to help with any type issues, you can run `npm run type-css`
  * */
-
 import { Checkbox } from "@mui/material";
-import { alpha, styled } from "@mui/material";
-// import React from "react";
+import { styled } from "@mui/material";
 import $checkbox from "./Checkbox.module.css";
+import { MouseEventHandler } from "react";
+
+interface CheckboxProps {
+  onClickAction: MouseEventHandler<HTMLDivElement>;
+  text?: string;
+  checked: boolean;
+  disabled?: boolean;
+}
+
+const DS_Checkbox = ({
+  onClickAction,
+  text,
+  checked,
+  disabled,
+}: CheckboxProps) => {
+  return (
+    <div onClick={onClickAction}>
+      <DSCheckbox
+        checked={checked}
+        className={$checkbox.behavior}
+        disabled={disabled || false}
+      />
+      {text}
+    </div>
+  );
+};
 
 const DSCheckbox = styled(Checkbox)(() => ({
-  color: "#20159e",
-  "&.Mui-indeterminate": {
-    backgroundColor: "#c2bdf9",
-  },
-  "&.Mui-pressed": {},
+  color: "var(--primary-40)",
   "&.Mui-checked": {
-    color: "#20159e",
+    color: "var(--primary-40)",
   },
 }));
 
-export default DSCheckbox;
+export default DS_Checkbox;
