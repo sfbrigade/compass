@@ -84,3 +84,7 @@ see notes in component file */
 .checkmark {
   color: #fff;
 }
+
+.behavior:hover {
+  background-color: var(--primary-99);
+}
