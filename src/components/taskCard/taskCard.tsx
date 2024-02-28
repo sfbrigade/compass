@@ -3,7 +3,6 @@ import $box from "@/styles/Box.module.css";
 import { differenceInWeeks, format } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
-import ProgressBar from "../progressBar/progressBar";
 import $taskCard from "./TaskCard.module.css";
 
 interface ParaTaskCard {
@@ -65,17 +64,11 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
       <div className={$taskCard.profile}>
         {task.first_name} {task.last_name}
       </div>
-      <div>
+
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <p>
           <strong>{task.category}</strong> - {task.description}
         </p>
-      </div>
-
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        <div className={$taskCard.progressBar}>
-          {completionRate}% complete
-          <ProgressBar fillPercent={completionRate} />
-        </div>
 
         <div style={{ display: "flex", gap: "1rem" }}>
           {/* Para smaller screen view may click on card instead */}
