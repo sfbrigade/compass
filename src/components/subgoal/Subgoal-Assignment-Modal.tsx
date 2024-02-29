@@ -6,10 +6,6 @@ import {
   Button,
   List,
   ListItem,
-  ListItemButton,
-  ListItemIcon,
-  Checkbox,
-  ListItemText,
   DialogContent,
   DialogActions,
 } from "@mui/material";
@@ -21,8 +17,7 @@ import {
   AssignmentDuration,
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
-import DSCheckbox from "../design_system/checkbox/Checkbox";
-import { checked } from "../design_system/checkbox/Checkbox.module.css";
+import DS_Checkbox from "../design_system/checkbox/Checkbox";
 
 interface SubgoalAssignmentModalProps {
   isOpen: boolean;
@@ -145,7 +140,6 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                 borderRadius: 1,
               }}
             >
-              {/* Design ask is to reorder the mapped staff so that the selected staff are moved to the top of the list */}
               <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
                 {myParas
                   ?.filter((para): para is ParaProps => para !== undefined)
@@ -157,55 +151,11 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                         py: 0,
                       }}
                     >
-                      <ListItemButton
-                        dense
-                        disableRipple //have to put this on to disable the ripple
-                        onClick={handleParaToggle(para.user_id)}
-                        sx={{
-                          "&.MuiListItemButton-root:hover": {
-                            bgcolor: "transparent", //this disables the MUI hover color
-                          },
-                          "&.Mui-hover": {
-                            color: "#000",
-                          },
-                        }}
-                      >
-                        <ListItemIcon
-                          sx={{
-                            minWidth: "auto",
-                            color: "#20159e",
-                            "&.MuiListItemIcon-root:active": {
-                              color: "#c2bdf9",
-                            },
-                            borderRadius: "25px",
-                            "&.MuiListItemIcon-root:hover": {
-                              backgroundColor: "#f6f5ff",
-                            },
-                          }}
-                        >
-                          {/* <DSCheckbox
-                            edge="start"
-                            disableRipple
-                            tabIndex={-1}
-                            checked={selectedParaIds.includes(para.user_id)}
-                          /> */}
-                          <Checkbox
-                            edge="start"
-                            disableRipple //there is a separate ripple this disables
-                            tabIndex={-1}
-                            sx={{
-                              color: "#20159e",
-                              "&.Mui-checked": {
-                                color: "#20159e",
-                              },
-                            }}
-                            checked={selectedParaIds.includes(para.user_id)}
-                          />
-                        </ListItemIcon>
-                        <ListItemText>
-                          {para.first_name} {para.last_name}
-                        </ListItemText>
-                      </ListItemButton>
+                      <DS_Checkbox
+                        onClickAction={handleParaToggle(para.user_id)}
+                        text={`${para.first_name} ${para.last_name}`}
+                        checked={selectedParaIds.includes(para.user_id)}
+                      />
                     </ListItem>
                   ))}
               </List>

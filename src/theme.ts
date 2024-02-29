@@ -87,4 +87,11 @@ export const theme = createTheme({
       fontFamily: "var(--font-inter), sans-serif",
     },
   },
+  components: {
+    MuiCheckbox: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
 });
