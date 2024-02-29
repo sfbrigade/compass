@@ -34,6 +34,10 @@ const MUICheckbox = styled(Checkbox)(() => ({
   "&.Mui-checked": {
     color: "var(--primary-40)",
   },
+  "&.Mui-disabled": {
+    color: "var(--grey-70)",
+    backgroundColor: "var(--grey-80)",
+  },
 }));
 
 export default DS_Checkbox;
