@@ -1,90 +1,12 @@
-/* PLACEHOLDER FOR DESIGN SYSTEMS COMPONENT CSS
-see notes in component file */
-/* .design {
+/* styling for the text in the checkbox label can go here */
+.checkboxWrapper {
   cursor: pointer;
-  position: absolute;
-  color: #20159e;
-  border-radius: 10px;
-  display: flex;
-  z-index: 1;
-  padding: 1rem 0 1rem 2rem;
-  width: 24px;
-  height: 24px;
-  top: 0;
-  left: 0;
-  border: 80px solid #20159e;
-  appearance: auto;
-  border: 1px solid red;
-  background-color: var(--grey-100);
-} */
-
-/* .design:hover {
-  background-color: #f6f5ff;
-  color: #20159e;
-}
-.design:indeterminate {
-  background-color: #f6f5ff;
-  color: #20159e;
-}
-
-.design:checked {
-  background-color: #c2bdf9;
-  color: #20159e;
-}
-
-.checkboxBackground {
-  width: 40px;
-  height: 40px;
-  border-radius: 25;
-} */
-
-.checkbox-wrapper {
-  position: relative;
-}
-
-.checkbox-wrapper input[type="checkbox"] {
-  display: none;
-}
-
-.checkbox-background {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background-color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.checkbox-background.hovered {
-  background-color: #f6f5ff;
-}
-
-.checkbox-background.clicked {
-  background-color: #c2bdf9;
-}
-
-.checkbox {
-  width: 24px;
-  height: 24px;
-  border: 1px solid #20159e;
-  border-radius: 8px;
-  background-color: #20159e;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.checkbox.checked {
-  background-color: #20159e;
-}
-
-.checkmark {
-  color: #fff;
 }
 
 .behavior:hover {
   background-color: var(--primary-99);
+}
+
+.behavior:active {
+  background-color: var(--primary-90);
 }
