@@ -5,7 +5,7 @@
 
 /* TODO: fix flex settings so navbar doesn't get squished */
 .main {
-  flex: 20;
+  flex: 10;
   position: relative;
   height: 100%;
   width: 100%;
