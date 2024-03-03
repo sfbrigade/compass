@@ -106,9 +106,6 @@ const Iep = ({ iep_id }: IepProps) => {
                   key={goal.goal_id}
                   style={{ padding: 0 }}
                   className={$Iep.listGoal}
-                  onClick={async () => {
-                    await router.push(`/goals/${goal.goal_id}`);
-                  }}
                 >
                   <Container>
                     <Goals goal={goal} />
