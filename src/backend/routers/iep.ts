@@ -223,6 +223,24 @@ export const iep = router({
       return result;
     }),
 
+  getGoal: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { goal_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("goal")
+        .where("goal_id", "=", goal_id)
+        .selectAll()
+        .executeTakeFirstOrThrow();
+
+      return result;
+    }),
+
   getSubgoals: authenticatedProcedure
     .input(
       z.object({
