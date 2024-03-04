@@ -163,6 +163,10 @@ test("getMyTasks", async (t) => {
       description: DESCRIPTION,
       instructions: INSTRUCTIONS,
       target_max_attempts: TARGET_MAX_ATTEMPTS,
+      materials: "materials",
+      target_level: 100,
+      baseline_level: 20,
+      metric_name: "words",
     })
     .returningAll()
     .executeTakeFirstOrThrow();

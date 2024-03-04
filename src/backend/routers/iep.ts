@@ -37,11 +37,23 @@ export const iep = router({
         description: z.string(),
         instructions: z.string(),
         target_max_attempts: z.number().nullable(),
+        materials: z.string(),
+        target_level: z.number().min(0).max(100),
+        baseline_level: z.number().min(0).max(100),
+        metric_name: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { goal_id, description, instructions, target_max_attempts } =
-        req.input;
+      const {
+        goal_id,
+        description,
+        instructions,
+        target_max_attempts,
+        materials,
+        target_level,
+        baseline_level,
+        metric_name,
+      } = req.input;
 
       const result = await req.ctx.db
         .insertInto("subgoal")
@@ -50,6 +62,10 @@ export const iep = router({
           description,
           instructions,
           target_max_attempts,
+          materials,
+          target_level,
+          baseline_level,
+          metric_name,
         })
         .returningAll()
         .executeTakeFirst();
@@ -219,6 +235,24 @@ export const iep = router({
         .where("iep_id", "=", iep_id)
         .selectAll()
         .execute();
+
+      return result;
+    }),
+
+  getGoal: authenticatedProcedure
+    .input(
+      z.object({
+        goal_id: z.string(),
+      })
+    )
+    .query(async (req) => {
+      const { goal_id } = req.input;
+
+      const result = await req.ctx.db
+        .selectFrom("goal")
+        .where("goal_id", "=", goal_id)
+        .selectAll()
+        .executeTakeFirstOrThrow();
 
       return result;
     }),

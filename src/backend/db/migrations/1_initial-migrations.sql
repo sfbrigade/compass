@@ -80,6 +80,10 @@ CREATE TABLE "subgoal" (
   goal_id UUID REFERENCES "goal" (goal_id),
   description TEXT NOT NULL,
   instructions TEXT NOT NULL DEFAULT '',
+  materials TEXT NOT NULL DEFAULT '',
+  target_level INTEGER NOT NULL,
+  baseline_level INTEGER NOT NULL,
+  metric_name TEXT NOT NULL,
   target_max_attempts INTEGER, --How many "questions" to administer in a single sitting
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 
