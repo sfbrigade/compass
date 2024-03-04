@@ -1558,6 +1558,30 @@ declare module 'zapatos/schema' {
       */
       instructions: string;
       /**
+      * **subgoal.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials: string;
+      /**
+      * **subgoal.target_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number;
+      /**
+      * **subgoal.baseline_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number;
+      /**
+      * **subgoal.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string;
+      /**
       * **subgoal.target_max_attempts**
       * - `int4` in database
       * - Nullable, no default
@@ -1595,6 +1619,30 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       instructions: string;
+      /**
+      * **subgoal.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials: string;
+      /**
+      * **subgoal.target_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number;
+      /**
+      * **subgoal.baseline_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number;
+      /**
+      * **subgoal.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string;
       /**
       * **subgoal.target_max_attempts**
       * - `int4` in database
@@ -1634,6 +1682,30 @@ declare module 'zapatos/schema' {
       */
       instructions?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **subgoal.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.target_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      target_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.baseline_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **subgoal.target_max_attempts**
       * - `int4` in database
       * - Nullable, no default
@@ -1672,6 +1744,30 @@ declare module 'zapatos/schema' {
       */
       instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
+      * **subgoal.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **subgoal.target_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **subgoal.baseline_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **subgoal.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
       * **subgoal.target_max_attempts**
       * - `int4` in database
       * - Nullable, no default
@@ -1709,6 +1805,30 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.target_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      target_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **subgoal.baseline_level**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **subgoal.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **subgoal.target_max_attempts**
       * - `int4` in database

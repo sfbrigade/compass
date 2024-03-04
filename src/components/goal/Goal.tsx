@@ -68,7 +68,7 @@ const Goals = ({ goal }: GoalProps) => {
                 color: "#20159E",
                 border: "none",
               }}
-              href={`${router.asPath}/create`}
+              href={`${router.asPath}/goals/${goal.goal_id}/create`}
             >
               Add benchmark
             </Link>

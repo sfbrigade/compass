@@ -11,8 +11,38 @@ const CreateBenchmarkPage = () => {
     { enabled: Boolean(router.query.goal_id) }
   );
 
+  const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget as HTMLFormElement;
+    const formData = new FormData(form);
+
+    await addSubgoalMutation.mutateAsync({
+      goal_id: router.query.goal_id as string,
+      description: formData.get("description") as string,
+      materials: formData.get("materials") as string,
+      instructions: formData.get("instructions") as string,
+      target_level: Number(formData.get("target_level") as string),
+      baseline_level: Number(formData.get("baseline_level") as string),
+      metric_name: formData.get("metric_name") as string,
+      target_max_attempts: null,
+    });
+
+    await router.push(
+      `/students/${router.query.student_id as string}/goals/${
+        router.query.goal_id as string
+      }`
+    );
+  };
+
   return (
-    <Stack component="form" bgcolor="white">
+    <Stack
+      component="form"
+      bgcolor="white"
+      borderRadius={2}
+      onSubmit={handleSubmit}
+    >
       <Box p={4}>
         {goal && (
           <GoalHeader
@@ -26,53 +56,88 @@ const CreateBenchmarkPage = () => {
 
       <Divider />
 
-      <Stack
-        direction="row"
-        divider={<Divider orientation="vertical" flexItem />}
-        spacing={4}
-      >
-        <Stack spacing={4} p={3} pr={0}>
-          <Typography variant="h4">Benchmark</Typography>
-          <TextField label="Name" helperText="Maximum 30 characters" required />
-          <TextField label="Description" multiline required minRows={3} />
+      <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
+        <Stack
+          direction="row"
+          divider={<Divider orientation="vertical" flexItem />}
+          spacing={4}
+        >
+          <Stack spacing={4} p={3} pr={0}>
+            <Typography variant="h4">Benchmark</Typography>
+            <TextField
+              label="Name"
+              helperText="Maximum 30 characters"
+              required
+              name="name"
+            />
+            <TextField
+              label="Description"
+              multiline
+              required
+              minRows={3}
+              name="description"
+            />
 
-          <Stack spacing={2}>
-            <Typography variant="h4">Metrics</Typography>
-            <Stack direction="row" spacing={4}>
-              <Stack direction="row" alignItems="center">
-                <TextField label="Target Level" required type="number" />
-                <Typography ml={1}>%</Typography>
+            <Stack spacing={2}>
+              <Typography variant="h4">Metrics</Typography>
+              <Stack direction="row" spacing={4}>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Target Level"
+                    required
+                    type="number"
+                    name="target_level"
+                  />
+                  <Typography ml={1}>%</Typography>
+                </Stack>
+                <Stack direction="row" alignItems="center">
+                  <TextField
+                    label="Baseline Level"
+                    required
+                    type="number"
+                    name="baseline_level"
+                  />
+                  <Typography ml={1}>%</Typography>
+                </Stack>
+                <TextField label="Metric to track" name="metric_name" />
               </Stack>
-              <Stack direction="row" alignItems="center">
-                <TextField label="Baseline Level" required type="number" />
-                <Typography ml={1}>%</Typography>
-              </Stack>
-              <TextField label="Metric to track" />
             </Stack>
+          </Stack>
+
+          <Stack spacing={4} p={3} pl={0} flexGrow={1}>
+            <Typography variant="h4">Details</Typography>
+            <TextField
+              multiline
+              label="Materials"
+              minRows={3}
+              required
+              name="materials"
+            />
+            <TextField
+              multiline
+              label="Instructions"
+              minRows={3}
+              required
+              name="instructions"
+            />
           </Stack>
         </Stack>
 
-        <Stack spacing={4} p={3} pl={0} flexGrow={1}>
-          <Typography variant="h4">Details</Typography>
-          <TextField multiline label="Materials" minRows={3} />
-          <TextField multiline label="Instructions" minRows={3} />
+        <Divider />
+
+        <Stack direction="row" spacing={2} p={4} justifyContent="space-between">
+          <button
+            type="reset"
+            onClick={router.back}
+            className={$button.secondary}
+          >
+            Cancel
+          </button>
+          <button type="submit" className={$button.default}>
+            Create
+          </button>
         </Stack>
-      </Stack>
-
-      <Divider />
-
-      <Stack direction="row" spacing={2} p={4} justifyContent="space-between">
-        <button
-          type="reset"
-          onClick={router.back}
-          className={$button.secondary}
-        >
-          Cancel
-        </button>
-        <button type="submit" className={$button.default}>
-          Create
-        </button>
-      </Stack>
+      </fieldset>
     </Stack>
   );
 };
