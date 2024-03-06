@@ -4,7 +4,6 @@
 
 .listNames {
   list-style-type: none;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createButton {
@@ -16,7 +15,6 @@
   border: none;
   color: var(--on-primary);
   cursor: pointer;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createInput input {
@@ -24,14 +22,13 @@
   border: 1px solid #ccc;
   margin: 2px 4px;
   padding: 4px 2px;
-  font-family: "Quicksand", sans-serif;
 }
 
 .description {
   color: var(--grey-202-a-333-c, #2a333c);
 
   /* Body 1 */
-  font-family: Inter;
+  font-family: var(--font-inter);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -71,7 +68,7 @@
   color: var(--grey-30586874, #586874);
 
   /* Body 2 */
-  font-family: Inter;
+  font-family: var(--font-inter);
   font-size: 14px;
   font-style: normal;
   font-weight: 500;

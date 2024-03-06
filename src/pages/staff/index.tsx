@@ -5,6 +5,7 @@ import PersonTable, { Para, ParaHeadCell } from "@/components/table/table";
 const Staff = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
+  const { data: me } = trpc.user.getMe.useQuery();
 
   const createPara = trpc.para.createPara.useMutation({
     onSuccess: async (data) => {
@@ -59,7 +60,7 @@ const Staff = () => {
 
   return (
     <PersonTable
-      people={paras as Para[]}
+      people={[...(me ? [me] : []), ...(paras ?? [])] as Para[]}
       onSubmit={handleSubmit}
       headCells={headCells}
       type="Staff"
