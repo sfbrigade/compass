@@ -1,11 +1,11 @@
 .goalDescriptionContainer {
-  background-color: #ffffff;
+  background-color: var(--grey-100);
   border-radius: 10px;
   padding: 0.5rem;
 }
 
 .benchmarksContainer {
-  background-color: #ffffff;
+  background-color: var(--grey-100);
   padding-bottom: 2rem;
   min-height: 50vh;
   max-height: 70vh;
@@ -25,13 +25,13 @@
   align-items: center;
   gap: 8px;
   border-radius: 8px 8px 0px 0px;
-  background: #e0e0e0;
-  color: #586874;
+  background-color: #e0e0e0;
+  color: var(--grey-30);
 }
 
 .benchmarksTabSelected {
-  background: #fff;
-  color: var(--system-primary-primary-20159-e, #20159e);
+  background-color: var(--grey-100);
+  color: var(--primary-40);
 }
 
 .benchmarksTab:hover {
@@ -47,7 +47,7 @@
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
-  background: #ffffff;
+  background-color: var(--grey-100);
   resize: none;
   border: solid 1px var(--primary);
 }
