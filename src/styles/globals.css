@@ -53,7 +53,6 @@
   /* Easy Text Size Scaling */
   --base-size: 0.875rem; /* 14px */
   --scale: 1.2;
-  --h0: 2.488rem;
   --h1: calc(var(--h2) * var(--scale));
   --h2: calc(var(--h3) * var(--scale));
   --h3: calc(var(--h4) * var(--scale));
@@ -109,11 +108,17 @@ textarea {
 
 /* Scalable H elements with h classes that can be a substitute for H elements */
 h1,
+.h1,
 h2,
+.h2,
 h3,
+.h3,
 h4,
+.h4,
 h5,
-h6 {
+.h5,
+h6,
+.h6 {
   font-weight: 600;
   font-family: Quicksand;
   line-height: 1.5;
@@ -157,11 +162,8 @@ h6,
   font-size: var(--xs);
 }
 
-p {
-  font-size: var(--base-size);
-}
-
 p,
+.body1,
 .body2,
 .caption,
 .overline,
@@ -171,10 +173,21 @@ span {
   font-weight: var(--regular);
 }
 
+p {
+  font-size: var(--base-size);
+}
+
+/* Text or similar style */
+.body1 {
+  font-size: var(--base-size);
+}
+
+/* Usage - description for filling out forms */
 .body2 {
   font-size: var(--sm);
 }
 
+/* For Images */
 .caption {
   font-size: var(--xs);
 }
