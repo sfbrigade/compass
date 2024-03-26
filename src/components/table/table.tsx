@@ -102,7 +102,7 @@ function EnhancedTableHead<Column extends HeadCell>({
               active={orderBy === headCell.id}
               direction={orderBy === headCell.id ? order : "asc"}
               onClick={createSortHandler(headCell.id)}
-              className={$table.headerLabel}
+              className={`${$table.headerLabel}`}
             >
               {headCell.label}
               {orderBy === headCell.id ? (
@@ -152,8 +152,8 @@ function EnhancedTableToolbar({
               width: "100%",
             }}
           >
-            <h2 className={$table.tableTitle}>{type}</h2>
-            <button onClick={onOpenInput} className={$button.default}>
+            <h3 className={$table.tableTitle}>{type}</h3>
+            <button onClick={onOpenInput} className={`${$button.default}`}>
               Add {type}
             </button>
           </div>

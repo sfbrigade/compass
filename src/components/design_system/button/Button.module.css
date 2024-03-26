@@ -8,7 +8,7 @@
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--base-size);
   text-transform: none;
   line-height: normal;
   letter-spacing: 0;
@@ -44,7 +44,7 @@
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--base-size);
   background-color: inherit;
   font-family: var(--quicksand);
   text-transform: none;
