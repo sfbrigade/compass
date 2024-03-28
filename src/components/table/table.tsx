@@ -206,7 +206,7 @@ function EnhancedTableInput<Column extends HeadCell>({
           <TableCell key={inputCell.id} align={"left"}>
             <TextField
               label={inputCell.label}
-              autoFocus={idx === 0}
+              // autoFocus={idx === 0}
               required
               size="small"
               inputProps={{

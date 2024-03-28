@@ -145,12 +145,20 @@ const ViewStudentPage = () => {
 
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
-            <Button
-              className={`${$button.secondary}`}
-              onClick={handleEditState}
-            >
-              Edit
-            </Button>
+            <Box className={$StudentPage.displayBoxGap}>
+              <Button
+                onClick={() => setArchivePrompt(true)}
+                className={`${$button.tertiary}`}
+              >
+                Archive
+              </Button>
+              <Button
+                className={`${$button.secondary}`}
+                onClick={handleEditState}
+              >
+                Edit profile
+              </Button>
+            </Box>
           )}
 
           {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
@@ -184,10 +192,20 @@ const ViewStudentPage = () => {
                 <p className={$StudentPage.centerText}>{student?.grade}</p>
               </div>
               <div className={$StudentPage.singleInfoArea}>
-                <p>Next IEP</p>
+                <p>IEP Start Date</p>
+                <p className={$StudentPage.centerText}>
+                  {activeIep?.start_date.toLocaleDateString() ?? "None"}
+                </p>
+              </div>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>IEP End Date</p>
                 <p className={$StudentPage.centerText}>
                   {activeIep?.end_date.toLocaleDateString() ?? "None"}
                 </p>
+              </div>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>Email ID</p>
+                <p className={$StudentPage.centerText}>{student?.email}</p>
               </div>
             </Box>
           </Box>
@@ -241,6 +259,38 @@ const ViewStudentPage = () => {
                   gridTemplateColumns: "200px 30px 300px",
                 }}
               >
+                <label>IEP Start Date</label>
+                <p>:</p>
+                <input
+                  type="date"
+                  name="start_date"
+                  defaultValue={startDate}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                }}
+              >
+                <label>IEP End Date</label>
+                <p>:</p>
+                <input
+                  type="date"
+                  name="end_date"
+                  defaultValue={endDate}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                }}
+              >
                 <label>Grade</label>
                 <p>:</p>
                 <input
@@ -268,17 +318,6 @@ const ViewStudentPage = () => {
               </Container>
             </Stack>
           </form>
-
-          <Container sx={{ marginTop: "2rem" }}>
-            <Box textAlign="center">
-              <Button
-                onClick={() => setArchivePrompt(true)}
-                className={`${$button.default}`}
-              >
-                Archive {student?.first_name} {student?.last_name}
-              </Button>
-            </Box>
-          </Container>
         </Stack>
       ) : !activeIep ? (
         <Container className={$StudentPage.noIepContainer}>
