@@ -67,7 +67,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
 
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <p>
-          <strong>{task.category}</strong> - {task.description}
+          <strong>{task?.category}</strong> - {task?.description}
         </p>
 
         <div style={{ display: "flex", gap: "1rem" }}>
