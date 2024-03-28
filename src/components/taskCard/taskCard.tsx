@@ -71,7 +71,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
         </p>
 
         <div style={{ display: "flex", gap: "1rem" }}>
-          {/* Para smaller screen view may click on card instead */}
+          {/* Para smaller screen view can click on card instead */}
           {!isPara ? (
             <Link
               href={`/benchmarks/${task.task_id}`}

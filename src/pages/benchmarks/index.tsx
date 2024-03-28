@@ -1,7 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
 import TaskCard from "@/components/taskCard/taskCard";
 import $typo from "@/styles/Typography.module.css";
-import CheckBoxOutlineBlankOutlinedIcon from "@mui/icons-material/CheckBoxOutlineBlankOutlined";
 import FilterAlt from "@mui/icons-material/FilterAlt";
 import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
 import Sort from "@mui/icons-material/Sort";
@@ -11,6 +10,7 @@ import Link from "next/link";
 import { useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
 import noBenchmarks from "../../public/img/no-benchmarks.png";
+import SearchIcon from "@mui/icons-material/Search";
 
 function Benchmarks() {
   const [isPara, setIsPara] = useState(false);
@@ -54,22 +54,30 @@ function Benchmarks() {
           >
             <h3>Assigned Students</h3>
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              <span>View - {isPara ? "Para" : "Case Manager"}</span>
-              <button onClick={() => handleTogglePara()}>Toggle View</button>
+              {/* Temporary Toggle View of CM and Para */}
+              <span>{isPara ? "Para" : "Case Manager"}</span>
+              <button
+                onClick={() => handleTogglePara()}
+                style={{ padding: "0 4px" }}
+              >
+                Toggle View
+              </button>
 
-              {/* May not be applicable to Para */}
-              {!isPara ? (
-                <span
-                  style={{
-                    display: "flex",
-                    maxWidth: "fit-content",
-                    alignItems: "center",
-                    gap: "4px",
-                  }}
-                >
-                  <CheckBoxOutlineBlankOutlinedIcon /> Show all benchmarks
-                </span>
-              ) : null}
+              {/* Search Pill Placeholder */}
+              <span
+                className={`${$button.secondary}`}
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  borderRadius: "30px",
+                  padding: "4px 20px",
+                }}
+              >
+                <SearchIcon /> Search
+              </span>
+
+              {/* Filter Pill Placeholder */}
               <span
                 className={`${$button.pilled}`}
                 style={{
@@ -81,6 +89,8 @@ function Benchmarks() {
               >
                 <FilterAlt /> Filter <KeyboardArrowDown />
               </span>
+
+              {/* Sort Pill Placeholder*/}
               <span
                 className={`${$button.pilled}`}
                 style={{
@@ -97,9 +107,13 @@ function Benchmarks() {
 
           <Box sx={{ height: "75vh", overflowY: "scroll" }}>
             {tasks?.map((task) => {
+              const completed = Math.floor(
+                Number(task.completed_trials) / Number(task.target_max_attempts)
+              );
               return (
                 <div key={task.task_id} className={$typo.noDecoration}>
-                  {isPara ? (
+                  {/* Temporary CM & Para View */}
+                  {isPara && !completed ? (
                     <Link
                       href={`/benchmarks/${task.task_id}`}
                       style={{ color: "black", textDecoration: "none" }}
