@@ -1,20 +1,15 @@
 import { trpc } from "@/client/lib/trpc";
-import $button from "@/components/design_system/button/Button.module.css";
-import $home from "@/styles/Home.module.css";
-import $input from "@/styles/Input.module.css";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
-import Stack from "@mui/material/Stack";
+import { Box, Button, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
-import $Form from "../../styles/Form.module.css";
+import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
+import $Form from "../../styles/Form.module.css";
+import $input from "@/styles/Input.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
@@ -61,6 +56,10 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getStudentById.invalidate(),
   });
 
+  const editIepMutation = trpc.student.editIep.useMutation({
+    onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
+  });
+
   const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
@@ -68,6 +67,7 @@ const ViewStudentPage = () => {
     if (!student) {
       return; // TODO: improve error handling
     }
+
     editMutation.mutate({
       student_id: student.student_id,
       first_name: data.get("firstName") as string,
@@ -75,6 +75,13 @@ const ViewStudentPage = () => {
       email: data.get("email") as string,
       grade: Number(data.get("grade")) || 0,
     });
+
+    editIepMutation.mutate({
+      student_id: student.student_id,
+      start_date: new Date(parseISO(data.get("start_date") as string)),
+      end_date: new Date(parseISO(data.get("end_date") as string)),
+    });
+
     handleMainState();
   };
 
@@ -109,6 +116,7 @@ const ViewStudentPage = () => {
     if (!student) {
       return; // TODO: improve error handling
     }
+
     iepMutation.mutate({
       student_id: student.student_id,
       start_date: new Date(parseISO(data.get("start_date") as string)),
@@ -145,32 +153,23 @@ const ViewStudentPage = () => {
 
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
-            <Button
-              className={`${$button.secondary}`}
-              onClick={handleEditState}
-            >
-              Edit
-            </Button>
-          )}
-
-          {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
-          {viewState === VIEW_STATES.EDIT && (
             <Box className={$StudentPage.displayBoxGap}>
               <Button
-                onClick={handleMainState}
-                className={`${$button.secondary}`}
+                onClick={() => setArchivePrompt(true)}
+                className={`${$button.tertiary}`}
               >
-                Cancel
+                Archive
               </Button>
               <Button
-                className={`${$button.default}`}
-                type="submit"
-                form="edit"
+                className={`${$button.secondary}`}
+                onClick={handleEditState}
               >
-                Save
+                Edit
               </Button>
             </Box>
           )}
+
+          {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
         </Box>
 
         {/* if view state is "EDIT" then show the edit version of the student page */}
@@ -184,10 +183,20 @@ const ViewStudentPage = () => {
                 <p className={$StudentPage.centerText}>{student?.grade}</p>
               </div>
               <div className={$StudentPage.singleInfoArea}>
-                <p>Next IEP</p>
+                <p>IEP Start Date</p>
+                <p className={$StudentPage.centerText}>
+                  {activeIep?.start_date.toLocaleDateString() ?? "None"}
+                </p>
+              </div>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>IEP End Date</p>
                 <p className={$StudentPage.centerText}>
                   {activeIep?.end_date.toLocaleDateString() ?? "None"}
                 </p>
+              </div>
+              <div className={$StudentPage.singleInfoArea}>
+                <p>Email ID</p>
+                <p className={$StudentPage.centerText}>{student?.email}</p>
               </div>
             </Box>
           </Box>
@@ -241,6 +250,22 @@ const ViewStudentPage = () => {
                   gridTemplateColumns: "200px 30px 300px",
                 }}
               >
+                <label>Email</label>
+                <p>:</p>
+                <input
+                  type="text"
+                  name="email"
+                  defaultValue={student?.email || ""}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                }}
+              >
                 <label>Grade</label>
                 <p>:</p>
                 <input
@@ -257,12 +282,28 @@ const ViewStudentPage = () => {
                   gridTemplateColumns: "200px 30px 300px",
                 }}
               >
-                <label>Email</label>
+                <label>IEP Start Date</label>
                 <p>:</p>
                 <input
-                  type="text"
-                  name="email"
-                  defaultValue={student?.email || ""}
+                  type="date"
+                  name="start_date"
+                  defaultValue={startDate}
+                  required
+                />
+              </Container>
+              <Container
+                className={$StudentPage.studentEditContainer}
+                sx={{
+                  display: "grid",
+                  gridTemplateColumns: "200px 30px 300px",
+                }}
+              >
+                <label>IEP End Date</label>
+                <p>:</p>
+                <input
+                  type="date"
+                  name="end_date"
+                  defaultValue={endDate}
                   required
                 />
               </Container>
@@ -270,12 +311,19 @@ const ViewStudentPage = () => {
           </form>
 
           <Container sx={{ marginTop: "2rem" }}>
-            <Box textAlign="center">
+            <Box className={$StudentPage.displayBoxButtons}>
               <Button
-                onClick={() => setArchivePrompt(true)}
-                className={`${$button.default}`}
+                onClick={handleMainState}
+                className={`${$button.secondary}`}
               >
-                Archive {student?.first_name} {student?.last_name}
+                Cancel
+              </Button>
+              <Button
+                className={`${$button.default}`}
+                type="submit"
+                form="edit"
+              >
+                Save
               </Button>
             </Box>
           </Container>

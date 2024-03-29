@@ -81,6 +81,39 @@ test("addIep and getIep", async (t) => {
   t.deepEqual(got[0].end_date, added.end_date);
 });
 
+test("editIep", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const start_date = new Date("2023-01-01");
+  const end_date = new Date("2023-12-31");
+
+  const added = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: start_date,
+    end_date: end_date,
+  });
+
+  const updated_start_date = new Date("2023-03-02");
+  const updated_end_date = new Date("2024-03-01");
+
+  const updated = await trpc.student.editIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: updated_start_date,
+    end_date: updated_end_date,
+  });
+
+  const got = await trpc.student.getIeps.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.is(got.length, 1);
+  t.is(got[0].student_id, seed.student.student_id);
+  t.deepEqual(got[0].start_date, updated.start_date);
+  t.deepEqual(got[0].end_date, updated.end_date);
+});
+
 test("getActiveStudentIep - return only one iep object", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
