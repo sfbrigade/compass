@@ -7,8 +7,36 @@ import PersonTable, {
 
 const Students = () => {
   const utils = trpc.useContext();
-  const { data: students, isLoading } =
-    trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
+
+  const isCaseManager = trpc.user.isCaseManager.useQuery().data ?? false;
+
+  let students;
+  let isLoading;
+
+  const { data: me } = trpc.user.getMe.useQuery();
+
+  if (isCaseManager) {
+    ({ data: students, isLoading } =
+      trpc.case_manager.getStudentsAndIepInfo.useQuery({
+        userId: me!.user_id,
+      }));
+  } else {
+    const result = trpc.para.getMyCaseManagers.useQuery();
+    console.log("result=", result.data);
+    // let ({ data, isLoading } = trpc.para.getMyCaseManagers.useQuery());
+    // students = [];
+    result.data?.forEach((row) => {
+      console.log(row.case_manager_id);
+      // const data = trpc.case_manager.getStudentsAndIepInfo.useQuery({userId: row.case_manager_id});
+      ({ data: students, isLoading } =
+        trpc.case_manager.getStudentsAndIepInfo.useQuery({
+          userId: row.case_manager_id,
+        }));
+      console.log(students);
+    });
+    // students.push(data.students);
+    // }
+  }
 
   const createStudent = trpc.case_manager.addStudent.useMutation({
     onSuccess: () => utils.case_manager.getMyStudentsAndIepInfo.invalidate(),
@@ -79,6 +107,7 @@ const Students = () => {
       onSubmit={handleSubmit}
       headCells={headCells}
       type="Students"
+      isReadWrite={isCaseManager}
     />
   );
 };
