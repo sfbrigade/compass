@@ -71,12 +71,24 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+        grade: z.number(),
         start_date: z.date(),
         end_date: z.date(),
       })
     )
     .mutation(async (req) => {
-      const { student_id, start_date, end_date } = req.input;
+      const {
+        student_id,
+        first_name,
+        last_name,
+        email,
+        grade,
+        start_date,
+        end_date,
+      } = req.input;
       const { userId } = req.ctx.auth;
 
       // Check if the student exists and if the case manager is assigned to the student
@@ -88,16 +100,32 @@ export const student = router({
       if (!existingStudent) {
         throw new Error("Student not found");
       }
-      const result = await req.ctx.db
-        .updateTable("iep")
-        .set({
-          start_date,
-          end_date,
-        })
-        .where("student_id", "=", student_id)
-        .returningAll()
-        .executeTakeFirstOrThrow();
-      return result;
+      const [iep, student] = await Promise.all([
+        req.ctx.db
+          .updateTable("iep")
+          .set({
+            start_date,
+            end_date,
+          })
+          .where("student_id", "=", student_id)
+          .returningAll()
+          .executeTakeFirstOrThrow(),
+
+        req.ctx.db
+          .updateTable("student")
+          .set({
+            first_name,
+            last_name,
+            email: email.toLowerCase(),
+            grade,
+          })
+          .where("student_id", "=", student_id)
+          .returningAll()
+          .executeTakeFirstOrThrow(),
+      ]);
+
+      // return {iep, student};
+      return;
     }),
 
   /**

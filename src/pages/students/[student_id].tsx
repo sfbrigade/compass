@@ -52,12 +52,16 @@ const ViewStudentPage = () => {
     { enabled: Boolean(student_id), retry: false }
   );
 
-  const editMutation = trpc.case_manager.editStudent.useMutation({
-    onSuccess: () => utils.student.getStudentById.invalidate(),
-  });
+  // const editMutation = trpc.case_manager.editStudent.useMutation({
+  //   onSuccess: () => utils.student.getStudentById.invalidate(),
+  // });
 
   const editIepMutation = trpc.student.editIep.useMutation({
-    onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
+    onSuccess: () =>
+      Promise.all([
+        utils.student.getActiveStudentIep.invalidate(),
+        utils.student.getStudentById.invalidate(),
+      ]),
   });
 
   const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
@@ -68,16 +72,20 @@ const ViewStudentPage = () => {
       return; // TODO: improve error handling
     }
 
-    editMutation.mutate({
+    // editMutation.mutate({
+    //   student_id: student.student_id,
+    //   first_name: data.get("firstName") as string,
+    //   last_name: data.get("lastName") as string,
+    //   email: data.get("email") as string,
+    //   grade: Number(data.get("grade")) || 0,
+    // });
+
+    editIepMutation.mutate({
       student_id: student.student_id,
       first_name: data.get("firstName") as string,
       last_name: data.get("lastName") as string,
       email: data.get("email") as string,
       grade: Number(data.get("grade")) || 0,
-    });
-
-    editIepMutation.mutate({
-      student_id: student.student_id,
       start_date: new Date(parseISO(data.get("start_date") as string)),
       end_date: new Date(parseISO(data.get("end_date") as string)),
     });
@@ -131,6 +139,21 @@ const ViewStudentPage = () => {
   }
 
   if (!student) return;
+
+  // else
+  if (startDate === "") {
+    const stringifiedStartDate: string =
+      activeIep?.start_date.toISOString().split("T")[0] || "";
+    console.log(stringifiedStartDate);
+    setStartDate(stringifiedStartDate);
+  }
+
+  if (endDate === "") {
+    const stringifiedEndDate: string =
+      activeIep?.end_date.toISOString().split("T")[0] || "";
+    console.log(stringifiedEndDate);
+    setEndDate(stringifiedEndDate);
+  }
 
   return (
     <Stack
@@ -287,7 +310,8 @@ const ViewStudentPage = () => {
                 <input
                   type="date"
                   name="start_date"
-                  defaultValue={startDate}
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                   required
                 />
               </Container>
@@ -303,7 +327,8 @@ const ViewStudentPage = () => {
                 <input
                   type="date"
                   name="end_date"
-                  defaultValue={endDate}
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
                   required
                 />
               </Container>
