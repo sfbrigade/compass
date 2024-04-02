@@ -24,6 +24,13 @@
   gap: 1rem;
 }
 
+.displayBoxButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+  gap: 1rem;
+}
+
 .studentName {
   font-size: xx-large;
 }
