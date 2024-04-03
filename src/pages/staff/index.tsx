@@ -7,8 +7,11 @@ const Staff = () => {
   const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
   const { data: me } = trpc.user.getMe.useQuery();
 
+  // const addPara = trpc.para.addPara.useMutation({})
+
   const createPara = trpc.para.createPara.useMutation({
     onSuccess: async (data) => {
+      console.log(data);
       await assignParaToCaseManager.mutateAsync({
         para_id: data?.user_id as string,
       });

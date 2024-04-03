@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { getTransporter } from "../lib/nodemailer";
 import { authenticatedProcedure, router } from "../trpc";
+import { createPara } from "../lib/db_helpers/para";
 
 export const para = router({
   getParaById: authenticatedProcedure
@@ -41,6 +42,17 @@ export const para = router({
     )
     .mutation(async (req) => {
       const { first_name, last_name, email } = req.input;
+
+      const para = await createPara(
+        req.input,
+        req.ctx.db,
+        req.ctx.auth.session.user?.name ?? "",
+        req.ctx.env.EMAIL,
+        email,
+        req.ctx.env
+      );
+
+      return para;
 
       let paraData = await req.ctx.db
         .selectFrom("user")
