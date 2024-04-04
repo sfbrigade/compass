@@ -65,7 +65,7 @@
   cursor: pointer;
   text-decoration: underline;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--base-size);
   background-color: inherit;
   font-family: var(--quicksand);
   text-transform: none;

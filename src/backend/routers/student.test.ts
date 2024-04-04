@@ -81,6 +81,7 @@ test("addIep and getIep", async (t) => {
   t.deepEqual(got[0].end_date, added.end_date);
 });
 
+// ! this is the edit test
 test("editIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
@@ -95,24 +96,34 @@ test("editIep", async (t) => {
     end_date: end_date,
   });
 
-  const updated_start_date = new Date("2023-03-02");
-  const updated_end_date = new Date("2024-03-01");
-
-  const updated = await trpc.student.editIep.mutate({
-    student_id: seed.student.student_id,
-    start_date: updated_start_date,
-    end_date: updated_end_date,
-  });
-
-  const got = await trpc.student.getIeps.query({
+  let got = await trpc.student.getIeps.query({
     student_id: seed.student.student_id,
   });
 
   t.is(got.length, 1);
   t.is(got[0].student_id, seed.student.student_id);
-  t.deepEqual(got[0].start_date, updated.start_date);
-  t.deepEqual(got[0].end_date, updated.end_date);
+  t.deepEqual(got[0].start_date, added.start_date);
+  t.deepEqual(got[0].end_date, added.end_date);
+
+  const updated_start_date = new Date("2023-03-02");
+  const updated_end_date = new Date("2024-03-01");
+
+  await trpc.student.editIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: updated_start_date,
+    end_date: updated_end_date,
+  });
+
+  got = await trpc.student.getIeps.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.is(got.length, 1);
+  t.is(got[0].student_id, seed.student.student_id);
+  t.notDeepEqual(got[0].start_date, start_date);
+  t.notDeepEqual(got[0].end_date, end_date);
 });
+// ! above is the edit test
 
 test("getActiveStudentIep - return only one iep object", async (t) => {
   const { trpc, seed } = await getTestServer(t, {

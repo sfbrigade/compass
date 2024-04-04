@@ -77,27 +77,28 @@ export const student = router({
     )
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
-      const { userId } = req.ctx.auth;
+      const { userId } = req.ctx.auth; // case manager id
 
       // Check if the student exists and if the case manager is assigned to the student
-      const existingStudent = req.ctx.db
-        .selectFrom("student")
-        .selectAll()
+      const existingStudent = await req.ctx.db
+        .selectFrom("student") // selects the table to search
+        .selectAll() // a selection must be made. this is "select *"
         .where("student_id", "=", student_id)
-        .where("assigned_case_manager_id", "=", userId);
-      if (!existingStudent) {
-        throw new Error("Student not found");
+        .where("assigned_case_manager_id", "=", userId)
+        .execute();
+
+      if (!existingStudent[0]) {
+        throw new Error("Student not found under this Case Manager");
       }
-      const result = await req.ctx.db
+
+      await req.ctx.db
         .updateTable("iep")
         .set({
-          start_date,
-          end_date,
+          start_date: start_date,
+          end_date: end_date,
         })
         .where("student_id", "=", student_id)
-        .returningAll()
-        .executeTakeFirstOrThrow();
-      return result;
+        .executeTakeFirstOrThrow(); // all execute() commands return something
     }),
 
   /**
