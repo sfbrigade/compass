@@ -1,5 +1,6 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { parseISO } from "date-fns";
 
 test("getStudentById", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
@@ -95,8 +96,12 @@ test("editIep", async (t) => {
     end_date: end_date,
   });
 
-  const updated_start_date = new Date("2023-03-02");
-  const updated_end_date = new Date("2024-03-01");
+  const updated_start_date = "2023-03-02";
+  const updated_end_date = "2024-03-01";
+
+  console.log({
+    inputs: { updated_start_date, updated_end_date },
+  });
 
   await trpc.student.editIep.mutate({
     student_id: seed.student.student_id,
@@ -122,8 +127,8 @@ test("editIep", async (t) => {
   t.is(editedStudent?.email, seed.student.email);
   t.is(editedStudent?.grade, seed.student.grade);
   t.is(editedIep.length, 1);
-  // t.deepEqual(editedIep[0].start_date, updated_start_date);
-  t.deepEqual(editedIep[0].end_date, updated_end_date);
+  t.deepEqual(editedIep[0].start_date, parseISO(updated_start_date));
+  t.deepEqual(editedIep[0].end_date, parseISO(updated_end_date));
 });
 
 test("getActiveStudentIep - return only one iep object", async (t) => {

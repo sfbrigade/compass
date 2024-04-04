@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
+import { parseISO } from "date-fns";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({
@@ -75,21 +76,17 @@ export const student = router({
         last_name: z.string(),
         email: z.string().email(),
         grade: z.number(),
-        start_date: z.date(),
-        end_date: z.date(),
+        start_date: z.string(),
+        end_date: z.string(),
       })
     )
     .mutation(async (req) => {
-      const {
-        student_id,
-        first_name,
-        last_name,
-        email,
-        grade,
-        start_date,
-        end_date,
-      } = req.input;
+      const { student_id, first_name, last_name, email, grade } = req.input;
+      const start_date = parseISO(req.input.start_date);
+      const end_date = parseISO(req.input.end_date);
       const { userId } = req.ctx.auth;
+
+      console.log({ start_date, end_date });
 
       // Check if the student exists and if the case manager is assigned to the student
       const existingStudent = req.ctx.db
@@ -124,6 +121,12 @@ export const student = router({
           .executeTakeFirstOrThrow(),
       ]);
 
+      console.log({
+        editedIep: {
+          start_date: iep.start_date,
+          end_date: iep.end_date,
+        },
+      });
       // return {iep, student};
       return;
     }),

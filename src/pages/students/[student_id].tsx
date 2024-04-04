@@ -86,8 +86,8 @@ const ViewStudentPage = () => {
       last_name: data.get("lastName") as string,
       email: data.get("email") as string,
       grade: Number(data.get("grade")) || 0,
-      start_date: new Date(parseISO(data.get("start_date") as string)),
-      end_date: new Date(parseISO(data.get("end_date") as string)),
+      start_date: data.get("start_date") as string,
+      end_date: data.get("end_date") as string,
     });
 
     handleMainState();
