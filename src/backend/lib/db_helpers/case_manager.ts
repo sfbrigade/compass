@@ -11,9 +11,9 @@ interface paraInputProps {
 export async function createPara(
   para: paraInputProps,
   db: KyselyDatabaseInstance,
-  caseManagerName: string,
-  fromEmail: string,
-  toEmail: string,
+  case_manager_id: string,
+  from_email: string,
+  to_email: string,
   env: Env
 ) {
   const { first_name, last_name, email } = para;
@@ -37,7 +37,13 @@ export async function createPara(
       .executeTakeFirst();
 
     // promise, will not interfere with returning paraData
-    void sendInviteEmail(fromEmail, toEmail, first_name, caseManagerName, env);
+    void sendInviteEmail(
+      from_email,
+      to_email,
+      first_name,
+      case_manager_id,
+      env
+    );
   }
 
   return paraData;
@@ -59,7 +65,15 @@ export async function sendInviteEmail(
   });
 }
 
-// todo
-// export async function assignParaToCaseManager() {
-//
-// }
+export async function assignParaToCaseManager(
+  para_id: string,
+  case_manager_id: string,
+  db: KyselyDatabaseInstance
+) {
+  await db
+    .insertInto("paras_assigned_to_case_manager")
+    .values({ case_manager_id, para_id })
+    .execute();
+
+  return;
+}
