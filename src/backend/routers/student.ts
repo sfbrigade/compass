@@ -98,7 +98,7 @@ export const student = router({
           end_date: end_date,
         })
         .where("student_id", "=", student_id)
-        .executeTakeFirstOrThrow();
+        .execute();
     }),
 
   /**

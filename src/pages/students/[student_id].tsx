@@ -28,6 +28,11 @@ const ViewStudentPage = () => {
 
   const handleEditState = () => {
     setViewState(VIEW_STATES.EDIT);
+    if (activeIep) {
+      // * Populates the Edit form with iep startDate and endDate
+      setStartDate(activeIep.start_date.toISOString().slice(0, 10));
+      setEndDate(activeIep.end_date.toISOString().slice(0, 10));
+    }
   };
 
   const handleMainState = () => {
@@ -288,6 +293,7 @@ const ViewStudentPage = () => {
                   type="date"
                   name="start_date"
                   defaultValue={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
                   required
                 />
               </Container>
@@ -304,6 +310,7 @@ const ViewStudentPage = () => {
                   type="date"
                   name="end_date"
                   defaultValue={endDate}
+                  min={startDate}
                   required
                 />
               </Container>
