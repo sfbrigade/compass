@@ -81,8 +81,8 @@ export const student = router({
 
       // Check if the student exists and if the case manager is assigned to the student
       const existingStudent = await req.ctx.db
-        .selectFrom("student") // selects the table to search
-        .selectAll() // a selection must be made. this is "select *"
+        .selectFrom("student")
+        .selectAll()
         .where("student_id", "=", student_id)
         .where("assigned_case_manager_id", "=", userId)
         .execute();
@@ -98,7 +98,7 @@ export const student = router({
           end_date: end_date,
         })
         .where("student_id", "=", student_id)
-        .executeTakeFirstOrThrow(); // all execute() commands return something
+        .executeTakeFirstOrThrow();
     }),
 
   /**
