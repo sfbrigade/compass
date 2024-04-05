@@ -90,7 +90,7 @@ test("editIep", async (t) => {
   const start_date = new Date("2023-01-01");
   const end_date = new Date("2023-12-31");
 
-  const added = await trpc.student.addIep.mutate({
+  await trpc.student.addIep.mutate({
     student_id: seed.student.student_id,
     start_date: start_date,
     end_date: end_date,
@@ -98,10 +98,6 @@ test("editIep", async (t) => {
 
   const updated_start_date = "2023-03-02";
   const updated_end_date = "2024-03-01";
-
-  console.log({
-    inputs: { updated_start_date, updated_end_date },
-  });
 
   await trpc.student.editIep.mutate({
     student_id: seed.student.student_id,
@@ -129,6 +125,114 @@ test("editIep", async (t) => {
   t.is(editedIep.length, 1);
   t.deepEqual(editedIep[0].start_date, parseISO(updated_start_date));
   t.deepEqual(editedIep[0].end_date, parseISO(updated_end_date));
+});
+
+test("editIep - include new student information", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const start_date = new Date("2023-01-01");
+  const end_date = new Date("2023-12-31");
+
+  await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: start_date,
+    end_date: end_date,
+  });
+
+  const updated_start_date = "2024-01-01";
+  const updated_end_date = "2025-12-01";
+
+  const updated_first_name = "Boo";
+  const updated_last_name = "Farr";
+  const updated_grade = 12;
+  const updated_email = "boo.far@gmail.com";
+
+  console.log({ "seed student": seed.student });
+
+  await trpc.student.editIep.mutate({
+    student_id: seed.student.student_id,
+    first_name: updated_first_name,
+    last_name: updated_last_name,
+    grade: updated_grade,
+    email: updated_email,
+    start_date: updated_start_date,
+    end_date: updated_end_date,
+  });
+
+  const editedStudent = await trpc.student.getStudentById.query({
+    student_id: seed.student.student_id,
+  });
+
+  const editedIep = await trpc.student.getIeps.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.is(editedStudent?.student_id, seed.student.student_id);
+  t.is(editedStudent?.first_name, updated_first_name);
+  t.is(editedStudent?.last_name, updated_last_name);
+  t.is(editedStudent?.email, updated_email);
+  t.is(editedStudent?.grade, updated_grade);
+  t.is(editedIep.length, 1);
+  t.deepEqual(editedIep[0].start_date, parseISO(updated_start_date));
+  t.deepEqual(editedIep[0].end_date, parseISO(updated_end_date));
+});
+
+test("editIep - throw error on nonexistent student", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const updated_start_date = "2023-03-02";
+  const updated_end_date = "2024-03-01";
+
+  await t.throwsAsync(
+    trpc.student.editIep.mutate({
+      student_id: "414c69e1-1454-49da-9de0-0681d3ef2327",
+      first_name: seed.student.first_name,
+      last_name: seed.student.last_name,
+      grade: seed.student.grade,
+      email: seed.student.email,
+      start_date: updated_start_date,
+      end_date: updated_end_date,
+    }),
+    { message: "Student not found" }
+  );
+});
+
+test("editIep - disallow editing unassigned student", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  await db
+    .insertInto("student")
+    .values({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+      grade: 6,
+      assigned_case_manager_id: "414c69e1-1454-49da-9de0-0681d3ef2327",
+    })
+    .returningAll()
+    .executeTakeFirstOrThrow();
+
+  const updated_start_date = "2023-03-02";
+  const updated_end_date = "2024-03-01";
+
+  await t.throwsAsync(
+    trpc.student.editIep.mutate({
+      student_id: "fake-student-id",
+      first_name: seed.student.first_name,
+      last_name: seed.student.last_name,
+      grade: seed.student.grade,
+      email: seed.student.email,
+      start_date: updated_start_date,
+      end_date: updated_end_date,
+    }),
+    { message: "Student not found" }
+  );
 });
 
 test("getActiveStudentIep - return only one iep object", async (t) => {

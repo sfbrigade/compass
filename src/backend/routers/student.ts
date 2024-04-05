@@ -86,15 +86,21 @@ export const student = router({
       const end_date = parseISO(req.input.end_date);
       const { userId } = req.ctx.auth;
 
-      console.log({ start_date, end_date });
-
       // Check if the student exists and if the case manager is assigned to the student
-      const existingStudent = req.ctx.db
+      const existingStudent = await req.ctx.db
         .selectFrom("student")
         .selectAll()
         .where("student_id", "=", student_id)
-        .where("assigned_case_manager_id", "=", userId);
-      if (!existingStudent) {
+        .where("assigned_case_manager_id", "=", userId)
+        .execute();
+
+      const allStudents = await req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .execute();
+      console.log(allStudents);
+      console.log({ existingStudent });
+      if (!existingStudent[0]) {
         throw new Error("Student not found");
       }
       const [iep, student] = await Promise.all([
@@ -121,12 +127,6 @@ export const student = router({
           .executeTakeFirstOrThrow(),
       ]);
 
-      console.log({
-        editedIep: {
-          start_date: iep.start_date,
-          end_date: iep.end_date,
-        },
-      });
       // return {iep, student};
       return;
     }),
