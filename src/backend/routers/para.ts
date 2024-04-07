@@ -32,6 +32,9 @@ export const para = router({
       return result;
     }),
 
+  /**
+   * Deprecated: use case_manager.addStaff instead
+   */
   createPara: authenticatedProcedure
     .input(
       z.object({

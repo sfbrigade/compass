@@ -159,6 +159,10 @@ export const case_manager = router({
     return result;
   }),
 
+  /**
+   * Handles creation of para and assignment to user, attempts to send
+   * email but does not await email success
+   */
   addStaff: authenticatedProcedure
     .input(
       z.object({
@@ -184,6 +188,9 @@ export const case_manager = router({
       );
     }),
 
+  /**
+   * Deprecated: use addStaff instead
+   */
   addPara: authenticatedProcedure
     .input(
       z.object({
