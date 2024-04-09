@@ -1,0 +1,53 @@
+.goalDescriptionContainer {
+  background-color: var(--grey-100);
+  border-radius: 10px;
+  padding: 0.5rem;
+}
+
+.benchmarksContainer {
+  background-color: var(--grey-100);
+  padding-bottom: 2rem;
+  min-height: 50vh;
+  max-height: 70vh;
+  overflow-y: auto;
+  border-radius: 0px 10px 10px 10px;
+}
+
+.benchmarksBox {
+  display: flex;
+}
+
+.benchmarksTab {
+  margin-right: 1rem;
+  display: inline-flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px 8px 0px 0px;
+  background-color: #e0e0e0;
+  color: var(--grey-30);
+}
+
+.benchmarksTabSelected {
+  background-color: var(--grey-100);
+  color: var(--primary-40);
+}
+
+.benchmarksTab:hover {
+  cursor: pointer;
+}
+
+.editGoalFormTextArea {
+  display: flex;
+  height: 128px;
+  width: 100%;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  background-color: var(--grey-100);
+  resize: none;
+  border: solid 1px var(--primary);
+}

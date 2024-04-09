@@ -20,7 +20,7 @@ Useful resources:
    ```sh
    cd <parent folder of compass>
    git clone https://github.com/sfbrigade/compass.git
-   cd project-compass
+   cd compass
    ```
 
 3. Create the local server env file:
@@ -34,7 +34,7 @@ There are two ways to run Compass locally:
 
 **Option 1: Run server locally, and supporting services in Docker**
 
-1. Install node dependencies, starting in the `project-compass` directory
+1. Install node dependencies, starting in the `compass` directory
 
    ```sh
    npm install           # install dependencies
@@ -73,7 +73,7 @@ There are two ways to run Compass locally:
     S3_USER_UPLOADS_BUCKET_NAME=<bucket-name>
     ```
 
-2. Install dependencies, starting in the `project-compass` directory
+2. Install dependencies, starting in the `compass` directory
 
    ```sh
    npm install           # install dependencies
