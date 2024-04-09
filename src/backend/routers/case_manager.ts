@@ -95,13 +95,14 @@ export const case_manager = router({
       const { userId } = req.ctx.auth; // case manager id
 
       // Check if the student exists and if the case manager is assigned to the student
-      const existingStudent = req.ctx.db
+      const existingStudent = await req.ctx.db
         .selectFrom("student")
         .selectAll()
         .where("student_id", "=", student_id)
-        .where("assigned_case_manager_id", "=", userId);
+        .where("assigned_case_manager_id", "=", userId)
+        .execute();
 
-      if (!existingStudent) {
+      if (!existingStudent[0]) {
         throw new Error("Student not found");
       }
 

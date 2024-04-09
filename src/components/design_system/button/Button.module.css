@@ -8,7 +8,7 @@
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--base-size);
   text-transform: none;
   line-height: normal;
   letter-spacing: 0;
@@ -44,7 +44,7 @@
   cursor: pointer;
   text-decoration: none;
   text-align: center;
-  font-size: 16px;
+  font-size: var(--base-size);
   background-color: inherit;
   font-family: var(--quicksand);
   text-transform: none;
@@ -54,6 +54,27 @@
 }
 
 .secondary:hover {
+  background-color: var(--primary-container);
+}
+
+.tertiary {
+  display: block;
+  color: var(--primary-50);
+  padding: 10px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-align: center;
+  font-size: var(--base-size);
+  background-color: inherit;
+  font-family: var(--quicksand);
+  text-transform: none;
+  line-height: normal;
+  letter-spacing: 0;
+  min-width: 0;
+}
+
+.tertiary:hover {
   background-color: var(--primary-container);
 }
 
