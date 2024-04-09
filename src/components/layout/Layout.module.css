@@ -30,7 +30,6 @@
   background-color: var(--grey-80);
 }
 
-
 @media only screen and (min-width: 480px) {
   .main {
     padding: 5em 3em 3em 3em;
@@ -46,7 +45,6 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
-
   .main {
     margin-left: 200px;
   }
