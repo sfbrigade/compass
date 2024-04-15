@@ -288,7 +288,7 @@ const ViewStudentPage = () => {
                         type="date"
                         name="end_date"
                         defaultValue={endDate}
-                        min={startDate}
+                        inputProps={{ min: { startDate } }}
                         required
                       />
                     </Container>
