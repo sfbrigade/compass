@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack } from "@mui/material";
+import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -13,7 +13,32 @@ import $input from "@/styles/Input.module.css";
 import $Modal from "../../styles/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
+import * as React from "react";
+import Typography from "@mui/material/Typography";
+
+const style = {
+  position: "absolute" as const,
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+
+  p: 4,
+};
+
+// uncomment and edit to apply design systems styling
+// const textfieldstyle = {
+//   border: "1px solid #20159E",
+//   width: "100%",
+// };
+
 const ViewStudentPage = () => {
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
   const [createIepModal, setCreateIepModal] = useState(false);
   const [archivePrompt, setArchivePrompt] = useState(false);
   const [startDate, setStartDate] = useState("");
@@ -27,7 +52,8 @@ const ViewStudentPage = () => {
   const VIEW_STATES = { MAIN: 0, EDIT: 1 };
 
   const handleEditState = () => {
-    setViewState(VIEW_STATES.EDIT);
+    handleOpen();
+    // setViewState(VIEW_STATES.EDIT);
     if (activeIep) {
       // * Populates the Edit form with iep startDate and endDate
       setStartDate(activeIep.start_date.toISOString().slice(0, 10));
@@ -36,6 +62,7 @@ const ViewStudentPage = () => {
   };
 
   const handleMainState = () => {
+    handleClose();
     setViewState(VIEW_STATES.MAIN);
   };
 
@@ -147,6 +174,149 @@ const ViewStudentPage = () => {
         width: "100%",
       }}
     >
+      <div>
+        <Modal
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style}>
+            <Typography id="modal-modal-title" variant="h6" component="h2">
+              Editing Student Profile
+            </Typography>
+            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+              <Stack gap={0.5} sx={{ width: "100%" }}>
+                <form
+                  className={$StudentPage.editForm}
+                  id="edit"
+                  onSubmit={handleEditStudent}
+                >
+                  <Stack gap={0.5}>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // note that this styling changes to correct design systems color, but causes label text to be blocked by border
+                        // sx={textfieldstyle}
+                        label="First Name"
+                        type="text"
+                        name="firstName"
+                        defaultValue={student?.first_name || ""}
+                        required
+                      />
+                    </Container>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // sx={textfieldstyle}
+                        label="Last Name"
+                        type="text"
+                        name="lastName"
+                        defaultValue={student?.last_name || ""}
+                        required
+                      />
+                    </Container>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // sx={textfieldstyle}
+                        label="Email"
+                        type="text"
+                        name="email"
+                        defaultValue={student?.email || ""}
+                        required
+                      />
+                    </Container>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // sx={textfieldstyle}
+                        label="Grade"
+                        type="number"
+                        name="grade"
+                        defaultValue={(student?.grade || 0).toString()}
+                        required
+                      />
+                    </Container>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // sx={textfieldstyle}
+                        label="IEP Start Date"
+                        type="date"
+                        name="start_date"
+                        defaultValue={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
+                        required
+                      />
+                    </Container>
+                    <Container
+                      className={$StudentPage.studentEditContainer}
+                      sx={{
+                        display: "grid",
+                        gridTemplateColumns: "200px 30px 300px",
+                      }}
+                    >
+                      <TextField
+                        // sx={textfieldstyle}
+                        label="IEP End Date"
+                        type="date"
+                        name="end_date"
+                        defaultValue={endDate}
+                        min={startDate}
+                        required
+                      />
+                    </Container>
+                  </Stack>
+                </form>
+
+                <Container sx={{ marginTop: "2rem" }}>
+                  <Box>
+                    <Button
+                      onClick={handleMainState}
+                      className={`${$button.secondary}`}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className={`${$button.default}`}
+                      type="submit"
+                      form="edit"
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </Container>
+              </Stack>
+            </Typography>
+          </Box>
+        </Modal>
+      </div>
       <Container
         className={$StudentPage.studentInfoContainer}
         sx={{ marginBottom: "1rem" }}
@@ -156,7 +326,6 @@ const ViewStudentPage = () => {
             {student?.first_name} {student?.last_name}
           </p>
 
-          {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
             <Box className={$StudentPage.displayBoxGap}>
               <Button
@@ -173,12 +342,7 @@ const ViewStudentPage = () => {
               </Button>
             </Box>
           )}
-
-          {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
         </Box>
-
-        {/* if view state is "EDIT" then show the edit version of the student page */}
-        {viewState === VIEW_STATES.EDIT && <h3>Edit Profile</h3>}
 
         {viewState === VIEW_STATES.MAIN && (
           <Box className={$StudentPage.displayBox}>
@@ -206,158 +370,30 @@ const ViewStudentPage = () => {
             </Box>
           </Box>
         )}
-      </Container>
-
-      {viewState === VIEW_STATES.EDIT ? (
-        <Stack gap={0.5} sx={{ width: "100%" }}>
-          <form
-            className={$StudentPage.editForm}
-            id="edit"
-            onSubmit={handleEditStudent}
-          >
-            <Stack gap={0.5}>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>First Name</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="firstName"
-                  defaultValue={student?.first_name || ""}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>Last Name</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="lastName"
-                  defaultValue={student?.last_name || ""}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>Email</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="email"
-                  defaultValue={student?.email || ""}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>Grade</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="grade"
-                  defaultValue={(student?.grade || 0).toString()}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>IEP Start Date</label>
-                <p>:</p>
-                <input
-                  type="date"
-                  name="start_date"
-                  defaultValue={startDate}
-                  onChange={(e) => setStartDate(e.target.value)}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StudentPage.studentEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>IEP End Date</label>
-                <p>:</p>
-                <input
-                  type="date"
-                  name="end_date"
-                  defaultValue={endDate}
-                  min={startDate}
-                  required
-                />
-              </Container>
-            </Stack>
-          </form>
-
-          <Container sx={{ marginTop: "2rem" }}>
-            <Box className={$StudentPage.displayBoxButtons}>
-              <Button
-                onClick={handleMainState}
-                className={`${$button.secondary}`}
-              >
-                Cancel
-              </Button>
-              <Button
+        {!activeIep ? (
+          <Container className={$StudentPage.noIepContainer}>
+            <Box className={$StudentPage.noIepBox}>
+              <Image
+                src={noGoals}
+                alt="no IEP image"
+                className={$Image.fitContent}
+              />
+              <p className={$StudentPage.textSpacing}>
+                This student does not have an active IEP. Please create one.
+              </p>
+              <button
+                onClick={() => setCreateIepModal(true)}
                 className={`${$button.default}`}
-                type="submit"
-                form="edit"
               >
-                Save
-              </Button>
+                Create IEP
+              </button>
             </Box>
           </Container>
-        </Stack>
-      ) : !activeIep ? (
-        <Container className={$StudentPage.noIepContainer}>
-          <Box className={$StudentPage.noIepBox}>
-            <Image
-              src={noGoals}
-              alt="no IEP image"
-              className={$Image.fitContent}
-            />
-            <p className={$StudentPage.textSpacing}>
-              This student does not have an active IEP. Please create one.
-            </p>
-            <button
-              onClick={() => setCreateIepModal(true)}
-              className={`${$button.default}`}
-            >
-              Create IEP
-            </button>
-          </Box>
-        </Container>
-      ) : (
-        // Active IEP is in db
-        <Iep iep_id={activeIep.iep_id} />
-      )}
+        ) : (
+          // Active IEP is in db
+          <Iep iep_id={activeIep.iep_id} />
+        )}
+      </Container>
 
       {/* Archiving Student Modal appears when "Archive" button is pressed*/}
       <Modal
