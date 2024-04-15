@@ -49,7 +49,7 @@ const ViewStudentPage = () => {
   const router = useRouter();
   const { student_id } = router.query;
 
-  const VIEW_STATES = { MAIN: 0, EDIT: 1 };
+  const VIEW_STATES = { MAIN: 0 };
 
   const handleEditState = () => {
     handleOpen();
