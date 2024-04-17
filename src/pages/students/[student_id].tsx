@@ -43,7 +43,6 @@ const ViewStudentPage = () => {
   const [archivePrompt, setArchivePrompt] = useState(false);
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
-  const [viewState, setViewState] = useState(0);
 
   const utils = trpc.useContext();
   const router = useRouter();
