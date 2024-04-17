@@ -35,7 +35,7 @@ const style = {
 // };
 
 const ViewStudentPage = () => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
@@ -49,11 +49,9 @@ const ViewStudentPage = () => {
   const router = useRouter();
   const { student_id } = router.query;
 
-  const VIEW_STATES = { MAIN: 0 };
-
   const handleEditState = () => {
     handleOpen();
-    // setViewState(VIEW_STATES.EDIT);
+
     if (activeIep) {
       // * Populates the Edit form with iep startDate and endDate
       setStartDate(activeIep.start_date.toISOString().slice(0, 10));
@@ -63,7 +61,6 @@ const ViewStudentPage = () => {
 
   const handleMainState = () => {
     handleClose();
-    setViewState(VIEW_STATES.MAIN);
   };
 
   const { data: student, isLoading } = trpc.student.getStudentById.useQuery(
@@ -326,50 +323,47 @@ const ViewStudentPage = () => {
             {student?.first_name} {student?.last_name}
           </p>
 
-          {viewState === VIEW_STATES.MAIN && (
-            <Box className={$StudentPage.displayBoxGap}>
-              <Button
-                onClick={() => setArchivePrompt(true)}
-                className={`${$button.tertiary}`}
-              >
-                Archive
-              </Button>
-              <Button
-                className={`${$button.secondary}`}
-                onClick={handleEditState}
-              >
-                Edit
-              </Button>
-            </Box>
-          )}
+          <Box className={$StudentPage.displayBoxGap}>
+            <Button
+              onClick={() => setArchivePrompt(true)}
+              className={`${$button.tertiary}`}
+            >
+              Archive
+            </Button>
+            <Button
+              className={`${$button.secondary}`}
+              onClick={handleEditState}
+            >
+              Edit
+            </Button>
+          </Box>
         </Box>
 
-        {viewState === VIEW_STATES.MAIN && (
-          <Box className={$StudentPage.displayBox}>
-            <Box gap={10} className={$StudentPage.infoBox}>
-              <div className={$StudentPage.singleInfoArea}>
-                <p>Grade</p>
-                <p className={$StudentPage.centerText}>{student?.grade}</p>
-              </div>
-              <div className={$StudentPage.singleInfoArea}>
-                <p>IEP Start Date</p>
-                <p className={$StudentPage.centerText}>
-                  {activeIep?.start_date.toLocaleDateString() ?? "None"}
-                </p>
-              </div>
-              <div className={$StudentPage.singleInfoArea}>
-                <p>IEP End Date</p>
-                <p className={$StudentPage.centerText}>
-                  {activeIep?.end_date.toLocaleDateString() ?? "None"}
-                </p>
-              </div>
-              <div className={$StudentPage.singleInfoArea}>
-                <p>Email ID</p>
-                <p className={$StudentPage.centerText}>{student?.email}</p>
-              </div>
-            </Box>
+        <Box className={$StudentPage.displayBox}>
+          <Box gap={10} className={$StudentPage.infoBox}>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>Grade</p>
+              <p className={$StudentPage.centerText}>{student?.grade}</p>
+            </div>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>IEP Start Date</p>
+              <p className={$StudentPage.centerText}>
+                {activeIep?.start_date.toLocaleDateString() ?? "None"}
+              </p>
+            </div>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>IEP End Date</p>
+              <p className={$StudentPage.centerText}>
+                {activeIep?.end_date.toLocaleDateString() ?? "None"}
+              </p>
+            </div>
+            <div className={$StudentPage.singleInfoArea}>
+              <p>Email ID</p>
+              <p className={$StudentPage.centerText}>{student?.email}</p>
+            </div>
           </Box>
-        )}
+        </Box>
+
         {!activeIep ? (
           <Container className={$StudentPage.noIepContainer}>
             <Box className={$StudentPage.noIepBox}>
