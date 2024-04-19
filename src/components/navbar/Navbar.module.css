@@ -18,6 +18,9 @@
   background-color: var(--primary-40);
   display: block;
   width: 200px;
+  position: fixed;
+  z-index: 1;
+  height: 100vh;
 }
 
 .link {
