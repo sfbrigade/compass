@@ -17,6 +17,35 @@ export const case_manager = router({
     return result;
   }),
 
+  getStudentsAndIepInfo: authenticatedProcedure
+    .input(
+      z.object({
+        userId: z.string().uuid(),
+      })
+    )
+    .query(async (req) => {
+      const { userId } = req.input;
+
+      const studentData = await req.ctx.db
+        .selectFrom("iep")
+        .fullJoin("student", (join) =>
+          join.onRef("student.student_id", "=", "iep.student_id")
+        )
+        .where("assigned_case_manager_id", "=", userId)
+        .select([
+          "student.student_id as student_id",
+          "first_name",
+          "last_name",
+          "student.email",
+          "iep.iep_id as iep_id",
+          "iep.end_date as end_date",
+          "student.grade as grade",
+        ])
+        .execute();
+
+      return studentData;
+    }),
+
   getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
     const { userId } = req.ctx.auth;
 

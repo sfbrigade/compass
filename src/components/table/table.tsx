@@ -253,6 +253,7 @@ interface EnhancedTableProps<Person, Column> {
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   headCells: Column[];
   type: "Students" | "Staff";
+  isReadWrite?: boolean;
 }
 
 /**
@@ -265,7 +266,13 @@ interface EnhancedTableProps<Person, Column> {
 export default function EnhancedTable<
   Person extends StudentWithIep | Para,
   Column extends HeadCell
->({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
+>({
+  people,
+  onSubmit,
+  headCells,
+  type,
+  isReadWrite,
+}: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
 
   const [order, setOrder] = useState<Order>("asc");
@@ -369,7 +376,7 @@ export default function EnhancedTable<
               onRequestSort={handleRequestSort}
             />
             <TableBody>
-              {showInput && (
+              {showInput && isReadWrite && (
                 <EnhancedTableInput
                   inputCells={headCells}
                   type={type}

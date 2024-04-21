@@ -31,6 +31,18 @@ export const para = router({
       return result;
     }),
 
+  getMyCaseManagers: authenticatedProcedure.query(async (req) => {
+    const { userId } = req.ctx.auth;
+
+    const result = await req.ctx.db
+      .selectFrom("paras_assigned_to_case_manager")
+      .where("para_id", "=", userId)
+      .select("case_manager_id")
+      .execute();
+
+    return result;
+  }),
+
   createPara: authenticatedProcedure
     .input(
       z.object({
