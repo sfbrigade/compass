@@ -200,6 +200,31 @@ test("getMyParas", async (t) => {
   t.is(myParas.length, 1);
 });
 
+test("addStaff", async (t) => {
+  const { trpc } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const parasBeforeAdd = await trpc.case_manager.getMyParas.query();
+  t.is(parasBeforeAdd.length, 0);
+
+  const newParaData = {
+    first_name: "Staffy",
+    last_name: "Para",
+    email: "sp@gmail.com",
+  };
+
+  await trpc.case_manager.addStaff.mutate(newParaData);
+
+  const parasAfterAdd = await trpc.case_manager.getMyParas.query();
+  t.is(parasAfterAdd.length, 1);
+
+  const createdPara = parasAfterAdd[0];
+  t.is(createdPara.first_name, newParaData.first_name);
+  t.is(createdPara.last_name, newParaData.last_name);
+  t.is(createdPara.email, newParaData.email);
+});
+
 test("addPara", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",

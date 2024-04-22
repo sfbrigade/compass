@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { authenticatedProcedure, router } from "../trpc";
+import {
+  createPara,
+  assignParaToCaseManager,
+} from "../lib/db_helpers/case_manager";
 
 export const case_manager = router({
   /**
@@ -156,6 +160,38 @@ export const case_manager = router({
     return result;
   }),
 
+  /**
+   * Handles creation of para and assignment to user, attempts to send
+   * email but does not await email success
+   */
+  addStaff: authenticatedProcedure
+    .input(
+      z.object({
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+      })
+    )
+    .mutation(async (req) => {
+      const para = await createPara(
+        req.input,
+        req.ctx.db,
+        req.ctx.auth.userId,
+        req.ctx.env.EMAIL,
+        req.input.email,
+        req.ctx.env
+      );
+
+      return await assignParaToCaseManager(
+        para?.user_id || "",
+        req.ctx.auth.userId,
+        req.ctx.db
+      );
+    }),
+
+  /**
+   * Deprecated: use addStaff instead
+   */
   addPara: authenticatedProcedure
     .input(
       z.object({
@@ -163,13 +199,12 @@ export const case_manager = router({
       })
     )
     .mutation(async (req) => {
-      const { para_id } = req.input;
-      const { userId } = req.ctx.auth;
-
-      await req.ctx.db
-        .insertInto("paras_assigned_to_case_manager")
-        .values({ case_manager_id: userId, para_id })
-        .execute();
+      await assignParaToCaseManager(
+        req.input.para_id,
+        req.ctx.auth.userId,
+        req.ctx.db
+      );
+      return;
     }),
 
   editPara: authenticatedProcedure
