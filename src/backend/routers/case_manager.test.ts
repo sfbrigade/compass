@@ -201,7 +201,7 @@ test("getMyParas", async (t) => {
 });
 
 test("addStaff", async (t) => {
-  const { trpc, seed } = await getTestServer(t, {
+  const { trpc } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
