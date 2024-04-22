@@ -1,2 +1,59 @@
-/* PLACEHOLDER FOR DESIGN SYSTEMS COMPONENT CSS
-see notes in component file */
+.editForm {
+width: 100%;
+}
+   
+.editModalContent {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+width: 80%;
+height: auto;
+background-color: white;
+border: 2px solid #20159E;
+border-radius: 10px;
+box-shadow: 24;
+padding: 2rem;
+}
+
+
+.editModalContainer {
+background-color: #ffffff;
+border-radius: 10px;
+padding: 10px 20px;
+}
+
+.editModalTextfield {
+/*border: 1px solid #20159E;*/
+width: 100%;
+}
+
+
+.editModalTextfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
+border-color: black;
+}
+
+.editModalContainerButtons {
+margin-top: 1rem;
+}
+
+.editModalButtonWrap {
+display: flex;
+justify-content: space-between;
+width: 100%;
+}
+
+/* Small Devices, Tablets */
+@media only screen and (min-width: 768px) {
+    .editModalContent {
+        width: 60%;
+    }
+}
+
+/* Medium Devices, Desktops */
+@media only screen and (min-width: 992px) {
+    .editModalContent {
+        width: 40%;
+    }
+  }
+

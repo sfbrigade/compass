@@ -10,29 +10,11 @@ import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
-import $Modal from "../../styles/Modal.module.css";
+import $Modal from "@/components/design_system/modal/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid #000",
-  boxShadow: 24,
-
-  p: 4,
-};
-
-// uncomment and edit to apply design systems styling
-// const textfieldstyle = {
-//   border: "1px solid #20159E",
-//   width: "100%",
-// };
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -177,28 +159,29 @@ const ViewStudentPage = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
+          <Box className={$Modal.editModalContent}>
             <Typography id="modal-modal-title" variant="h6" component="h2">
-              Editing Student Profile
+              Editing {student?.first_name || "Student"}&apos;s Profile
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               <Stack gap={0.5} sx={{ width: "100%" }}>
                 <form
-                  className={$StudentPage.editForm}
+                  className={$Modal.editForm}
                   id="edit"
                   onSubmit={handleEditStudent}
                 >
                   <Stack gap={0.5}>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // note that this styling changes to correct design systems color, but causes label text to be blocked by border
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            color: "#000",
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                        }}
                         label="First Name"
                         type="text"
                         name="firstName"
@@ -206,15 +189,14 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        }}
                         label="Last Name"
                         type="text"
                         name="lastName"
@@ -222,15 +204,14 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        }}
                         label="Email"
                         type="text"
                         name="email"
@@ -238,15 +219,14 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        }}
                         label="Grade"
                         type="number"
                         name="grade"
@@ -254,15 +234,14 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        }}
                         label="IEP Start Date"
                         type="date"
                         name="start_date"
@@ -271,15 +250,14 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        }}
                         label="IEP End Date"
                         type="date"
                         name="end_date"
@@ -291,8 +269,8 @@ const ViewStudentPage = () => {
                   </Stack>
                 </form>
 
-                <Container sx={{ marginTop: "2rem" }}>
-                  <Box>
+                <Container className={$Modal.editModalContainerButtons}>
+                  <Box className={$Modal.editModalButtonWrap}>
                     <Button
                       onClick={handleMainState}
                       className={`${$button.secondary}`}
