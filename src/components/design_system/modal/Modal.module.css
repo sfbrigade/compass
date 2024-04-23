@@ -10,10 +10,19 @@ transform: translate(-50%, -50%);
 width: 80%;
 height: auto;
 background-color: white;
-border: 2px solid #20159E;
+border: 1px solid var(--on-primary-container);
 border-radius: 10px;
 box-shadow: 24;
 padding: 2rem;
+color: var(--on-primary-container);
+font-family: var(--inter);
+}
+
+.editModalHeader {
+    font-family: var(--quicksand);
+    font-weight: var(--semibold);
+    font-size: var(--h4);
+    text-align: center;
 }
 
 
@@ -26,11 +35,7 @@ padding: 10px 20px;
 .editModalTextfield {
 /*border: 1px solid #20159E;*/
 width: 100%;
-}
 
-
-.editModalTextfield .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
-border-color: black;
 }
 
 .editModalContainerButtons {

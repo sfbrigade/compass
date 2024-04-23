@@ -160,9 +160,9 @@ const ViewStudentPage = () => {
           aria-describedby="modal-modal-description"
         >
           <Box className={$Modal.editModalContent}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
+            <p id="modal-modal-title" className={$Modal.editModalHeader}>
               Editing {student?.first_name || "Student"}&apos;s Profile
-            </Typography>
+            </p>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               <Stack gap={0.5} sx={{ width: "100%" }}>
                 <form
@@ -176,10 +176,22 @@ const ViewStudentPage = () => {
                         className={$Modal.editModalTextfield}
                         sx={{
                           "& .MuiOutlinedInput-root": {
-                            color: "#000",
                             "& .MuiOutlinedInput-notchedOutline": {
                               borderColor: "#20159E",
                             },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="First Name"
@@ -193,8 +205,23 @@ const ViewStudentPage = () => {
                       <TextField
                         className={$Modal.editModalTextfield}
                         sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="Last Name"
@@ -208,8 +235,23 @@ const ViewStudentPage = () => {
                       <TextField
                         className={$Modal.editModalTextfield}
                         sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="Email"
@@ -223,8 +265,23 @@ const ViewStudentPage = () => {
                       <TextField
                         className={$Modal.editModalTextfield}
                         sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="Grade"
@@ -238,8 +295,23 @@ const ViewStudentPage = () => {
                       <TextField
                         className={$Modal.editModalTextfield}
                         sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="IEP Start Date"
@@ -254,8 +326,23 @@ const ViewStudentPage = () => {
                       <TextField
                         className={$Modal.editModalTextfield}
                         sx={{
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
                           },
                         }}
                         label="IEP End Date"
