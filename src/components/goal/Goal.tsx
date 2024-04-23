@@ -4,6 +4,7 @@ import { Goal } from "@/types/global";
 import $goal from "./Goal.module.css";
 import { useRouter } from "next/router";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import Link from "next/link";
 
 interface GoalProps {
   goal: Goal;
@@ -51,7 +52,7 @@ const Goals = ({ goal }: GoalProps) => {
               gap: "8px",
             }}
           >
-            <button
+            <Link
               // standin for tertiary button style
               style={{
                 display: "inline-flex",
@@ -67,13 +68,10 @@ const Goals = ({ goal }: GoalProps) => {
                 color: "#20159E",
                 border: "none",
               }}
-              onClick={async (e) => {
-                e.stopPropagation();
-                await router.push(`/goals/${goal.goal_id}/addSubgoal`);
-              }}
+              href={`${router.asPath}/goals/${goal.goal_id}/create`}
             >
               Add benchmark
-            </button>
+            </Link>
           </div>
         </div>
       </div>
