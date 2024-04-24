@@ -107,7 +107,10 @@ const Iep = ({ iep_id }: IepProps) => {
                   style={{ padding: 0 }}
                   className={$Iep.listGoal}
                   onClick={async () => {
-                    await router.push(`${router.asPath}/goals/${goal.goal_id}`);
+                    // using temp_goals as working file to preserve previously done work
+                    await router.push(
+                      `${router.asPath}/temp_goals/${goal.goal_id}`
+                    );
                   }}
                 >
                   <Container>
