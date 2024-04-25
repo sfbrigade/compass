@@ -1,11 +1,10 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState, MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
@@ -21,7 +20,7 @@ enum selectionValue {
 interface SelectableTabProps {
   text: string;
   value: selectionValue;
-  handleSelect: (e: React.MouseEvent) => void;
+  handleSelect: (e: MouseEvent) => void;
   currentlySelected: selectionValue;
 }
 

@@ -18,6 +18,8 @@ const CreateBenchmarkPage = () => {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
+    // NOTE: property "name" is not currently included in this mutation,
+    // nor in initial-migrations.sql
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
       description: formData.get("description") as string,
