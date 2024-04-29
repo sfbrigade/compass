@@ -32,12 +32,13 @@
 }
 
 .editModalTextfield {
-  /*border: 1px solid #20159E;*/
   width: 100%;
 }
 
+
 .editModalContainerButtons {
   margin-top: 1rem;
+  padding: 10px 20px;
 }
 
 .editModalButtonWrap {
