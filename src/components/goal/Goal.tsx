@@ -64,7 +64,7 @@ const Goals = ({ goal }: GoalProps) => {
                 fontSize: "14px",
                 borderRadius: "8px",
                 backgroundColor: "white",
-                color: "#20159E",
+                color: "var(--primary-40)",
                 border: "none",
               }}
               onClick={async (e) => {

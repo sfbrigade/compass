@@ -25,10 +25,10 @@
 }
 
 .description {
-  color: var(--grey-202-a-333-c, #2a333c);
+  color: var(--grey-20);
 
   /* Body 1 */
-  font-family: var(--font-inter);
+  font-family: var(--inter);
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -61,14 +61,14 @@
   gap: 10px;
 
   border-radius: 16px;
-  background: var(--grey-80-f-4-f-6-f-7, #f4f6f7);
+  background: var(--grey-80);
 }
 
 .subgoalCount {
-  color: var(--grey-30586874, #586874);
+  color: var(--grey-30);
 
   /* Body 2 */
-  font-family: var(--font-inter);
+  font-family: var(--inter);
   font-size: 14px;
   font-style: normal;
   font-weight: 500;
