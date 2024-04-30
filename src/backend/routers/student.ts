@@ -65,6 +65,43 @@ export const student = router({
     }),
 
   /**
+   * Adds a new IEP for the given student.
+   */
+  editIep: authenticatedProcedure
+    .input(
+      z.object({
+        student_id: z.string(),
+        start_date: z.date(),
+        end_date: z.date(),
+      })
+    )
+    .mutation(async (req) => {
+      const { student_id, start_date, end_date } = req.input;
+      const { userId } = req.ctx.auth; // case manager id
+
+      // Check if the student exists and if the case manager is assigned to the student
+      const existingStudent = await req.ctx.db
+        .selectFrom("student")
+        .selectAll()
+        .where("student_id", "=", student_id)
+        .where("assigned_case_manager_id", "=", userId)
+        .execute();
+
+      if (!existingStudent[0]) {
+        throw new Error("Student not found under this Case Manager");
+      }
+
+      await req.ctx.db
+        .updateTable("iep")
+        .set({
+          start_date: start_date,
+          end_date: end_date,
+        })
+        .where("student_id", "=", student_id)
+        .execute();
+    }),
+
+  /**
    * Returns all the IEPs associated with the given student.
    */
   getIeps: authenticatedProcedure

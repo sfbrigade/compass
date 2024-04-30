@@ -5,16 +5,9 @@ import PersonTable, { Para, ParaHeadCell } from "@/components/table/table";
 const Staff = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
+  const { data: me } = trpc.user.getMe.useQuery();
 
-  const createPara = trpc.para.createPara.useMutation({
-    onSuccess: async (data) => {
-      await assignParaToCaseManager.mutateAsync({
-        para_id: data?.user_id as string,
-      });
-    },
-  });
-
-  const assignParaToCaseManager = trpc.case_manager.addPara.useMutation({
+  const addStaff = trpc.case_manager.addStaff.useMutation({
     onSuccess: () => utils.case_manager.getMyParas.invalidate(),
   });
 
@@ -23,7 +16,7 @@ const Staff = () => {
     const data = new FormData(event.currentTarget);
 
     try {
-      await createPara.mutateAsync({
+      await addStaff.mutateAsync({
         first_name: data.get("first_name") as string,
         last_name: data.get("last_name") as string,
         email: data.get("email") as string,
@@ -59,7 +52,7 @@ const Staff = () => {
 
   return (
     <PersonTable
-      people={paras as Para[]}
+      people={[...(me ? [me] : []), ...(paras ?? [])] as Para[]}
       onSubmit={handleSubmit}
       headCells={headCells}
       type="Staff"

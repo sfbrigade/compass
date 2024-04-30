@@ -24,6 +24,13 @@
   gap: 1rem;
 }
 
+.displayBoxButtons {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0;
+  gap: 1rem;
+}
+
 .studentName {
   font-size: xx-large;
 }
@@ -51,7 +58,7 @@
   border-radius: 10px;
   margin-top: 2rem;
   min-height: 50vh;
-  max-height: 70vh;
+  max-height: 100vh;
 }
 
 .noIepBox {

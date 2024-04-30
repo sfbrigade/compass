@@ -1,17 +1,17 @@
 .container {
   display: flex;
-  height: 100%;
+  height: 100vh;
 }
 
 /* TODO: fix flex settings so navbar doesn't get squished */
 .main {
   flex: 10;
   position: relative;
-  background-color: var(--background);
-  color: var(--on-background);
   height: 100%;
   width: 100%;
   padding: 5em 3em 3em 3em;
+  margin-left: 0;
+  overflow: auto;
 }
 
 .mainPurple {
@@ -25,11 +25,10 @@
   background-color: var(--grey-80);
 }
 
-/* @media only screen and (max-width: 480px) {
-  .main {
-    padding: 5em 3em 3em 3em;
-  }
-} */
+.mainGoal {
+  composes: main;
+  background-color: var(--grey-80);
+}
 
 @media only screen and (min-width: 480px) {
   .main {
@@ -46,6 +45,9 @@
 
 /* Medium Devices, Desktops */
 @media only screen and (min-width: 992px) {
+  .main {
+    margin-left: 200px;
+  }
 }
 
 /* Large Devices, Wide Screens */

@@ -1,16 +1,11 @@
-.goalBox {
-  display: flex;
-  justify-content: space-between;
-}
-
 .goalTab {
-  background-color: var(--grey-100);
-  width: fit-content;
-  padding: 1rem;
-  border-radius: 10px;
-  margin-top: 1rem;
-  margin-bottom: -1rem;
-  margin-left: -24px;
+  display: inline-flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  border-radius: 8px 8px 0px 0px;
+  background: var(--grey-100);
 }
 
 .goalsContainer {
@@ -19,7 +14,14 @@
   min-height: 50vh;
   max-height: 70vh;
   overflow-y: auto;
-  border-radius: 10px;
+  border-radius: 0px 10px 10px 10px;
+}
+
+.goalsColumn {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
 }
 
 .noGoalBox {
@@ -36,4 +38,40 @@
 
 .noGoalTextSmall {
   margin-bottom: 1rem;
+}
+
+.addGoalFormContainer {
+  border-left: 1px #d6dde1 solid;
+  padding: 2rem;
+}
+
+.addGoalFormHeading {
+  color: #021426;
+  font-size: 24px;
+  font-family: var(--font-quicksand);
+  font-weight: 600;
+  line-height: 24px;
+  word-wrap: break-word;
+  margin-bottom: 2rem;
+}
+
+.addGoalFormTextArea {
+  display: flex;
+  height: 128px;
+  width: 100%;
+  padding: 16px;
+  align-items: flex-start;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  background: #f5f5f5;
+  resize: none;
+}
+
+.listGoal {
+  border-bottom: 1px solid #d6dde1;
+}
+
+.listGoal :hover {
+  cursor: pointer;
 }

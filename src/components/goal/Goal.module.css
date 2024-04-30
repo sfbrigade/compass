@@ -4,7 +4,6 @@
 
 .listNames {
   list-style-type: none;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createButton {
@@ -16,7 +15,6 @@
   border: none;
   color: var(--on-primary);
   cursor: pointer;
-  font-family: "Quicksand", sans-serif;
 }
 
 .createInput input {
@@ -24,10 +22,55 @@
   border: 1px solid var(--outline);
   margin: 2px 4px;
   padding: 4px 2px;
-  font-family: "Quicksand", sans-serif;
 }
 
 .description {
-  /* font-family: "Quicksand", sans-serif; */
-  margin: 4px;
+  color: var(--grey-202-a-333-c, #2a333c);
+
+  /* Body 1 */
+  font-family: var(--font-inter);
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 150%; /* 24px */
+}
+
+.goal {
+  display: flex;
+  padding: 24px;
+  align-items: center;
+  gap: 40px;
+  align-self: stretch;
+  width: 100%;
+}
+
+.textContainer {
+  /* display: flex; */
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 1 0 0;
+}
+
+.subgoalCountBadge {
+  width: fit-content;
+  display: flex;
+  padding: 2px 8px;
+  align-items: center;
+  gap: 10px;
+
+  border-radius: 16px;
+  background: var(--grey-80-f-4-f-6-f-7, #f4f6f7);
+}
+
+.subgoalCount {
+  color: var(--grey-30586874, #586874);
+
+  /* Body 2 */
+  font-family: var(--font-inter);
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%; /* 21px */
 }
