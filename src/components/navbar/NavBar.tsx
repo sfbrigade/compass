@@ -1,9 +1,10 @@
 import CloseIcon from "@mui/icons-material/Close";
-import CoPresent from "@mui/icons-material/CoPresent";
+import PeopleOutline from "@mui/icons-material/PeopleOutline";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
-import PeopleOutline from "@mui/icons-material/PeopleOutline";
-import Settings from "@mui/icons-material/Settings";
+import SchoolOutlined from "@mui/icons-material/SchoolOutlined";
+import ContentPaste from "@mui/icons-material/ContentPaste";
+import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -90,9 +91,10 @@ export default function NavBar() {
   const drawer = (
     <div className={$navbar.navbarDropdown}>
       <List>
-        <NavItem href="/students" icon={<PeopleOutline />} text="Students" />
-        <NavItem href="/staff" icon={<CoPresent />} text="Staff" />
-        <NavItem href="/settings" icon={<Settings />} text="Settings" />
+        <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
+        <NavItem href="/students" icon={<SchoolOutlined />} text="Students" />
+        <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+        <NavItem href="/settings" icon={<SettingsOutlined />} text="Settings" />
         <NavItem
           icon={<Logout />}
           text="Logout"
