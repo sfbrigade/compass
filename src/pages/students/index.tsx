@@ -13,10 +13,27 @@ const Students = () => {
   const createStudent = trpc.case_manager.addStudent.useMutation({
     onSuccess: () => utils.case_manager.getMyStudentsAndIepInfo.invalidate(),
     // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
-    onError: () =>
-      alert(
-        `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
-      ),
+    onError: (errortraits) => {
+      // errortraits allows one to access validation, code, message, and path
+      // JSON.parse is utilized because errortraits.message is a string
+      const formattederrortraits = JSON.parse(errortraits.message) as {
+        validation: string;
+        code: string;
+        message: string;
+        path: string[];
+      }[];
+
+      if (formattederrortraits[0].message == "Invalid email") {
+        alert("The provided email is in the incorrect format- please edit.");
+      }
+
+      //  can later insert other error messages here, as needed
+      else {
+        alert(
+          `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
+        );
+      }
+    },
   });
 
   // create editStudent
