@@ -139,7 +139,7 @@ export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
                 my: 2,
                 maxHeight: "10rem",
                 overflow: "auto",
-                border: "1px solid #d6dde1",
+                border: "1px solid var(--grey-70)",
                 borderRadius: 1,
               }}
             >

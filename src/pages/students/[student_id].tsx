@@ -22,7 +22,7 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   bgcolor: "background.paper",
-  border: "2px solid #000",
+  border: "2px solid var(--grey-10)",
   boxShadow: 24,
 
   p: 4,
@@ -30,7 +30,7 @@ const style = {
 
 // uncomment and edit to apply design systems styling
 // const textfieldstyle = {
-//   border: "1px solid #20159E",
+//   border: "1px solid var(--grey-10)",
 //   width: "100%",
 // };
 

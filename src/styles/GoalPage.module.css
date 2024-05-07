@@ -25,7 +25,7 @@
   align-items: center;
   gap: 8px;
   border-radius: 8px 8px 0px 0px;
-  background-color: #e0e0e0;
+  background-color: var(--grey-70);
   color: var(--grey-30);
 }
 

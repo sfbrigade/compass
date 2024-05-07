@@ -238,7 +238,7 @@ function EnhancedTableInput<Column extends HeadCell>({
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: "var(--grey-90)",
   },
   "&.MuiTableRow-hover:hover": {
     backgroundColor: "lightgray",
