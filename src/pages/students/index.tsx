@@ -16,19 +16,19 @@ const Students = () => {
     onError: (errortraits) => {
       // errortraits allows one to access validation, code, message, and path
       // JSON.parse is utilized because errortraits.message is a string
-      const formattederrortraits = JSON.parse(errortraits.message) as {
-        validation: string;
-        code: string;
-        message: string;
-        path: string[];
-      }[];
+      try {
+        const formattederrortraits = JSON.parse(errortraits.message) as {
+          validation: string;
+          code: string;
+          message: string;
+          path: string[];
+        }[];
 
-      if (formattederrortraits[0].message == "Invalid email") {
-        alert("The provided email is in the incorrect format- please edit.");
-      }
-
-      //  can later insert other error messages here, as needed
-      else {
+        if (formattederrortraits[0].message == "Invalid email") {
+          alert("The provided email is in the incorrect format- please edit.");
+        }
+      } catch {
+        //  can later insert other error messages here, as needed
         alert(
           `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
         );
