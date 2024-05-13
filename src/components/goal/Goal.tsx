@@ -69,6 +69,7 @@ const Goals = ({ goal }: GoalProps) => {
                 border: "none",
               }}
               href={`${router.asPath}/goals/${goal.goal_id}/create`}
+              onClick={(e) => e.stopPropagation()}
             >
               Add benchmark
             </Link>
