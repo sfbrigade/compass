@@ -65,7 +65,7 @@ const Goals = ({ goal }: GoalProps) => {
                 fontSize: "14px",
                 borderRadius: "8px",
                 backgroundColor: "white",
-                color: "#20159E",
+                color: "var(--primary-40)",
                 border: "none",
               }}
               href={`${router.asPath}/goals/${goal.goal_id}/create`}

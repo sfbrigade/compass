@@ -1,11 +1,9 @@
-// import Image from "next/image";
-import React, { useMemo } from "react";
-import $taskCard from "./TaskCard.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $box from "@/styles/Box.module.css";
-import Link from "next/link";
-import ProgressBar from "../progressBar/progressBar";
 import { differenceInWeeks, format } from "date-fns";
+import Link from "next/link";
+import { useMemo } from "react";
+import $taskCard from "./TaskCard.module.css";
 
 interface ParaTaskCard {
   task_id: string;
@@ -23,9 +21,10 @@ interface ParaTaskCard {
 
 interface TaskCardProps {
   task: ParaTaskCard;
+  isPara: boolean;
 }
 
-const TaskCard = ({ task }: TaskCardProps) => {
+const TaskCard = ({ task, isPara }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
     const calculatedRate = Math.floor(
@@ -63,35 +62,35 @@ const TaskCard = ({ task }: TaskCardProps) => {
             }`}
       </div>
       <div className={$taskCard.profile}>
-        {/* <Image src={task.profile_img} height={50} width={50} alt="Student's profile picture."/> */}
-        <div
-          className={
-            completionRate >= 100 ? $taskCard.imageDone : $taskCard.image
-          }
-        ></div>
-        <div>
-          {task.first_name} {task.last_name}
+        {task.first_name} {task.last_name}
+      </div>
+
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <p>
+          <strong>{task?.category}</strong> - {task?.description}
+        </p>
+
+        <div style={{ display: "flex", gap: "1rem" }}>
+          {/* Para smaller screen view can click on card instead */}
+          {!isPara ? (
+            <Link
+              href={`/benchmarks/${task.task_id}`}
+              className={`${$button.secondary}`}
+            >
+              View benchmark
+            </Link>
+          ) : null}
+
+          <Link
+            href={`/benchmarks/${task.task_id}`}
+            className={`${$button.default} ${
+              completionRate >= 100 ? $button.inactive : ""
+            }`}
+          >
+            Collect data
+          </Link>
         </div>
       </div>
-      <div>
-        <p>
-          <strong>{task.category}</strong> - {task.description}
-        </p>
-      </div>
-
-      <div className={$taskCard.progressBar}>
-        {completionRate}% complete
-        <ProgressBar fillPercent={completionRate} />
-      </div>
-
-      <Link
-        href={`/benchmarks/${task.task_id}`}
-        className={`${$button.default} ${
-          completionRate >= 100 ? $button.inactive : ""
-        }`}
-      >
-        Collect data
-      </Link>
     </div>
   );
 };

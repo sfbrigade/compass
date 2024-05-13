@@ -46,7 +46,7 @@
   background-color: var(--accent);
 }
 .counterNumberDisplay-blue {
-  background-color: #1680a133;
+  background-color: var(--accent);
 }
 .counterButton-green {
   background-color: var(--success);
@@ -58,7 +58,7 @@
   background-color: var(--warning-container);
 }
 .counterNumberDisplay-yellow {
-  background-color: #ffaa4433;
+  background-color: var(--warning-state);
 }
 .counterButton-red {
   background-color: var(--error);

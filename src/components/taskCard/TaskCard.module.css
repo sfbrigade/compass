@@ -8,12 +8,12 @@
 }
 .dateFloaterRed {
   composes: dateFloater;
-  color: #b3261e;
+  color: var(--error);
 }
 
 .dateFloaterGreen {
   composes: dateFloater;
-  color: #167841;
+  color: var(--success);
 }
 
 .profile {
@@ -35,7 +35,7 @@
   border-radius: 50%;
   height: 50px;
   width: 50px;
-  background-color: cadetblue;
+  background-color: var(--primary-80);
 }
 
 .imageDone {
@@ -48,7 +48,8 @@
   color: var(--grey-30);
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
   align-items: flex-end;
   gap: 3px;
-  margin: 10px 0;
+  width: 65%;
 }
