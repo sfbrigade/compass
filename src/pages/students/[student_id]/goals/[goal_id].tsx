@@ -1,13 +1,15 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import { useState, MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import List from "@mui/material/List";
-import $GoalPage from "../../styles/GoalPage.module.css";
+import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
+import Link from "next/link";
+import { GoalHeader } from "@/components/goal-header/goal-header";
+import { Typography } from "@mui/material";
 
 enum selectionValue {
   ACTIVE,
@@ -18,7 +20,7 @@ enum selectionValue {
 interface SelectableTabProps {
   text: string;
   value: selectionValue;
-  handleSelect: (e: React.MouseEvent) => void;
+  handleSelect: (e: MouseEvent) => void;
   currentlySelected: selectionValue;
 }
 
@@ -41,7 +43,7 @@ const SelectableTab = ({
   );
 };
 
-const ViewGoalPage = () => {
+const GoalPage = () => {
   const utils = trpc.useContext();
 
   const router = useRouter();
@@ -54,9 +56,15 @@ const ViewGoalPage = () => {
     selectionValue.ACTIVE
   );
 
-  const { data: goal, isLoading } = trpc.iep.getGoal.useQuery({
-    goal_id: goal_id as string,
-  });
+  const { data: goal } = trpc.iep.getGoal.useQuery(
+    { goal_id: goal_id as string },
+    { enabled: Boolean(goal_id) }
+  );
+
+  const { data: subgoals } = trpc.iep.getSubgoals.useQuery(
+    { goal_id: goal_id as string },
+    { enabled: Boolean(goal_id) }
+  );
 
   const showEditGoal = () => {
     setEditGoal(true);
@@ -83,10 +91,6 @@ const ViewGoalPage = () => {
     setEditGoalInput("");
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <Stack
       spacing={2}
@@ -101,7 +105,14 @@ const ViewGoalPage = () => {
     >
       <Grid container justifyContent="space-between">
         <Grid item>
-          <h2>Goal</h2>
+          {goal && (
+            <GoalHeader
+              name="[placeholder] 1st Goal"
+              description={goal.description}
+              createdAt={goal.created_at}
+              goalId={goal.goal_id}
+            />
+          )}
         </Grid>
       </Grid>
 
@@ -194,12 +205,21 @@ const ViewGoalPage = () => {
         {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
           <Grid item>
-            <List>{/*  */}</List>
+            {activeTab === selectionValue.ACTIVE &&
+              subgoals?.map((subgoal) => (
+                <div key={subgoal.subgoal_id}>
+                  <Typography variant="h4">{subgoal.description}</Typography>
+                </div>
+              ))}
           </Grid>
         </Grid>
       </Stack>
+
+      <Link className={$button.default} href={`${router.asPath}/create`}>
+        Add benchmark
+      </Link>
     </Stack>
   );
 };
 
-export default ViewGoalPage;
+export default GoalPage;
