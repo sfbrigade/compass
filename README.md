@@ -99,7 +99,7 @@ To update GOOGLE_CLIENT_ID:
 - Populate the fields as below (note the name and authorized redirect URIs fields)
   ![alt text](readmeassist.jpg)
 
-* Copy the client ID field on the upper right, after creation
+* Copy the client ID field on the upper right of the modal (not shown in screenshot), after creation
 
 To update GOOGLE_CLIENT_SECRET:
 
