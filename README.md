@@ -123,14 +123,6 @@ Until Compass is deployed, the initial migration file at `src/api/db/migrations/
 
 Run `npm run db:migrate` to migrate the database. However, until Compass is deployed, you'll more likely want to run `npm run db:reset` to reset the database since we'll be making changes to the initial migration file.
 
-## Tech stack & libraries
-
-- [Winston](https://github.com/winstonjs/winston)
-- [PostgreSQL](https://www.postgresql.org/)
-- [Kysely](https://github.com/koskimas/kysely) (type-safe SQL query builder)
-- [Zapatos](https://github.com/jawj/zapatos) (type-safe Postgres helpers, mostly used to generate typings for Kysely)
-- [AVA](https://github.com/avajs/ava) (test runner)
-
 ### Troubleshooting
 
 Compass app is not running:
@@ -140,3 +132,11 @@ Make sure that Docker is running in the background
 Client id is required:
 
 Fill out the Google Client ID and Google Client Secret in .env.local
+
+## Tech stack & libraries
+
+- [Winston](https://github.com/winstonjs/winston)
+- [PostgreSQL](https://www.postgresql.org/)
+- [Kysely](https://github.com/koskimas/kysely) (type-safe SQL query builder)
+- [Zapatos](https://github.com/jawj/zapatos) (type-safe Postgres helpers, mostly used to generate typings for Kysely)
+- [AVA](https://github.com/avajs/ava) (test runner)
