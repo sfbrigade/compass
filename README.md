@@ -133,10 +133,10 @@ Run `npm run db:migrate` to migrate the database. However, until Compass is depl
 
 ### Troubleshooting
 
-# Compass app is not running
+Compass app is not running:
 
 Make sure that Docker is running in the background
 
-# Client id is required
+Client id is required:
 
 Fill out the Google Client ID and Google Client Secret in .env.local
