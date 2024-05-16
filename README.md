@@ -130,3 +130,13 @@ Run `npm run db:migrate` to migrate the database. However, until Compass is depl
 - [Kysely](https://github.com/koskimas/kysely) (type-safe SQL query builder)
 - [Zapatos](https://github.com/jawj/zapatos) (type-safe Postgres helpers, mostly used to generate typings for Kysely)
 - [AVA](https://github.com/avajs/ava) (test runner)
+
+### Troubleshooting
+
+# Compass app is not running
+
+Make sure that Docker is running in the background
+
+# Client id is required
+
+Fill out the Google Client ID and Google Client Secret in .env.local
