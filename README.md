@@ -90,7 +90,7 @@ There are two ways to run Compass locally:
 
 ### Authentication
 
-.env.local will need to be updated for sign in with Google
+.env.local file will need to be updated for sign in with Google
 
 To update GOOGLE_CLIENT_ID:
 -Navigate to Google Cloud
@@ -99,9 +99,8 @@ To update GOOGLE_CLIENT_ID:
 ![alt text](readmeassist.jpg)
 -Copy the client ID field on the upper right, after creation
 
--Copy the
 To update GOOGLE_CLIENT_SECRET:
--utilize a random character generation
+-Copy the google client secret after creation of the client id
 
 ### Running tests
 
