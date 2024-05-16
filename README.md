@@ -88,6 +88,21 @@ There are two ways to run Compass locally:
 
    Server URL: http://localhost:3000
 
+### Authentication
+
+.env.local will need to be updated for sign in with Google
+
+To update GOOGLE_CLIENT_ID:
+-Navigate to Google Cloud
+-Create a "Client ID for Web application"
+-Populate the fields as below (note the authorized redirect URIs field)
+![alt text](readmeassist.jpg)
+-Copy the client ID field on the upper right, after creation
+
+-Copy the
+To update GOOGLE_CLIENT_SECRET:
+-utilize a random character generation
+
 ### Running tests
 
 The database container does not need to be started to run tests, but Docker Desktop must be running in the background.
