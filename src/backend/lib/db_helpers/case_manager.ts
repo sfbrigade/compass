@@ -92,3 +92,66 @@ export async function assignParaToCaseManager(
 
   return;
 }
+
+type createStudentProps = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  grade: number;
+  db: KyselyDatabaseInstance;
+  userId: string;
+};
+
+/**
+ * Check for the existence of a student by email,
+ * if they do not exist, create them as a student
+ * assigned to the given case manager
+ */
+export async function createAndAssignStudent({
+  first_name,
+  last_name,
+  email,
+  grade,
+  db,
+  userId,
+}: createStudentProps) {
+  const lookahead = await db
+    .selectFrom("student")
+    .selectAll()
+    .where("email", "=", email)
+    .execute();
+
+  if (lookahead.length > 0) {
+    const student = lookahead[0];
+    if (student.assigned_case_manager_id === userId) {
+      throw new Error("This student is already assigned to you");
+    }
+    // not null
+    else if (student.assigned_case_manager_id) {
+      throw new Error(
+        "This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager."
+      );
+    }
+    // if student exists in table, but is unassigned,
+    // handle in onConflict during creation
+  }
+
+  // else, safe to create or re-assign student
+  await db
+    .insertInto("student")
+    .values({
+      first_name,
+      last_name,
+      email: email.toLowerCase(),
+      assigned_case_manager_id: userId,
+      grade,
+    })
+    .onConflict((oc) =>
+      oc
+        .column("email")
+        .doUpdateSet({ assigned_case_manager_id: userId })
+        .where("student.assigned_case_manager_id", "is", null)
+    )
+    .returningAll()
+    .executeTakeFirstOrThrow();
+}

@@ -3,6 +3,7 @@ import { authenticatedProcedure, router } from "../trpc";
 import {
   createPara,
   assignParaToCaseManager,
+  createAndAssignStudent,
 } from "../lib/db_helpers/case_manager";
 
 export const case_manager = router({
@@ -62,23 +63,29 @@ export const case_manager = router({
       const { first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth;
 
-      await req.ctx.db
-        .insertInto("student")
-        .values({
-          first_name,
-          last_name,
-          email: email.toLowerCase(),
-          assigned_case_manager_id: userId,
-          grade,
-        })
-        .onConflict((oc) =>
-          oc
-            .column("email")
-            .doUpdateSet({ assigned_case_manager_id: userId })
-            .where("student.assigned_case_manager_id", "is", null)
-        )
-        .returningAll()
-        .executeTakeFirstOrThrow();
+      await createAndAssignStudent({
+        ...req.input,
+        userId,
+        db: req.ctx.db,
+      });
+
+      // await req.ctx.db
+      //   .insertInto("student")
+      //   .values({
+      //     first_name,
+      //     last_name,
+      //     email: email.toLowerCase(),
+      //     assigned_case_manager_id: userId,
+      //     grade,
+      //   })
+      //   .onConflict((oc) =>
+      //     oc
+      //       .column("email")
+      //       .doUpdateSet({ assigned_case_manager_id: userId })
+      //       .where("student.assigned_case_manager_id", "is", null)
+      //   )
+      //   .returningAll()
+      //   .executeTakeFirstOrThrow();
     }),
 
   /**
