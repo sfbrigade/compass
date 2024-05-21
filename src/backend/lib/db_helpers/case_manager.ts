@@ -106,7 +106,7 @@ export const STUDENT_ASSIGNED_TO_YOU_ERR = new Error(
   "This student is already assigned to you"
 );
 export const STUDENT_ALREADY_ASSIGNED_ERR = new Error(
-  "This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager."
+  "This student is already assigned to another case manager."
 );
 
 /**
