@@ -60,7 +60,6 @@ export const case_manager = router({
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth;
 
       await createAndAssignStudent({
@@ -68,24 +67,6 @@ export const case_manager = router({
         userId,
         db: req.ctx.db,
       });
-
-      // await req.ctx.db
-      //   .insertInto("student")
-      //   .values({
-      //     first_name,
-      //     last_name,
-      //     email: email.toLowerCase(),
-      //     assigned_case_manager_id: userId,
-      //     grade,
-      //   })
-      //   .onConflict((oc) =>
-      //     oc
-      //       .column("email")
-      //       .doUpdateSet({ assigned_case_manager_id: userId })
-      //       .where("student.assigned_case_manager_id", "is", null)
-      //   )
-      //   .returningAll()
-      //   .executeTakeFirstOrThrow();
     }),
 
   /**

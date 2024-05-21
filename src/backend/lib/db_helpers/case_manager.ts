@@ -102,6 +102,13 @@ type createStudentProps = {
   userId: string;
 };
 
+export const STUDENT_ASSIGNED_TO_YOU_ERR = new Error(
+  "This student is already assigned to you"
+);
+export const STUDENT_ALREADY_ASSIGNED_ERR = new Error(
+  "This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager."
+);
+
 /**
  * Check for the existence of a student by email,
  * if they do not exist, create them as a student
@@ -124,13 +131,11 @@ export async function createAndAssignStudent({
   if (lookahead.length > 0) {
     const student = lookahead[0];
     if (student.assigned_case_manager_id === userId) {
-      throw new Error("This student is already assigned to you");
+      throw STUDENT_ASSIGNED_TO_YOU_ERR;
     }
     // not null
     else if (student.assigned_case_manager_id) {
-      throw new Error(
-        "This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager."
-      );
+      throw STUDENT_ALREADY_ASSIGNED_ERR;
     }
     // if student exists in table, but is unassigned,
     // handle in onConflict during creation
