@@ -122,12 +122,6 @@ test("addStudent - student exists in db but is unassigned", async (t) => {
       .executeTakeFirst()
   );
 
-  await db
-    .selectFrom("student")
-    .where("first_name", "=", seed.student.first_name)
-    .selectAll()
-    .executeTakeFirst();
-
   await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
