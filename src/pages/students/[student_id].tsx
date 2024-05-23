@@ -291,68 +291,72 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container className={$Modal.editModalContainer}>
-                      <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
-                        label="IEP Start Date"
-                        type="date"
-                        name="start_date"
-                        defaultValue={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        required
-                      />
-                    </Container>
-                    <Container className={$Modal.editModalContainer}>
-                      <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
-                        label="IEP End Date"
-                        type="date"
-                        name="end_date"
-                        defaultValue={endDate}
-                        inputProps={{ min: { startDate } }}
-                        required
-                      />
-                    </Container>
+                    {activeIep != null && (
+                      <div>
+                        <Container className={$Modal.editModalContainer}>
+                          <TextField
+                            className={$Modal.editModalTextfield}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#20159E",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root.Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root:hover": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiInputLabel-root.Mui-focused": {
+                                color: "#080155",
+                              },
+                            }}
+                            label="IEP Start Date"
+                            type="date"
+                            name="start_date"
+                            defaultValue={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            required
+                          />
+                        </Container>
+                        <Container className={$Modal.editModalContainer}>
+                          <TextField
+                            className={$Modal.editModalTextfield}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#20159E",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root.Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root:hover": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiInputLabel-root.Mui-focused": {
+                                color: "#080155",
+                              },
+                            }}
+                            label="IEP End Date"
+                            type="date"
+                            name="end_date"
+                            defaultValue={endDate}
+                            inputProps={{ min: { startDate } }}
+                            required
+                          />
+                        </Container>
+                      </div>
+                    )}
                   </Stack>
                 </form>
 
