@@ -88,6 +88,23 @@ There are two ways to run Compass locally:
 
    Server URL: http://localhost:3000
 
+### Authentication
+
+.env.local file will need to be updated for sign in with Google
+
+To update GOOGLE_CLIENT_ID:
+
+- Navigate to Google Cloud
+- Create a "Client ID for Web application"
+- Populate the fields as below (note the name and authorized redirect URIs fields)
+  ![alt text](readmeassist.jpg)
+
+* Copy the client ID field on the upper right of the modal (not shown in screenshot), after creation
+
+To update GOOGLE_CLIENT_SECRET:
+
+- Copy the google client secret after creation of the client id
+
 ### Running tests
 
 The database container does not need to be started to run tests, but Docker Desktop must be running in the background.
@@ -105,6 +122,16 @@ Until Compass is deployed, the initial migration file at `src/api/db/migrations/
 #### Running migrations
 
 Run `npm run db:migrate` to migrate the database. However, until Compass is deployed, you'll more likely want to run `npm run db:reset` to reset the database since we'll be making changes to the initial migration file.
+
+### Troubleshooting
+
+Compass app is not running:
+
+Make sure that Docker is running in the background
+
+Client id is required:
+
+Fill out the Google Client ID and Google Client Secret in .env.local
 
 ## Tech stack & libraries
 

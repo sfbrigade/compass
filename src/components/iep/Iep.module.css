@@ -5,11 +5,11 @@
   align-items: center;
   gap: 8px;
   border-radius: 8px 8px 0px 0px;
-  background: #fff;
+  background: var(--grey-100);
 }
 
 .goalsContainer {
-  background-color: #ffffff;
+  background-color: var(--grey-100);
   padding-bottom: 2rem;
   min-height: 50vh;
   max-height: 70vh;
@@ -41,12 +41,12 @@
 }
 
 .addGoalFormContainer {
-  border-left: 1px #d6dde1 solid;
+  border-left: 1px var(--outline) solid;
   padding: 2rem;
 }
 
 .addGoalFormHeading {
-  color: #021426;
+  color: var(--on-background);
   font-size: 24px;
   font-family: var(--font-quicksand);
   font-weight: 600;
@@ -64,12 +64,12 @@
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
-  background: #f5f5f5;
+  background: var(--grey-80);
   resize: none;
 }
 
 .listGoal {
-  border-bottom: 1px solid #d6dde1;
+  border-bottom: 1px solid var(--outline);
 }
 
 .listGoal :hover {

@@ -1,6 +1,11 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 
+import {
+  STUDENT_ASSIGNED_TO_YOU_ERR,
+  STUDENT_ALREADY_ASSIGNED_ERR,
+} from "@/backend/lib/db_helpers/case_manager";
+
 test("getMyStudents", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
@@ -102,7 +107,7 @@ test("addStudent - student doesn't exist in db", async (t) => {
   t.is(myStudentsAfter.length, 1);
 });
 
-test("addStudent - student exists in db", async (t) => {
+test("addStudent - student exists in db but is unassigned", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
@@ -137,12 +142,117 @@ test("addStudent - student exists in db", async (t) => {
   );
 });
 
+test("addStudent - student exists in db and is already assigned to user", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const studentsBefore = await trpc.case_manager.getMyStudents.query();
+  t.is(studentsBefore.length, 0);
+
+  await trpc.case_manager.addStudent.mutate({
+    first_name: seed.student.first_name,
+    last_name: seed.student.last_name,
+    email: seed.student.email,
+    grade: seed.student.grade,
+  });
+
+  const studentsAfter = await trpc.case_manager.getMyStudents.query();
+  t.is(studentsAfter.length, 1);
+
+  // this should be a duplicate operation, student's email should already be assigned to this user
+  const err = await t.throwsAsync(
+    trpc.case_manager.addStudent.mutate({
+      first_name: seed.student.first_name,
+      last_name: seed.student.last_name,
+      email: seed.student.email,
+      grade: seed.student.grade,
+    })
+  );
+
+  t.is(err?.message, STUDENT_ASSIGNED_TO_YOU_ERR.message);
+});
+
+test("addStudent - student exists in db but is assigned to another case manager", async (t) => {
+  const { trpc, db, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const studentsBefore = await trpc.case_manager.getMyStudents.query();
+  t.is(studentsBefore.length, 0);
+
+  // create alternative case manager
+  const fakeCM = await db
+    .insertInto("user")
+    .values({
+      first_name: "Fake",
+      last_name: "CM",
+      role: "admin",
+      email: "fakecm@test.com",
+    })
+    .returningAll()
+    .executeTakeFirst();
+
+  t.truthy(fakeCM?.user_id);
+
+  const newStudent = {
+    first_name: "New",
+    last_name: "Student",
+    email: "ns@gmail.com",
+    grade: 1,
+    assigned_case_manager_id: fakeCM!.user_id,
+  };
+
+  const studentCheck = await db
+    .selectFrom("student")
+    .selectAll()
+    .where("email", "=", newStudent.email)
+    .execute();
+
+  t.is(studentCheck.length, 0);
+
+  // assign student to new case manager
+  await db.insertInto("student").values(newStudent).execute();
+
+  // this student's email should already be assigned to the alternative case manager
+  const err = await t.throwsAsync(
+    trpc.case_manager.addStudent.mutate({
+      first_name: newStudent.first_name,
+      last_name: newStudent.last_name,
+      email: newStudent.email,
+      grade: newStudent.grade,
+    })
+  );
+
+  t.is(err?.message, STUDENT_ALREADY_ASSIGNED_ERR.message);
+
+  // reassign student to user
+  await db
+    .updateTable("student")
+    .set({ assigned_case_manager_id: seed.case_manager.user_id })
+    .where("email", "=", newStudent.email)
+    .returningAll()
+    .execute();
+
+  // perform redundant assignment to user
+  const redundantErr = await t.throwsAsync(
+    trpc.case_manager.addStudent.mutate({
+      first_name: newStudent.first_name,
+      last_name: newStudent.last_name,
+      email: newStudent.email,
+      grade: newStudent.grade,
+    })
+  );
+
+  t.is(redundantErr?.message, STUDENT_ASSIGNED_TO_YOU_ERR.message);
+});
+
 test("addStudent - invalid email", async (t) => {
   const { trpc } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
 
-  await t.throwsAsync(
+  const err = await t.throwsAsync(
     trpc.case_manager.addStudent.mutate({
       first_name: "Foo",
       last_name: "Bar",
@@ -150,6 +260,21 @@ test("addStudent - invalid email", async (t) => {
       grade: 6,
     })
   );
+  // should be zod error
+  t.is(typeof err?.message, "string");
+  const parsed = (JSON.parse(err?.message as string) || []) as Array<{
+    [index: string]: string;
+  }>;
+  if (parsed instanceof Array && parsed.length > 0) {
+    t.deepEqual(parsed[0], {
+      validation: "email",
+      code: "invalid_string",
+      message: "Invalid email",
+      path: ["email"],
+    });
+  } else {
+    t.fail();
+  }
 });
 
 test("removeStudent", async (t) => {
@@ -198,6 +323,31 @@ test("getMyParas", async (t) => {
 
   myParas = await trpc.case_manager.getMyParas.query();
   t.is(myParas.length, 1);
+});
+
+test("addStaff", async (t) => {
+  const { trpc } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const parasBeforeAdd = await trpc.case_manager.getMyParas.query();
+  t.is(parasBeforeAdd.length, 0);
+
+  const newParaData = {
+    first_name: "Staffy",
+    last_name: "Para",
+    email: "sp@gmail.com",
+  };
+
+  await trpc.case_manager.addStaff.mutate(newParaData);
+
+  const parasAfterAdd = await trpc.case_manager.getMyParas.query();
+  t.is(parasAfterAdd.length, 1);
+
+  const createdPara = parasAfterAdd[0];
+  t.is(createdPara.first_name, newParaData.first_name);
+  t.is(createdPara.last_name, newParaData.last_name);
+  t.is(createdPara.email, newParaData.email);
 });
 
 test("addPara", async (t) => {

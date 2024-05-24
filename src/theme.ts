@@ -23,7 +23,7 @@ export const theme = createTheme({
     h1: {
       fontWeight: 600,
       fontSize: "2.5em",
-      fontFamily: "var(--font-quicksand), sans-serif",
+      fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontSize: "2em",
       },
@@ -31,7 +31,7 @@ export const theme = createTheme({
     h2: {
       fontWeight: 600,
       fontSize: "2em",
-      fontFamily: "var(--font-quicksand), sans-serif",
+      fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontSize: "1.5em",
       },
@@ -39,7 +39,7 @@ export const theme = createTheme({
     h3: {
       fontWeight: 600,
       fontSize: "1.5em",
-      fontFamily: "var(--font-quicksand), sans-serif",
+      fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontSize: "1.25em",
       },
@@ -47,7 +47,7 @@ export const theme = createTheme({
     h4: {
       fontWeight: 600,
       fontSize: "1.25em",
-      fontFamily: "var(--font-quicksand), sans-serif",
+      fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontWeight: 500,
       },
@@ -55,36 +55,36 @@ export const theme = createTheme({
     h5: {
       fontWeight: 700,
       fontSize: "1em",
-      fontFamily: "var(--font-inter), sans-serif",
+      fontFamily: "var(--inter), sans-serif",
     },
     body1: {
       fontWeight: 400,
       fontSize: "1em",
-      fontFamily: "var(--font-inter), sans-serif",
+      fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     body2: {
       fontWeight: 500,
       fontSize: "0.875em",
-      fontFamily: "var(--font-inter), sans-serif",
+      fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     button: {
       fontWeight: 600,
       fontSize: "1em",
-      fontFamily: "var(--font-quicksand), sans-serif",
+      fontFamily: "var(--quicksand), sans-serif",
       lineHeight: "150%",
     },
     caption: {
       fontWeight: 400,
       fontSize: "0.75em",
-      fontFamily: "var(--font-inter), sans-serif",
+      fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     overline: {
       fontWeight: 600,
       fontSize: "0.75em",
-      fontFamily: "var(--font-inter), sans-serif",
+      fontFamily: "var(--inter), sans-serif",
     },
   },
 });

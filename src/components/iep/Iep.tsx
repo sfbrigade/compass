@@ -88,13 +88,13 @@ const Iep = ({ iep_id }: IepProps) => {
               {showAddGoalForm && (
                 <ListItem
                   key="adding-goal"
-                  style={{ borderBottom: "1px solid #D6DDE1" }}
+                  style={{ borderBottom: "1px solid var(--outline)" }}
                 >
                   <div
                     style={{
                       padding: "24px",
                       fontStyle: "italic",
-                      color: "#788591",
+                      color: "var(--grey-40)",
                     }}
                   >
                     Adding new goal...
@@ -107,7 +107,7 @@ const Iep = ({ iep_id }: IepProps) => {
                   style={{ padding: 0 }}
                   className={$Iep.listGoal}
                   onClick={async () => {
-                    await router.push(`/goals/${goal.goal_id}`);
+                    await router.push(`${router.asPath}/goals/${goal.goal_id}`);
                   }}
                 >
                   <Container>
