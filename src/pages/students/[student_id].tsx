@@ -10,29 +10,11 @@ import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
-import $Modal from "../../styles/Modal.module.css";
+import $Modal from "@/components/design_system/modal/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-
-const style = {
-  position: "absolute" as const,
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  bgcolor: "background.paper",
-  border: "2px solid var(--grey-10)",
-  boxShadow: 24,
-
-  p: 4,
-};
-
-// uncomment and edit to apply design systems styling
-// const textfieldstyle = {
-//   border: "1px solid var(--grey-10)",
-//   width: "100%",
-// };
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -177,28 +159,41 @@ const ViewStudentPage = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box sx={style}>
-            <Typography id="modal-modal-title" variant="h6" component="h2">
-              Editing Student Profile
-            </Typography>
+          <Box className={$Modal.editModalContent}>
+            <p id="modal-modal-title" className={$Modal.editModalHeader}>
+              Editing {student?.first_name || "Student"}&apos;s Profile
+            </p>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               <Stack gap={0.5} sx={{ width: "100%" }}>
                 <form
-                  className={$StudentPage.editForm}
+                  className={$Modal.editForm}
                   id="edit"
                   onSubmit={handleEditStudent}
                 >
                   <Stack gap={0.5}>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // note that this styling changes to correct design systems color, but causes label text to be blocked by border
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
+                          },
+                        }}
                         label="First Name"
                         type="text"
                         name="firstName"
@@ -206,15 +201,29 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
+                          },
+                        }}
                         label="Last Name"
                         type="text"
                         name="lastName"
@@ -222,15 +231,29 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
+                          },
+                        }}
                         label="Email"
                         type="text"
                         name="email"
@@ -238,15 +261,29 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
+                    <Container className={$Modal.editModalContainer}>
                       <TextField
-                        // sx={textfieldstyle}
+                        className={$Modal.editModalTextfield}
+                        sx={{
+                          "& .MuiOutlinedInput-root": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#20159E",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root.Mui-focused": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiOutlinedInput-root:hover": {
+                            "& .MuiOutlinedInput-notchedOutline": {
+                              borderColor: "#080155",
+                            },
+                          },
+                          "& .MuiInputLabel-root.Mui-focused": {
+                            color: "#080155",
+                          },
+                        }}
                         label="Grade"
                         type="number"
                         name="grade"
@@ -254,45 +291,77 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
-                      <TextField
-                        // sx={textfieldstyle}
-                        label="IEP Start Date"
-                        type="date"
-                        name="start_date"
-                        defaultValue={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        required
-                      />
-                    </Container>
-                    <Container
-                      className={$StudentPage.studentEditContainer}
-                      sx={{
-                        display: "grid",
-                        gridTemplateColumns: "200px 30px 300px",
-                      }}
-                    >
-                      <TextField
-                        // sx={textfieldstyle}
-                        label="IEP End Date"
-                        type="date"
-                        name="end_date"
-                        defaultValue={endDate}
-                        inputProps={{ min: { startDate } }}
-                        required
-                      />
-                    </Container>
+                    {activeIep != null && (
+                      <div>
+                        <Container className={$Modal.editModalContainer}>
+                          <TextField
+                            className={$Modal.editModalTextfield}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#20159E",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root.Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root:hover": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiInputLabel-root.Mui-focused": {
+                                color: "#080155",
+                              },
+                            }}
+                            label="IEP Start Date"
+                            type="date"
+                            name="start_date"
+                            defaultValue={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                            required
+                          />
+                        </Container>
+                        <Container className={$Modal.editModalContainer}>
+                          <TextField
+                            className={$Modal.editModalTextfield}
+                            sx={{
+                              "& .MuiOutlinedInput-root": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#20159E",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root.Mui-focused": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiOutlinedInput-root:hover": {
+                                "& .MuiOutlinedInput-notchedOutline": {
+                                  borderColor: "#080155",
+                                },
+                              },
+                              "& .MuiInputLabel-root.Mui-focused": {
+                                color: "#080155",
+                              },
+                            }}
+                            label="IEP End Date"
+                            type="date"
+                            name="end_date"
+                            defaultValue={endDate}
+                            inputProps={{ min: { startDate } }}
+                            required
+                          />
+                        </Container>
+                      </div>
+                    )}
                   </Stack>
                 </form>
 
-                <Container sx={{ marginTop: "2rem" }}>
-                  <Box>
+                <Container className={$Modal.editModalContainerButtons}>
+                  <Box className={$Modal.editModalButtonWrap}>
                     <Button
                       onClick={handleMainState}
                       className={`${$button.secondary}`}

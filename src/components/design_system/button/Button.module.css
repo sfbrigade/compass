@@ -9,6 +9,8 @@
   text-decoration: none;
   text-align: center;
   font-size: var(--base-size);
+  font-family: var(--quicksand);
+  font-weight: normal;
   text-transform: none;
   line-height: normal;
   letter-spacing: 0;
