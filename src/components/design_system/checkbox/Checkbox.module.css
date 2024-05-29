@@ -1,2 +1,12 @@
-/* PLACEHOLDER FOR DESIGN SYSTEMS COMPONENT CSS
-see notes in component file */
+/* styling for the text in the checkbox label can go here */
+.checkboxWrapper {
+  cursor: pointer;
+}
+
+.behavior:hover {
+  background-color: var(--primary-99);
+}
+
+.behavior:active {
+  background-color: var(--primary-90);
+}
