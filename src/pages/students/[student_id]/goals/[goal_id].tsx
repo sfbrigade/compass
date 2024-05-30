@@ -10,6 +10,7 @@ import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import { Typography } from "@mui/material";
+import Subgoals from "@/components/subgoal/Subgoal";
 
 enum selectionValue {
   ACTIVE,
@@ -204,12 +205,10 @@ const GoalPage = () => {
 
         {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
-          <Grid item>
+          <Grid sx={{ width: "100%" }} item>
             {activeTab === selectionValue.ACTIVE &&
               subgoals?.map((subgoal) => (
-                <div key={subgoal.subgoal_id}>
-                  <Typography variant="h4">{subgoal.description}</Typography>
-                </div>
+                <Subgoals key={subgoal.subgoal_id} subgoal={subgoal} />
               ))}
           </Grid>
         </Grid>
