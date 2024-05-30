@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import { Typography } from "@mui/material";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
 import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
 import $button from "@/components/design_system/button/Button.module.css";
@@ -64,7 +65,24 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
         >
           #{subgoal.subgoal_id} created on {format(subgoal.created_at, "P")}
         </Typography>
-        <p>{subgoal.description}</p>
+        <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex" }}>
+            <ContentPasteIcon
+              sx={{
+                color: "var(--grey-10)",
+                fontSize: 12,
+                margin: "1.25rem",
+                marginLeft: "0.5rem",
+                marginRight: "0.5rem",
+              }}
+            />
+
+            <Box sx={{ margin: "1rem", marginLeft: ".5rem" }}>
+              {subgoal.description}
+            </Box>
+          </Box>
+          <Box sx={{ margin: "1rem" }}>Edit</Box>
+        </Box>
         <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />
         <Box
           sx={{
@@ -90,6 +108,12 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
             <Button
               className={$button.secondary}
               onClick={() => setIsAssignmentModalOpen(true)}
+              sx={{
+                paddingTop: ".4rem !important",
+                paddingBottom: ".4rem !important",
+                paddingLeft: ".4rem !important",
+                paddingRight: ".4rem !important",
+              }}
             >
               Assign
             </Button>
