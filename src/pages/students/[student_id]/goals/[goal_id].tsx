@@ -179,7 +179,7 @@ const GoalPage = () => {
         <Box
           sx={{
             display: "flex",
-            flexDirection: "row",
+            flexDirection: { xs: "column-reverse", sm: "row" },
             justifyContent: "space-between",
           }}
         >
@@ -209,6 +209,7 @@ const GoalPage = () => {
               currentlySelected={activeTab}
             />
           </Box>
+          <br />
           <Box>
             <Link className={$button.default} href={`${router.asPath}/create`}>
               Add benchmark
