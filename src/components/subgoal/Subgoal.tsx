@@ -27,7 +27,14 @@ const Info = ({ description, children }: InfoProps) => {
         alignItems: "center",
       }}
     >
-      <p style={{ marginBottom: ".5rem" }}>{description}</p>
+      <Typography
+        sx={{ marginBottom: "0.5em" }}
+        variant="overline"
+        display="block"
+        gutterBottom
+      >
+        {description}
+      </Typography>
       {children}
     </Box>
   );
