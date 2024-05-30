@@ -176,33 +176,45 @@ const GoalPage = () => {
       {/* Benchmarks */}
       <Stack sx={{ width: 1 }}>
         {/* tabs */}
-        <Box className={$GoalPage.benchmarksBox} justifyContent="flex-start">
-          <SelectableTab
-            text="Active"
-            value={selectionValue.ACTIVE}
-            handleSelect={() => {
-              setActiveTab(selectionValue.ACTIVE);
-            }}
-            currentlySelected={activeTab}
-          />
-          <SelectableTab
-            text="Completed"
-            value={selectionValue.COMPLETED}
-            handleSelect={() => {
-              setActiveTab(selectionValue.COMPLETED);
-            }}
-            currentlySelected={activeTab}
-          />
-          <SelectableTab
-            text="Drafts"
-            value={selectionValue.DRAFTS}
-            handleSelect={() => {
-              setActiveTab(selectionValue.DRAFTS);
-            }}
-            currentlySelected={activeTab}
-          />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Box className={$GoalPage.benchmarksBox} justifyContent="flex-start">
+            <SelectableTab
+              text="Active"
+              value={selectionValue.ACTIVE}
+              handleSelect={() => {
+                setActiveTab(selectionValue.ACTIVE);
+              }}
+              currentlySelected={activeTab}
+            />
+            <SelectableTab
+              text="Completed"
+              value={selectionValue.COMPLETED}
+              handleSelect={() => {
+                setActiveTab(selectionValue.COMPLETED);
+              }}
+              currentlySelected={activeTab}
+            />
+            <SelectableTab
+              text="Drafts"
+              value={selectionValue.DRAFTS}
+              handleSelect={() => {
+                setActiveTab(selectionValue.DRAFTS);
+              }}
+              currentlySelected={activeTab}
+            />
+          </Box>
+          <Box>
+            <Link className={$button.default} href={`${router.asPath}/create`}>
+              Add benchmark
+            </Link>
+          </Box>
         </Box>
-
         {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
           <Grid sx={{ width: "100%" }} item>
@@ -213,10 +225,6 @@ const GoalPage = () => {
           </Grid>
         </Grid>
       </Stack>
-
-      <Link className={$button.default} href={`${router.asPath}/create`}>
-        Add benchmark
-      </Link>
     </Stack>
   );
 };
