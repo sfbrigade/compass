@@ -56,7 +56,12 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           padding: "1rem",
         }}
       >
-        <Typography variant="overline" display="block" gutterBottom>
+        <Typography
+          sx={{ color: "var(--primary-40)" }}
+          variant="overline"
+          display="block"
+          gutterBottom
+        >
           #{subgoal.subgoal_id} created on {format(subgoal.created_at, "P")}
         </Typography>
         <p>{subgoal.description}</p>
