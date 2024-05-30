@@ -26,6 +26,8 @@ const Info = ({ description, children }: InfoProps) => {
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
+        justifyContent: "center",
+        textAlign: "center",
       }}
     >
       <Typography
@@ -98,10 +100,32 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           <Info description={"CURRENT LEVEL"}> X </Info>
           <Info description={"# OF TRIALS"}> X </Info>
           <Info description="DATA">
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <Box mx={{ marginRight: "0.5rem" }}>Collect Data</Box>
-
-              <Box mx={{ marginLeft: "0.5rem" }}>View Data</Box>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", lg: "row" },
+              }}
+            >
+              <Box
+                sx={{
+                  marginRight: { xs: "0rem", lg: "0.5rem" },
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                Collect Data
+              </Box>
+              <Box
+                sx={{
+                  marginLeft: { xs: "0rem", lg: "0.5rem" },
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                }}
+              >
+                View Data
+              </Box>
             </Box>
           </Info>
           <Info description={"STAFF"}>
