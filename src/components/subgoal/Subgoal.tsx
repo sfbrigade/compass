@@ -67,12 +67,19 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           <Info description={"TARGET LEVEL"}> {subgoal?.target_level}% </Info>
           <Info description={"CURRENT LEVEL"}> X </Info>
           <Info description={"# OF TRIALS"}> X </Info>
-          <Info description={"Staff"}>
+          <Info description="DATA">
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <Box mx={{ marginRight: "0.5rem" }}>Collect Data</Box>
+
+              <Box mx={{ marginLeft: "0.5rem" }}>View Data</Box>
+            </Box>
+          </Info>
+          <Info description={"STAFF"}>
             <Button
               className={$button.secondary}
               onClick={() => setIsAssignmentModalOpen(true)}
             >
-              Assign Staff
+              Assign
             </Button>
           </Info>
         </Box>
