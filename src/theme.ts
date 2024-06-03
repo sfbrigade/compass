@@ -3,6 +3,26 @@ import { createTheme } from "@mui/material";
 const { breakpoints } = createTheme();
 
 export const theme = createTheme({
+  palette: {
+    primary: {
+      main: "#3023b8",
+      light: "#9b93f1",
+      dark: "#080155",
+    },
+    error: {
+      main: "#b3261e",
+    },
+    warning: {
+      main: "#ffaa44",
+      light: "#fbf6d9",
+      dark: "#1c1b1f",
+    },
+    success: {
+      main: "#24804d",
+      light: "#f0fff6",
+      dark: "#001e0d",
+    },
+  },
   breakpoints,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
   shadows: [
