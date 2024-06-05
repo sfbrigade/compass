@@ -5,22 +5,22 @@ const { breakpoints } = createTheme();
 export const theme = createTheme({
   palette: {
     primary: {
-      main: "#3023b8",
-      light: "#9b93f1",
-      dark: "#080155",
+      main: "#3023b8", // --primary-50
+      light: "#9b93f1", // --primary-80
+      dark: "#080155", // --primary-20
     },
     error: {
-      main: "#b3261e",
+      main: "#b3261e", // --error
     },
     warning: {
-      main: "#ffaa44",
-      light: "#fbf6d9",
-      dark: "#1c1b1f",
+      main: "#ffaa44", // --warning-container
+      light: "#fbf6d9", // --warning-state
+      dark: "#1c1b1f", // --on-warning
     },
     success: {
-      main: "#24804d",
-      light: "#f0fff6",
-      dark: "#001e0d",
+      main: "#24804d", // --success
+      light: "#f0fff6", // --success-container
+      dark: "#001e0d", // --on-success-container
     },
   },
   breakpoints,
