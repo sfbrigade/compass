@@ -1546,11 +1546,23 @@ declare module 'zapatos/schema' {
       */
       goal_id: string | null;
       /**
+      * **subgoal.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status: string;
+      /**
       * **subgoal.description**
       * - `text` in database
       * - `NOT NULL`, no default
       */
       description: string;
+      /**
+      * **subgoal.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
       /**
       * **subgoal.instructions**
       * - `text` in database
@@ -1565,16 +1577,22 @@ declare module 'zapatos/schema' {
       materials: string;
       /**
       * **subgoal.target_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       target_level: number;
       /**
       * **subgoal.baseline_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       baseline_level: number;
+      /**
+      * **subgoal.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level: number | null;
       /**
       * **subgoal.metric_name**
       * - `text` in database
@@ -1582,11 +1600,17 @@ declare module 'zapatos/schema' {
       */
       metric_name: string;
       /**
-      * **subgoal.target_max_attempts**
-      * - `int4` in database
+      * **subgoal.attempts_per_trial**
+      * - `int2` in database
       * - Nullable, no default
       */
-      target_max_attempts: number | null;
+      attempts_per_trial: number | null;
+      /**
+      * **subgoal.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials: number | null;
       /**
       * **subgoal.created_at**
       * - `timestamptz` in database
@@ -1608,11 +1632,23 @@ declare module 'zapatos/schema' {
       */
       goal_id: string | null;
       /**
+      * **subgoal.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status: string;
+      /**
       * **subgoal.description**
       * - `text` in database
       * - `NOT NULL`, no default
       */
       description: string;
+      /**
+      * **subgoal.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
       /**
       * **subgoal.instructions**
       * - `text` in database
@@ -1627,16 +1663,22 @@ declare module 'zapatos/schema' {
       materials: string;
       /**
       * **subgoal.target_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       target_level: number;
       /**
       * **subgoal.baseline_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       baseline_level: number;
+      /**
+      * **subgoal.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level: number | null;
       /**
       * **subgoal.metric_name**
       * - `text` in database
@@ -1644,11 +1686,17 @@ declare module 'zapatos/schema' {
       */
       metric_name: string;
       /**
-      * **subgoal.target_max_attempts**
-      * - `int4` in database
+      * **subgoal.attempts_per_trial**
+      * - `int2` in database
       * - Nullable, no default
       */
-      target_max_attempts: number | null;
+      attempts_per_trial: number | null;
+      /**
+      * **subgoal.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials: number | null;
       /**
       * **subgoal.created_at**
       * - `timestamptz` in database
@@ -1670,11 +1718,23 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **subgoal.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **subgoal.description**
       * - `text` in database
       * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **subgoal.instructions**
       * - `text` in database
@@ -1689,16 +1749,22 @@ declare module 'zapatos/schema' {
       materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **subgoal.target_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       target_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
       * **subgoal.baseline_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
       * **subgoal.metric_name**
       * - `text` in database
@@ -1706,11 +1772,17 @@ declare module 'zapatos/schema' {
       */
       metric_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **subgoal.target_max_attempts**
-      * - `int4` in database
+      * **subgoal.attempts_per_trial**
+      * - `int2` in database
       * - Nullable, no default
       */
-      target_max_attempts?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      attempts_per_trial?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **subgoal.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
       * **subgoal.created_at**
       * - `timestamptz` in database
@@ -1732,11 +1804,23 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
+      * **subgoal.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
       * **subgoal.description**
       * - `text` in database
       * - `NOT NULL`, no default
       */
       description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **subgoal.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string | db.Parameter<string> | db.SQLFragment;
       /**
       * **subgoal.instructions**
       * - `text` in database
@@ -1751,16 +1835,22 @@ declare module 'zapatos/schema' {
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
       * **subgoal.target_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       target_level: number | db.Parameter<number> | db.SQLFragment;
       /**
       * **subgoal.baseline_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       baseline_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **subgoal.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
       /**
       * **subgoal.metric_name**
       * - `text` in database
@@ -1768,11 +1858,17 @@ declare module 'zapatos/schema' {
       */
       metric_name: string | db.Parameter<string> | db.SQLFragment;
       /**
-      * **subgoal.target_max_attempts**
-      * - `int4` in database
+      * **subgoal.attempts_per_trial**
+      * - `int2` in database
       * - Nullable, no default
       */
-      target_max_attempts?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **subgoal.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
       /**
       * **subgoal.created_at**
       * - `timestamptz` in database
@@ -1794,11 +1890,23 @@ declare module 'zapatos/schema' {
       */
       goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
+      * **subgoal.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
       * **subgoal.description**
       * - `text` in database
       * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **subgoal.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **subgoal.instructions**
       * - `text` in database
@@ -1813,16 +1921,22 @@ declare module 'zapatos/schema' {
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **subgoal.target_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       target_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
       /**
       * **subgoal.baseline_level**
-      * - `int4` in database
+      * - `int2` in database
       * - `NOT NULL`, no default
       */
       baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **subgoal.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **subgoal.metric_name**
       * - `text` in database
@@ -1830,11 +1944,17 @@ declare module 'zapatos/schema' {
       */
       metric_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
-      * **subgoal.target_max_attempts**
-      * - `int4` in database
+      * **subgoal.attempts_per_trial**
+      * - `int2` in database
       * - Nullable, no default
       */
-      target_max_attempts?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **subgoal.created_at**
       * - `timestamptz` in database
