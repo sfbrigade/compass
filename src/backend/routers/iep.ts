@@ -74,38 +74,47 @@ export const iep = router({
     .input(
       z.object({
         goal_id: z.string(),
+        status: z.string(),
         description: z.string(),
+        setup: z.string(),
         instructions: z.string(),
-        target_max_attempts: z.number().nullable(),
         materials: z.string(),
         target_level: z.number().min(0).max(100),
         baseline_level: z.number().min(0).max(100),
         metric_name: z.string(),
+        attempts_per_trial: z.number().nullable(),
+        number_of_trials: z.number().nullable(),
       })
     )
     .mutation(async (req) => {
       const {
         goal_id,
+        status,
         description,
+        setup,
         instructions,
-        target_max_attempts,
         materials,
         target_level,
         baseline_level,
         metric_name,
+        attempts_per_trial,
+        number_of_trials,
       } = req.input;
 
       const result = await req.ctx.db
         .insertInto("subgoal")
         .values({
           goal_id,
+          status,
           description,
+          setup,
           instructions,
-          target_max_attempts,
           materials,
           target_level,
           baseline_level,
           metric_name,
+          attempts_per_trial,
+          number_of_trials,
         })
         .returningAll()
         .executeTakeFirst();
@@ -374,7 +383,7 @@ export const iep = router({
           "goal.category",
           "subgoal.description",
           "subgoal.instructions",
-          "subgoal.target_max_attempts",
+          "subgoal.number_of_trials",
           "subgoal.subgoal_id",
           "task.due_date",
           "task.seen",
