@@ -28,10 +28,8 @@ const CreateBenchmarkPage = () => {
       target_level: Number(formData.get("target_level")),
       baseline_level: Number(formData.get("baseline_level")),
       metric_name: formData.get("metric_name") as string,
-      attempts_per_trial:
-        (Number(formData.get("attempts_per_trial")) ) || null,
-      number_of_trials:
-        (Number(formData.get("number_of_trials")) ) || null,
+      attempts_per_trial: Number(formData.get("attempts_per_trial")) || null,
+      number_of_trials: Number(formData.get("number_of_trials")) || null,
     });
 
     await router.push(

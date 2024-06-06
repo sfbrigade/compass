@@ -253,7 +253,7 @@ const BenchmarkPage = () => {
         />
         <p className={`${$typo.centeredText} ${$typo.bold}`}>
           {successInputValue + unsuccessInputValue} attempts out of{" "}
-          {task.target_max_attempts ?? "-"}
+          {task.number_of_trials ?? "-"}
         </p>
       </div>
       <textarea
