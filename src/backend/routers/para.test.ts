@@ -116,11 +116,14 @@ test("getMyTasks", async (t) => {
 
   const FIRST_NAME = "Foo";
   const LAST_NAME = "Bar";
+  const STATUS = "In Progress";
   const DESCRIPTION = "Subgoal description";
+  const SETUP = "Setup";
+  const INSTRUCTIONS = "subgoal instructions foobar";
   const CATEGORY = "writing";
   const DUE_DATE = new Date();
-  const INSTRUCTIONS = "subgoal instructions foobar";
-  const TARGET_MAX_ATTEMPTS = 5;
+  const ATTEMPTS_PER_TRIAL = 15;
+  const NUMBER_OF_TRIALS = 5;
   const TRIAL_COUNT = 10;
 
   const { student_id } = await db
@@ -160,13 +163,16 @@ test("getMyTasks", async (t) => {
     .insertInto("subgoal")
     .values({
       goal_id: goal_id,
+      status: STATUS,
       description: DESCRIPTION,
+      setup: SETUP,
       instructions: INSTRUCTIONS,
-      target_max_attempts: TARGET_MAX_ATTEMPTS,
       materials: "materials",
       target_level: 100,
       baseline_level: 20,
       metric_name: "words",
+      attempts_per_trial: ATTEMPTS_PER_TRIAL,
+      number_of_trials: NUMBER_OF_TRIALS,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -191,6 +197,5 @@ test("getMyTasks", async (t) => {
   t.is(task[0].category, CATEGORY);
   t.deepEqual(task[0].due_date, DUE_DATE);
   t.is(task[0].instructions, INSTRUCTIONS);
-  t.is(task[0].target_max_attempts, TARGET_MAX_ATTEMPTS);
   t.is(task[0].trial_count, TRIAL_COUNT);
 });

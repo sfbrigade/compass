@@ -23,24 +23,30 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
 
   await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
+    status: "In Progress",
     description: "subgoal 1",
+    setup: "Setup here",
     instructions: "instructions here",
-    target_max_attempts: 5,
     materials: "materials",
-    target_level: 100,
-    baseline_level: 20,
+    target_level: 85,
+    baseline_level: 60,
     metric_name: "words",
+    attempts_per_trial: 20,
+    number_of_trials: 15,
   });
 
   const subgoal2 = await trpc.iep.addSubgoal.mutate({
     goal_id: goal1!.goal_id,
+    status: "Complete",
     description: "subgoal 2",
+    setup: "",
     instructions: "",
-    target_max_attempts: null,
     materials: "materials",
     target_level: 100,
     baseline_level: 20,
     metric_name: "words",
+    attempts_per_trial: 10,
+    number_of_trials: 30,
   });
   const subgoal2Id = subgoal2!.subgoal_id;
 
