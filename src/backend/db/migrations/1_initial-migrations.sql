@@ -75,16 +75,22 @@ CREATE TABLE "goal" (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
+-- aka benchmark
 CREATE TABLE "subgoal" (
   subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   goal_id UUID REFERENCES "goal" (goal_id),
+  status TEXT NOT NULL DEFAULT 'In Progress' 
+    CHECK (status IN ('In Progress', 'Complete')), 
   description TEXT NOT NULL,
+  setup TEXT NOT NULL,
   instructions TEXT NOT NULL DEFAULT '',
   materials TEXT NOT NULL DEFAULT '',
-  target_level INTEGER NOT NULL,
-  baseline_level INTEGER NOT NULL,
+  target_level SMALLINT NOT NULL CHECK (target_level BETWEEN 0 AND 100),
+  baseline_level SMALLINT NOT NULL CHECK(baseline_level BETWEEN 0 AND 100),
+  current_level SMALLINT CHECK(current_level BETWEEN 0 AND 100), --To be calculated as trial data is collected
   metric_name TEXT NOT NULL,
-  target_max_attempts INTEGER, --How many "questions" to administer in a single sitting
+  attempts_per_trial SMALLINT, --How many "questions" to administer in a single sitting
+  number_of_trials SMALLINT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 
   -- Different collection types may be added later:

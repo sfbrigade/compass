@@ -12,7 +12,7 @@ interface ParaTaskCard {
   category: string;
   description: string;
   instructions: string | null;
-  target_max_attempts: number | null;
+  number_of_trials: number | null;
   due_date: Date | null;
   seen: boolean;
   trial_count: number | null;
@@ -28,10 +28,10 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
     const calculatedRate = Math.floor(
-      (num / (task.target_max_attempts ?? 1)) * 100
+      (num / (task.number_of_trials ?? 1)) * 100
     );
     return calculatedRate;
-  }, [task.completed_trials, task.target_max_attempts]);
+  }, [task.completed_trials, task.number_of_trials]);
 
   const getDateStyle = () => {
     //New or done should be green
