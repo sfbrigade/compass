@@ -73,6 +73,7 @@ export const iep = router({
   addSubgoal: authenticatedProcedure
     .input(
       z.object({
+        // current_level not included, should be calculated as trial data is collected
         goal_id: z.string(),
         status: z.string(),
         description: z.string(),

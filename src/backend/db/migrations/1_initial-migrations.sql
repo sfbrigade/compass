@@ -87,7 +87,7 @@ CREATE TABLE "subgoal" (
   materials TEXT NOT NULL DEFAULT '',
   target_level SMALLINT NOT NULL CHECK (target_level BETWEEN 0 AND 100),
   baseline_level SMALLINT NOT NULL CHECK(baseline_level BETWEEN 0 AND 100),
-  current_level SMALLINT CHECK(current_level BETWEEN 0 AND 100),
+  current_level SMALLINT CHECK(current_level BETWEEN 0 AND 100), --To be calculated as trial data is collected
   metric_name TEXT NOT NULL,
   attempts_per_trial SMALLINT, --How many "questions" to administer in a single sitting
   number_of_trials SMALLINT,

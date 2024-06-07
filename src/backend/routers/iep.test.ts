@@ -88,6 +88,54 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   );
 });
 
+test("add benchmark - check full schema", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const goal1 = await trpc.iep.addGoal.mutate({
+    iep_id: iep.iep_id,
+    description: "goal 1",
+    category: "writing",
+  });
+
+  const subgoal_data = {
+    goal_id: goal1!.goal_id,
+    status: "In Progress",
+    description: "subgoal 1",
+    setup: "Setup here",
+    instructions: "instructions here",
+    materials: "materials",
+    target_level: 85,
+    baseline_level: 60,
+    metric_name: "words",
+    attempts_per_trial: 20,
+    number_of_trials: 15,
+  };
+
+  const created_subgoal = await trpc.iep.addSubgoal.mutate(subgoal_data);
+
+  // create explicitly string-indexable versions of these objects
+  const indexable_subgoal_data = subgoal_data as {
+    [index: string]: string | number | Date | null;
+  };
+  const indexable_subgoal = created_subgoal as {
+    [index: string]: string | number | Date | null;
+  };
+
+  for (const [key, val] of Object.entries(indexable_subgoal_data)) {
+    t.is(val, indexable_subgoal[key]);
+  }
+  t.is(created_subgoal?.current_level, null);
+  t.truthy(created_subgoal?.created_at);
+});
+
 test("edit goal", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
