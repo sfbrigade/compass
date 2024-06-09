@@ -18,17 +18,18 @@ const CreateBenchmarkPage = () => {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
-    // NOTE: property "name" is not currently included in this mutation,
-    // nor in initial-migrations.sql
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
+      status: "In Progress",
       description: formData.get("description") as string,
-      materials: formData.get("materials") as string,
+      setup: formData.get("setup") as string,
       instructions: formData.get("instructions") as string,
-      target_level: Number(formData.get("target_level") as string),
-      baseline_level: Number(formData.get("baseline_level") as string),
+      materials: formData.get("materials") as string,
+      target_level: Number(formData.get("target_level")),
+      baseline_level: Number(formData.get("baseline_level")),
       metric_name: formData.get("metric_name") as string,
-      target_max_attempts: null,
+      attempts_per_trial: Number(formData.get("attempts_per_trial")) || null,
+      number_of_trials: Number(formData.get("number_of_trials")) || null,
     });
 
     await router.push(
@@ -67,17 +68,18 @@ const CreateBenchmarkPage = () => {
           <Stack spacing={4} p={3} pr={0}>
             <Typography variant="h4">Benchmark</Typography>
             <TextField
-              label="Name"
-              helperText="Maximum 30 characters"
-              required
-              name="name"
-            />
-            <TextField
               label="Description"
               multiline
               required
               minRows={3}
               name="description"
+            />
+            <TextField
+              label="Setup"
+              multiline
+              required
+              minRows={3}
+              name="setup"
             />
 
             <Stack spacing={2}>
@@ -102,6 +104,18 @@ const CreateBenchmarkPage = () => {
                   <Typography ml={1}>%</Typography>
                 </Stack>
                 <TextField label="Metric to track" name="metric_name" />
+              </Stack>
+              <Stack direction="row" alignItems="center" spacing={7}>
+                <TextField
+                  label="Attempts Per Trial"
+                  type="number"
+                  name="attempts_per_trial"
+                />
+                <TextField
+                  label="Number of Trials"
+                  type="number"
+                  name="number_of_trials"
+                />
               </Stack>
             </Stack>
           </Stack>
