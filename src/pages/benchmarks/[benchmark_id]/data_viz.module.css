@@ -1,0 +1,85 @@
+.datacontainer{
+    background-color: rgb(201, 252, 252);
+    display: flex;
+    flex-direction: column;
+    gap:24px;
+
+}
+
+.graphcontainer{
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+}
+.title{
+    font-weight: var(--semibold);
+    font-size:28px;
+}
+
+.goalbenchmarkcontainer{
+    background-color: rgb(255, 255, 255);
+}
+.goalcontainer{
+    display:flex;
+    flex-direction: column;
+    padding: 24px;
+    gap:8px;
+    border-bottom: 1px solid var(--grey-70);
+
+}
+.goaltitle{
+    display:flex;
+    flex-direction: row;
+    gap: 8px;
+}
+.goal{
+    font-size: var(--h3);
+    color: var(--grey-10)
+
+}
+
+.addeddate{
+    font-size: var(--h3);
+    color: var(--grey-40)
+}
+
+.goalbody{
+    color: var(--grey-10)
+}
+
+.benchmarkcontainer{
+    display:flex;
+    flex-direction: column;
+    padding: 24px;
+    gap:8px;
+}
+
+.benchmarktitle{
+    font-size: var(--h3);
+    color: var(--grey-10)
+}
+
+.benchmarkbody{
+    color: var(--grey-10)
+
+}
+
+.benchmarkinfo{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.benchtitle{
+    color: var(--grey-30);
+}
+
+.benchitem{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    gap:8px;
+    color: var(--grey-20);
+
+
+}
