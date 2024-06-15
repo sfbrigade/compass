@@ -227,11 +227,22 @@ const GoalPage = () => {
         </Box>
         {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
-          <Grid sx={{ width: "100%" }} item>
+          <Grid sx={{ width: "100%", background: "white" }} item>
             {subgoals?.length === 0 ? (
-              <Typography variant="h6" sx={{ textAlign: "center" }}>
-                No subgoals
-              </Typography>
+              <Grid
+                sx={{
+                  width: "100%",
+                  height: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+                item
+              >
+                <Typography variant="h6" sx={{ textAlign: "center" }}>
+                  No subgoals
+                </Typography>
+              </Grid>
             ) : (
               <>
                 {(() => {
