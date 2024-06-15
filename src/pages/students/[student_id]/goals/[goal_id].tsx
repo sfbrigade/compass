@@ -269,11 +269,11 @@ const GoalPage = () => {
                   const { status, message } = tabMapping[activeTab];
 
                   const filteredSubgoals =
-                    status === "All"
+                    (status === "All"
                       ? subgoals
                       : subgoals?.filter(
                           (subgoal) => subgoal.status === status
-                        ) || [];
+                        )) || [];
                   return filteredSubgoals.length === 0 ? (
                     <Typography variant="h6" sx={{ textAlign: "center" }}>
                       {message}
