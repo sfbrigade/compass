@@ -13,8 +13,9 @@ import { Typography } from "@mui/material";
 import Subgoals from "@/components/subgoal/Subgoal";
 
 enum selectionValue {
+  ALL,
   ACTIVE,
-  COMPLETED,
+  COMPLETE,
   DRAFTS,
 }
 
@@ -185,6 +186,14 @@ const GoalPage = () => {
         >
           <Box className={$GoalPage.benchmarksBox} justifyContent="flex-start">
             <SelectableTab
+              text="All"
+              value={selectionValue.ALL}
+              handleSelect={() => {
+                setActiveTab(selectionValue.ALL);
+              }}
+              currentlySelected={activeTab}
+            />
+            <SelectableTab
               text="Active"
               value={selectionValue.ACTIVE}
               handleSelect={() => {
@@ -194,9 +203,9 @@ const GoalPage = () => {
             />
             <SelectableTab
               text="Completed"
-              value={selectionValue.COMPLETED}
+              value={selectionValue.COMPLETE}
               handleSelect={() => {
-                setActiveTab(selectionValue.COMPLETED);
+                setActiveTab(selectionValue.COMPLETE);
               }}
               currentlySelected={activeTab}
             />
@@ -219,10 +228,53 @@ const GoalPage = () => {
         {/* TODO: Populate Benchmarks container */}
         <Grid container className={$GoalPage.benchmarksContainer}>
           <Grid sx={{ width: "100%" }} item>
-            {activeTab === selectionValue.ACTIVE &&
-              subgoals?.map((subgoal) => (
-                <Subgoals key={subgoal.subgoal_id} subgoal={subgoal} />
-              ))}
+            {subgoals?.length === 0 ? (
+              <Typography variant="h6" sx={{ textAlign: "center" }}>
+                No subgoals
+              </Typography>
+            ) : (
+              <>
+                {(() => {
+                  const tabMapping = {
+                    [selectionValue.ALL]: {
+                      status: "All",
+                      message: "No benchmarks",
+                    },
+                    [selectionValue.ACTIVE]: {
+                      status: "In Progress",
+                      message: "No active benchmarks",
+                    },
+                    //Status text must match the status in the database
+                    [selectionValue.COMPLETE]: {
+                      status: "Complete",
+                      message: "No completed benchmarks",
+                    },
+                    [selectionValue.DRAFTS]: {
+                      status: "Draft",
+                      message: "No drafts",
+                    },
+                  };
+
+                  const { status, message } = tabMapping[activeTab];
+
+                  const filteredSubgoals =
+                    status === "All"
+                      ? subgoals
+                      : subgoals?.filter(
+                          (subgoal) => subgoal.status === status
+                        ) || [];
+                  return filteredSubgoals.length === 0 ? (
+                    <Typography variant="h6" sx={{ textAlign: "center" }}>
+                      {message}
+                    </Typography>
+                  ) : (
+                    filteredSubgoals.map((subgoal) => (
+                      <Subgoals key={subgoal.subgoal_id} subgoal={subgoal} />
+                    ))
+                  );
+                })()}
+              </>
+            )}
           </Grid>
         </Grid>
       </Stack>
