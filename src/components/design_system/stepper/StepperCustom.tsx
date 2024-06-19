@@ -79,7 +79,13 @@ export default function HorizontalLinearAlternativeLabelStepper() {
     <Box sx={{ width: "100%" }}>
       <Stepper activeStep={currentStep} alternativeLabel connector={null}>
         {steps.map((label, index) => (
-          <Step key={label} sx={{ padding: 0 }}>
+          <Step
+            key={label}
+            sx={{
+              padding: 0,
+              marginRight: index < steps.length - 1 ? "16px" : 0,
+            }}
+          >
             {index !== steps.length && (
               <StepLabel
                 StepIconComponent={
