@@ -84,6 +84,15 @@ export default function HorizontalLinearAlternativeLabelStepper() {
             sx={{
               padding: 0,
               marginRight: index < steps.length - 1 ? "16px" : 0,
+              "&.Mui-disabled": {
+                //TODO: broken b/c MUI does not add this className as described in MUI docs
+              },
+              "&.Mui-active": {
+                //TODO: broken b/c MUI does not add this className as described in MUI docs
+              },
+              "&.Mui-completed": {
+                //TODO: this works, but the others are broken b/c MUI does not add their classNames as described in MUI docs; once fixed, we can move the purple border-top styling here instead
+              },
             }}
           >
             {index !== steps.length && (
