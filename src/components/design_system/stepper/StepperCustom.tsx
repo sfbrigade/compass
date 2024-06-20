@@ -9,52 +9,8 @@ import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
 const steps = ["Completed", "Active", "Disabled"];
 
 /*
-const InvisibleConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.root}`]: {
-    display: "none",
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    display: "none",
-  },
-}));
-*/
+// TODO: cross-reference colors below w/`theme.ts` and update both that file and references herein accordingly
 
-/*
-const PreAboveConnector = styled(StepConnector)(({ theme }) => ({
-  [`&.${stepConnectorClasses.root}`]: {
-    top: 10,
-    left: "calc(-50% + 16px)",
-    right: "calc(50% + 16px)",
-  },
-  [`&.${stepConnectorClasses.active}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: "#784af4",
-    },
-  },
-  [`&.${stepConnectorClasses.completed}`]: {
-    [`& .${stepConnectorClasses.line}`]: {
-      borderColor: "#784af4",
-    },
-  },
-  [`& .${stepConnectorClasses.line}`]: {
-    borderColor:
-      theme.palette.mode === "dark" ? theme.palette.grey[800] : "#eaeaf0",
-    borderTopWidth: 3,
-    borderRadius: 1,
-  },
-}));
-*/
-
-/*
-const sxPropCSS = {
-  backgroundColor: 'lightgreen',
-  [theme.breakpoints.up('xs')]: {
-    backgroundColor: 'orange',
-  },
-}
-*/
-
-/*
 colors
 
 not started
