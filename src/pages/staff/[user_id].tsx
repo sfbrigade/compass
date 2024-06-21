@@ -1,18 +1,23 @@
 import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
+import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
 import { useRouter } from "next/router";
 import $home from "@/styles/Home.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $StaffPage from "../../styles/StaffPage.module.css";
 import $Modal from "../../styles/Modal.module.css";
 
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
-import Modal from "@mui/material/Modal";
+// import Stack from "@mui/material/Stack";
+// import Box from "@mui/material/Box";
+// import Button from "@mui/material/Button";
+// import Container from "@mui/material/Container";
+// import Modal from "@mui/material/Modal";
 
 const ViewParaPage = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  //are we going to add an archive button?
   const [archiveParaPrompt, setArchiveParaPrompt] = useState(false);
   const [viewState, setViewState] = useState(0);
 
@@ -21,14 +26,17 @@ const ViewParaPage = () => {
   const { user_id } = router.query;
   const { data: me } = trpc.user.getMe.useQuery();
 
+  //maybe remove these two pages?
   const VIEW_STATES = { MAIN: 0, EDIT: 1 };
 
   const handleEditState = () => {
-    setViewState(VIEW_STATES.EDIT);
+    handleOpen();
+    //setViewState(VIEW_STATES.EDIT);
   };
 
   const handleMainState = () => {
-    setViewState(VIEW_STATES.MAIN);
+    handleClose();
+    //setViewState(VIEW_STATES.MAIN);
   };
 
   const { data: para, isLoading } = trpc.para.getParaById.useQuery(
