@@ -12,6 +12,7 @@ import { GoalHeader } from "@/components/goal-header/goal-header";
 import { Typography } from "@mui/material";
 import Subgoals from "@/components/subgoal/Subgoal";
 import Benchmarks from "@/components/benchmarks/Benchmarks";
+import { subgoal } from "zapatos/schema";
 
 enum selectionValue {
   ALL,
@@ -174,8 +175,7 @@ const GoalPage = () => {
           <h2>Benchmarks</h2>
         </Grid>
       </Grid>
-      {/* Benchmarks */}
-      <Benchmarks subgoals={subgoals} />
+      <Benchmarks subgoals={subgoals || []} />
     </Stack>
   );
 };

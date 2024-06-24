@@ -9,7 +9,6 @@ import Link from "next/link";
 import { Typography } from "@mui/material";
 import Subgoals from "@/components/subgoal/Subgoal";
 import { type Subgoal } from "@/types/global";
-
 enum selectionValue {
   ALL,
   ACTIVE,
@@ -22,6 +21,10 @@ interface SelectableTabProps {
   value: selectionValue;
   handleSelect: (e: MouseEvent) => void;
   currentlySelected: selectionValue;
+}
+
+interface BenchmarksProps {
+  subgoals: Subgoal[];
 }
 
 const SelectableTab = ({
