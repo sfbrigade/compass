@@ -79,8 +79,9 @@ export default function HorizontalLinearAlternativeLabelStepper() {
                       color: "#3023B8",
                     },
                   },
-                  "& .MuiStepLabel-labelContainer.MuiStepLabel-alternativeLabel":
+                  "& .MuiStepLabel-labelContainer .MuiStepLabel-alternativeLabel":
                     {
+                      marginTop: 0,
                       textAlign: "left",
                     },
                   "& .MuiStepLabel-label": {
