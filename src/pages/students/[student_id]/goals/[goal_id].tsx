@@ -113,26 +113,25 @@ const GoalPage = () => {
         margin: "auto",
       }}
     >
-      <Grid container justifyContent="space-between">
-        <Grid item>
-          {goal && goals && (
-            <GoalHeader
-              name={`Goal #${
-                goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
-              }`}
-              description={goal.description}
-              createdAt={goal.created_at}
-              goalId={goal.goal_id}
-            />
-          )}
-        </Grid>
-      </Grid>
-
       {/* Goal Description */}
       <Container className={$GoalPage.goalDescriptionContainer}>
         {!editGoal && (
           <>
-            <p>{goal?.description}</p>
+            <Grid container justifyContent="space-between">
+              <Grid item>
+                {goal && goals && (
+                  <GoalHeader
+                    name={`Goal #${
+                      goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 ||
+                      0
+                    }`}
+                    description={goal.description}
+                    createdAt={goal.created_at}
+                    goalId={goal.goal_id}
+                  />
+                )}
+              </Grid>
+            </Grid>
             <button
               className={$button.default}
               onClick={showEditGoal}
