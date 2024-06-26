@@ -12,6 +12,7 @@ import { format } from "date-fns";
 
 interface SubgoalProps {
   subgoal: Subgoal;
+  index?: number;
 }
 
 interface InfoProps {
@@ -43,7 +44,7 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const Subgoals = ({ subgoal }: SubgoalProps) => {
+const Subgoals = ({ subgoal, index }: SubgoalProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   return (
     <Box
@@ -65,7 +66,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           display="block"
           gutterBottom
         >
-          #{subgoal.subgoal_id} created on {format(subgoal.created_at, "P")}
+          #{(index ?? 0) + 1} created on {format(subgoal.created_at, "P")}
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
@@ -97,8 +98,14 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
             {subgoal?.baseline_level}%{" "}
           </Info>
           <Info description={"TARGET LEVEL"}> {subgoal?.target_level}% </Info>
-          <Info description={"CURRENT LEVEL"}> X </Info>
-          <Info description={"# OF TRIALS"}> X </Info>
+          <Info description={"CURRENT LEVEL"}>
+            {" "}
+            {subgoal?.current_level || "N/A"}{" "}
+          </Info>
+          <Info description={"# OF TRIALS"}>
+            {" "}
+            {subgoal?.number_of_trials || "N/A"}
+          </Info>
           <Info description="DATA">
             <Box
               sx={{

@@ -13,12 +13,11 @@ import { Typography } from "@mui/material";
 import Subgoals from "@/components/subgoal/Subgoal";
 import Benchmarks from "@/components/benchmarks/Benchmarks";
 import { subgoal } from "zapatos/schema";
+import { on } from "events";
 
 enum selectionValue {
   ALL,
-  ACTIVE,
   COMPLETE,
-  DRAFTS,
 }
 
 interface SelectableTabProps {
@@ -51,13 +50,20 @@ const GoalPage = () => {
   const utils = trpc.useContext();
 
   const router = useRouter();
-  const { goal_id } = router.query;
 
+  const { goal_id, student_id } = router.query;
+  const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
+    { student_id: student_id as string },
+    { enabled: Boolean(student_id), retry: false }
+  );
+  const { data: goals } = trpc.iep.getGoals.useQuery({
+    iep_id: activeIep?.iep_id || "",
+  });
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
 
   const [activeTab, setActiveTab] = useState<selectionValue>(
-    selectionValue.ACTIVE
+    selectionValue.ALL
   );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
@@ -109,9 +115,11 @@ const GoalPage = () => {
     >
       <Grid container justifyContent="space-between">
         <Grid item>
-          {goal && (
+          {goal && goals && (
             <GoalHeader
-              name="[placeholder] 1st Goal"
+              name={`Goal #${
+                goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
+              }`}
               description={goal.description}
               createdAt={goal.created_at}
               goalId={goal.goal_id}
