@@ -113,5 +113,84 @@ export const theme = createTheme({
         disableRipple: true,
       },
     },
+    MuiStep: {
+      defaultProps: {},
+      styleOverrides: {
+        /*
+        valueLabel: ({ ownerState, theme }) => ({
+          ...(ownerState.orientation === 'vertical' && {
+            backgroundColor: 'transparent',
+            color: theme.palette.grey[500],
+          }),
+        }),
+        */
+        root: ({ ownerState, theme }) => ({
+          padding: 0,
+          marginRight: !ownerState.last ? "16px" : 0,
+          // index < steps.length - 1 ? "16px" : 0,
+          "&.Mui-disabled": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-active": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-completed": {
+            //TODO: this works, but the others are broken b/c MUI does not add their classNames as described in MUI docs; once fixed, we can move the purple border-top styling here instead
+          },
+        }),
+      },
+    },
+    /*MuiStep: {
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          ...(ownerState.variant === 'contained' &&
+            ownerState.color === 'primary' && {
+              backgroundColor: '#202020',
+              color: '#fff',
+            }),
+        }),
+      },
+    },*/
+    MuiStepLabel: {
+      styleOverrides: {
+        iconContainer: ({ ownerState, theme }) => ({
+          position: "absolute",
+          left: 0,
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          "&.Mui-disabled": {
+            color: "#A2ACB3",
+          },
+          "&.Mui-active": {
+            color: "#9B93F1",
+          },
+          "&.Mui-completed": {
+            color: "#3023B8",
+          },
+        }),
+        labelContainer: ({ ownerState, theme }) => ({
+          marginTop: 0,
+          textAlign: "left",
+        }),
+        label: ({ ownerState, theme }) => ({
+          marginTop: 0,
+          padding: "9px",
+          paddingLeft: "32px",
+          "&.Mui-disabled": {
+            color: "#2A333C",
+            borderTop: `4px solid #A2ACB3`,
+          },
+          "&.Mui-active": {
+            color: "#2A333C",
+            borderTop: `4px solid ${theme.palette.primary.light}`,
+          },
+          "&.Mui-completed": {
+            color: "#3023B8",
+            borderTop: `4px solid ${theme.palette.primary.main}`,
+          },
+        }),
+      },
+    },
   },
 });
