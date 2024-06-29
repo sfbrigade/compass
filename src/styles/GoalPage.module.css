@@ -5,7 +5,7 @@
 }
 
 .benchmarksContainer {
-  background-color: var(--grey-100);
+  background: var(--grey-90);
   padding-bottom: 2rem;
   min-height: 50vh;
   max-height: 70vh;
