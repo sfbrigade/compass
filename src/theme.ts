@@ -117,12 +117,28 @@ export const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          "& .MuiOutlinedInput-inputTypeSearch": {
+          "& .MuiInputLabel-outlined": {
+            color: "var(--grey-10)",
+            "&.Mui-focused": {
+              color: "var(--primary)",
+            },
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "var(--grey-10)",
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "var(--primary-90)",
+              borderColor: "var(--primary)",
               borderWidth: "1px",
-              borderRadius: "20px",
-              backgroundColor: "var(--primary-99)",
+            },
+            "&.Mui-focused": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primary)",
+                borderWidth: "2px",
+              },
+            },
+            "&:hover:not(.Mui-focused)": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--grey-10)",
+              },
             },
           },
         },
