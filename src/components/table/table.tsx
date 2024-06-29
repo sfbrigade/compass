@@ -153,9 +153,55 @@ function EnhancedTableToolbar({
             }}
           >
             <h3 className={$table.tableTitle}>{type}</h3>
-            <button onClick={onOpenInput} className={`${$button.default}`}>
-              Add {type}
-            </button>
+
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "flex-end",
+              }}
+            >
+              <TextField
+                id="search-input"
+                placeholder="Search"
+                type="search"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start" color="var(--primary)">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+                variant="outlined"
+                value={searchParam}
+                onChange={onSearch}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    "& .MuiOutlinedInput-notchedOutline": {
+                      borderRadius: "30px",
+                      borderColor: "var(--primary)",
+                      borderSize: "1px",
+                      color: "var(--grey-30)",
+                    },
+                    "&:hover:not(.Mui-focused)": {
+                      border: "none",
+                      backgroundColor: "var(--primary-99)",
+                      borderRadius: "30px",
+                      color: "var(--grey-30)",
+                    },
+                    "&.Mui-focused": {
+                      borderColor: "var(--primary)",
+                      backgroundColor: "var(--primary-99)",
+                      borderRadius: "30px",
+                      color: "var(--grey-30)",
+                    },
+                  },
+                }}
+              />
+              <button onClick={onOpenInput} className={`${$button.default}`}>
+                Add {type}
+              </button>
+            </div>
           </div>
           <div
             style={{
@@ -167,20 +213,6 @@ function EnhancedTableToolbar({
             <Typography color="inherit" variant="subtitle1" component="div">
               {`Total: ${totalRows}`}
             </Typography>
-            <TextField
-              id="search-input"
-              placeholder="Search"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="standard"
-              value={searchParam}
-              onChange={onSearch}
-            />
           </div>
         </Toolbar>
       )}

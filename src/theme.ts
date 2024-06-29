@@ -1,3 +1,4 @@
+import { BorderColor } from "@mui/icons-material";
 import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
@@ -111,6 +112,20 @@ export const theme = createTheme({
     MuiCheckbox: {
       defaultProps: {
         disableRipple: true,
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-inputTypeSearch": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary-90)",
+              borderWidth: "1px",
+              borderRadius: "20px",
+              backgroundColor: "var(--primary-99)",
+            },
+          },
+        },
       },
     },
   },
