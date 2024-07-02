@@ -22,6 +22,9 @@ export const theme = createTheme({
       light: "#f0fff6", // --success-container
       dark: "#001e0d", // --on-success-container
     },
+    neutral: {
+      main: "#a2acb3", // --grey-50
+    },
   },
   breakpoints,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -163,12 +166,13 @@ export const theme = createTheme({
             color: "#A2ACB3",
           },
           "&.Mui-active": {
-            color: "#9B93F1",
+            color: `${theme.palette.primary.light}`,
           },
           "&.Mui-completed": {
-            color: "#3023B8",
+            color: `${theme.palette.primary.dark}`,
           },
         }),
+        // TODO: does this line up with StepLabel-labelContainer .MuiStepLabel-alternativeLabel
         labelContainer: ({ ownerState, theme }) => ({
           marginTop: 0,
           textAlign: "left",
