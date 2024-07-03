@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
-export const theme = createTheme({
+export const compassTheme = createTheme({
   palette: {
     primary: {
       main: "#3023b8", // --primary-50
@@ -22,9 +22,18 @@ export const theme = createTheme({
       light: "#f0fff6", // --success-container
       dark: "#001e0d", // --on-success-container
     },
-    neutral: {
-      main: "#a2acb3", // --grey-50
-    },
+    /*neutral: {
+      10: "#021426",
+      20: "#2a333c",
+      30: "#586874",
+      40: "#788591",
+      50: "#a2acb3",
+      60: "#b9c1c6",
+      70: "#d6dde1",
+      80: "#f4f6f7",
+      90: "#f6f8f9",
+      100: "#ffffff",
+    },*/
   },
   breakpoints,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -163,34 +172,42 @@ export const theme = createTheme({
           display: "flex",
           alignItems: "center",
           "&.Mui-disabled": {
-            color: "#A2ACB3",
+            color: "#a2acb3",
           },
           "&.Mui-active": {
-            color: `${theme.palette.primary.light}`,
+            color: theme.palette.primary.light,
           },
           "&.Mui-completed": {
-            color: `${theme.palette.primary.dark}`,
+            color: theme.palette.primary.main,
           },
         }),
-        // TODO: does this line up with StepLabel-labelContainer .MuiStepLabel-alternativeLabel
-        labelContainer: ({ ownerState, theme }) => ({
-          marginTop: 0,
-          textAlign: "left",
-        }),
+        // // TODO: does this line up with StepLabel-labelContainer .MuiStepLabel-alternativeLabel
+        // labelContainer: ({ ownerState, theme }) => ({
+        //   marginTop: 0,
+        //   textAlign: "left",
+        // }),
+        // alternativeLabel: ({ ownerState, theme }) => ({
+        //   marginTop: 0,
+        //   textAlign: "left",
+        // }),
         label: ({ ownerState, theme }) => ({
-          marginTop: 0,
           padding: "9px",
           paddingLeft: "32px",
+          textAlign: "left",
+          "&.MuiStepLabel-alternativeLabel": {
+            marginTop: 0,
+            textAlign: "left",
+          },
           "&.Mui-disabled": {
             color: "#2A333C",
-            borderTop: `4px solid #A2ACB3`,
+            borderTop: `4px solid #a2acb3`,
           },
           "&.Mui-active": {
             color: "#2A333C",
             borderTop: `4px solid ${theme.palette.primary.light}`,
           },
           "&.Mui-completed": {
-            color: "#3023B8",
+            color: theme.palette.primary.main,
             borderTop: `4px solid ${theme.palette.primary.main}`,
           },
         }),
