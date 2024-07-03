@@ -18,6 +18,10 @@ const CreateBenchmarkPage = () => {
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
 
+    console.log(
+      "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
+    );
+
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
       status: "In Progress",
@@ -66,20 +70,56 @@ const CreateBenchmarkPage = () => {
           spacing={4}
         >
           <Stack spacing={4} p={3} pr={0}>
-            <Typography variant="h4">Benchmark</Typography>
+            <Typography variant="h3">
+              Benchmark #1 - Instructional Guidelines
+            </Typography>
+            <Typography variant="h6">Benchmark Description</Typography>
+            <Typography variant="body1">
+              Provide a written description of this benchmark
+            </Typography>
             <TextField
               label="Description"
-              multiline
               required
-              minRows={3}
               name="description"
+              defaultValue={
+                "What level this student should attain in a certain skill by a certain date..."
+              }
             />
+            <Typography variant="h6">Activity Setup</Typography>
+            <Typography variant="body1">
+              Describe how staff should set up a trial to measure this
+              benchmark.
+            </Typography>
             <TextField
               label="Setup"
-              multiline
               required
-              minRows={3}
               name="setup"
+              defaultValue={
+                "Describe the timing, environment, or other conditions..."
+              }
+            />
+            <Typography variant="h6">Materials needed</Typography>
+            <Typography variant="body1">
+              List any materials that staff will need to conduct a trial for
+              this benchmark.
+            </Typography>
+            <TextField
+              label="Materials"
+              required
+              name="materials"
+              defaultValue={"Eg. pencil, worksheets, timer, etc..."}
+            />
+            <Typography variant="h6">Instructions</Typography>
+            <Typography variant="body1">
+              Describe how staff should conduct a trial for this benchmark.
+            </Typography>
+            <TextField
+              label="Materials"
+              required
+              name="materials"
+              defaultValue={
+                "What level of prompting is permitted, what specific actions staff should take, what they should be observing..."
+              }
             />
 
             <Stack spacing={2}>
@@ -118,24 +158,6 @@ const CreateBenchmarkPage = () => {
                 />
               </Stack>
             </Stack>
-          </Stack>
-
-          <Stack spacing={4} p={3} pl={0} flexGrow={1}>
-            <Typography variant="h4">Details</Typography>
-            <TextField
-              multiline
-              label="Materials"
-              minRows={3}
-              required
-              name="materials"
-            />
-            <TextField
-              multiline
-              label="Instructions"
-              minRows={3}
-              required
-              name="instructions"
-            />
           </Stack>
         </Stack>
 
