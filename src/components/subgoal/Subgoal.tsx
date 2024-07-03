@@ -49,7 +49,7 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
   return (
     <Box
       sx={{
-        marginBottom: "1rem",
+        marginBottom: "2rem",
       }}
     >
       <Box
