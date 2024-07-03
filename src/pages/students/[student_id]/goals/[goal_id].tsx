@@ -116,34 +116,42 @@ const GoalPage = () => {
       {/* Goal Description */}
       <Container className={$GoalPage.goalDescriptionContainer}>
         {!editGoal && (
-          <>
-            <Grid container justifyContent="space-between">
-              <Grid item>
-                {goal && goals && (
-                  <GoalHeader
-                    name={`Goal #${
-                      goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 ||
-                      0
-                    }`}
-                    description={goal.description}
-                    createdAt={goal.created_at}
-                    goalId={goal.goal_id}
-                  />
-                )}
-              </Grid>
+          <Grid container justifyContent="space-between">
+            <Grid item>
+              {goal && goals && (
+                <GoalHeader
+                  name={`Goal #${
+                    goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
+                  }`}
+                  description={goal.description}
+                  createdAt={goal.created_at}
+                  goalId={goal.goal_id}
+                />
+              )}
             </Grid>
-            <button
-              className={$button.default}
-              onClick={showEditGoal}
-              style={{
-                margin: "auto",
-                marginTop: "1rem",
-                marginBottom: "1rem",
+            <Grid
+              sx={{
+                display: "flex",
+                flexDirection: "start",
+                justifyContent: "start",
+                justifyItems: "start",
+                height: "100%",
               }}
+              item
             >
-              Edit Goal
-            </button>
-          </>
+              <button
+                className={$button.default}
+                onClick={showEditGoal}
+                style={{
+                  margin: "auto",
+                  marginTop: "1rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                Edit Goal
+              </button>
+            </Grid>
+          </Grid>
         )}
         {editGoal && (
           <form style={{ marginTop: "1rem" }} onSubmit={submitEditGoal}>

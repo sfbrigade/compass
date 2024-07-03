@@ -40,7 +40,7 @@ const SelectableTab = ({
   );
 };
 
-const NoBenchmarksGraphic = ({ blurb }: { blurb: string }) => {
+const NoBenchmarksGraphic = ({ blurb }: { blurb?: string }) => {
   const router = useRouter();
   return (
     <Grid
