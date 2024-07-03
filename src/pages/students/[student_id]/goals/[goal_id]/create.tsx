@@ -13,15 +13,14 @@ const CreateBenchmarkPage = () => {
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
 
+  console.log(
+    "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
+  );
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget as HTMLFormElement;
     const formData = new FormData(form);
-
-    console.log(
-      "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
-    );
-
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
       status: "In Progress",
@@ -35,12 +34,64 @@ const CreateBenchmarkPage = () => {
       attempts_per_trial: Number(formData.get("attempts_per_trial")) || null,
       number_of_trials: Number(formData.get("number_of_trials")) || null,
     });
-
     await router.push(
       `/students/${router.query.student_id as string}/goals/${
         router.query.goal_id as string
       }`
     );
+  };
+
+  const textFieldData = [
+    {
+      title: "Benchmark Description",
+      description: "Provide a written description of this benchmark.",
+      label: "Description",
+      name: "description",
+      placeholder:
+        "What level this student should attain in a certain skill by a certain date...",
+    },
+    {
+      title: "Activity Setup",
+      description:
+        "Describe how staff should set up a trial to measure this benchmark.",
+      label: "Setup",
+      name: "setup",
+      placeholder: "Describe the timing, environment, or other conditions...",
+    },
+    {
+      title: "Materials needed",
+      description:
+        "List any materials that staff will need to conduct a trial for this benchmark.",
+      label: "Materials",
+      name: "materials",
+      placeholder: "Eg. pencil, worksheets, timer, etc...",
+    },
+    {
+      title: "Instructions",
+      description:
+        "Describe how staff should conduct a trial for this benchmark.",
+      label: "Instructions",
+      name: "instructions",
+      placeholder:
+        "What level of prompting is permitted, what specific actions staff should take, what they should be observing...",
+    },
+  ];
+
+  const renderTextFields = () => {
+    return textFieldData.map((field, index) => (
+      <Stack spacing={2} p={3} pr={0} key={index}>
+        <Typography variant="h6">{field.title}</Typography>
+        <Typography variant="body1">{field.description}</Typography>
+        <TextField
+          label={field.label}
+          required
+          multiline
+          rows={4}
+          name={field.name}
+          defaultValue={field.placeholder}
+        />
+      </Stack>
+    ));
   };
 
   return (
@@ -73,54 +124,8 @@ const CreateBenchmarkPage = () => {
             <Typography variant="h3">
               Benchmark #1 - Instructional Guidelines
             </Typography>
-            <Typography variant="h6">Benchmark Description</Typography>
-            <Typography variant="body1">
-              Provide a written description of this benchmark
-            </Typography>
-            <TextField
-              label="Description"
-              required
-              name="description"
-              defaultValue={
-                "What level this student should attain in a certain skill by a certain date..."
-              }
-            />
-            <Typography variant="h6">Activity Setup</Typography>
-            <Typography variant="body1">
-              Describe how staff should set up a trial to measure this
-              benchmark.
-            </Typography>
-            <TextField
-              label="Setup"
-              required
-              name="setup"
-              defaultValue={
-                "Describe the timing, environment, or other conditions..."
-              }
-            />
-            <Typography variant="h6">Materials needed</Typography>
-            <Typography variant="body1">
-              List any materials that staff will need to conduct a trial for
-              this benchmark.
-            </Typography>
-            <TextField
-              label="Materials"
-              required
-              name="materials"
-              defaultValue={"Eg. pencil, worksheets, timer, etc..."}
-            />
-            <Typography variant="h6">Instructions</Typography>
-            <Typography variant="body1">
-              Describe how staff should conduct a trial for this benchmark.
-            </Typography>
-            <TextField
-              label="Materials"
-              required
-              name="materials"
-              defaultValue={
-                "What level of prompting is permitted, what specific actions staff should take, what they should be observing..."
-              }
-            />
+
+            {renderTextFields()}
 
             <Stack spacing={2}>
               <Typography variant="h4">Metrics</Typography>
