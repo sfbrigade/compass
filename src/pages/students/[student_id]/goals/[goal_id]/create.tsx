@@ -3,6 +3,7 @@ import { GoalHeader } from "@/components/goal-header/goal-header";
 import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import $button from "@/components/design_system/button/Button.module.css";
+import { useState } from "react";
 
 const CreateBenchmarkPage = () => {
   const router = useRouter();
@@ -12,6 +13,13 @@ const CreateBenchmarkPage = () => {
   );
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
+
+  const VIEW_STATES = {
+    BENCHMARK_PG_1: 0,
+    BENCHMARK_PG_2: 1,
+  };
+
+  const [viewState, setViewState] = useState(VIEW_STATES.BENCHMARK_PG_1);
 
   console.log(
     "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
@@ -41,7 +49,15 @@ const CreateBenchmarkPage = () => {
     );
   };
 
-  const textFieldData = [
+  interface Benchmark {
+    title: string;
+    description: string;
+    label: string;
+    name: string;
+    placeholder: string;
+  }
+
+  const textFieldData1 = [
     {
       title: "Benchmark Description",
       description: "Provide a written description of this benchmark.",
@@ -66,6 +82,9 @@ const CreateBenchmarkPage = () => {
       name: "materials",
       placeholder: "Eg. pencil, worksheets, timer, etc...",
     },
+  ];
+
+  const textFieldData2 = [
     {
       title: "Instructions",
       description:
@@ -77,18 +96,20 @@ const CreateBenchmarkPage = () => {
     },
   ];
 
-  const renderTextFields = () => {
+  const renderTextFields = (textFieldData: Benchmark[]) => {
     return textFieldData.map((field, index) => (
-      <Stack spacing={2} p={3} pr={0} key={index}>
+      <Stack spacing={2} p={2} pl={0} width="100%" key={index}>
         <Typography variant="h6">{field.title}</Typography>
         <Typography variant="body1">{field.description}</Typography>
         <TextField
           label={field.label}
+          fullWidth
           required
           multiline
           rows={4}
           name={field.name}
           defaultValue={field.placeholder}
+          // placeholder={field.placeholder}
         />
       </Stack>
     ));
@@ -100,6 +121,7 @@ const CreateBenchmarkPage = () => {
       bgcolor="white"
       borderRadius={2}
       onSubmit={handleSubmit}
+      width="100%"
     >
       <Box p={4}>
         {goal && (
@@ -115,71 +137,96 @@ const CreateBenchmarkPage = () => {
       <Divider />
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
-        <Stack
-          direction="row"
-          divider={<Divider orientation="vertical" flexItem />}
-          spacing={4}
-        >
-          <Stack spacing={4} p={3} pr={0}>
-            <Typography variant="h3">
-              Benchmark #1 - Instructional Guidelines
-            </Typography>
+        <Stack direction="row" spacing={4}>
+          {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
+            <Stack spacing={4} p={3} pr={0}>
+              <Typography variant="h3">
+                Benchmark #1 - Instructional Guidelines
+              </Typography>
 
-            {renderTextFields()}
+              {renderTextFields(textFieldData1)}
+            </Stack>
+          )}
 
-            <Stack spacing={2}>
-              <Typography variant="h4">Metrics</Typography>
-              <Stack direction="row" spacing={4}>
-                <Stack direction="row" alignItems="center">
-                  <TextField
-                    label="Target Level"
-                    required
-                    type="number"
-                    name="target_level"
-                  />
-                  <Typography ml={1}>%</Typography>
+          {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
+            <Stack spacing={4} p={3} pr={0}>
+              <Typography variant="h3">
+                Benchmark #1 - Data Collection
+              </Typography>
+
+              {renderTextFields(textFieldData2)}
+
+              <Stack spacing={2}>
+                <Typography variant="h4">Metrics</Typography>
+                <Stack direction="row" spacing={4}>
+                  <Stack direction="row" alignItems="center">
+                    <TextField
+                      label="Target Level"
+                      required
+                      type="number"
+                      name="target_level"
+                    />
+                    <Typography ml={1}>%</Typography>
+                  </Stack>
+                  <Stack direction="row" alignItems="center">
+                    <TextField
+                      label="Baseline Level"
+                      required
+                      type="number"
+                      name="baseline_level"
+                    />
+                    <Typography ml={1}>%</Typography>
+                  </Stack>
+                  <TextField label="Metric to track" name="metric_name" />
                 </Stack>
-                <Stack direction="row" alignItems="center">
+                <Stack direction="row" alignItems="center" spacing={7}>
                   <TextField
-                    label="Baseline Level"
-                    required
+                    label="Attempts Per Trial"
                     type="number"
-                    name="baseline_level"
+                    name="attempts_per_trial"
                   />
-                  <Typography ml={1}>%</Typography>
+                  <TextField
+                    label="Number of Trials"
+                    type="number"
+                    name="number_of_trials"
+                  />
                 </Stack>
-                <TextField label="Metric to track" name="metric_name" />
-              </Stack>
-              <Stack direction="row" alignItems="center" spacing={7}>
-                <TextField
-                  label="Attempts Per Trial"
-                  type="number"
-                  name="attempts_per_trial"
-                />
-                <TextField
-                  label="Number of Trials"
-                  type="number"
-                  name="number_of_trials"
-                />
               </Stack>
             </Stack>
+          )}
+        </Stack>
+
+        {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
+          <Stack direction="row" spacing={2} p={4} pt={0} justifyContent="end">
+            <button
+              type="reset"
+              onClick={router.back}
+              className={$button.secondary}
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_2)}
+              className={$button.default}
+            >
+              Next
+            </button>
           </Stack>
-        </Stack>
+        )}
 
-        <Divider />
-
-        <Stack direction="row" spacing={2} p={4} justifyContent="space-between">
-          <button
-            type="reset"
-            onClick={router.back}
-            className={$button.secondary}
-          >
-            Cancel
-          </button>
-          <button type="submit" className={$button.default}>
-            Create
-          </button>
-        </Stack>
+        {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
+          <Stack direction="row" spacing={2} p={4} justifyContent="end">
+            <button
+              onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_1)}
+              className={$button.secondary}
+            >
+              Back
+            </button>
+            <button type="submit" className={$button.default}>
+              Create Benchmark
+            </button>
+          </Stack>
+        )}
       </fieldset>
     </Stack>
   );
