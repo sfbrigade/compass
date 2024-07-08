@@ -1,9 +1,18 @@
 import { trpc } from "@/client/lib/trpc";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import $button from "@/components/design_system/button/Button.module.css";
 import { useState } from "react";
+import ProgressBar from "@/components/design_system/progressBar/ProgressBar";
+
+interface Benchmark {
+  title: string;
+  description: string;
+  label: string;
+  name: string;
+  placeholder: string;
+}
 
 const CreateBenchmarkPage = () => {
   const router = useRouter();
@@ -48,14 +57,6 @@ const CreateBenchmarkPage = () => {
       }`
     );
   };
-
-  interface Benchmark {
-    title: string;
-    description: string;
-    label: string;
-    name: string;
-    placeholder: string;
-  }
 
   const textFieldData1 = [
     {
@@ -120,6 +121,7 @@ const CreateBenchmarkPage = () => {
       component="form"
       bgcolor="white"
       borderRadius={2}
+      gap={4}
       onSubmit={handleSubmit}
       width="100%"
     >
@@ -134,12 +136,17 @@ const CreateBenchmarkPage = () => {
         )}
       </Box>
 
-      <Divider />
+      <Box bgcolor={"var(--grey-80)"} py={4}>
+        <Typography variant="h3" textAlign="left" pb={2}>
+          Create Benchmark
+        </Typography>
+        <ProgressBar value={50} />
+      </Box>
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
         <Stack direction="row" spacing={4}>
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
-            <Stack spacing={4} p={3} pr={0}>
+            <Stack spacing={4} pl={3} pr={0} pb={3}>
               <Typography variant="h3">
                 Benchmark #1 - Instructional Guidelines
               </Typography>
