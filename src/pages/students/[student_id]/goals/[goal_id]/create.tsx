@@ -83,9 +83,6 @@ const CreateBenchmarkPage = () => {
       name: "materials",
       placeholder: "Eg. pencil, worksheets, timer, etc...",
     },
-  ];
-
-  const textFieldData2 = [
     {
       title: "Instructions",
       description:
@@ -97,9 +94,20 @@ const CreateBenchmarkPage = () => {
     },
   ];
 
+  const textFieldData2 = [
+    {
+      title: "Frequency",
+      description: "How often should data be collected for this benchmark?",
+      label: "Frequency",
+      name: "frequency",
+      placeholder:
+        "Eg. once per week, every Monday, as much as possible, etc...",
+    },
+  ];
+
   const renderTextFields = (textFieldData: Benchmark[]) => {
     return textFieldData.map((field, index) => (
-      <Stack spacing={2} p={2} pl={0} width="100%" key={index}>
+      <Stack spacing={2} width="100%" key={index}>
         <Typography variant="h6">{field.title}</Typography>
         <Typography variant="body1">{field.description}</Typography>
         <TextField
@@ -123,7 +131,7 @@ const CreateBenchmarkPage = () => {
       borderRadius={2}
       gap={4}
       onSubmit={handleSubmit}
-      width="100%"
+      maxWidth="1000px"
     >
       <Box p={4}>
         {goal && (
@@ -146,7 +154,7 @@ const CreateBenchmarkPage = () => {
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
         <Stack direction="row" spacing={4}>
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
-            <Stack spacing={4} pl={3} pr={0} pb={3}>
+            <Stack spacing={4} px={3} pb={1} width={"100%"}>
               <Typography variant="h3">
                 Benchmark #1 - Instructional Guidelines
               </Typography>
@@ -156,7 +164,7 @@ const CreateBenchmarkPage = () => {
           )}
 
           {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
-            <Stack spacing={4} p={3} pr={0}>
+            <Stack spacing={4} px={3} pb={1} width={"100%"}>
               <Typography variant="h3">
                 Benchmark #1 - Data Collection
               </Typography>
@@ -164,17 +172,8 @@ const CreateBenchmarkPage = () => {
               {renderTextFields(textFieldData2)}
 
               <Stack spacing={2}>
-                <Typography variant="h4">Metrics</Typography>
-                <Stack direction="row" spacing={4}>
-                  <Stack direction="row" alignItems="center">
-                    <TextField
-                      label="Target Level"
-                      required
-                      type="number"
-                      name="target_level"
-                    />
-                    <Typography ml={1}>%</Typography>
-                  </Stack>
+                <Typography variant="h4">Metric to track</Typography>
+                <Stack direction="row" spacing={4} justifyContent="left">
                   <Stack direction="row" alignItems="center">
                     <TextField
                       label="Baseline Level"
@@ -184,9 +183,15 @@ const CreateBenchmarkPage = () => {
                     />
                     <Typography ml={1}>%</Typography>
                   </Stack>
-                  <TextField label="Metric to track" name="metric_name" />
-                </Stack>
-                <Stack direction="row" alignItems="center" spacing={7}>
+                  <Stack direction="row" alignItems="center">
+                    <TextField
+                      label="Target Level"
+                      required
+                      type="number"
+                      name="target_level"
+                    />
+                    <Typography ml={1}>%</Typography>
+                  </Stack>
                   <TextField
                     label="Attempts Per Trial"
                     type="number"
