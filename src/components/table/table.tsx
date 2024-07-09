@@ -158,7 +158,7 @@ function EnhancedTableToolbar({
               style={{
                 display: "flex",
                 justifyContent: "space-around",
-                alignItems: "flex-end",
+                alignItems: "center",
               }}
             >
               <TextField
@@ -177,24 +177,31 @@ function EnhancedTableToolbar({
                 onChange={onSearch}
                 sx={{
                   "& .MuiOutlinedInput-root": {
+                    color: "var(--grey-30)",
+                    height: "56px",
+                    marginRight: "10px",
                     "& .MuiOutlinedInput-notchedOutline": {
                       borderRadius: "30px",
                       borderColor: "var(--primary)",
                       borderSize: "1px",
-                      color: "var(--grey-30)",
+                      height: "56px",
                     },
                     "&:hover:not(.Mui-focused)": {
                       border: "none",
                       backgroundColor: "var(--primary-99)",
                       borderRadius: "30px",
-                      color: "var(--grey-30)",
+                      height: "56px",
                     },
                     "&.Mui-focused": {
                       borderColor: "var(--primary)",
                       backgroundColor: "var(--primary-99)",
                       borderRadius: "30px",
                       color: "var(--grey-30)",
+                      height: "56px",
                     },
+                  },
+                  "& .MuiInputAdornment-root": {
+                    color: "var(--primary)",
                   },
                 }}
               />

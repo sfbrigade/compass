@@ -1,4 +1,4 @@
-import { BorderColor } from "@mui/icons-material";
+import { BorderAllRounded, BorderColor } from "@mui/icons-material";
 import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
@@ -127,12 +127,12 @@ export const theme = createTheme({
             color: "var(--grey-10)",
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: "var(--primary)",
-              borderWidth: "1px",
+              borderSize: "1px",
             },
             "&.Mui-focused": {
               "& .MuiOutlinedInput-notchedOutline": {
                 borderColor: "var(--primary)",
-                borderWidth: "2px",
+                borderSize: "2px",
               },
             },
             "&:hover:not(.Mui-focused)": {
