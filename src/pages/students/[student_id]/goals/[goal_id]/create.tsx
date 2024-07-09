@@ -117,8 +117,8 @@ const CreateBenchmarkPage = () => {
           multiline
           rows={4}
           name={field.name}
-          defaultValue={field.placeholder}
-          // placeholder={field.placeholder}
+          // defaultValue={field.placeholder}
+          placeholder={field.placeholder}
         />
       </Stack>
     ));
