@@ -2,6 +2,8 @@ import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
+import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
+
 export const compassTheme = createTheme({
   palette: {
     primary: {
@@ -164,6 +166,9 @@ export const compassTheme = createTheme({
       },
     },*/
     MuiStepLabel: {
+      defaultProps: {
+        icon: <TripOriginRoundedIcon />,
+      },
       styleOverrides: {
         iconContainer: ({ ownerState, theme }) => ({
           position: "absolute",
