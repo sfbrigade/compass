@@ -2,8 +2,6 @@ import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
-import TripOriginRoundedIcon from "@mui/icons-material/TripOriginRounded";
-
 export const compassTheme = createTheme({
   palette: {
     primary: {
@@ -127,6 +125,36 @@ export const compassTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputLabel-outlined": {
+            color: "var(--grey-10)",
+            "&.Mui-focused": {
+              color: "var(--primary)",
+            },
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "var(--grey-10)",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "1px",
+            },
+            "&.Mui-focused": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primary)",
+                borderWidth: "2px",
+              },
+            },
+            "&:hover:not(.Mui-focused)": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--grey-10)",
+              },
+            },
+          },
+        },
+      },
+    },
     MuiStep: {
       defaultProps: {},
       styleOverrides: {
@@ -166,9 +194,6 @@ export const compassTheme = createTheme({
       },
     },*/
     MuiStepLabel: {
-      defaultProps: {
-        icon: <TripOriginRoundedIcon />,
-      },
       styleOverrides: {
         iconContainer: ({ ownerState, theme }) => ({
           position: "absolute",

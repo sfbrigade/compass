@@ -50,7 +50,7 @@ const ViewStudentPage = () => {
       enabled: Boolean(student_id),
       retry: false,
       onError: () => returnToStudentList(),
-    }
+    },
   );
 
   const returnToStudentList = async () => {
@@ -59,7 +59,7 @@ const ViewStudentPage = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id), retry: false }
+    { enabled: Boolean(student_id), retry: false },
   );
 
   const editMutation = trpc.case_manager.editStudent.useMutation({
@@ -174,26 +174,6 @@ const ViewStudentPage = () => {
                     <Container className={$Modal.editModalContainer}>
                       <TextField
                         className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
                         label="First Name"
                         type="text"
                         name="firstName"
@@ -204,26 +184,6 @@ const ViewStudentPage = () => {
                     <Container className={$Modal.editModalContainer}>
                       <TextField
                         className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
                         label="Last Name"
                         type="text"
                         name="lastName"
@@ -234,26 +194,6 @@ const ViewStudentPage = () => {
                     <Container className={$Modal.editModalContainer}>
                       <TextField
                         className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
                         label="Email"
                         type="text"
                         name="email"
@@ -264,26 +204,6 @@ const ViewStudentPage = () => {
                     <Container className={$Modal.editModalContainer}>
                       <TextField
                         className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
                         label="Grade"
                         type="number"
                         name="grade"
@@ -296,26 +216,6 @@ const ViewStudentPage = () => {
                         <Container className={$Modal.editModalContainer}>
                           <TextField
                             className={$Modal.editModalTextfield}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#20159E",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root:hover": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiInputLabel-root.Mui-focused": {
-                                color: "#080155",
-                              },
-                            }}
                             label="IEP Start Date"
                             type="date"
                             name="start_date"
@@ -327,26 +227,6 @@ const ViewStudentPage = () => {
                         <Container className={$Modal.editModalContainer}>
                           <TextField
                             className={$Modal.editModalTextfield}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#20159E",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root:hover": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiInputLabel-root.Mui-focused": {
-                                color: "#080155",
-                              },
-                            }}
                             label="IEP End Date"
                             type="date"
                             name="end_date"
