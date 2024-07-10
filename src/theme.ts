@@ -22,18 +22,6 @@ export const compassTheme = createTheme({
       light: "#f0fff6", // --success-container
       dark: "#001e0d", // --on-success-container
     },
-    /*neutral: {
-      10: "#021426",
-      20: "#2a333c",
-      30: "#586874",
-      40: "#788591",
-      50: "#a2acb3",
-      60: "#b9c1c6",
-      70: "#d6dde1",
-      80: "#f4f6f7",
-      90: "#f6f8f9",
-      100: "#ffffff",
-    },*/
   },
   breakpoints,
   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -158,18 +146,9 @@ export const compassTheme = createTheme({
     MuiStep: {
       defaultProps: {},
       styleOverrides: {
-        /*
-        valueLabel: ({ ownerState, theme }) => ({
-          ...(ownerState.orientation === 'vertical' && {
-            backgroundColor: 'transparent',
-            color: theme.palette.grey[500],
-          }),
-        }),
-        */
         root: ({ ownerState, theme }) => ({
           padding: 0,
           marginRight: !ownerState.last ? "16px" : 0,
-          // index < steps.length - 1 ? "16px" : 0,
           "&.Mui-disabled": {
             //TODO: broken b/c MUI does not add this className as described in MUI docs
           },
@@ -182,17 +161,6 @@ export const compassTheme = createTheme({
         }),
       },
     },
-    /*MuiStep: {
-      styleOverrides: {
-        root: ({ ownerState, theme }) => ({
-          ...(ownerState.variant === 'contained' &&
-            ownerState.color === 'primary' && {
-              backgroundColor: '#202020',
-              color: '#fff',
-            }),
-        }),
-      },
-    },*/
     MuiStepLabel: {
       styleOverrides: {
         iconContainer: ({ ownerState, theme }) => ({
@@ -211,15 +179,6 @@ export const compassTheme = createTheme({
             color: theme.palette.primary.main,
           },
         }),
-        // // TODO: does this line up with StepLabel-labelContainer .MuiStepLabel-alternativeLabel
-        // labelContainer: ({ ownerState, theme }) => ({
-        //   marginTop: 0,
-        //   textAlign: "left",
-        // }),
-        // alternativeLabel: ({ ownerState, theme }) => ({
-        //   marginTop: 0,
-        //   textAlign: "left",
-        // }),
         label: ({ ownerState, theme }) => ({
           padding: "9px",
           paddingLeft: "32px",
