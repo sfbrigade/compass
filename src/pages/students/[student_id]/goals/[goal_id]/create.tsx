@@ -1,10 +1,18 @@
 import { trpc } from "@/client/lib/trpc";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import { Box, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Stack,
+  TextField,
+  Typography,
+  Stepper,
+  Step,
+  StepLabel,
+} from "@mui/material";
+import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
 import { useRouter } from "next/router";
 import $button from "@/components/design_system/button/Button.module.css";
 import { useState } from "react";
-import ProgressBar from "@/components/design_system/progressBar/ProgressBar";
 
 interface Benchmark {
   title: string;
@@ -18,7 +26,7 @@ const CreateBenchmarkPage = () => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) }
+    { enabled: Boolean(router.query.goal_id) },
   );
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
@@ -30,8 +38,10 @@ const CreateBenchmarkPage = () => {
 
   const [viewState, setViewState] = useState(VIEW_STATES.BENCHMARK_PG_1);
 
+  const steps = ["Instructional Guidelines", "Data Collection"];
+
   console.log(
-    "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
+    "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button.",
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -54,7 +64,7 @@ const CreateBenchmarkPage = () => {
     await router.push(
       `/students/${router.query.student_id as string}/goals/${
         router.query.goal_id as string
-      }`
+      }`,
     );
   };
 
@@ -148,7 +158,21 @@ const CreateBenchmarkPage = () => {
         <Typography variant="h3" textAlign="left" pb={2}>
           Create Benchmark
         </Typography>
-        <ProgressBar value={50} />
+        <Stepper activeStep={viewState} alternativeLabel connector={null}>
+          {steps.map((label, index) => (
+            <Step key={label}>
+              {index !== steps.length && (
+                <StepLabel
+                  StepIconComponent={
+                    index < viewState ? CheckCircle : TripOriginRounded
+                  }
+                >
+                  {label}
+                </StepLabel>
+              )}
+            </Step>
+          ))}
+        </Stepper>
       </Box>
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
