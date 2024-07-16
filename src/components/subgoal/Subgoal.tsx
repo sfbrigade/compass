@@ -84,7 +84,15 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
               {subgoal.description}
             </Box>
           </Box>
-          <Box sx={{ margin: "1rem" }}>Edit</Box>
+          <Box sx={{ margin: "1rem" }}>
+            <button
+              className={$button.tertiary}
+              onClick={() => alert("To be implemented")}
+            >
+              {" "}
+              Edit
+            </button>
+          </Box>
         </Box>
         <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />
         <Box

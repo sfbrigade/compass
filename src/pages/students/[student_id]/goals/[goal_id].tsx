@@ -14,7 +14,7 @@ import Subgoals from "@/components/subgoal/Subgoal";
 import Benchmarks from "@/components/benchmarks/Benchmarks";
 import { subgoal } from "zapatos/schema";
 import { on } from "events";
-
+import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
 enum selectionValue {
   ALL,
   COMPLETE,
@@ -47,7 +47,7 @@ const SelectableTab = ({
 };
 
 const GoalPage = () => {
-  const utils = trpc.useContext();
+  // const utils = trpc.useContext();
 
   const router = useRouter();
 
@@ -59,9 +59,10 @@ const GoalPage = () => {
   const { data: goals } = trpc.iep.getGoals.useQuery({
     iep_id: activeIep?.iep_id || "",
   });
+  /*
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
-
+*/
   const [activeTab, setActiveTab] = useState<selectionValue>(
     selectionValue.ALL
   );
@@ -75,7 +76,7 @@ const GoalPage = () => {
     { goal_id: goal_id as string },
     { enabled: Boolean(goal_id) }
   );
-
+  /*
   const showEditGoal = () => {
     setEditGoal(true);
     setEditGoalInput(goal?.description || "");
@@ -100,7 +101,7 @@ const GoalPage = () => {
     setEditGoal(false);
     setEditGoalInput("");
   };
-
+*/
   return (
     <Stack
       spacing={2}
@@ -114,77 +115,9 @@ const GoalPage = () => {
       }}
     >
       {/* Goal Description */}
-      <Container className={$GoalPage.goalDescriptionContainer}>
-        {!editGoal && (
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              {goal && goals && (
-                <GoalHeader
-                  name={`Goal #${
-                    goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
-                  }`}
-                  description={goal.description}
-                  createdAt={goal.created_at}
-                  goalId={goal.goal_id}
-                />
-              )}
-            </Grid>
-            <Grid
-              sx={{
-                display: "flex",
-                flexDirection: "start",
-                justifyContent: "start",
-                justifyItems: "start",
-                height: "100%",
-              }}
-              item
-            >
-              <button
-                className={$button.default}
-                onClick={showEditGoal}
-                style={{
-                  margin: "auto",
-                  marginTop: "1rem",
-                  marginBottom: "1rem",
-                }}
-              >
-                Edit Goal
-              </button>
-            </Grid>
-          </Grid>
-        )}
-        {editGoal && (
-          <form style={{ marginTop: "1rem" }} onSubmit={submitEditGoal}>
-            <textarea
-              value={editGoalInput}
-              name="description"
-              onChange={(e) => {
-                setEditGoalInput(e.target.value);
-              }}
-              className={$GoalPage.editGoalFormTextArea}
-            />
-            <Grid
-              container
-              justifyContent="space-around"
-              marginY={2}
-              md={6}
-              marginX="auto"
-            >
-              <Grid item>
-                <button className={$button.secondary} onClick={cancelEditGoal}>
-                  Cancel
-                </button>
-              </Grid>
-              <Grid item>
-                <button className={$button.default} type="submit">
-                  Save
-                </button>
-              </Grid>
-            </Grid>
-          </form>
-        )}
-      </Container>
-
+      {/* Need to pass entire array of goals as a prop in order to properly get index */}
+      <BenchmarkGoalHeader goal_id={goal_id} goal={goal} goals={goals} />
+      {/* Subgoals */}
       <Grid container justifyContent="space-between">
         <Grid item>
           <h2>Benchmarks</h2>
