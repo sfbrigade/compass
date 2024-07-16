@@ -1,5 +1,4 @@
 import React from "react";
-import StepperCustom from "@/components/design_system/stepper/StepperCustom";
 import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
@@ -20,7 +19,6 @@ const Settings = () => {
       <p>Demonstration of Stepper</p>
       <p>{`(to be deleted later)`}</p>
       <br />
-      <StepperCustom />
 
       <Box sx={{ width: "100%" }}>
         <Stepper activeStep={currentStep} alternativeLabel connector={null}>
