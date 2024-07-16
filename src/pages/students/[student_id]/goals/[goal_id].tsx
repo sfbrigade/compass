@@ -1,19 +1,10 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import { useState, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
-import Link from "next/link";
-import { GoalHeader } from "@/components/goal-header/goal-header";
-import { Typography } from "@mui/material";
-import Subgoals from "@/components/subgoal/Subgoal";
 import Benchmarks from "@/components/benchmarks/Benchmarks";
-import { subgoal } from "zapatos/schema";
-import { on } from "events";
 import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
 enum selectionValue {
   ALL,
@@ -47,61 +38,35 @@ const SelectableTab = ({
 };
 
 const GoalPage = () => {
-  // const utils = trpc.useContext();
-
   const router = useRouter();
-
-  const { goal_id, student_id } = router.query;
+  const goal_id = (router.query?.goal_id as string) || "";
+  const student_id = (router.query?.student_id as string) || "";
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
-    { student_id: student_id as string },
+    { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
   );
-  const { data: goals } = trpc.iep.getGoals.useQuery({
+  const { data: goals = [] } = trpc.iep.getGoals.useQuery({
     iep_id: activeIep?.iep_id || "",
   });
-  /*
-  const [editGoal, setEditGoal] = useState(false);
-  const [editGoalInput, setEditGoalInput] = useState("");
-*/
-  const [activeTab, setActiveTab] = useState<selectionValue>(
-    selectionValue.ALL
-  );
 
-  const { data: goal } = trpc.iep.getGoal.useQuery(
-    { goal_id: goal_id as string },
+  const {
+    data: goal = {
+      goal_id: "",
+      iep_id: null,
+      created_at: new Date(),
+      description: "",
+      category: "",
+    },
+  } = trpc.iep.getGoal.useQuery(
+    { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
 
   const { data: subgoals } = trpc.iep.getSubgoals.useQuery(
-    { goal_id: goal_id as string },
+    { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
-  /*
-  const showEditGoal = () => {
-    setEditGoal(true);
-    setEditGoalInput(goal?.description || "");
-  };
 
-  // TODO: modify callbacks for toast notification
-  const editMutation = trpc.iep.editGoal.useMutation({
-    onSuccess: () => utils.iep.getGoal.invalidate(),
-    onError: (err) => console.log({ err }),
-  });
-
-  const submitEditGoal = () => {
-    editMutation.mutate({
-      goal_id: goal_id as string,
-      description: editGoalInput,
-    });
-    setEditGoal(false);
-    setEditGoalInput("");
-  };
-
-  const cancelEditGoal = () => {
-    setEditGoal(false);
-    setEditGoalInput("");
-  };
-*/
   return (
     <Stack
       spacing={2}
