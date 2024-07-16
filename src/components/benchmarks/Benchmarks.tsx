@@ -133,7 +133,6 @@ export default function Benchmarks({ subgoals }: { subgoals: Subgoal[] }) {
           </Link>
         </Box>
       </Box>
-      {/* TODO: Populate Benchmarks container */}
       <Grid container className={$GoalPage.benchmarksContainer}>
         <Grid sx={{ width: "100%" }} item>
           {subgoals?.length === 0 ? (
