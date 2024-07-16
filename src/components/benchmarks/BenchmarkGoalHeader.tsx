@@ -37,7 +37,7 @@ const BenchmarkGoalHeader = ({
 
   const submitEditGoal = () => {
     editMutation.mutate({
-      goal_id: goal_id ,
+      goal_id: goal_id,
       description: editGoalInput,
     });
     setEditGoal(false);
