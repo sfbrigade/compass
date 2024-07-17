@@ -26,7 +26,7 @@ const CreateBenchmarkPage = () => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) },
+    { enabled: Boolean(router.query.goal_id) }
   );
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
@@ -41,7 +41,7 @@ const CreateBenchmarkPage = () => {
   const steps = ["Instructional Guidelines", "Data Collection"];
 
   console.log(
-    "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button.",
+    "This is the [goal_id].create.tsx page, which is trigged by clicking the add benchmark button."
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -64,7 +64,7 @@ const CreateBenchmarkPage = () => {
     await router.push(
       `/students/${router.query.student_id as string}/goals/${
         router.query.goal_id as string
-      }`,
+      }`
     );
   };
 
@@ -127,7 +127,6 @@ const CreateBenchmarkPage = () => {
           multiline
           rows={4}
           name={field.name}
-          // defaultValue={field.placeholder}
           placeholder={field.placeholder}
         />
       </Stack>
@@ -178,7 +177,7 @@ const CreateBenchmarkPage = () => {
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
         <Stack direction="row" spacing={4}>
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
-            <Stack spacing={4} px={3} pb={1} width={"100%"}>
+            <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
                 Benchmark #1 - Instructional Guidelines
               </Typography>
@@ -188,7 +187,7 @@ const CreateBenchmarkPage = () => {
           )}
 
           {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
-            <Stack spacing={4} px={3} pb={1} width={"100%"}>
+            <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
                 Benchmark #1 - Data Collection
               </Typography>
