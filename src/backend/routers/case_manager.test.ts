@@ -93,7 +93,7 @@ test("addStudent - student doesn't exist in db", async (t) => {
       .selectFrom("student")
       .where("first_name", "=", "Foo")
       .selectAll()
-      .executeTakeFirst(),
+      .executeTakeFirst()
   );
 
   await trpc.case_manager.addStudent.mutate({
@@ -119,7 +119,7 @@ test("addStudent - student exists in db but is unassigned", async (t) => {
       .selectFrom("student")
       .where("first_name", "=", seed.student.first_name)
       .selectAll()
-      .executeTakeFirst(),
+      .executeTakeFirst()
   );
 
   await trpc.case_manager.addStudent.mutate({
@@ -138,7 +138,7 @@ test("addStudent - student exists in db but is unassigned", async (t) => {
       .where("student_id", "=", seed.student.student_id)
       .where("assigned_case_manager_id", "=", seed.case_manager.user_id)
       .selectAll()
-      .executeTakeFirstOrThrow(),
+      .executeTakeFirstOrThrow()
   );
 });
 
@@ -167,7 +167,7 @@ test("addStudent - student exists in db and is already assigned to user", async 
       last_name: seed.student.last_name,
       email: seed.student.email,
       grade: seed.student.grade,
-    }),
+    })
   );
 
   t.is(err?.message, STUDENT_ASSIGNED_TO_YOU_ERR.message);
@@ -221,7 +221,7 @@ test("addStudent - student exists in db but is assigned to another case manager"
       last_name: newStudent.last_name,
       email: newStudent.email,
       grade: newStudent.grade,
-    }),
+    })
   );
 
   t.is(err?.message, STUDENT_ALREADY_ASSIGNED_ERR.message);
@@ -241,7 +241,7 @@ test("addStudent - student exists in db but is assigned to another case manager"
       last_name: newStudent.last_name,
       email: newStudent.email,
       grade: newStudent.grade,
-    }),
+    })
   );
 
   t.is(redundantErr?.message, STUDENT_ASSIGNED_TO_YOU_ERR.message);
@@ -258,7 +258,7 @@ test("addStudent - invalid email", async (t) => {
       last_name: "Bar",
       email: "invalid-email",
       grade: 6,
-    }),
+    })
   );
   // should be zod error
   t.is(typeof err?.message, "string");

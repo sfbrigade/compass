@@ -28,7 +28,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
   const completionRate = useMemo(() => {
     const num = parseInt(task.completed_trials as string) || 0;
     const calculatedRate = Math.floor(
-      (num / (task.number_of_trials ?? 1)) * 100,
+      (num / (task.number_of_trials ?? 1)) * 100
     );
     return calculatedRate;
   }, [task.completed_trials, task.number_of_trials]);
@@ -56,10 +56,10 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
         {!task.seen
           ? "NEW"
           : completionRate >= 100
-            ? "DONE"
-            : `DUE: ${
-                task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
-              }`}
+          ? "DONE"
+          : `DUE: ${
+              task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
+            }`}
       </div>
       <div className={$taskCard.profile}>
         {task.first_name} {task.last_name}
