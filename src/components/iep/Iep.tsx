@@ -26,7 +26,7 @@ const Iep = ({ iep_id }: IepProps) => {
 
   const { data: goals, isLoading } = trpc.iep.getGoals.useQuery(
     { iep_id: iep_id },
-    { enabled: Boolean(iep_id) }
+    { enabled: Boolean(iep_id) },
   );
 
   const router = useRouter();

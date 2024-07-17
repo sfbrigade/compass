@@ -53,17 +53,17 @@ const GoalPage = () => {
   const [editGoalInput, setEditGoalInput] = useState("");
 
   const [activeTab, setActiveTab] = useState<selectionValue>(
-    selectionValue.ACTIVE
+    selectionValue.ACTIVE,
   );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id as string },
-    { enabled: Boolean(goal_id) }
+    { enabled: Boolean(goal_id) },
   );
 
   const { data: subgoals } = trpc.iep.getSubgoals.useQuery(
     { goal_id: goal_id as string },
-    { enabled: Boolean(goal_id) }
+    { enabled: Boolean(goal_id) },
   );
 
   const showEditGoal = () => {

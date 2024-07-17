@@ -37,7 +37,7 @@ const ViewParaPage = () => {
       enabled: Boolean(user_id),
       retry: false,
       onError: () => returnToStaffList(),
-    }
+    },
   );
 
   const editMutation = trpc.case_manager.editPara.useMutation({
