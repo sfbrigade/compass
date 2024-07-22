@@ -16,8 +16,6 @@ import $StudentPage from "../../styles/StudentPage.module.css";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 
-// test comment
-
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
