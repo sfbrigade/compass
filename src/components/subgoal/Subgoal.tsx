@@ -135,6 +135,7 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                   onClick={() => {
                     alert("To be implemented");
                   }}
+                  className={$button.tertiary}
                 >
                   Collect Data
                 </Link>
@@ -153,6 +154,7 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                   onClick={() => {
                     alert("To be implemented");
                   }}
+                  className={$button.tertiary}
                 >
                   View Data
                 </Link>
