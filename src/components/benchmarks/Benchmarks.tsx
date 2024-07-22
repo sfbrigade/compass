@@ -85,7 +85,7 @@ const NoBenchmarksGraphic = ({ blurb }: { blurb?: string }) => {
       </span>
       <Box>
         <Link className={$button.default} href={`${router.asPath}/create`}>
-          Add benchmark
+          Create benchmark
         </Link>
       </Box>
     </Grid>
@@ -131,7 +131,7 @@ export default function Benchmarks({ subgoals }: { subgoals: Subgoal[] }) {
         <br />
         <Box>
           <Link className={$button.default} href={`${router.asPath}/create`}>
-            Add benchmark
+            Create benchmark
           </Link>
         </Box>
       </Box>

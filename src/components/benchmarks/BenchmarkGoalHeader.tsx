@@ -90,8 +90,9 @@ const BenchmarkGoalHeader = ({
                   ? `/students/${router.query.student_id.toString()}`
                   : ""
               }
+              className={$button.secondary}
             >
-              <button className={$button.secondary}>View all goals</button>
+              View all goals
             </Link>
           </Grid>
         </Grid>
