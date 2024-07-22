@@ -9,7 +9,7 @@ import { useState, type ReactNode } from "react";
 import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
-
+import Link from "next/link";
 interface SubgoalProps {
   subgoal: Subgoal;
   index?: number;
@@ -129,7 +129,15 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                   textAlign: "center",
                 }}
               >
-                Collect Data
+                {/* Placeholder href to replace with actual path */}
+                <Link
+                  href={window.location}
+                  onClick={() => {
+                    alert("To be implemented");
+                  }}
+                >
+                  Collect Data
+                </Link>
               </Box>
               <Box
                 sx={{
@@ -139,7 +147,15 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                   textAlign: "center",
                 }}
               >
-                View Data
+                {/* Placeholder href to replace with actual path */}
+                <Link
+                  href={window.location}
+                  onClick={() => {
+                    alert("To be implemented");
+                  }}
+                >
+                  View Data
+                </Link>
               </Box>
             </Box>
           </Info>
