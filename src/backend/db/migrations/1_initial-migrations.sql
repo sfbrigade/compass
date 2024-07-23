@@ -64,6 +64,7 @@ CREATE TABLE "iep" (
   case_manager_id UUID REFERENCES "user" (user_id),
   start_date DATE NOT NULL,
   end_date DATE NOT NULL,
+  CHECK (end_date >= start_date),
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
@@ -79,8 +80,8 @@ CREATE TABLE "goal" (
 CREATE TABLE "subgoal" (
   subgoal_id UUID PRIMARY KEY DEFAULT uuid_generate_v4(), -- TODO: add index to allow reordering
   goal_id UUID REFERENCES "goal" (goal_id),
-  status TEXT NOT NULL DEFAULT 'In Progress' 
-    CHECK (status IN ('In Progress', 'Complete')), 
+  status TEXT NOT NULL DEFAULT 'In Progress'
+    CHECK (status IN ('In Progress', 'Complete')),
   description TEXT NOT NULL,
   setup TEXT NOT NULL,
   instructions TEXT NOT NULL DEFAULT '',
