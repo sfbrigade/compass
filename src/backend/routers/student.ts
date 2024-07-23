@@ -46,12 +46,6 @@ export const student = router({
         end_date: z.date(),
       })
     )
-    // .use(({ input, next }) => {
-    //   if (input.end_date < input.start_date) {
-    //     throw new Error("End date can't be earlier than start date");
-    //   }
-    //   return next();
-    // })
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
       const { userId } = req.ctx.auth;
@@ -81,12 +75,6 @@ export const student = router({
         end_date: z.date(),
       })
     )
-    // .use(({ input, next }) => {
-    //   if (input.end_date < input.start_date) {
-    //     throw new Error("End date can't be earlier than start date");
-    //   }
-    //   return next();
-    // })
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
       const { userId } = req.ctx.auth; // case manager id
