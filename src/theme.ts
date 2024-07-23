@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
-export const theme = createTheme({
+export const compassTheme = createTheme({
   palette: {
     primary: {
       main: "#3023b8", // --primary-50
@@ -141,6 +141,65 @@ export const theme = createTheme({
             },
           },
         },
+      },
+    },
+    MuiStep: {
+      defaultProps: {},
+      styleOverrides: {
+        root: ({ ownerState, theme }) => ({
+          padding: 0,
+          marginRight: !ownerState.last ? "16px" : 0,
+          "&.Mui-disabled": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-active": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-completed": {
+            //TODO: this works, but the others are broken b/c MUI does not add their classNames as described in MUI docs; once fixed, we can move the purple border-top styling here instead
+          },
+        }),
+      },
+    },
+    MuiStepLabel: {
+      styleOverrides: {
+        iconContainer: ({ ownerState, theme }) => ({
+          position: "absolute",
+          left: 0,
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          "&.Mui-disabled": {
+            color: "#a2acb3",
+          },
+          "&.Mui-active": {
+            color: theme.palette.primary.light,
+          },
+          "&.Mui-completed": {
+            color: theme.palette.primary.main,
+          },
+        }),
+        label: ({ ownerState, theme }) => ({
+          padding: "9px",
+          paddingLeft: "32px",
+          textAlign: "left",
+          "&.MuiStepLabel-alternativeLabel": {
+            marginTop: 0,
+            textAlign: "left",
+          },
+          "&.Mui-disabled": {
+            color: "#2A333C",
+            borderTop: `4px solid #a2acb3`,
+          },
+          "&.Mui-active": {
+            color: "#2A333C",
+            borderTop: `4px solid ${theme.palette.primary.light}`,
+          },
+          "&.Mui-completed": {
+            color: theme.palette.primary.main,
+            borderTop: `4px solid ${theme.palette.primary.main}`,
+          },
+        }),
       },
     },
   },
