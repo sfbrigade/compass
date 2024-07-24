@@ -59,24 +59,7 @@ const CreateBenchmarkPage = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // const form = e.currentTarget as HTMLFormElement;
-    // const formData = new FormData(form);
-    // console.log("form data", formData);
 
-    // await addSubgoalMutation.mutateAsync({
-    //   goal_id: router.query.goal_id as string,
-    //   status: "In Progress",
-    //   description: formData.get("description") as string,
-    //   setup: formData.get("setup") as string,
-    //   instructions: formData.get("instructions") as string,
-    //   materials: formData.get("materials") as string,
-    //   target_level: Number(formData.get("target_level")),
-    //   baseline_level: Number(formData.get("baseline_level")),
-    //   metric_name: formData.get("metric_name") as string,
-    //   attempts_per_trial: Number(formData.get("attempts_per_trial")) || null,
-    //   number_of_trials: Number(formData.get("number_of_trials")) || null,
-    // });
-    console.log("benchmarkFormState", benchmarkFormState);
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
       status: "In Progress",
@@ -187,7 +170,7 @@ const CreateBenchmarkPage = () => {
         <Typography variant="h3" textAlign="left" pb={2}>
           Create Benchmark
         </Typography>
-        {/* <Stepper activeStep={viewState} alternativeLabel connector={null}>
+        <Stepper activeStep={viewState} alternativeLabel connector={null}>
           {steps.map((label, index) => (
             <Step key={label}>
               {index !== steps.length && (
@@ -201,7 +184,7 @@ const CreateBenchmarkPage = () => {
               )}
             </Step>
           ))}
-        </Stepper> */}
+        </Stepper>
       </Box>
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
