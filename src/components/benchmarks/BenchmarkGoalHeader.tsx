@@ -1,11 +1,9 @@
 import { trpc } from "@/client/lib/trpc";
-import { useRouter } from "next/router";
-import { useState, MouseEvent } from "react";
+import { useState } from "react";
 import Container from "@mui/material/Container";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import { Grid } from "@mui/material";
 import $button from "@/components/design_system/button/Button.module.css";
-import Link from "next/link";
 import { GoalHeader } from "../goal-header/goal-header";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "@/backend/routers/_app";
@@ -20,7 +18,6 @@ const BenchmarkGoalHeader = ({
   goal: GoalType;
   goals: GoalsType;
 }) => {
-  const router = useRouter();
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
   const utils = trpc.useContext();
@@ -53,44 +50,17 @@ const BenchmarkGoalHeader = ({
     <Container className={$GoalPage.goalDescriptionContainer}>
       {!editGoal && (
         <Grid container justifyContent="space-between">
-          <Grid item>
-            {goal && goals && (
-              <GoalHeader
-                name={`Goal #${
-                  goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
-                }`}
-                description={goal.description}
-                createdAt={goal.created_at}
-                goalId={goal.goal_id}
-              />
-            )}
-          </Grid>
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: "start",
-              justifyContent: "start",
-              justifyItems: "start",
-              height: "100%",
-            }}
-            item
-          >
-            <button
-              className={$button.tertiary}
-              onClick={showEditGoal}
-              style={{
-                margin: "auto",
-              }}
-            >
-              Edit Goal
-            </button>
-            <button
-              className={$button.secondary}
-              onClick={() => alert("to be implemented")}
-            >
-              View all goals
-            </button>
-          </Grid>
+          {goal && goals && (
+            <GoalHeader
+              name={`Goal #${
+                goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
+              }`}
+              description={goal.description}
+              createdAt={goal.created_at}
+              goalId={goal.goal_id}
+              showEditGoal={showEditGoal}
+            />
+          )}
         </Grid>
       )}
       {editGoal && (

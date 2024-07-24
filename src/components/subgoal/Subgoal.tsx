@@ -1,15 +1,13 @@
-import { trpc } from "@/client/lib/trpc";
 import { Subgoal } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
-import { Typography } from "@mui/material";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
 import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
-import Link from "next/link";
+import Typography from "@mui/material/Typography";
 interface SubgoalProps {
   subgoal: Subgoal;
   index?: number;
