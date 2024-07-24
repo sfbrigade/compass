@@ -130,15 +130,14 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                 }}
               >
                 {/* Placeholder href to replace with actual path */}
-                <Link
-                  href={window.location}
+                <button
                   onClick={() => {
                     alert("To be implemented");
                   }}
                   className={$button.tertiary}
                 >
                   Collect Data
-                </Link>
+                </button>
               </Box>
               <Box
                 sx={{
@@ -149,15 +148,14 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
                 }}
               >
                 {/* Placeholder href to replace with actual path */}
-                <Link
-                  href={window.location}
+                <button
                   onClick={() => {
                     alert("To be implemented");
                   }}
                   className={$button.tertiary}
                 >
                   View Data
-                </Link>
+                </button>
               </Box>
             </Box>
           </Info>

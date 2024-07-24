@@ -84,16 +84,12 @@ const BenchmarkGoalHeader = ({
             >
               Edit Goal
             </button>
-            <Link
-              href={
-                router.query.student_id
-                  ? `/students/${router.query.student_id.toString()}`
-                  : ""
-              }
+            <button
               className={$button.secondary}
+              onClick={() => alert("to be implemented")}
             >
               View all goals
-            </Link>
+            </button>
           </Grid>
         </Grid>
       )}
