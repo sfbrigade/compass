@@ -6,7 +6,7 @@ type GoalHeaderProps = {
   name: string;
   description: string;
   createdAt: string | Date;
-  showEditGoal: () => void;
+  showEditGoal?: () => void;
 };
 
 export const GoalHeader = (props: GoalHeaderProps) => {
