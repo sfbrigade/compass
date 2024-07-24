@@ -49,10 +49,10 @@ const CreateBenchmarkPage = () => {
       setup: undefined,
       materials: undefined,
       instructions: undefined,
-      baseline_level: 0,
-      target_level: 0,
-      attempts_per_trial: 0,
-      number_of_trials: 0,
+      baseline_level: undefined,
+      target_level: undefined,
+      attempts_per_trial: undefined,
+      number_of_trials: undefined,
     });
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
@@ -60,6 +60,9 @@ const CreateBenchmarkPage = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    console.log("benchmarkFormState", benchmarkFormState);
+    // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
+    // TO DO: frequency is not included in the mutation (but is included in the design) and should be added to the schema
     await addSubgoalMutation.mutateAsync({
       goal_id: router.query.goal_id as string,
       status: "In Progress",
@@ -81,7 +84,7 @@ const CreateBenchmarkPage = () => {
     );
   };
 
-  const textFieldData1 = [
+  const textFieldDescriptionsPage1 = [
     {
       title: "Benchmark Description",
       description: "Provide a written description of this benchmark.",
@@ -117,8 +120,19 @@ const CreateBenchmarkPage = () => {
     },
   ];
 
-  const renderTextFields = (textFieldData: Benchmark[]) => {
-    return textFieldData.map((field, index) => (
+  const textFieldDescriptionsPage2 = [
+    {
+      title: "Frequency",
+      description: "How often should data be collected for this benchmark?",
+      label: "Frequency",
+      name: "frequency",
+      placeholder:
+        "Eg. once per week, every Monday, as much as possible, etc...",
+    },
+  ];
+
+  const renderTextFields = (textFieldDescriptionsPage: Benchmark[]) => {
+    return textFieldDescriptionsPage.map((field, index) => (
       <Stack spacing={2} width="100%" key={index}>
         <Typography variant="h6">{field.title}</Typography>
         <Typography variant="body1">{field.description}</Typography>
@@ -195,7 +209,7 @@ const CreateBenchmarkPage = () => {
                 Benchmark #1 - Instructional Guidelines
               </Typography>
 
-              {renderTextFields(textFieldData1)}
+              {renderTextFields(textFieldDescriptionsPage1)}
             </Stack>
           )}
 
@@ -204,6 +218,8 @@ const CreateBenchmarkPage = () => {
               <Typography variant="h3">
                 Benchmark #1 - Data Collection Guidelines
               </Typography>
+
+              {renderTextFields(textFieldDescriptionsPage2)}
 
               <Stack spacing={2}>
                 <Typography variant="h4">Metric to track</Typography>
@@ -304,6 +320,7 @@ const CreateBenchmarkPage = () => {
           </Stack>
         )}
 
+        {/* TO DO: Implement logic to check and see if required fields are filled out before allowing user to proceed to the next page */}
         {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
           <Stack direction="row" spacing={2} p={4} justifyContent="end">
             <button
