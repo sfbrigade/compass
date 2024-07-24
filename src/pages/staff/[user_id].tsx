@@ -1,17 +1,19 @@
 import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Modal,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useRouter } from "next/router";
 import $home from "@/styles/Home.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $StaffPage from "../../styles/StaffPage.module.css";
-import $Modal from "../../styles/Modal.module.css";
-
-// import Stack from "@mui/material/Stack";
-// import Box from "@mui/material/Box";
-// import Button from "@mui/material/Button";
-// import Container from "@mui/material/Container";
-// import Modal from "@mui/material/Modal";
+import $Modal from "@/components/design_system/modal/Modal.module.css";
 
 const ViewParaPage = () => {
   const [open, setOpen] = useState(false);
@@ -26,17 +28,12 @@ const ViewParaPage = () => {
   const { user_id } = router.query;
   const { data: me } = trpc.user.getMe.useQuery();
 
-  //maybe remove these two pages?
-  const VIEW_STATES = { MAIN: 0, EDIT: 1 };
-
   const handleEditState = () => {
     handleOpen();
-    //setViewState(VIEW_STATES.EDIT);
   };
 
   const handleMainState = () => {
     handleClose();
-    //setViewState(VIEW_STATES.MAIN);
   };
 
   const { data: para, isLoading } = trpc.para.getParaById.useQuery(
@@ -108,123 +105,166 @@ const ViewParaPage = () => {
           <p className={$StaffPage.staffName}>
             {para?.first_name} {para?.last_name}
           </p>
-
-          {/* Edit button only to be shown when view state is set to MAIN */}
-          {viewState === VIEW_STATES.MAIN && (
+          <Box className={$StaffPage.displayBoxGap}>
+            <Button
+              onClick={() => setArchiveParaPrompt(true)}
+              className={`${$button.tertiary}`}
+            >
+              Archive
+            </Button>
             <Button
               className={`${$button.secondary}`}
               onClick={handleEditState}
             >
               Edit
             </Button>
-          )}
-          {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
-          {viewState === VIEW_STATES.EDIT && (
-            <Box className={$StaffPage.displayBoxGap}>
-              <Button
-                onClick={handleMainState}
-                className={`${$button.secondary}`}
-              >
-                Cancel
-              </Button>
-              <Button
-                className={`${$button.default}`}
-                type="submit"
-                form="edit"
-              >
-                Save
-              </Button>
-            </Box>
-          )}
+          </Box>
         </Box>
 
-        {/* if view state is "EDIT" then show the edit version of the student page */}
-        {viewState === VIEW_STATES.EDIT && <h3>Edit Profile</h3>}
-
-        {viewState === VIEW_STATES.MAIN && (
-          <Box className={$StaffPage.displayBox}>
-            <Box gap={10} className={$StaffPage.infoBox}>
-              <div className={$StaffPage.singleInfoArea}>
-                <p>Email</p>
-                <p className={$StaffPage.centerText}>{para?.email}</p>
-              </div>
-              <div className={$StaffPage.singleInfoArea}></div>
-            </Box>
+        <Box className={$StaffPage.displayBox}>
+          <Box gap={10} className={$StaffPage.infoBox}>
+            <div className={$StaffPage.singleInfoArea}>
+              <p>Email</p>
+              <p className={$StaffPage.centerText}>{para?.email}</p>
+            </div>
+            <div className={$StaffPage.singleInfoArea}></div>
           </Box>
-        )}
+        </Box>
       </Container>
 
-      {viewState === VIEW_STATES.EDIT && (
-        <Stack gap={0.5} sx={{ width: "100%" }}>
-          <form
-            className={$StaffPage.editForm}
-            id="edit"
-            onSubmit={handleEditPara}
-          >
-            <Stack gap={0.5}>
-              <Container
-                className={$StaffPage.staffEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
+      {/* Modal for Editing Staff */}
+      <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box className={$Modal.editModalContent}>
+          <p id="modal-modal-title" className={$Modal.editModalHeader}>
+            Editing {para?.first_name || "Para"}&apos;s Profile
+          </p>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Stack gap={0.5} sx={{ width: "100%" }}>
+              <form
+                className={$Modal.editForm}
+                id="edit"
+                onSubmit={handleEditPara}
               >
-                <label>First Name</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="firstName"
-                  defaultValue={para?.first_name || ""}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StaffPage.staffEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>Last Name</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="lastName"
-                  defaultValue={para?.last_name || ""}
-                  required
-                />
-              </Container>
-              <Container
-                className={$StaffPage.staffEditContainer}
-                sx={{
-                  display: "grid",
-                  gridTemplateColumns: "200px 30px 300px",
-                }}
-              >
-                <label>Email</label>
-                <p>:</p>
-                <input
-                  type="text"
-                  name="email"
-                  defaultValue={para?.email || ""}
-                  required
-                />
+                <Stack gap={0.5}>
+                  <Container className={$Modal.editModalContainer}>
+                    <TextField
+                      className={$Modal.editModalTextfield}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root:hover": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#080155",
+                        },
+                      }}
+                      label="First Name"
+                      type="text"
+                      name="firstName"
+                      defaultValue={para?.first_name || ""}
+                      required
+                    />
+                  </Container>
+                  <Container className={$Modal.editModalContainer}>
+                    <TextField
+                      className={$Modal.editModalTextfield}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root:hover": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#080155",
+                        },
+                      }}
+                      label="Last Name"
+                      type="text"
+                      name="lastName"
+                      defaultValue={para?.last_name || ""}
+                      required
+                    />
+                  </Container>
+                  <Container className={$Modal.editModalContainer}>
+                    <TextField
+                      className={$Modal.editModalTextfield}
+                      sx={{
+                        "& .MuiOutlinedInput-root": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#20159E",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root.Mui-focused": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiOutlinedInput-root:hover": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#080155",
+                          },
+                        },
+                        "& .MuiInputLabel-root.Mui-focused": {
+                          color: "#080155",
+                        },
+                      }}
+                      label="Email"
+                      type="text"
+                      name="email"
+                      defaultValue={para?.email || ""}
+                      required
+                    />
+                  </Container>
+                </Stack>
+              </form>
+
+              <Container className={$Modal.editModalContainerButtons}>
+                <Box className={$Modal.editModalButtonWrap}>
+                  <Button
+                    onClick={handleMainState}
+                    className={`${$button.secondary}`}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className={`${$button.default}`}
+                    type="submit"
+                    form="edit"
+                  >
+                    Save
+                  </Button>
+                </Box>
               </Container>
             </Stack>
-          </form>
-
-          <Container sx={{ marginTop: "2rem" }}>
-            <Box textAlign="center">
-              <Button
-                onClick={() => setArchiveParaPrompt(true)}
-                className={`${$button.default}`}
-              >
-                Archive {para?.first_name} {para?.last_name}
-              </Button>
-            </Box>
-          </Container>
-        </Stack>
-      )}
+          </Typography>
+        </Box>
+      </Modal>
 
       {/* Archiving Staff Modal appears when "Archive" button is pressed*/}
       <Modal
