@@ -35,15 +35,17 @@ export const GoalHeader = (props: GoalHeaderProps) => {
         }}
         item
       >
-        <button
-          className={$button.tertiary}
-          onClick={props.showEditGoal}
-          style={{
-            margin: "auto",
-          }}
-        >
-          Edit Goal
-        </button>
+        {props.showEditGoal && (
+          <button
+            className={$button.tertiary}
+            onClick={props.showEditGoal}
+            style={{
+              margin: "auto",
+            }}
+          >
+            Edit Goal
+          </button>
+        )}
         <button
           className={$button.secondary}
           onClick={() => alert("to be implemented")}
