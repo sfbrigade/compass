@@ -4,7 +4,7 @@ import { MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
-import Benchmarks from "@/components/benchmarks/Benchmarks";
+import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
 enum selectionValue {
   ALL,
@@ -88,7 +88,7 @@ const GoalPage = () => {
           <h2>Benchmarks</h2>
         </Grid>
       </Grid>
-      <Benchmarks subgoals={subgoals || []} />
+      <BenchmarksContainer subgoals={subgoals || []} />
     </Stack>
   );
 };
