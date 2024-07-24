@@ -187,7 +187,7 @@ const CreateBenchmarkPage = () => {
         <Typography variant="h3" textAlign="left" pb={2}>
           Create Benchmark
         </Typography>
-        <Stepper activeStep={viewState} alternativeLabel connector={null}>
+        {/* <Stepper activeStep={viewState} alternativeLabel connector={null}>
           {steps.map((label, index) => (
             <Step key={label}>
               {index !== steps.length && (
@@ -201,7 +201,7 @@ const CreateBenchmarkPage = () => {
               )}
             </Step>
           ))}
-        </Stepper>
+        </Stepper> */}
       </Box>
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
