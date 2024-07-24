@@ -11,6 +11,7 @@ import Subgoals from "@/components/subgoal/Subgoal";
 import { type Subgoal } from "@/types/global";
 import Benchmarks from "./Benchmarks";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
+
 export enum selectableTabs {
   ALL,
   COMPLETE,

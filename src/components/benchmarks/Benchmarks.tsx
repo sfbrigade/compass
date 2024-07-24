@@ -1,22 +1,16 @@
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
 import Subgoals from "@/components/subgoal/Subgoal";
-import {
-  type SelectableTabProps,
-  type selectableTabs as tabType,
-} from "./BenchmarksContainer";
 import { type Subgoal } from "@/types/global";
-enum selectionValues {
-  ALL,
-  COMPLETE,
-}
+import { type selectableTabs as selectableTabsType } from "./BenchmarksContainer";
+
 export default function Benchmarks({
   subgoals,
   activeTab,
   selectableTabs,
 }: {
   subgoals: Subgoal[];
-  activeTab: tabType;
-  selectableTabs: selectionValues;
+  activeTab: selectableTabsType;
+  selectableTabs: typeof selectableTabsType;
 }) {
   return (
     <>
