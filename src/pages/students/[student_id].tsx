@@ -10,7 +10,7 @@ import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
-import $Modal from "@/components/design_system/modal/Modal.module.css";
+import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
 import * as React from "react";
@@ -159,41 +159,21 @@ const ViewStudentPage = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <Box className={$Modal.editModalContent}>
-            <p id="modal-modal-title" className={$Modal.editModalHeader}>
+          <Box className={$CompassModal.editModalContent}>
+            <p id="modal-modal-title" className={$CompassModal.editModalHeader}>
               Editing {student?.first_name || "Student"}&apos;s Profile
             </p>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
               <Stack gap={0.5} sx={{ width: "100%" }}>
                 <form
-                  className={$Modal.editForm}
+                  className={$CompassModal.editForm}
                   id="edit"
                   onSubmit={handleEditStudent}
                 >
                   <Stack gap={0.5}>
-                    <Container className={$Modal.editModalContainer}>
+                    <Container className={$CompassModal.editModalContainer}>
                       <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
+                        className={$CompassModal.editModalTextfield}
                         label="First Name"
                         type="text"
                         name="firstName"
@@ -201,29 +181,9 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container className={$Modal.editModalContainer}>
+                    <Container className={$CompassModal.editModalContainer}>
                       <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
+                        className={$CompassModal.editModalTextfield}
                         label="Last Name"
                         type="text"
                         name="lastName"
@@ -231,29 +191,9 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container className={$Modal.editModalContainer}>
+                    <Container className={$CompassModal.editModalContainer}>
                       <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
+                        className={$CompassModal.editModalTextfield}
                         label="Email"
                         type="text"
                         name="email"
@@ -261,29 +201,9 @@ const ViewStudentPage = () => {
                         required
                       />
                     </Container>
-                    <Container className={$Modal.editModalContainer}>
+                    <Container className={$CompassModal.editModalContainer}>
                       <TextField
-                        className={$Modal.editModalTextfield}
-                        sx={{
-                          "& .MuiOutlinedInput-root": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#20159E",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root.Mui-focused": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiOutlinedInput-root:hover": {
-                            "& .MuiOutlinedInput-notchedOutline": {
-                              borderColor: "#080155",
-                            },
-                          },
-                          "& .MuiInputLabel-root.Mui-focused": {
-                            color: "#080155",
-                          },
-                        }}
+                        className={$CompassModal.editModalTextfield}
                         label="Grade"
                         type="number"
                         name="grade"
@@ -293,29 +213,9 @@ const ViewStudentPage = () => {
                     </Container>
                     {activeIep != null && (
                       <div>
-                        <Container className={$Modal.editModalContainer}>
+                        <Container className={$CompassModal.editModalContainer}>
                           <TextField
-                            className={$Modal.editModalTextfield}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#20159E",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root:hover": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiInputLabel-root.Mui-focused": {
-                                color: "#080155",
-                              },
-                            }}
+                            className={$CompassModal.editModalTextfield}
                             label="IEP Start Date"
                             type="date"
                             name="start_date"
@@ -324,29 +224,9 @@ const ViewStudentPage = () => {
                             required
                           />
                         </Container>
-                        <Container className={$Modal.editModalContainer}>
+                        <Container className={$CompassModal.editModalContainer}>
                           <TextField
-                            className={$Modal.editModalTextfield}
-                            sx={{
-                              "& .MuiOutlinedInput-root": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#20159E",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root.Mui-focused": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiOutlinedInput-root:hover": {
-                                "& .MuiOutlinedInput-notchedOutline": {
-                                  borderColor: "#080155",
-                                },
-                              },
-                              "& .MuiInputLabel-root.Mui-focused": {
-                                color: "#080155",
-                              },
-                            }}
+                            className={$CompassModal.editModalTextfield}
                             label="IEP End Date"
                             type="date"
                             name="end_date"
@@ -360,8 +240,8 @@ const ViewStudentPage = () => {
                   </Stack>
                 </form>
 
-                <Container className={$Modal.editModalContainerButtons}>
-                  <Box className={$Modal.editModalButtonWrap}>
+                <Container className={$CompassModal.editModalContainerButtons}>
+                  <Box className={$CompassModal.editModalButtonWrap}>
                     <Button
                       onClick={handleMainState}
                       className={`${$button.secondary}`}
@@ -464,7 +344,7 @@ const ViewStudentPage = () => {
         aria-labelledby="archiving-student"
         aria-describedby="archiving-current-student"
       >
-        <Box className={$Modal.modalContent}>
+        <Box className={$CompassModal.modalContent}>
           <p className={$StudentPage.centerText}>
             Are you sure you want to archive
           </p>
@@ -497,7 +377,7 @@ const ViewStudentPage = () => {
         aria-labelledby="create-student-iep"
         aria-describedby="modal for creating student iep"
       >
-        <Box className={$Modal.modalContent}>
+        <Box className={$CompassModal.modalContent}>
           <p className={$StudentPage.centerText}>Create an IEP for</p>
           <p className={$StudentPage.centerText}>
             <b>

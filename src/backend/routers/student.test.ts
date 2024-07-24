@@ -157,3 +157,75 @@ test("getActiveStudentIep - return only one iep object", async (t) => {
   t.deepEqual(studentWithIep?.start_date, addedIep.start_date);
   t.deepEqual(studentWithIep?.end_date, addedIep.end_date);
 });
+
+test("checkAddedIEPEndDates", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+  const start_date = new Date("2023-01-01");
+  const end_date = new Date("2022-01-01");
+
+  await t.throwsAsync(async () => {
+    await trpc.student.addIep.mutate({
+      student_id: seed.student.student_id,
+      start_date: start_date,
+      end_date: end_date,
+    });
+  });
+
+  const got = await trpc.student.getIeps.query({
+    student_id: seed.student.student_id,
+  });
+
+  t.is(got.length, 0);
+});
+
+test("checkEditedIEPEndDates", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  await trpc.case_manager.addStudent.mutate({
+    first_name: seed.student.first_name,
+    last_name: seed.student.last_name,
+    email: seed.student.email,
+    grade: seed.student.grade,
+  });
+
+  const myStudents = await trpc.case_manager.getMyStudents.query();
+  const student_id = myStudents[0].student_id;
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  let got = await trpc.student.getIeps.query({
+    student_id: student_id,
+  });
+
+  t.is(got.length, 1);
+  t.is(got[0].student_id, iep.student_id);
+  t.deepEqual(got[0].start_date, iep.start_date);
+  t.deepEqual(got[0].end_date, iep.end_date);
+
+  const updated_start_date = new Date(parseISO("2023-01-01"));
+  const updated_end_date = new Date(parseISO("2022-01-01"));
+  await t.throwsAsync(async () => {
+    await trpc.student.editIep.mutate({
+      student_id: student_id,
+      start_date: updated_start_date,
+      end_date: updated_end_date,
+    });
+  });
+
+  got = await trpc.student.getIeps.query({
+    student_id: student_id,
+  });
+
+  t.is(got.length, 1);
+  t.is(got[0].student_id, iep.student_id);
+  t.deepEqual(got[0].start_date, iep.start_date);
+  t.deepEqual(got[0].end_date, iep.end_date);
+});

@@ -55,6 +55,8 @@ There are two ways to run Compass locally:
 
    Server URL: http://localhost:3000
 
+   NOTE: If you get into a login loop, double check that the Docker services are running
+
 **Option 2: Run both server and supporting services locally**
 
 1. One time setup:

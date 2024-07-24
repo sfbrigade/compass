@@ -154,26 +154,6 @@ const ViewParaPage = () => {
                   <Container className={$Modal.editModalContainer}>
                     <TextField
                       className={$Modal.editModalTextfield}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root.Mui-focused": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root:hover": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#080155",
-                        },
-                      }}
                       label="First Name"
                       type="text"
                       name="firstName"
@@ -184,26 +164,6 @@ const ViewParaPage = () => {
                   <Container className={$Modal.editModalContainer}>
                     <TextField
                       className={$Modal.editModalTextfield}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root.Mui-focused": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root:hover": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#080155",
-                        },
-                      }}
                       label="Last Name"
                       type="text"
                       name="lastName"
@@ -214,26 +174,6 @@ const ViewParaPage = () => {
                   <Container className={$Modal.editModalContainer}>
                     <TextField
                       className={$Modal.editModalTextfield}
-                      sx={{
-                        "& .MuiOutlinedInput-root": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#20159E",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root.Mui-focused": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiOutlinedInput-root:hover": {
-                          "& .MuiOutlinedInput-notchedOutline": {
-                            borderColor: "#080155",
-                          },
-                        },
-                        "& .MuiInputLabel-root.Mui-focused": {
-                          color: "#080155",
-                        },
-                      }}
                       label="Email"
                       type="text"
                       name="email"

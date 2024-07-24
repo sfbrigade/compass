@@ -1,7 +1,7 @@
 import React from "react";
 import type { Preview } from "@storybook/react";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
-import { theme } from "../src/theme";
+import { compassTheme as theme } from "../src/theme";
 import { FontProvider } from "../src/components/font-provider";
 
 import "../src/styles/globals.css";
