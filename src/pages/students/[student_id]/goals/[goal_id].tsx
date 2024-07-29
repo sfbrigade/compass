@@ -6,6 +6,7 @@ import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
+import toast from "react-hot-toast";
 enum selectionValue {
   ALL,
   COMPLETE,
@@ -49,15 +50,7 @@ const GoalPage = () => {
     iep_id: activeIep?.iep_id || "",
   });
 
-  const {
-    data: goal = {
-      goal_id: "",
-      iep_id: null,
-      created_at: new Date(),
-      description: "",
-      category: "",
-    },
-  } = trpc.iep.getGoal.useQuery(
+  const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
@@ -66,7 +59,8 @@ const GoalPage = () => {
     { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
-
+  const goal_index =
+    goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1 || 0;
   return (
     <Stack
       spacing={2}
@@ -81,8 +75,8 @@ const GoalPage = () => {
     >
       {/* Goal Description */}
       {/* Need to pass entire array of goals as a prop in order to properly get index */}
-      <BenchmarkGoalHeader goal_id={goal_id} goal={goal} goals={goals} />
-      {/* Subgoals */}
+      {goal && <BenchmarkGoalHeader goal_index={goal_index} goal={goal} />}
+      {/* Benchmarks */}
       <Grid container justifyContent="space-between">
         <Grid item>
           <h2>Benchmarks</h2>

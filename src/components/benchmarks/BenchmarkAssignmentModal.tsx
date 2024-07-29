@@ -10,7 +10,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useState, useRef } from "react";
-import $subgoal from "./Subgoal-Assignment-Modal.module.css";
+import $subgoal from "./BenchmarkAssignmentModal.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 
 import {
@@ -19,7 +19,7 @@ import {
 } from "./Duration-Selection-Step";
 import DS_Checkbox from "../design_system/checkbox/Checkbox";
 
-interface SubgoalAssignmentModalProps {
+interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   subgoal_id: string;
@@ -40,7 +40,9 @@ interface ParaProps {
 const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
 type Step = (typeof STEPS)[number];
 
-export const SubgoalAssignmentModal = (props: SubgoalAssignmentModalProps) => {
+export const BenchmarkAssignmentModal = (
+  props: BenchmarkAssignmentModalProps
+) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [assignmentDuration, setAssignmentDuration] =

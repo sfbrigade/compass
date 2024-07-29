@@ -6,8 +6,6 @@ import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
-import { Typography } from "@mui/material";
-import Subgoals from "@/components/subgoal/Subgoal";
 import { type Subgoal } from "@/types/global";
 import Benchmarks from "./Benchmarks";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";

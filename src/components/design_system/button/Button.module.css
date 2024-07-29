@@ -63,7 +63,7 @@
   display: block;
   color: var(--primary-50);
   padding: 10px 12px;
-  border: none;
+  border-radius: 8px;
   cursor: pointer;
   text-decoration: underline;
   text-align: center;

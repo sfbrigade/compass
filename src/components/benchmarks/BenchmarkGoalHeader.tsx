@@ -7,16 +7,13 @@ import $button from "@/components/design_system/button/Button.module.css";
 import { GoalHeader } from "../goal-header/goal-header";
 import { inferProcedureOutput } from "@trpc/server";
 import { AppRouter } from "@/backend/routers/_app";
-type GoalsType = inferProcedureOutput<AppRouter["iep"]["getGoals"]>;
 type GoalType = inferProcedureOutput<AppRouter["iep"]["getGoal"]>;
 const BenchmarkGoalHeader = ({
-  goal_id,
+  goal_index,
   goal,
-  goals,
 }: {
-  goal_id: string;
+  goal_index: number;
   goal: GoalType;
-  goals: GoalsType;
 }) => {
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
@@ -34,7 +31,7 @@ const BenchmarkGoalHeader = ({
 
   const submitEditGoal = () => {
     editMutation.mutate({
-      goal_id: goal_id,
+      goal_id: goal.goal_id,
       description: editGoalInput,
     });
     setEditGoal(false);
@@ -50,11 +47,9 @@ const BenchmarkGoalHeader = ({
     <Container className={$GoalPage.goalDescriptionContainer}>
       {!editGoal && (
         <Grid container justifyContent="space-between">
-          {goal && goals && (
+          {goal && goal_index && (
             <GoalHeader
-              name={`Goal #${
-                goals.findIndex((e) => e.goal_id === goal.goal_id) + 1 || 0
-              }`}
+              name={`Goal #${goal_index}`}
               description={goal.description}
               createdAt={goal.created_at}
               goalId={goal.goal_id}

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
-import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
+import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
@@ -42,7 +42,7 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const Subgoals = ({ subgoal, index }: SubgoalProps) => {
+const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   return (
     <Box
@@ -173,7 +173,7 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
           </Info>
         </Box>
       </Box>
-      <SubgoalAssignmentModal
+      <BenchmarkAssignmentModal
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
         subgoal_id={subgoal.subgoal_id}
@@ -182,4 +182,4 @@ const Subgoals = ({ subgoal, index }: SubgoalProps) => {
   );
 };
 
-export default Subgoals;
+export default BenchmarkListElement;

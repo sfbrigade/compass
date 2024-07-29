@@ -1,5 +1,5 @@
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
-import Subgoals from "@/components/subgoal/Subgoal";
+import BenchmarkListElement from "./BenchmarkListElement";
 import { type Subgoal } from "@/types/global";
 import { type selectableTabs as selectableTabsType } from "./BenchmarksContainer";
 
@@ -38,7 +38,7 @@ export default function Benchmarks({
           <NoBenchmarksGraphic blurb={message} />
         ) : (
           filteredSubgoals.map((subgoal, index) => (
-            <Subgoals
+            <BenchmarkListElement
               key={subgoal.subgoal_id}
               subgoal={subgoal}
               index={index}
