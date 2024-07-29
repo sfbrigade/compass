@@ -1,41 +1,9 @@
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import { MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
-import $GoalPage from "@/styles/GoalPage.module.css";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
-enum selectionValue {
-  ALL,
-  COMPLETE,
-}
-
-interface SelectableTabProps {
-  text: string;
-  value: selectionValue;
-  handleSelect: (e: MouseEvent) => void;
-  currentlySelected: selectionValue;
-}
-
-const SelectableTab = ({
-  text,
-  value,
-  handleSelect,
-  currentlySelected,
-}: SelectableTabProps) => {
-  return (
-    <div
-      className={`${$GoalPage.benchmarksTab}
-        ${value === currentlySelected ? $GoalPage.benchmarksTabSelected : ""} `}
-      onClick={(e) => {
-        handleSelect(e);
-      }}
-    >
-      {text}
-    </div>
-  );
-};
 
 const GoalPage = () => {
   const router = useRouter();
