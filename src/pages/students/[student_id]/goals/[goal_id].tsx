@@ -6,7 +6,6 @@ import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import BenchmarkGoalHeader from "@/components/benchmarks/BenchmarkGoalHeader";
-import toast from "react-hot-toast";
 enum selectionValue {
   ALL,
   COMPLETE,
@@ -74,7 +73,6 @@ const GoalPage = () => {
       }}
     >
       {/* Goal Description */}
-      {/* Need to pass entire array of goals as a prop in order to properly get index */}
       {goal && <BenchmarkGoalHeader goal_index={goal_index} goal={goal} />}
       {/* Benchmarks */}
       <Grid container justifyContent="space-between">
