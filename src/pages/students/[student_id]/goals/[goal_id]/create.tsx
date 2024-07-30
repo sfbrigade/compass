@@ -92,25 +92,29 @@ const CreateBenchmarkPage = () => {
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     // TO DO: frequency is not included in the mutation (but is included in the design) and should be added to the schema
-    await addSubgoalMutation.mutateAsync({
-      goal_id: router.query.goal_id as string,
-      status: "In Progress",
-      description: benchmarkFormState["description"] as string,
-      setup: benchmarkFormState["setup"] as string,
-      instructions: benchmarkFormState["instructions"] as string,
-      materials: benchmarkFormState["materials"] as string,
-      target_level: benchmarkFormState["target_level"] as number,
-      baseline_level: benchmarkFormState["baseline_level"] as number,
-      metric_name: "" as string,
-      attempts_per_trial: benchmarkFormState["attempts_per_trial"] as number,
-      number_of_trials: benchmarkFormState["number_of_trials"] as number,
-    });
+    try {
+      await addSubgoalMutation.mutateAsync({
+        goal_id: router.query.goal_id as string,
+        status: "In Progress",
+        description: benchmarkFormState["description"] as string,
+        setup: benchmarkFormState["setup"] as string,
+        instructions: benchmarkFormState["instructions"] as string,
+        materials: benchmarkFormState["materials"] as string,
+        target_level: benchmarkFormState["target_level"] as number,
+        baseline_level: benchmarkFormState["baseline_level"] as number,
+        metric_name: "" as string,
+        attempts_per_trial: benchmarkFormState["attempts_per_trial"] as number,
+        number_of_trials: benchmarkFormState["number_of_trials"] as number,
+      });
 
-    await router.push(
-      `/students/${router.query.student_id as string}/goals/${
-        router.query.goal_id as string
-      }`
-    );
+      await router.push(
+        `/students/${router.query.student_id as string}/goals/${
+          router.query.goal_id as string
+        }`
+      );
+    } catch (error) {
+      console.error("Error creating benchmark", error);
+    }
   };
 
   const textFieldDescriptionsPage1 = [
