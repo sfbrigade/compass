@@ -47,6 +47,7 @@ const GoalPage = () => {
   });
 
   const submitEditGoal = () => {
+    if (!goal) return;
     editMutation.mutate({
       goal_id: goal.goal_id,
       description: editGoalInput,
