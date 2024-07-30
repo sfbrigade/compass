@@ -15,7 +15,7 @@ import Layout from "@/components/layout/Layout";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
-import { theme } from "@/theme";
+import { compassTheme as theme } from "@/theme";
 import { FontProvider } from "@/components/font-provider";
 
 interface CustomPageProps {
