@@ -13,7 +13,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 interface BenchmarkFields {
   title: string;
@@ -42,7 +42,6 @@ const CreateBenchmarkPage = () => {
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.BENCHMARK_PG_1);
-  const [formComplete, setFormComplete] = useState(false);
 
   const [benchmarkFormState, setBenchmarkFormState] =
     useState<BenchmarkFormEntry>({
@@ -56,9 +55,11 @@ const CreateBenchmarkPage = () => {
       number_of_trials: undefined,
     });
 
-  useEffect(() => {
-    setFormComplete(checkTextFields() && checkNumberFields());
-  }, [benchmarkFormState]);
+  function checkFormFields() {
+    if (!checkTextFields() || !checkNumberFields()) {
+      alert("Please fill out all fields before proceeding");
+    }
+  }
 
   function checkTextFields(): boolean {
     const { description, setup, materials, instructions } = benchmarkFormState;
@@ -296,6 +297,7 @@ const CreateBenchmarkPage = () => {
                     label="Attempts Per Trial"
                     type="number"
                     name="attempts_per_trial"
+                    required
                     value={
                       benchmarkFormState["attempts_per_trial"] !== undefined
                         ? benchmarkFormState["attempts_per_trial"]
@@ -312,6 +314,7 @@ const CreateBenchmarkPage = () => {
                     label="Number of Trials"
                     type="number"
                     name="number_of_trials"
+                    required
                     value={
                       benchmarkFormState["number_of_trials"] !== undefined
                         ? benchmarkFormState["number_of_trials"]
@@ -340,7 +343,11 @@ const CreateBenchmarkPage = () => {
               Cancel
             </button>
             <button
-              onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_2)}
+              onClick={() => {
+                checkTextFields()
+                  ? setViewState(VIEW_STATES.BENCHMARK_PG_2)
+                  : alert("Please fill out all fields before proceeding");
+              }}
               className={$button.default}
             >
               Next
@@ -348,22 +355,23 @@ const CreateBenchmarkPage = () => {
           </Stack>
         )}
 
-        {/* TO DO: Implement logic to check and see if required fields are filled out before allowing user to proceed to the next page */}
         {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
-          <Stack direction="row" spacing={2} p={4} justifyContent="end">
-            <button
-              onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_1)}
-              className={$button.secondary}
-            >
-              Back
-            </button>
-            <button
-              type="submit"
-              className={$button.default}
-              disabled={!formComplete}
-            >
-              Create Benchmark
-            </button>
+          <Stack>
+            <Stack direction="row" spacing={2} p={4} justifyContent="end">
+              <button
+                onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_1)}
+                className={$button.secondary}
+              >
+                Back
+              </button>
+              <button
+                type="submit"
+                className={$button.default}
+                onClick={checkFormFields}
+              >
+                Create Benchmark
+              </button>
+            </Stack>
           </Stack>
         )}
       </fieldset>
