@@ -30,7 +30,7 @@ const GoalPage = () => {
     { enabled: Boolean(goal_id) }
   );
 
-  const { data: subgoals } = trpc.iep.getSubgoals.useQuery(
+  const { data: benchmarks } = trpc.iep.getSubgoals.useQuery(
     { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
@@ -125,7 +125,7 @@ const GoalPage = () => {
           <h2>Benchmarks</h2>
         </Grid>
       </Grid>
-      <BenchmarksContainer subgoals={subgoals || []} />
+      <BenchmarksContainer benchmarks={benchmarks || []} />
     </Stack>
   );
 };

@@ -10,7 +10,7 @@ import {
   DialogActions,
 } from "@mui/material";
 import { useState, useRef } from "react";
-import $subgoal from "./BenchmarkAssignmentModal.module.css";
+import $benchmark from "./BenchmarkAssignmentModal.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 
 import {
@@ -22,7 +22,7 @@ import DS_Checkbox from "../design_system/checkbox/Checkbox";
 interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
-  subgoal_id: string;
+  benchmark_id: string;
 }
 
 interface ParaProps {
@@ -50,8 +50,8 @@ export const BenchmarkAssignmentModal = (
   const [currentModalSelection, setCurrentModalSelection] =
     useState<Step>("PARA_SELECTION");
   const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
-  const { data: subgoal } = trpc.iep.getSubgoal.useQuery({
-    subgoal_id: props.subgoal_id,
+  const { data: benchmark } = trpc.iep.getSubgoal.useQuery({
+    subgoal_id: props.benchmark_id,
   });
 
   const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
@@ -91,7 +91,7 @@ export const BenchmarkAssignmentModal = (
     } else {
       // Reached end, save
       await assignTaskToPara.mutateAsync({
-        subgoal_id: props.subgoal_id,
+        subgoal_id: props.benchmark_id,
         para_ids: selectedParaIds,
         due_date:
           assignmentDuration.type === "until_date"
@@ -110,23 +110,23 @@ export const BenchmarkAssignmentModal = (
     <Dialog
       open={props.isOpen}
       onClose={handleClose}
-      className={$subgoal.assignSubgoalModal}
+      className={$benchmark.assignBenchmarkModal}
       maxWidth="sm"
       fullWidth
     >
-      <DialogTitle className={$subgoal.assignSubgoalModalTitle}>
+      <DialogTitle className={$benchmark.assignBenchmarkModalTitle}>
         Assign to benchmark
       </DialogTitle>
 
       <DialogContent>
-        <Box className={$subgoal.subgoalDescriptionBox}>
-          <p className={$subgoal.subgoalTitle}>Benchmark</p>
-          {subgoal?.map((thisSubgoal) => (
+        <Box className={$benchmark.benchmarkDescriptionBox}>
+          <p className={$benchmark.benchmarkTitle}>Benchmark</p>
+          {benchmark?.map((thisBenchmark) => (
             <p
-              className={$subgoal.subgoalDescription}
-              key="thisSubgoal.description"
+              className={$benchmark.benchmarkDescription}
+              key="thisBenchmark.description"
             >
-              {thisSubgoal.description}
+              {thisBenchmark.description}
             </p>
           ))}
         </Box>
@@ -142,7 +142,7 @@ export const BenchmarkAssignmentModal = (
                 borderRadius: 1,
               }}
             >
-              <List sx={{ p: 0 }} className={$subgoal.staffListItemText}>
+              <List sx={{ p: 0 }} className={$benchmark.staffListItemText}>
                 {myParas
                   ?.filter((para): para is ParaProps => para !== undefined)
                   .map((para) => (

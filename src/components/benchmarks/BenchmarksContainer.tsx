@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
-import { type Subgoal } from "@/types/global";
+import { type Subgoal as Benchmark } from "@/types/global";
 import BenchmarkListElement from "./BenchmarkListElement";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
 
@@ -53,9 +53,9 @@ const SelectableTab = ({
 };
 
 export default function BenchmarksContainer({
-  subgoals,
+  benchmarks,
 }: {
-  subgoals: Subgoal[];
+  benchmarks: Benchmark[];
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<selectableTabs>(
@@ -73,7 +73,7 @@ export default function BenchmarksContainer({
         {/* tabs with "all" and "completed" */}
         <Box className={$GoalPage.benchmarksBox} justifyContent="flex-start">
           <SelectableTab
-            text={`All (${subgoals.length})`}
+            text={`All (${benchmarks.length})`}
             value={selectableTabs.ALL}
             handleSelect={() => {
               setActiveTab(selectableTabs.ALL);
@@ -83,7 +83,8 @@ export default function BenchmarksContainer({
 
           <SelectableTab
             text={`Completed (${
-              subgoals.filter((goal) => goal.status === "Complete").length
+              benchmarks.filter((benchmark) => benchmark.status === "Complete")
+                .length
             })`}
             value={selectableTabs.COMPLETE}
             handleSelect={() => {
@@ -108,17 +109,17 @@ export default function BenchmarksContainer({
         <Grid sx={{ width: "100%" }} item>
           {(() => {
             const { status, message } = tabMapping[activeTab];
-            const filteredSubgoals = subgoals.filter((subgoal) =>
-              status === "All" ? true : subgoal.status === status
+            const filteredBenchmarks = benchmarks.filter((benchmark) =>
+              status === "All" ? true : benchmark.status === status
             );
 
-            return filteredSubgoals.length === 0 ? (
+            return filteredBenchmarks.length === 0 ? (
               <NoBenchmarksGraphic blurb={message} />
             ) : (
-              filteredSubgoals.map((subgoal, index) => (
+              filteredBenchmarks.map((benchmark, index) => (
                 <BenchmarkListElement
-                  key={subgoal.subgoal_id}
-                  subgoal={subgoal}
+                  key={benchmark.subgoal_id}
+                  benchmark={benchmark}
                   index={index}
                 />
               ))

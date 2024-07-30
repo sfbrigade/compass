@@ -1,4 +1,4 @@
-import { Subgoal } from "@/types/global";
+import { type Subgoal as Benchmark } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -8,8 +8,8 @@ import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
-interface SubgoalProps {
-  subgoal: Subgoal;
+interface BenchmarkProps {
+  benchmark: Benchmark;
   index?: number;
 }
 
@@ -42,7 +42,7 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
+const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
   return (
     <Box
@@ -64,7 +64,7 @@ const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
           display="block"
           gutterBottom
         >
-          #{(index ?? 0) + 1} created on {format(subgoal.created_at, "P")}
+          #{(index ?? 0) + 1} created on {format(benchmark.created_at, "P")}
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
@@ -79,7 +79,7 @@ const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
             />
 
             <Box sx={{ margin: "1rem", marginLeft: ".5rem" }}>
-              {subgoal.description}
+              {benchmark.description}
             </Box>
           </Box>
           <Box sx={{ margin: "1rem" }}>
@@ -101,16 +101,16 @@ const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
         >
           <Info description={"BASELINE LEVEL"}>
             {" "}
-            {subgoal?.baseline_level}%{" "}
+            {benchmark?.baseline_level}%{" "}
           </Info>
-          <Info description={"TARGET LEVEL"}> {subgoal?.target_level}% </Info>
+          <Info description={"TARGET LEVEL"}> {benchmark?.target_level}% </Info>
           <Info description={"CURRENT LEVEL"}>
             {" "}
-            {subgoal?.current_level || "N/A"}{" "}
+            {benchmark?.current_level || "N/A"}{" "}
           </Info>
           <Info description={"# OF TRIALS"}>
             {" "}
-            {subgoal?.number_of_trials || "N/A"}
+            {benchmark?.number_of_trials || "N/A"}
           </Info>
           <Info description="DATA">
             <Box
@@ -176,7 +176,7 @@ const BenchmarkListElement = ({ subgoal, index }: SubgoalProps) => {
       <BenchmarkAssignmentModal
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
-        subgoal_id={subgoal.subgoal_id}
+        benchmark_id={benchmark.subgoal_id}
       />
     </Box>
   );
