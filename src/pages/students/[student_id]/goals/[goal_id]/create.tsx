@@ -24,7 +24,7 @@ interface BenchmarkFields {
 }
 
 interface BenchmarkFormEntry {
-  [key: string]: string | number | undefined;
+  [key: string]: string | number | "";
 }
 
 const CreateBenchmarkPage = () => {
@@ -45,14 +45,14 @@ const CreateBenchmarkPage = () => {
 
   const [benchmarkFormState, setBenchmarkFormState] =
     useState<BenchmarkFormEntry>({
-      description: undefined,
-      setup: undefined,
-      materials: undefined,
-      instructions: undefined,
-      baseline_level: undefined,
-      target_level: undefined,
-      attempts_per_trial: undefined,
-      number_of_trials: undefined,
+      description: "",
+      setup: "",
+      materials: "",
+      instructions: "",
+      baseline_level: "",
+      target_level: "",
+      attempts_per_trial: "",
+      number_of_trials: "",
     });
 
   function checkFormFields() {
@@ -65,7 +65,7 @@ const CreateBenchmarkPage = () => {
     const { description, setup, materials, instructions } = benchmarkFormState;
     return [description, setup, materials, instructions].every((field) => {
       const castField = field as string;
-      return field !== undefined && castField.replaceAll(" ", "").length > 0;
+      return field !== "" && castField.replaceAll(" ", "").length > 0;
     });
   }
 
@@ -81,7 +81,7 @@ const CreateBenchmarkPage = () => {
       target_level,
       attempts_per_trial,
       number_of_trials,
-    ].every((field) => field !== undefined);
+    ].every((field) => field !== "");
   }
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
@@ -177,7 +177,7 @@ const CreateBenchmarkPage = () => {
           rows={4}
           name={field.name}
           value={
-            benchmarkFormState[field.name] !== undefined
+            benchmarkFormState[field.name] !== ""
               ? benchmarkFormState[field.name]
               : null
           }
@@ -264,9 +264,9 @@ const CreateBenchmarkPage = () => {
                       type="number"
                       name="baseline_level"
                       value={
-                        benchmarkFormState["baseline_level"] !== undefined
+                        benchmarkFormState["baseline_level"] !== ""
                           ? benchmarkFormState["baseline_level"]
-                          : null
+                          : ""
                       }
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
@@ -284,9 +284,9 @@ const CreateBenchmarkPage = () => {
                       type="number"
                       name="target_level"
                       value={
-                        benchmarkFormState["target_level"] !== undefined
+                        benchmarkFormState["target_level"] !== ""
                           ? benchmarkFormState["target_level"]
-                          : null
+                          : ""
                       }
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
@@ -303,9 +303,9 @@ const CreateBenchmarkPage = () => {
                     name="attempts_per_trial"
                     required
                     value={
-                      benchmarkFormState["attempts_per_trial"] !== undefined
+                      benchmarkFormState["attempts_per_trial"] !== ""
                         ? benchmarkFormState["attempts_per_trial"]
-                        : null
+                        : ""
                     }
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
@@ -320,7 +320,7 @@ const CreateBenchmarkPage = () => {
                     name="number_of_trials"
                     required
                     value={
-                      benchmarkFormState["number_of_trials"] !== undefined
+                      benchmarkFormState["number_of_trials"] !== ""
                         ? benchmarkFormState["number_of_trials"]
                         : null
                     }
