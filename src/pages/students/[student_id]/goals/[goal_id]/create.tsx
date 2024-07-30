@@ -322,7 +322,7 @@ const CreateBenchmarkPage = () => {
                     value={
                       benchmarkFormState["number_of_trials"] !== ""
                         ? benchmarkFormState["number_of_trials"]
-                        : null
+                        : ""
                     }
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
