@@ -13,9 +13,9 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-interface Benchmark {
+interface BenchmarkFields {
   title: string;
   description: string;
   label: string;
@@ -23,7 +23,7 @@ interface Benchmark {
   placeholder: string;
 }
 
-interface BenchmarkFormState {
+interface BenchmarkFormEntry {
   [key: string]: string | number | undefined;
 }
 
@@ -42,9 +42,10 @@ const CreateBenchmarkPage = () => {
   };
 
   const [viewState, setViewState] = useState(VIEW_STATES.BENCHMARK_PG_1);
+  const [formComplete, setFormComplete] = useState(false);
 
   const [benchmarkFormState, setBenchmarkFormState] =
-    useState<BenchmarkFormState>({
+    useState<BenchmarkFormEntry>({
       description: undefined,
       setup: undefined,
       materials: undefined,
@@ -54,6 +55,33 @@ const CreateBenchmarkPage = () => {
       attempts_per_trial: undefined,
       number_of_trials: undefined,
     });
+
+  useEffect(() => {
+    setFormComplete(checkTextFields() && checkNumberFields());
+  }, [benchmarkFormState]);
+
+  function checkTextFields(): boolean {
+    const { description, setup, materials, instructions } = benchmarkFormState;
+    return [description, setup, materials, instructions].every((field) => {
+      const castField = field as string;
+      return field !== undefined && castField.replaceAll(" ", "").length > 0;
+    });
+  }
+
+  function checkNumberFields(): boolean {
+    const {
+      baseline_level,
+      target_level,
+      attempts_per_trial,
+      number_of_trials,
+    } = benchmarkFormState;
+    return [
+      baseline_level,
+      target_level,
+      attempts_per_trial,
+      number_of_trials,
+    ].every((field) => field !== undefined);
+  }
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
@@ -131,7 +159,7 @@ const CreateBenchmarkPage = () => {
     },
   ];
 
-  const renderTextFields = (textFieldDescriptionsPage: Benchmark[]) => {
+  const renderTextFields = (textFieldDescriptionsPage: BenchmarkFields[]) => {
     return textFieldDescriptionsPage.map((field, index) => (
       <Stack spacing={2} width="100%" key={index}>
         <Typography variant="h6">{field.title}</Typography>
@@ -329,7 +357,11 @@ const CreateBenchmarkPage = () => {
             >
               Back
             </button>
-            <button type="submit" className={$button.default}>
+            <button
+              type="submit"
+              className={$button.default}
+              disabled={!formComplete}
+            >
               Create Benchmark
             </button>
           </Stack>
