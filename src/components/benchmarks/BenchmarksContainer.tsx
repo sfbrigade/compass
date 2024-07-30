@@ -7,14 +7,25 @@ import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
 import { type Subgoal } from "@/types/global";
-import Benchmarks from "./Benchmarks";
+import BenchmarkListElement from "./BenchmarkListElement";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
 
 export enum selectableTabs {
   ALL,
   COMPLETE,
 }
+const tabMapping = {
+  [selectableTabs.ALL]: {
+    status: "All",
+    message: "No benchmarks",
+  },
 
+  //Status text must match the status in the database
+  [selectableTabs.COMPLETE]: {
+    status: "Complete",
+    message: "No completed benchmarks",
+  },
+};
 export interface SelectableTabProps {
   text: string;
   value: selectableTabs;
@@ -92,17 +103,27 @@ export default function BenchmarksContainer({
       </Box>
 
       {/* The white box below the tabs */}
+      {/* Render <NoBenchmarksGraphic /> if no benchmarks present*/}
       <Grid container className={$GoalPage.benchmarksContainer}>
         <Grid sx={{ width: "100%" }} item>
-          {subgoals?.length !== 0 ? (
-            <Benchmarks
-              subgoals={subgoals}
-              activeTab={activeTab}
-              selectableTabs={selectableTabs}
-            />
-          ) : (
-            <NoBenchmarksGraphic />
-          )}
+          {(() => {
+            const { status, message } = tabMapping[activeTab];
+            const filteredSubgoals = subgoals.filter((subgoal) =>
+              status === "All" ? true : subgoal.status === status
+            );
+
+            return filteredSubgoals.length === 0 ? (
+              <NoBenchmarksGraphic blurb={message} />
+            ) : (
+              filteredSubgoals.map((subgoal, index) => (
+                <BenchmarkListElement
+                  key={subgoal.subgoal_id}
+                  subgoal={subgoal}
+                  index={index}
+                />
+              ))
+            );
+          })()}
         </Grid>
       </Grid>
     </Stack>
