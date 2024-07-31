@@ -3,6 +3,7 @@ import { useState, MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
+import Button from "@mui/material/Button";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
@@ -97,8 +98,8 @@ export default function BenchmarksContainer({
 
         {/* Create benchmark button */}
         <Box>
-          <Link className={$button.default} href={`${router.asPath}/create`}>
-            Create benchmark
+          <Link href={`${router.asPath}/create`}>
+            <Button className={$button.default}>Create benchmark</Button>
           </Link>
         </Box>
       </Box>

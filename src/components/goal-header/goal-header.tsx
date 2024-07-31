@@ -1,6 +1,7 @@
 import { Stack, Typography, Grid } from "@mui/material";
 import { format } from "date-fns";
 import $button from "@/components/design_system/button/Button.module.css";
+import Button from "@mui/material/Button";
 type GoalHeaderProps = {
   goalId: string;
   name: string;
@@ -36,7 +37,7 @@ export const GoalHeader = (props: GoalHeaderProps) => {
         item
       >
         {props.showEditGoal && (
-          <button
+          <Button
             className={$button.tertiary}
             onClick={props.showEditGoal}
             style={{
@@ -44,14 +45,14 @@ export const GoalHeader = (props: GoalHeaderProps) => {
             }}
           >
             Edit Goal
-          </button>
+          </Button>
         )}
-        <button
+        <Button
           className={$button.secondary}
           onClick={() => alert("to be implemented")}
         >
           View all goals
-        </button>
+        </Button>
       </Grid>
     </>
   );
