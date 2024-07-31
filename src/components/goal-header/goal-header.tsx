@@ -1,4 +1,4 @@
-import { Stack, Typography, Container, Grid } from "@mui/material";
+import { Stack, Typography, Grid } from "@mui/material";
 import { format } from "date-fns";
 import $button from "@/components/design_system/button/Button.module.css";
 type GoalHeaderProps = {
