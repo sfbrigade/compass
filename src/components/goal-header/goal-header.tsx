@@ -88,18 +88,17 @@ export const GoalHeader = (props: GoalHeaderProps) => {
             <>
               <Button
                 form="editGoalForm"
-                sx={{ marginRight: "1rem" }}
+                className={$button.tertiary}
+                onClick={cancelEditGoal}
+              >
+                Cancel
+              </Button>
+              <Button
+                form="editGoalForm"
                 className={$button.default}
                 onClick={submitEditGoal}
               >
                 Save
-              </Button>
-              <Button
-                form="editGoalForm"
-                className={$button.secondary}
-                onClick={cancelEditGoal}
-              >
-                Cancel
               </Button>
             </>
           )}
