@@ -83,13 +83,13 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
             </Box>
           </Box>
           <Box sx={{ margin: "1rem" }}>
-            <button
+            <Button
               className={$button.tertiary}
               onClick={() => alert("To be implemented")}
             >
               {" "}
               Edit
-            </button>
+            </Button>
           </Box>
         </Box>
         <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />
@@ -128,14 +128,14 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
                 }}
               >
                 {/* Placeholder href to replace with actual path */}
-                <button
+                <Button
                   onClick={() => {
                     alert("To be implemented");
                   }}
                   className={$button.tertiary}
                 >
                   Collect Data
-                </button>
+                </Button>
               </Box>
               <Box
                 sx={{
@@ -146,14 +146,14 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
                 }}
               >
                 {/* Placeholder href to replace with actual path */}
-                <button
+                <Button
                   onClick={() => {
                     alert("To be implemented");
                   }}
                   className={$button.tertiary}
                 >
                   View Data
-                </button>
+                </Button>
               </Box>
             </Box>
           </Info>

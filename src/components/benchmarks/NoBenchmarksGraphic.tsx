@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Button } from "@mui/material";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
 export default function NoBenchmarksGraphic({ blurb }: { blurb?: string }) {
@@ -46,8 +46,8 @@ export default function NoBenchmarksGraphic({ blurb }: { blurb?: string }) {
         Create student benchmarks to start tracking their goals
       </span>
       <Box>
-        <Link className={$button.default} href={`${router.asPath}/create`}>
-          Create benchmark
+        <Link href={`${router.asPath}/create`}>
+          <Button className={$button.default}>Create benchmark</Button>
         </Link>
       </Box>
     </Grid>
