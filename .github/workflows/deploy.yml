@@ -61,7 +61,7 @@ jobs:
           service_account: ${{ secrets.GCS_SERVICE_ACCOUNT_EMAIL }}
           access_token_lifetime: 300s
 
-      - uses: hashicorp/setup-terraform@v2
+      - uses: hashicorp/setup-terraform@v3
 
       - run: terraform init -backend-config=../backend.hcl
 
