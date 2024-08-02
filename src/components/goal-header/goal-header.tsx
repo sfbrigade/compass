@@ -3,8 +3,7 @@ import {
   Typography,
   Grid,
   Container,
-  TextField,
-  Box,
+  TextareaAutosize,
 } from "@mui/material";
 import { format } from "date-fns";
 import $button from "@/components/design_system/button/Button.module.css";
@@ -124,9 +123,8 @@ export const GoalHeader = (props: GoalHeaderProps) => {
             item
           ></Grid>
 
-          <TextField
-            multiline
-            fullWidth
+          <TextareaAutosize
+            className={$GoalPage.editGoalFormTextArea}
             value={editGoalInput}
             name="description"
             onChange={(e) => {
