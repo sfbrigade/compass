@@ -1,4 +1,11 @@
-import { Stack, Typography, Grid, Container } from "@mui/material";
+import {
+  Stack,
+  Typography,
+  Grid,
+  Container,
+  TextField,
+  Box,
+} from "@mui/material";
 import { format } from "date-fns";
 import $button from "@/components/design_system/button/Button.module.css";
 import Button from "@mui/material/Button";
@@ -116,17 +123,16 @@ export const GoalHeader = (props: GoalHeaderProps) => {
             }}
             item
           ></Grid>
-          <form id="editGoalForm">
-            <textarea
-              value={editGoalInput}
-              name="description"
-              onChange={(e) => {
-                setEditGoalInput(e.target.value);
-              }}
-              className={$GoalPage.editGoalFormTextArea}
-              style={{ width: "full" }}
-            />
-          </form>
+
+          <TextField
+            multiline
+            fullWidth
+            value={editGoalInput}
+            name="description"
+            onChange={(e) => {
+              setEditGoalInput(e.target.value);
+            }}
+          />
         </>
       )}
 
