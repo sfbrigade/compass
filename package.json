@@ -82,7 +82,7 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "ava": "^5.1.1",
-    "ava-postgres": "^3.0.0",
+    "ava-postgres": "^6.0.0",
     "ava-typescript-worker": "^2.0.0",
     "eslint": "^8.34.0",
     "eslint-config-next": "^14.2.5",
