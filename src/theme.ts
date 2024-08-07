@@ -146,7 +146,7 @@ export const compassTheme = createTheme({
     MuiStep: {
       defaultProps: {},
       styleOverrides: {
-        root: ({ ownerState, theme }) => ({
+        root: ({ ownerState }) => ({
           padding: 0,
           marginRight: !ownerState.last ? "16px" : 0,
           "&.Mui-disabled": {
@@ -163,7 +163,7 @@ export const compassTheme = createTheme({
     },
     MuiStepLabel: {
       styleOverrides: {
-        iconContainer: ({ ownerState, theme }) => ({
+        iconContainer: ({ theme }) => ({
           position: "absolute",
           left: 0,
           height: "100%",
@@ -179,7 +179,7 @@ export const compassTheme = createTheme({
             color: theme.palette.primary.main,
           },
         }),
-        label: ({ ownerState, theme }) => ({
+        label: ({ theme }) => ({
           padding: "9px",
           paddingLeft: "32px",
           textAlign: "left",
