@@ -34,7 +34,7 @@ export const compassTheme = createTheme({
     "0px 4px 4px 0px rgba(0, 0, 0, 0.30), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)",
     ...new Array(20).map(() => "none"),
     // type requires 20+ elements
-  ] as any,
+  ],
   typography: {
     allVariants: {
       letterSpacing: "normal",
