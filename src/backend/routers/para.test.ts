@@ -168,6 +168,7 @@ test("getMyTasks", async (t) => {
       setup: SETUP,
       instructions: INSTRUCTIONS,
       materials: "materials",
+      frequency: "FREQUENCY",
       target_level: 100,
       baseline_level: 20,
       metric_name: "words",

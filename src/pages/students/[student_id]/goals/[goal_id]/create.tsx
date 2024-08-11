@@ -49,6 +49,7 @@ const CreateBenchmarkPage = () => {
       setup: "",
       materials: "",
       instructions: "",
+      frquency: "",
       baseline_level: "",
       target_level: "",
       attempts_per_trial: "",
@@ -71,17 +72,22 @@ const CreateBenchmarkPage = () => {
 
   function checkNumberFields(): boolean {
     const {
+      frequency,
       baseline_level,
       target_level,
       attempts_per_trial,
       number_of_trials,
     } = benchmarkFormState;
     return [
+      frequency,
       baseline_level,
       target_level,
       attempts_per_trial,
       number_of_trials,
-    ].every((field) => field !== "");
+    ].every((field) => {
+      const castField = field as string;
+      return field !== "" && castField.replaceAll(" ", "").length > 0;
+    });
   }
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
@@ -91,7 +97,6 @@ const CreateBenchmarkPage = () => {
 
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
-    // TO DO: frequency is not included in the mutation (but is included in the design) and should be added to the schema
     try {
       await addSubgoalMutation.mutateAsync({
         goal_id: router.query.goal_id as string,
@@ -100,6 +105,7 @@ const CreateBenchmarkPage = () => {
         setup: benchmarkFormState["setup"] as string,
         instructions: benchmarkFormState["instructions"] as string,
         materials: benchmarkFormState["materials"] as string,
+        frequency: benchmarkFormState["frequency"] as string,
         target_level: benchmarkFormState["target_level"] as number,
         baseline_level: benchmarkFormState["baseline_level"] as number,
         metric_name: "" as string,
