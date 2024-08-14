@@ -33,7 +33,7 @@ const BenchmarkPage = () => {
     data: task,
     isLoading: taskIsLoading,
     isError,
-  } = trpc.iep.getSubgoalAndTrialData.useQuery(
+  } = trpc.iep.getBenchmarkAndTrialData.useQuery(
     {
       task_id: benchmark_id as string,
     },
@@ -42,23 +42,26 @@ const BenchmarkPage = () => {
     }
   );
   const seenMutation = trpc.iep.markAsSeen.useMutation({
-    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
+    onSuccess: async () =>
+      await utils.iep.getBenchmarkAndTrialData.invalidate(),
   });
   const addTrialMutation = trpc.iep.addTrialData.useMutation({
-    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
+    onSuccess: async () =>
+      await utils.iep.getBenchmarkAndTrialData.invalidate(),
   });
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation({
-    onSuccess: async () => await utils.iep.getSubgoalAndTrialData.invalidate(),
+    onSuccess: async () =>
+      await utils.iep.getBenchmarkAndTrialData.invalidate(),
   });
   const attachFileToTrialDataMutation =
     trpc.iep.attachFileToTrialData.useMutation({
       onSuccess: async () =>
-        await utils.iep.getSubgoalAndTrialData.invalidate(),
+        await utils.iep.getBenchmarkAndTrialData.invalidate(),
     });
   const removeFileFromTrialDataAndDeleteMutation =
     trpc.iep.removeFileFromTrialDataAndDelete.useMutation({
       onSuccess: async () =>
-        await utils.iep.getSubgoalAndTrialData.invalidate(),
+        await utils.iep.getBenchmarkAndTrialData.invalidate(),
     });
 
   const [notesInputValue, setNotesInputValue] = useState("");

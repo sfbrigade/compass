@@ -7,7 +7,7 @@ import $button from "@/components/design_system/button/Button.module.css";
 const ReviewPage = () => {
   const router = useRouter();
   const { benchmark_id } = router.query;
-  const { data: task, isLoading } = trpc.iep.getSubgoalAndTrialData.useQuery(
+  const { data: task, isLoading } = trpc.iep.getBenchmarkAndTrialData.useQuery(
     {
       task_id: benchmark_id as string,
     },

@@ -63,7 +63,7 @@ const GoalPage = () => {
     { enabled: Boolean(goal_id) }
   );
 
-  const { data: subgoals } = trpc.iep.getSubgoals.useQuery(
+  const { data: benchmarks } = trpc.iep.getBenchmarks.useQuery(
     { goal_id: goal_id as string },
     { enabled: Boolean(goal_id) }
   );
@@ -208,9 +208,9 @@ const GoalPage = () => {
         <Grid container className={$GoalPage.benchmarksContainer}>
           <Grid item>
             {activeTab === selectionValue.ACTIVE &&
-              subgoals?.map((subgoal) => (
-                <div key={subgoal.subgoal_id}>
-                  <Typography variant="h4">{subgoal.description}</Typography>
+              benchmarks?.map((benchmark) => (
+                <div key={benchmark.benchmark_id}>
+                  <Typography variant="h4">{benchmark.description}</Typography>
                 </div>
               ))}
           </Grid>

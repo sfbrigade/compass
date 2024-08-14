@@ -1,16 +1,16 @@
 import { trpc } from "@/client/lib/trpc";
-import { Subgoal } from "@/types/global";
+import { Benchmark } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-import { SubgoalAssignmentModal } from "./Subgoal-Assignment-Modal";
+import { BenchmarkAssignmentModal } from "./Benchmark-Assignment-Modal";
 import $button from "@/components/design_system/button/Button.module.css";
 
-interface SubgoalProps {
-  subgoal: Subgoal;
+interface BenchmarkProps {
+  benchmark: Benchmark;
 }
 
-const Subgoals = ({ subgoal }: SubgoalProps) => {
+const Benchmarks = ({ benchmark }: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
   return (
@@ -23,7 +23,7 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           padding: "1rem",
         }}
       >
-        <p>{subgoal.description}</p>
+        <p>{benchmark.description}</p>
         <Box
           sx={{
             display: "flex",
@@ -47,13 +47,13 @@ const Subgoals = ({ subgoal }: SubgoalProps) => {
           </Box>
         </Box>
       </Box>
-      <SubgoalAssignmentModal
+      <BenchmarkAssignmentModal
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
-        subgoal_id={subgoal.subgoal_id}
+        benchmark_id={benchmark.benchmark_id}
       />
     </Box>
   );
 };
 
-export default Subgoals;
+export default Benchmarks;

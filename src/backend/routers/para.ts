@@ -66,9 +66,9 @@ export const para = router({
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
-      .selectFrom("subgoal")
-      .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
-      .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
+      .selectFrom("benchmark")
+      .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+      .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
       .innerJoin("iep", "goal.iep_id", "iep.iep_id")
       .innerJoin("student", "iep.student_id", "student.student_id")
       .where("task.assignee_id", "=", userId)
@@ -77,10 +77,10 @@ export const para = router({
         "student.first_name",
         "student.last_name",
         "goal.category",
-        "subgoal.description",
-        "subgoal.instructions",
-        "subgoal.attempts_per_trial",
-        "subgoal.number_of_trials",
+        "benchmark.description",
+        "benchmark.instructions",
+        "benchmark.attempts_per_trial",
+        "benchmark.number_of_trials",
         "task.due_date",
         "task.seen",
         "task.trial_count",
