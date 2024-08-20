@@ -13,6 +13,7 @@
     "test:watch": "ava --watch",
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
     "db:reset": "npx tsx src/backend/scripts/reset-database.ts",
+    "db:seed": "npx tsx src/backend/scripts/seed-database.ts",
     "prepare": "husky install",
     "postinstall": "next build --no-lint && nsm build --skip-build --only-api-files && npm run type-css",
     "format": "prettier --write --ignore-unknown .",
