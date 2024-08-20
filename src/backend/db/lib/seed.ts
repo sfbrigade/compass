@@ -2,7 +2,7 @@ import { logger } from "@/backend/lib";
 import { getDb } from "@/backend/db/lib/get-db";
 
 export const seedfile = async (databaseUrl: string) => {
-  const { db, pool } = getDb(databaseUrl);
+  const { db } = getDb(databaseUrl);
 
   // variable created for Compass app visualization purposes
   const firstuser = await db
