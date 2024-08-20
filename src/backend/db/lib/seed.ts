@@ -43,7 +43,7 @@ export const seedfile = async (databaseUrl: string) => {
     })
     .execute();
 
-  await db
+  const { user_id } = await db
     .insertInto("user")
     .values({
       first_name: "Helen",
@@ -51,12 +51,7 @@ export const seedfile = async (databaseUrl: string) => {
       email: "elastic@example.com",
       role: "staff",
     })
-    .execute();
-
-  const newstaff = await db
-    .selectFrom("user")
-    .select("user_id")
-    .where("first_name", "=", "Helen")
+    .returning("user_id")
     .executeTakeFirstOrThrow();
 
   // need to assign staff member to case manager so that it appears in the Compass staff index
@@ -64,7 +59,7 @@ export const seedfile = async (databaseUrl: string) => {
     .insertInto("paras_assigned_to_case_manager")
     .values({
       case_manager_id: firstuser.user_id,
-      para_id: newstaff.user_id,
+      para_id: user_id,
     })
     .execute();
 
