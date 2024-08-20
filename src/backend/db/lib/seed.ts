@@ -42,5 +42,30 @@ export const seedfile = async (databaseUrl: string) => {
     })
     .execute();
 
+  await db
+    .insertInto("user")
+    .values({
+      first_name: "Helen",
+      last_name: "Parr",
+      email: "elastic@example.com",
+      role: "staff",
+    })
+    .execute();
+
+  const newstaff = await db
+    .selectFrom("user")
+    .select("user_id")
+    .where("first_name", "=", "Helen")
+    .executeTakeFirstOrThrow();
+
+  // #need to assign staff member to case manager so that it appears in the staff index
+  await db
+    .insertInto("paras_assigned_to_case_manager")
+    .values({
+      case_manager_id: firstuser.user_id,
+      para_id: newstaff.user_id,
+    })
+    .execute();
+
   logger.info("🫧  database has been seeded with test data.");
 };
