@@ -4,6 +4,7 @@ import { getDb } from "@/backend/db/lib/get-db";
 export const seedfile = async (databaseUrl: string) => {
   const { db, pool } = getDb(databaseUrl);
 
+  // variable created for Compass app visualization purposes
   const firstuser = await db
     .selectFrom("user")
     .select("user_id")
@@ -58,7 +59,7 @@ export const seedfile = async (databaseUrl: string) => {
     .where("first_name", "=", "Helen")
     .executeTakeFirstOrThrow();
 
-  // #need to assign staff member to case manager so that it appears in the staff index
+  // need to assign staff member to case manager so that it appears in the Compass staff index
   await db
     .insertInto("paras_assigned_to_case_manager")
     .values({
@@ -67,5 +68,5 @@ export const seedfile = async (databaseUrl: string) => {
     })
     .execute();
 
-  logger.info("🫧  database has been seeded with test data.");
+  logger.info("Database has been seeded with test data.");
 };
