@@ -56,7 +56,7 @@
     "react-timer-hook": "^3.0.6",
     "react-use": "^17.4.0",
     "superjson": "^1.12.3",
-    "tsx": "^3.12.7",
+    "tsx": "^4.17.0",
     "winston": "^3.8.2",
     "zapatos": "^6.1.4",
     "zod": "^3.21.4"
