@@ -22,6 +22,7 @@ import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
 import Container from "@mui/material/Container";
 import Image from "next/image";
+import { SearchBar } from "../design_system/searchBar/SearchBar";
 
 export type StudentWithIep = SelectableForTable<"student"> &
   SelectableForTable<"iep">;
@@ -161,7 +162,7 @@ function EnhancedTableToolbar({
                 alignItems: "center",
               }}
             >
-              <TextField
+              <SearchBar
                 id="search-input"
                 placeholder="Search"
                 type="search"
@@ -175,35 +176,6 @@ function EnhancedTableToolbar({
                 variant="outlined"
                 value={searchParam}
                 onChange={onSearch}
-                sx={{
-                  "& .MuiOutlinedInput-root": {
-                    color: "var(--grey-30)",
-                    height: "56px",
-                    marginRight: "10px",
-                    "& .MuiOutlinedInput-notchedOutline": {
-                      borderRadius: "30px",
-                      borderColor: "var(--primary)",
-                      borderSize: "1px",
-                      height: "56px",
-                    },
-                    "&:hover:not(.Mui-focused)": {
-                      border: "none",
-                      backgroundColor: "var(--primary-99)",
-                      borderRadius: "30px",
-                      height: "56px",
-                    },
-                    "&.Mui-focused": {
-                      borderColor: "var(--primary)",
-                      backgroundColor: "var(--primary-99)",
-                      borderRadius: "30px",
-                      color: "var(--grey-30)",
-                      height: "56px",
-                    },
-                  },
-                  "& .MuiInputAdornment-root": {
-                    color: "var(--primary)",
-                  },
-                }}
               />
               <button onClick={onOpenInput} className={`${$button.default}`}>
                 Add {type}

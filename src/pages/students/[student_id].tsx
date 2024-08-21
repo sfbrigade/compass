@@ -9,12 +9,13 @@ import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
-import $input from "@/styles/Input.module.css";
+import $input from "../../styles/Input.module.css";
 import $Modal from "@/components/design_system/modal/Modal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 
 import * as React from "react";
 import Typography from "@mui/material/Typography";
+import { TextInput } from "@/components/design_system/input/Input";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -172,7 +173,7 @@ const ViewStudentPage = () => {
                 >
                   <Stack gap={0.5}>
                     <Container className={$Modal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$Modal.editModalTextfield}
                         label="First Name"
                         type="text"
@@ -182,7 +183,7 @@ const ViewStudentPage = () => {
                       />
                     </Container>
                     <Container className={$Modal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$Modal.editModalTextfield}
                         label="Last Name"
                         type="text"
@@ -192,7 +193,7 @@ const ViewStudentPage = () => {
                       />
                     </Container>
                     <Container className={$Modal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$Modal.editModalTextfield}
                         label="Email"
                         type="text"
@@ -202,7 +203,7 @@ const ViewStudentPage = () => {
                       />
                     </Container>
                     <Container className={$Modal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$Modal.editModalTextfield}
                         label="Grade"
                         type="number"
@@ -214,7 +215,7 @@ const ViewStudentPage = () => {
                     {activeIep != null && (
                       <div>
                         <Container className={$Modal.editModalContainer}>
-                          <TextField
+                          <TextInput
                             className={$Modal.editModalTextfield}
                             label="IEP Start Date"
                             type="date"
@@ -225,7 +226,7 @@ const ViewStudentPage = () => {
                           />
                         </Container>
                         <Container className={$Modal.editModalContainer}>
-                          <TextField
+                          <TextInput
                             className={$Modal.editModalTextfield}
                             label="IEP End Date"
                             type="date"

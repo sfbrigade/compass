@@ -114,35 +114,5 @@ export const theme = createTheme({
         disableRipple: true,
       },
     },
-    MuiTextField: {
-      styleOverrides: {
-        root: {
-          "& .MuiInputLabel-outlined": {
-            color: "var(--grey-10)",
-            "&.Mui-focused": {
-              color: "var(--primary)",
-            },
-          },
-          "& .MuiOutlinedInput-root": {
-            color: "var(--grey-10)",
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "var(--primary)",
-              borderSize: "1px",
-            },
-            "&.Mui-focused": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--primary)",
-                borderSize: "2px",
-              },
-            },
-            "&:hover:not(.Mui-focused)": {
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: "var(--grey-10)",
-              },
-            },
-          },
-        },
-      },
-    },
   },
 });
