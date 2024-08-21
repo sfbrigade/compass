@@ -3,7 +3,7 @@ import { createTheme } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
-export const theme = createTheme({
+export const compassTheme = createTheme({
   palette: {
     primary: {
       main: "#3023b8", // --primary-50

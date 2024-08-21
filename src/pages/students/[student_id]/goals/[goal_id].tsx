@@ -46,6 +46,8 @@ const SelectableTab = ({
 const GoalPage = () => {
   const utils = trpc.useContext();
 
+  console.log("This is the [goal_id].tsx page");
+
   const router = useRouter();
   const { goal_id } = router.query;
 
