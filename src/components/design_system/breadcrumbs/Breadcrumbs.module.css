@@ -1,3 +1,5 @@
+/* FIXME Figure out how to avoid `SyntaxError: Unexpected token '.'` parsing css file. */
+/*
 .container {
   position: fixed;
   display: flex;
@@ -16,3 +18,4 @@
 .link:hover {
   text-decoration: underline;
 }
+*/

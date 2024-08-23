@@ -8,9 +8,16 @@ import $breadcrumbs from "./Breadcrumbs.module.css";
 type Student = SelectableForTable<"student">;
 type Para = SelectableForTable<"user">;
 
-const BreadcrumbsNav = () => {
+export interface BreadcrumbsNavProps {
+  urlPath?: string;
+}
+
+const BreadcrumbsNav = ({ urlPath }: BreadcrumbsNavProps) => {
   const router = useRouter();
-  const paths = router.asPath.split("/");
+  if (urlPath === undefined) {
+    urlPath = router.asPath;
+  }
+  const paths = urlPath.split("/");
 
   // student and para queries will only runs if enabled options are both true
   // Only 1 of these will run at a time based on the conditions
