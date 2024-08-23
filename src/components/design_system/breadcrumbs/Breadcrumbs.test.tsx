@@ -4,14 +4,18 @@ import test from "ava";
 import BreadcrumbsNav from "./Breadcrumbs";
 import { render, cleanup } from "@testing-library/react";
 import React from "react";
+import mockRouter from "next-router-mock";
 
 // TODO Move this to global file as suggested here: <https://github.com/theKashey/rewiremock?tab=readme-ov-file#2-setup>
 rewiremock.overrideEntryPoint(module); // this is important. This command is "transferring" this module parent to rewiremock
 
 test.beforeEach(() => {
   rewiremock("next/router").with({
-    useRouter: {
-      asPath: "/",
+    useRouter: () => {
+      return {
+        pathname: "/",
+        asPath: "",
+      };
     },
   });
 
