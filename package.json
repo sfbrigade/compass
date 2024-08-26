@@ -11,6 +11,7 @@
     "type-css:check": "npx tcm src --listDifferent",
     "test": "ava",
     "test:watch": "ava --watch",
+    "test:debug": "ava debug",
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
     "db:reset": "npx tsx src/backend/scripts/reset-database.ts",
     "db:seed": "npx tsx src/backend/scripts/seed-database.ts",
