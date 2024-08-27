@@ -111,27 +111,14 @@ export const GoalHeader = (props: GoalHeaderProps) => {
         </Grid>
       </Grid>
       {editGoal && (
-        <>
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: "start",
-              justifyContent: "start",
-              justifyItems: "start",
-              height: "100%",
-            }}
-            item
-          ></Grid>
-
-          <TextareaAutosize
-            className={$GoalPage.editGoalFormTextArea}
-            value={editGoalInput}
-            name="description"
-            onChange={(e) => {
-              setEditGoalInput(e.target.value);
-            }}
-          />
-        </>
+        <TextareaAutosize
+          className={$GoalPage.editGoalFormTextArea}
+          value={editGoalInput}
+          name="description"
+          onChange={(e) => {
+            setEditGoalInput(e.target.value);
+          }}
+        />
       )}
 
       {!editGoal && (
