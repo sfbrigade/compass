@@ -23,10 +23,7 @@ test("All API endpoints are auth guarded", async (t) => {
     res: mockRes,
   });
   // Define an exclude list for certain router/procedures
-  const excludeList = [
-    "public.getFoo", // Example of a public procedure that doesn't require auth
-    // Add more procedures to exclude as needed
-  ];
+  const excludeList = ["public.getFoo"];
 
   // Create a caller with this context
   const caller = trpcRouter.createCaller(ctx);
