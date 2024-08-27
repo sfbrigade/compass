@@ -7,7 +7,6 @@ import {
   Box,
   Stack,
   Step,
-  StepIconProps,
   StepLabel,
   Stepper,
   TextField,
@@ -27,16 +26,6 @@ interface BenchmarkFields {
 interface BenchmarkFormEntry {
   [key: string]: string | number | "";
 }
-
-const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
-  const { completed = false } = stepIconProps;
-
-  if (completed) {
-    return <CheckCircle />;
-  } else {
-    return <TripOriginRounded />;
-  }
-};
 
 const CreateBenchmarkPage = () => {
   const router = useRouter();
@@ -187,7 +176,11 @@ const CreateBenchmarkPage = () => {
           multiline
           rows={4}
           name={field.name}
-          value={benchmarkFormState[field.name] || ""}
+          value={
+            benchmarkFormState[field.name] !== ""
+              ? benchmarkFormState[field.name]
+              : null
+          }
           onChange={(e: ChangeEvent) =>
             setBenchmarkFormState({
               ...benchmarkFormState,
@@ -209,27 +202,31 @@ const CreateBenchmarkPage = () => {
       onSubmit={handleSubmit}
       maxWidth="1000px"
     >
-      <Box p={4}>
-        {goal && (
-          <GoalHeader
-            name="[placeholder] 1st Goal"
-            description={goal.description}
-            createdAt={goal.created_at}
-            goalId={goal.goal_id}
-          />
-        )}
-      </Box>
+      {goal && (
+        <GoalHeader
+          name="[placeholder] 1st Goal"
+          description={goal.description}
+          createdAt={goal.created_at}
+          goalId={goal.goal_id}
+        />
+      )}
 
       <Box bgcolor={"var(--grey-80)"} py={4}>
         <Typography variant="h3" textAlign="left" pb={2}>
           Create Benchmark
         </Typography>
         <Stepper activeStep={viewState} alternativeLabel connector={null}>
-          {steps.map((label) => (
+          {steps.map((label, index) => (
             <Step key={label}>
-              <StepLabel StepIconComponent={BenchmarkStepperIcon}>
-                {label}
-              </StepLabel>
+              {index !== steps.length && (
+                <StepLabel
+                  StepIconComponent={
+                    index < viewState ? CheckCircle : TripOriginRounded
+                  }
+                >
+                  {label}
+                </StepLabel>
+              )}
             </Step>
           ))}
         </Stepper>
@@ -264,7 +261,11 @@ const CreateBenchmarkPage = () => {
                       required
                       type="number"
                       name="baseline_level"
-                      value={benchmarkFormState["baseline_level"] || ""}
+                      value={
+                        benchmarkFormState["baseline_level"] !== ""
+                          ? benchmarkFormState["baseline_level"]
+                          : ""
+                      }
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
                           ...benchmarkFormState,
@@ -280,7 +281,11 @@ const CreateBenchmarkPage = () => {
                       required
                       type="number"
                       name="target_level"
-                      value={benchmarkFormState["target_level"] || ""}
+                      value={
+                        benchmarkFormState["target_level"] !== ""
+                          ? benchmarkFormState["target_level"]
+                          : ""
+                      }
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
                           ...benchmarkFormState,
@@ -295,7 +300,11 @@ const CreateBenchmarkPage = () => {
                     type="number"
                     name="attempts_per_trial"
                     required
-                    value={benchmarkFormState["attempts_per_trial"] || ""}
+                    value={
+                      benchmarkFormState["attempts_per_trial"] !== ""
+                        ? benchmarkFormState["attempts_per_trial"]
+                        : ""
+                    }
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
                         ...benchmarkFormState,
@@ -308,7 +317,11 @@ const CreateBenchmarkPage = () => {
                     type="number"
                     name="number_of_trials"
                     required
-                    value={benchmarkFormState["number_of_trials"] || ""}
+                    value={
+                      benchmarkFormState["number_of_trials"] !== ""
+                        ? benchmarkFormState["number_of_trials"]
+                        : ""
+                    }
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
                         ...benchmarkFormState,

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { getTransporter } from "../lib/nodemailer";
 import { authenticatedProcedure, router } from "../trpc";
 import { createPara } from "../lib/db_helpers/case_manager";
 
@@ -43,7 +44,7 @@ export const para = router({
       })
     )
     .mutation(async (req) => {
-      const { email } = req.input;
+      const { first_name, last_name, email } = req.input;
 
       const para = await createPara(
         req.input,
