@@ -37,5 +37,6 @@ const isAdmin = t.middleware(({ next, ctx }) => {
 
 // Define and export the tRPC router
 export const router = t.router;
+export const publicProcedure = t.procedure;
 export const authenticatedProcedure = t.procedure.use(isAuthenticated);
 export const adminProcedure = t.procedure.use(isAuthenticated).use(isAdmin);
