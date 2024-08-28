@@ -1,4 +1,4 @@
-import { createTheme } from "@mui/material";
+import { createTheme, Shadows } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
@@ -32,9 +32,9 @@ export const compassTheme = createTheme({
     "0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)",
     "0px 2px 3px 0px rgba(0, 0, 0, 0.30), 0px 6px 10px 4px rgba(0, 0, 0, 0.15)",
     "0px 4px 4px 0px rgba(0, 0, 0, 0.30), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)",
-    ...new Array(20).map(() => "none"),
+    ...new Array(19).map(() => "none"),
     // type requires 20+ elements
-  ] as any,
+  ] as Shadows,
   typography: {
     allVariants: {
       letterSpacing: "normal",
@@ -146,7 +146,7 @@ export const compassTheme = createTheme({
     MuiStep: {
       defaultProps: {},
       styleOverrides: {
-        root: ({ ownerState, theme }) => ({
+        root: ({ ownerState }) => ({
           padding: 0,
           marginRight: !ownerState.last ? "16px" : 0,
           "&.Mui-disabled": {
@@ -163,7 +163,7 @@ export const compassTheme = createTheme({
     },
     MuiStepLabel: {
       styleOverrides: {
-        iconContainer: ({ ownerState, theme }) => ({
+        iconContainer: ({ theme }) => ({
           position: "absolute",
           left: 0,
           height: "100%",
@@ -179,7 +179,7 @@ export const compassTheme = createTheme({
             color: theme.palette.primary.main,
           },
         }),
-        label: ({ ownerState, theme }) => ({
+        label: ({ theme }) => ({
           padding: "9px",
           paddingLeft: "32px",
           textAlign: "left",
