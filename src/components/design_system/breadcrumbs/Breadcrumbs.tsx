@@ -14,16 +14,20 @@ const BreadcrumbsNav = () => {
 
   // student and para queries will only runs if enabled options are both true
   // Only 1 of these will run at a time based on the conditions
-  const { data: student } = trpc.student.getStudentById.useQuery(
-    { student_id: paths[2] },
-    { enabled: Boolean(paths[2] && paths[1] === "students") }
-  );
-  const { data: para } = trpc.para.getParaById.useQuery(
-    { user_id: paths[2] },
-    { enabled: Boolean(paths[2] && paths[1] === "staff") }
-  );
+  // const { data: student } = trpc.student.getStudentById.useQuery(
+  //   { student_id: paths[2] },
+  //   { enabled: Boolean(paths[2] && paths[1] === "students") }
+  // );
+  // const { data: para } = trpc.para.getParaById.useQuery(
+  //   { user_id: paths[2] },
+  //   { enabled: Boolean(paths[2] && paths[1] === "staff") }
+  // );
 
-  const personData: Student | Para | undefined = student || para;
+  // const personData: Student | Para | undefined = student || para;
+  const personData = {
+    first_name: "Alia",
+    last_name: "Atreidies",
+  };
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
   const breadcrumbs = paths.map((path, index) => {

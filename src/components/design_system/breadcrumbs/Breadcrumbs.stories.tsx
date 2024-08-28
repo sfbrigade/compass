@@ -10,12 +10,22 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const DefaultBreadcrumbsNav: Story = {
+export const EmptyBreadcrumbsNav: Story = {
   parameters: {
     nextjs: {
-      // appDirectory: true,
       router: {
-        basePath: "/",
+        basePath: "",
+      },
+    },
+  },
+};
+
+export const StudentPageBreadcrumbsNav: Story = {
+  parameters: {
+    nextjs: {
+      router: {
+        pathname: "/students/studentId",
+        asPath: "/students/studentId",
       },
     },
   },
