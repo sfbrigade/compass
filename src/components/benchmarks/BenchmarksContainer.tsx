@@ -60,7 +60,7 @@ export default function BenchmarksContainer({
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<selectableTabs>(
-    selectableTabs.ALL,
+    selectableTabs.ALL
   );
   return (
     <Stack sx={{ width: 1 }}>
@@ -111,7 +111,7 @@ export default function BenchmarksContainer({
           {(() => {
             const { status, message } = tabMapping[activeTab];
             const filteredBenchmarks = benchmarks.filter((benchmark) =>
-              status === "All" ? true : benchmark.status === status,
+              status === "All" ? true : benchmark.status === status
             );
 
             return filteredBenchmarks.length === 0 ? (

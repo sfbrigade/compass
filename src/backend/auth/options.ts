@@ -4,7 +4,7 @@ import { KyselyDatabaseInstance } from "../lib";
 import type { NextAuthOptions } from "next-auth";
 
 export const getNextAuthOptions = (
-  db: KyselyDatabaseInstance,
+  db: KyselyDatabaseInstance
 ): NextAuthOptions => ({
   providers: [
     GoogleProvider({
