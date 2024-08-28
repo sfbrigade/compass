@@ -6,6 +6,7 @@ import CameraIcon from "@mui/icons-material/PhotoCamera";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import CircularProgress from "@mui/material/CircularProgress";
 import Typography from "@mui/material/Typography";
+import Image from "next/image";
 
 interface UploadImageProps {
   label: string;
@@ -117,7 +118,7 @@ const UploadImage = ({ label, onUpload }: UploadImageProps) => {
       {currentStep === UploadStep.UploadPicture && (
         <div className={styles.uploadContainer}>
           {selectedFile && (
-            <img
+            <Image
               src={URL.createObjectURL(selectedFile)}
               className={styles.imagePreview}
               alt="preview of image"

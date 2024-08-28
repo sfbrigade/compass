@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import styles from "./uploadedFile.module.css";
 import { QuestionMark } from "@mui/icons-material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Image from "next/image";
 
 interface UploadedFileProps {
   fileId: string;
@@ -23,7 +24,7 @@ export const UploadedFile = ({ fileId, onDelete }: UploadedFileProps) => {
       {data ? (
         <>
           {data.content_type.startsWith("image/") ? (
-            <img
+            <Image
               src={data.url}
               className={styles.image}
               alt={`user uploaded image: ${data.name}`}
@@ -33,7 +34,6 @@ export const UploadedFile = ({ fileId, onDelete }: UploadedFileProps) => {
               <QuestionMark />
             </div>
           )}
-
           <a
             href={data.url}
             target="_blank"
