@@ -173,7 +173,6 @@ function EnhancedTableToolbar({
                     </InputAdornment>
                   ),
                 }}
-                variant="outlined"
                 value={searchParam}
                 onChange={onSearch}
               />
