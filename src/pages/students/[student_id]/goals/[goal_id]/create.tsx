@@ -209,16 +209,14 @@ const CreateBenchmarkPage = () => {
       onSubmit={handleSubmit}
       maxWidth="1000px"
     >
-      <Box p={4}>
-        {goal && (
-          <GoalHeader
-            name="[placeholder] 1st Goal"
-            description={goal.description}
-            createdAt={goal.created_at}
-            goalId={goal.goal_id}
-          />
-        )}
-      </Box>
+      {goal && (
+        <GoalHeader
+          name="[placeholder] 1st Goal"
+          description={goal.description}
+          createdAt={goal.created_at}
+          goalId={goal.goal_id}
+        />
+      )}
 
       <Box bgcolor={"var(--grey-80)"} py={4}>
         <Typography variant="h3" textAlign="left" pb={2}>
