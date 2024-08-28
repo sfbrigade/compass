@@ -4,7 +4,7 @@ import { useBeforeUnload } from "react-use";
 
 const useConfirmBeforeLeave = (
   isConfirm: boolean | (() => boolean) = false,
-  message = "Are you sure you want to leave? You have unsaved changes."
+  message = "Are you sure you want to leave? You have unsaved changes.",
 ) => {
   useBeforeUnload(isConfirm, message);
 
