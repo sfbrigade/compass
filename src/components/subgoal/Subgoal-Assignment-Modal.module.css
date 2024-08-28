@@ -1,25 +1,25 @@
-/* Styles for Assign Benchmark Modal Component */
-.assignBenchmarkModal {
+/* Styles for Assign Subgoal Modal Component */
+.assignSubgoalModal {
   margin: auto;
   font-size: 16px;
   text-align: left;
 }
 
-.assignBenchmarkModalTitle {
+.assignSubgoalModalTitle {
   font-size: 24px;
 }
 
-.benchmarkDescriptionBox {
+.subgoalDescriptionBox {
   border-radius: 8px;
   background-color: var(--primary-container);
   padding: 8px 16px;
 }
 
-.benchmarkTitle {
+.subgoalTitle {
   font-size: 20px;
 }
 
-.benchmarkDescription,
+.subgoalDescription,
 .staffListItemText {
   font-size: 16px;
 }
