@@ -7,6 +7,7 @@ import {
   Box,
   Stack,
   Step,
+  StepIconProps,
   StepLabel,
   Stepper,
   TextField,
@@ -27,11 +28,21 @@ interface BenchmarkFormEntry {
   [key: string]: string | number | "";
 }
 
+const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
+  const { completed = false } = stepIconProps;
+
+  if (completed) {
+    return <CheckCircle />;
+  } else {
+    return <TripOriginRounded />;
+  }
+};
+
 const CreateBenchmarkPage = () => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) }
+    { enabled: Boolean(router.query.goal_id) },
   );
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
@@ -110,7 +121,7 @@ const CreateBenchmarkPage = () => {
       await router.push(
         `/students/${router.query.student_id as string}/goals/${
           router.query.goal_id as string
-        }`
+        }`,
       );
     } catch (error) {
       console.error("Error creating benchmark", error);
@@ -176,11 +187,7 @@ const CreateBenchmarkPage = () => {
           multiline
           rows={4}
           name={field.name}
-          value={
-            benchmarkFormState[field.name] !== ""
-              ? benchmarkFormState[field.name]
-              : null
-          }
+          value={benchmarkFormState[field.name] || ""}
           onChange={(e: ChangeEvent) =>
             setBenchmarkFormState({
               ...benchmarkFormState,
@@ -216,17 +223,11 @@ const CreateBenchmarkPage = () => {
           Create Benchmark
         </Typography>
         <Stepper activeStep={viewState} alternativeLabel connector={null}>
-          {steps.map((label, index) => (
+          {steps.map((label) => (
             <Step key={label}>
-              {index !== steps.length && (
-                <StepLabel
-                  StepIconComponent={
-                    index < viewState ? CheckCircle : TripOriginRounded
-                  }
-                >
-                  {label}
-                </StepLabel>
-              )}
+              <StepLabel StepIconComponent={BenchmarkStepperIcon}>
+                {label}
+              </StepLabel>
             </Step>
           ))}
         </Stepper>
@@ -261,11 +262,7 @@ const CreateBenchmarkPage = () => {
                       required
                       type="number"
                       name="baseline_level"
-                      value={
-                        benchmarkFormState["baseline_level"] !== ""
-                          ? benchmarkFormState["baseline_level"]
-                          : ""
-                      }
+                      value={benchmarkFormState["baseline_level"] || ""}
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
                           ...benchmarkFormState,
@@ -281,11 +278,7 @@ const CreateBenchmarkPage = () => {
                       required
                       type="number"
                       name="target_level"
-                      value={
-                        benchmarkFormState["target_level"] !== ""
-                          ? benchmarkFormState["target_level"]
-                          : ""
-                      }
+                      value={benchmarkFormState["target_level"] || ""}
                       onChange={(e: ChangeEvent) =>
                         setBenchmarkFormState({
                           ...benchmarkFormState,
@@ -300,11 +293,7 @@ const CreateBenchmarkPage = () => {
                     type="number"
                     name="attempts_per_trial"
                     required
-                    value={
-                      benchmarkFormState["attempts_per_trial"] !== ""
-                        ? benchmarkFormState["attempts_per_trial"]
-                        : ""
-                    }
+                    value={benchmarkFormState["attempts_per_trial"] || ""}
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
                         ...benchmarkFormState,
@@ -317,11 +306,7 @@ const CreateBenchmarkPage = () => {
                     type="number"
                     name="number_of_trials"
                     required
-                    value={
-                      benchmarkFormState["number_of_trials"] !== ""
-                        ? benchmarkFormState["number_of_trials"]
-                        : ""
-                    }
+                    value={benchmarkFormState["number_of_trials"] || ""}
                     onChange={(e: ChangeEvent) =>
                       setBenchmarkFormState({
                         ...benchmarkFormState,

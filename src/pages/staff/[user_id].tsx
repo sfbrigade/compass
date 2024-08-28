@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import $home from "@/styles/Home.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $StaffPage from "../../styles/StaffPage.module.css";
 import $Modal from "../../styles/Modal.module.css";
@@ -37,7 +36,7 @@ const ViewParaPage = () => {
       enabled: Boolean(user_id),
       retry: false,
       onError: () => returnToStaffList(),
-    }
+    },
   );
 
   const editMutation = trpc.case_manager.editPara.useMutation({
