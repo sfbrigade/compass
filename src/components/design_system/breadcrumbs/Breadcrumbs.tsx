@@ -5,13 +5,11 @@ import { transformPaths } from "./transformBreadCrumbs";
 import { usePersonData } from "./usePersonData";
 
 const BreadcrumbsNav = () => {
-  const router = useRouter();
-  const paths = router.asPath.split("/");
-
-  const personData = usePersonData(paths);
+  const { query, asPath } = useRouter();
+  const personData = usePersonData(query as Record<string, string>);
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
-  const breadcrumbs = transformPaths({ paths, personData });
+  const breadcrumbs = transformPaths({ fullPath: asPath, personData });
 
   return (
     <div className={$breadcrumbs.container}>

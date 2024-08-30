@@ -3,20 +3,22 @@ import $breadcrumbs from "./Breadcrumbs.module.css";
 import { PersonData } from "./usePersonData";
 
 export const transformPaths = ({
-  paths,
+  fullPath,
   personData,
 }: {
-  paths: string[];
+  fullPath: string;
   personData: PersonData;
 }) => {
-  return paths.map((path, index) => {
+  return fullPath.split("/").map((path, index) => {
     // 0th index seems to only be empty string
     if (index === 0) return "";
     // 1st index currently is either students or staff
     if (index % 2 === 1) {
       return (
         <Link key={index} href={`/${path}`} className={$breadcrumbs.link}>
-          {path.toUpperCase()}
+          {
+            path.toUpperCase() /* TODO ALL CAPS is generally bad for a11y; revisit this. */
+          }
         </Link>
       );
     }
