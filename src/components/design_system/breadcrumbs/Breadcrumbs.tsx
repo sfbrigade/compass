@@ -1,12 +1,8 @@
-import { trpc } from "@/client/lib/trpc";
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import Link from "next/link";
 import { useRouter } from "next/router";
-import { SelectableForTable } from "zapatos/schema";
 import $breadcrumbs from "./Breadcrumbs.module.css";
-
-type Student = SelectableForTable<"student">;
-type Para = SelectableForTable<"user">;
+import { transformPaths } from "./transformBreadCrumbs";
+import { usePersonData } from "./usePersonData";
 
 export interface BreadcrumbsNavProps {
   urlPath?: string;
@@ -19,41 +15,10 @@ const BreadcrumbsNav = ({ urlPath }: BreadcrumbsNavProps) => {
   }
   const paths = urlPath.split("/");
 
-  // student and para queries will only runs if enabled options are both true
-  // Only 1 of these will run at a time based on the conditions
-  const { data: student } = trpc.student.getStudentById.useQuery(
-    { student_id: paths[2] },
-    { enabled: Boolean(paths[2] && paths[1] === "students") }
-  );
-  const { data: para } = trpc.para.getParaById.useQuery(
-    { user_id: paths[2] },
-    { enabled: Boolean(paths[2] && paths[1] === "staff") }
-  );
-
-  const personData: Student | Para | undefined = student || para;
+  const personData = usePersonData(paths);
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
-  const breadcrumbs = paths.map((path, index) => {
-    // 0th index seems to only be empty string
-    if (index === 0) return "";
-    // 1st index currently is either students or staff
-    if (index % 2 === 1) {
-      return (
-        <Link key={index} href={`/${path}`} className={$breadcrumbs.link}>
-          {path.toUpperCase()}
-        </Link>
-      );
-    }
-    // 2nd index is the ID referencing 1st index
-    if (index === 2) {
-      return (
-        <div key={index} style={{ color: "var(--grey-10)" }}>
-          {personData?.first_name} {personData?.last_name}
-        </div>
-      );
-    }
-    return <div key={index}>{path}</div>;
-  });
+  const breadcrumbs = transformPaths({ paths, personData });
 
   return (
     <div className={$breadcrumbs.container}>
