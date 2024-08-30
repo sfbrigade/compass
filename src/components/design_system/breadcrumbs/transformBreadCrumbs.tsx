@@ -23,7 +23,7 @@ export const transformPaths = ({
     // 2nd index is the ID referencing 1st index
     if (index === 2) {
       return (
-        <div key={index} style={{ color: "var(--grey-10)" }}>
+        <div key={index} className={$breadcrumbs["non-link-crumb"]}>
           {personData?.first_name} {personData?.last_name}
         </div>
       );
