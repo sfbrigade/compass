@@ -1,5 +1,5 @@
 import "@testing-library/jest-dom";
-import { describe, expect, jest, test, beforeEach } from "@jest/globals";
+import { describe, expect, jest, test } from "@jest/globals";
 import { render } from "@testing-library/react";
 import mockRouter from "next-router-mock";
 
@@ -33,6 +33,20 @@ describe("BreadcrumbsNav", () => {
     await mockRouter.push("/");
     (trpc.student.getStudentById.useQuery as jest.Mock).mockReturnValueOnce({
       data: {},
+    });
+    (trpc.para.getParaById.useQuery as jest.Mock).mockReturnValueOnce({
+      data: {},
+    });
+
+    const breadcrumbComponent = render(<BreadcrumbsNav />);
+
+    expect(breadcrumbComponent).toBeTruthy();
+  });
+
+  test.failing("renders /students as expected", async () => {
+    await mockRouter.push("/students");
+    (trpc.student.getStudentById.useQuery as jest.Mock).mockReturnValueOnce({
+      data: { first_name: "Alia", last_name: "Atreides" },
     });
     (trpc.para.getParaById.useQuery as jest.Mock).mockReturnValueOnce({
       data: {},

@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`transformPaths /students 1`] = `
+[
+  "",
+  <ForwardRef(LinkComponent)
+    className="link"
+    href="/students"
+  >
+    STUDENTS
+  </ForwardRef(LinkComponent)>,
+]
+`;
+
+exports[`transformPaths /students/student-id 1`] = `
+[
+  "",
+  <ForwardRef(LinkComponent)
+    className="link"
+    href="/students"
+  >
+    STUDENTS
+  </ForwardRef(LinkComponent)>,
+  <div
+    className="non-link-crumb"
+  >
+    Alia
+     
+    Atreides
+  </div>,
+]
+`;
+
+exports[`transformPaths /students/student-id/goals/goal-id 1`] = `
+[
+  "",
+  <ForwardRef(LinkComponent)
+    className="link"
+    href="/students"
+  >
+    STUDENTS
+  </ForwardRef(LinkComponent)>,
+  <div
+    className="non-link-crumb"
+  >
+    Alia
+     
+    Atreides
+  </div>,
+  <ForwardRef(LinkComponent)
+    className="link"
+    href="/goals"
+  >
+    GOALS
+  </ForwardRef(LinkComponent)>,
+  <div>
+    goal-id
+  </div>,
+]
+`;
+
+exports[`transformPaths empty path 1`] = `
+[
+  "",
+  <ForwardRef(LinkComponent)
+    className="link"
+    href="/"
+  >
+    
+  </ForwardRef(LinkComponent)>,
+]
+`;
