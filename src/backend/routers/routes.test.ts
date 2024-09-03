@@ -56,11 +56,11 @@ test("All API endpoints are auth guarded", async (t) => {
     // pull apart the router name and procedure name
     const [routerName, procedureName] = fullProcedureName.split(".");
     try {
-      // call the procedure
+      // call the procedure without any arguments
       await (
         caller[routerName as keyof typeof caller] as Record<
           string,
-          (...args: unknown[]) => Promise<unknown>
+          () => Promise<unknown>
         >
       )[procedureName]();
       // if we get here, the procedure was not auth guarded
