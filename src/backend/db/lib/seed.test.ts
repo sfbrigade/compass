@@ -3,7 +3,7 @@ import { getTestDatabase } from "@/backend/tests/fixtures/get-test-database";
 import { getDb } from "@/backend/db/lib/get-db";
 import { seedfile } from "@/backend/db/lib/seed";
 
-test("seedFile works after schema changes", async (t) => {
+test("seedfile works with current schema", async (t) => {
   // note that this also seeds the database from tests/seed.ts
   const { connectionString } = await getTestDatabase();
   const { db } = getDb(connectionString);
