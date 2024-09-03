@@ -1,7 +1,7 @@
 import test from "ava";
 import { getTestDatabase } from "@/backend/tests/fixtures/get-test-database";
 import { getDb } from "@/backend/db/lib/get-db";
-import { seedfile } from "@/backend/db/lib/seed"; // Note the lowercase 'f' in seedfile
+import { seedfile } from "@/backend/db/lib/seed";
 
 test("seedFile works after schema changes", async (t) => {
   // note that this also seeds the database from tests/seed.ts
