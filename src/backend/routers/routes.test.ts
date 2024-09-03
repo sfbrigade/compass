@@ -4,22 +4,22 @@ import { createContext } from "@/backend/context";
 import type { NextApiRequest, NextApiResponse } from "next";
 import { TRPCError } from "@trpc/server";
 
-/**
- * This test suite verifies that all API endpoints in the application are properly protected by authentication.
- *
- * It works by:
- * 1. Creating a mock request and response object.
- * 2. Generating a context with no authentication.
- * 3. Creating a trpc caller with this unauthenticated context.
- * 4. Iterating through all procedures in the trpcRouter.
- * 5. Attempting to call each procedure without authentication.
- * 6. Expecting an UNAUTHORIZED error for each call (except for explicitly excluded endpoints).
- *
- * This ensures that no sensitive endpoints are accidentally left unprotected,
- * maintaining the security of the API.
- */
-
 test("All API endpoints are auth guarded", async (t) => {
+  /**
+   * This test verifies that all API endpoints in the application are properly protected by authentication.
+   *
+   * It works by:
+   * 1. Creating a mock request and response object.
+   * 2. Generating a context with no authentication.
+   * 3. Creating a trpc caller with this unauthenticated context.
+   * 4. Iterating through all procedures in the trpcRouter.
+   * 5. Attempting to call each procedure without authentication.
+   * 6. Expecting an UNAUTHORIZED error for each call (except for explicitly excluded endpoints).
+   *
+   * This ensures that no sensitive endpoints are accidentally left unprotected,
+   * maintaining the security of the API.
+   */
+
   // create a mock request object for our calls. purpose of this is to have no auth
   const mockReq = {
     headers: {},
