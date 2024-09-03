@@ -4,7 +4,8 @@ import { getDb } from "@/backend/db/lib/get-db";
 import { seedfile } from "@/backend/db/lib/seed"; // Note the lowercase 'f' in seedfile
 
 test("seedFile works after schema changes", async (t) => {
-  const { connectionString } = await getTestDatabase(); // note that this also seeds the database from tests/seed.ts
+  // note that this also seeds the database from tests/seed.ts
+  const { connectionString } = await getTestDatabase();
   const { db } = getDb(connectionString);
 
   try {
