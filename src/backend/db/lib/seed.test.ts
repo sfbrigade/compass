@@ -4,11 +4,11 @@ import { getDb } from "@/backend/db/lib/get-db";
 import { seedfile } from "@/backend/db/lib/seed"; // Note the lowercase 'f' in seedfile
 
 test("seedFile works after schema changes", async (t) => {
-  const { connectionString } = await getTestDatabase();
+  const { connectionString } = await getTestDatabase(); // note that this also seeds the database from tests/seed.ts
   const { db } = getDb(connectionString);
 
   try {
-    await seedfile(connectionString);
+    await seedfile(connectionString); // this runs our seed production seed file
 
     const students = await db.selectFrom("student").selectAll().execute();
     t.true(students.length > 0, "There should be at least one student");
