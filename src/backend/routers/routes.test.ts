@@ -29,8 +29,8 @@ test("All API endpoints are auth guarded", async (t) => {
   // create a mock response object that will be passed to the context
   const mockRes = {
     getHeader: () => undefined,
-    setCookie: () => void 0,
-    setHeader: () => void 0,
+    setCookie: () => undefined,
+    setHeader: () => undefined,
   } as unknown as NextApiResponse;
 
   // Create a mock context with no authentication
