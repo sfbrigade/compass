@@ -9,13 +9,19 @@ test("seedfile works with current schema", async (t) => {
   const { db } = getDb(connectionString);
 
   try {
-    await seedfile(connectionString); // this runs our seed production seed file
+    await seedfile(connectionString); // this runs our production seed file
 
     const students = await db.selectFrom("student").selectAll().execute();
     t.true(students.length > 0, "There should be at least one student");
 
     const users = await db.selectFrom("user").selectAll().execute();
     t.true(users.length > 0, "There should be at least one user");
+  } catch (error) {
+    t.fail(
+      `Seedfile execution failed: ${
+        error instanceof Error ? error.message : String(error)
+      }`
+    );
   } finally {
     await db.destroy();
   }
