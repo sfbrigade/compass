@@ -9,13 +9,12 @@ import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
-import $input from "@/styles/Input.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
-
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { TextInput } from "@/components/design_system/input/Input";
+import $input from "../,,/styles/Input.module.css";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -51,7 +50,7 @@ const ViewStudentPage = () => {
       enabled: Boolean(student_id),
       retry: false,
       onError: () => returnToStudentList(),
-    }
+    },
   );
 
   const returnToStudentList = async () => {
@@ -60,7 +59,7 @@ const ViewStudentPage = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id), retry: false }
+    { enabled: Boolean(student_id), retry: false },
   );
 
   const editMutation = trpc.case_manager.editStudent.useMutation({
@@ -173,7 +172,7 @@ const ViewStudentPage = () => {
                 >
                   <Stack gap={0.5}>
                     <Container className={$CompassModal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$CompassModal.editModalTextfield}
                         label="First Name"
                         type="text"
@@ -183,7 +182,7 @@ const ViewStudentPage = () => {
                       />
                     </Container>
                     <Container className={$CompassModal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$CompassModal.editModalTextfield}
                         label="Last Name"
                         type="text"
@@ -193,7 +192,7 @@ const ViewStudentPage = () => {
                       />
                     </Container>
                     <Container className={$CompassModal.editModalContainer}>
-                      <TextField
+                      <TextInput
                         className={$CompassModal.editModalTextfield}
                         label="Email"
                         type="text"
