@@ -17,16 +17,34 @@ export const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
     "&:hover:not(.Mui-focused)": {
       color: "var(--grey-30)",
       borderColor: "var(--primary)",
-      backgroundColor: "var(--primary-99)",
+
       borderRadius: "30px",
     },
     "&.Mui-focused": {
       color: "var(--primary)",
-      backgroundColor: "var(--primary-99)",
+
       borderRadius: "30px",
       borderColor: "var(--primary)",
       "& .MuiInputAdornment-outlined": {
         color: "var(--primary)",
+        zIndex: 10,
+      },
+      "& > fieldset": {
+        background: "var(--primary-99)",
+      },
+      "& .MuiOutlinedInput-input": {
+        zIndex: 10,
+      },
+    },
+    "&:hover": {
+      "& > fieldset": {
+        background: "var(--primary-99)",
+      },
+      "& .MuiOutlinedInput-input": {
+        zIndex: 10,
+      },
+      "& .MuiInputAdornment-outlined": {
+        zIndex: 10,
       },
     },
   },
