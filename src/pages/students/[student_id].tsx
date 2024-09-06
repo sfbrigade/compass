@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import { Box, Button, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -14,7 +14,8 @@ import $StudentPage from "../../styles/StudentPage.module.css";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { TextInput } from "@/components/design_system/input/Input";
-import $input from "../,,/styles/Input.module.css";
+import $input from "../../styles/Input.module.css";
+import "../../styles/Form.module.css";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -384,10 +385,7 @@ const ViewStudentPage = () => {
               {student?.first_name} {student?.last_name}
             </b>
           </p>
-          <form
-            onSubmit={handleIepSubmit}
-            className={`${$input.default} ${$Form.formPadding}`}
-          >
+          <form onSubmit={handleIepSubmit} className="formDefault formPadding">
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>
