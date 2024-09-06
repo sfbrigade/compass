@@ -8,14 +8,12 @@ import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
-import $Form from "../../styles/Form.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import { TextInput } from "@/components/design_system/input/Input";
-import $input from "../../styles/Input.module.css";
-import "../../styles/Form.module.css";
+import "@/styles/Form.module.css";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);

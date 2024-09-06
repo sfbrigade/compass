@@ -1,13 +1,1 @@
-/*.default {
-  border-radius: 2px;
-  border: 1px solid var(--outline);
-  margin: 2px 4px;
-  padding: 4px 2px;
-}*/
-
-.default {
-  border-radius: 2px;
-  border: 1px solid var(--outline);
-  margin: 2px 4px;
-  padding: 4px 2px;
-}
+/* moved to Form.module.css since this was not styling input, but was styling the form */
