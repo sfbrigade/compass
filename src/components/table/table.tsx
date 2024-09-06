@@ -43,7 +43,7 @@ export interface ParaHeadCell extends HeadCell {
 }
 
 export function isStudentWithIep(
-  person: StudentWithIep | Para,
+  person: StudentWithIep | Para
 ): person is StudentWithIep {
   return (
     (person as StudentWithIep).student_id !== undefined &&
@@ -65,7 +65,7 @@ type Order = "asc" | "desc";
 
 function getComparator<T>(
   order: Order,
-  orderBy: keyof T,
+  orderBy: keyof T
 ): (a: T, b: T) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -274,7 +274,7 @@ interface EnhancedTableProps<Person, Column> {
  */
 export default function EnhancedTable<
   Person extends StudentWithIep | Para,
-  Column extends HeadCell,
+  Column extends HeadCell
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
 
@@ -297,7 +297,7 @@ export default function EnhancedTable<
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: string,
+    property: string
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -324,7 +324,7 @@ export default function EnhancedTable<
 
       return filteredList;
     },
-    [headCells],
+    [headCells]
   );
 
   const visibleRows = useMemo(() => {
@@ -400,7 +400,7 @@ export default function EnhancedTable<
                       handleLinkToPage(
                         isStudentWithIep(row)
                           ? `../students/${row.student_id || ""}`
-                          : `../staff/${row.user_id || ""}`,
+                          : `../staff/${row.user_id || ""}`
                       )
                     }
                   >
