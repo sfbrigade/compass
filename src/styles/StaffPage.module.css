@@ -75,3 +75,16 @@
   justify-content: space-evenly;
   padding-top: 2rem;
 }
+
+.editModalContent {
+  background-color: var(--grey-100); /* Ensure it has a background color */
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  max-width: 500px;
+  width: 100%;
+  margin: auto; /* Center horizontally */
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%); /* Center vertically */
+}
