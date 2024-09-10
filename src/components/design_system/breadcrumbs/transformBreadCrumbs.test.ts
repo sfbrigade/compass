@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-key */
-import "@testing-library/jest-dom";
 import { describe, expect, test } from "@jest/globals";
 import { transformPaths } from "./transformBreadCrumbs";
 import { Student } from "./usePersonData";
