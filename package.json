@@ -39,7 +39,7 @@
     "@trpc/server": "^10.16.0",
     "axios": "^1.7.5",
     "date-fns": "^2.30.0",
-    "dotenv": "16.0.3",
+    "dotenv": "16.4.5",
     "execa": "^7.1.1",
     "gcp-metadata": "^6.0.0",
     "kysely": "^0.26.3",
