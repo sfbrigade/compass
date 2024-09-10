@@ -17,13 +17,13 @@ export const transformPaths = ({
     .split("/")
     .map((path, index) => {
       // 0th index seems to only be empty string
-      if (index === 0) return null; // TODO Refactor so there is no first empty path element.
+      if (index === 0 || path === "") return null; // TODO Refactor so there is no first empty path element.
 
       // 1st index currently is either students or staff
       if (index % 2 === 1) {
         return {
           name: path.toUpperCase(),
-          path: path,
+          path: `/${path}`,
           linkable: true,
         } as BreadcrumbData;
       }
@@ -34,13 +34,13 @@ export const transformPaths = ({
           name: `${personData?.first_name ?? ""} ${
             personData?.last_name ?? ""
           }`,
-          path: path,
+          path: `/${path}`,
           linkable: false,
         } as BreadcrumbData;
       }
       return {
         name: path.toUpperCase(),
-        path: path,
+        path: `/${path}`,
         linkable: false,
       } as BreadcrumbData;
     })

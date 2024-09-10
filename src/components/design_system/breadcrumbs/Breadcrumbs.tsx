@@ -16,7 +16,7 @@ export const BreadcrumbNav = ({
 }) => {
   if (!isCurrentPage && data.linkable) {
     return (
-      <Link key={key} href={`/${data.path}`} className={$breadcrumbs.link}>
+      <Link key={key} href={data.path} className={$breadcrumbs.link}>
         {data.name}
       </Link>
     );
