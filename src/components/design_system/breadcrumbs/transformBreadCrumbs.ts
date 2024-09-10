@@ -39,7 +39,7 @@ export const transformPaths = ({
         } as BreadcrumbData;
       }
       return {
-        name: path.toUpperCase(),
+        name: path,
         path: `/${path}`,
         linkable: false,
       } as BreadcrumbData;

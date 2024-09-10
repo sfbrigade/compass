@@ -67,7 +67,7 @@ describe("transformPaths", () => {
       },
       {
         name: "goal-id",
-        path: "goal-id",
+        path: "/goal-id",
         linkable: false,
       },
     ];
