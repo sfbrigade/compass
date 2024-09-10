@@ -1,32 +1,39 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import BreadcrumbsNav from "./Breadcrumbs";
+import BreadcrumbsDesign from "./Breadcrumbs";
+import { Student } from "./usePersonData";
 
 const meta = {
-  component: BreadcrumbsNav,
-} satisfies Meta<typeof BreadcrumbsNav>;
+  component: BreadcrumbsDesign,
+} satisfies Meta<typeof BreadcrumbsDesign>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const EmptyBreadcrumbsNav: Story = {
-  parameters: {
-    nextjs: {
-      router: {
-        basePath: "",
-      },
-    },
+export const EmptyBreadcrumbsDesign: Story = {
+  args: {
+    fullPath: "/",
+    personData: undefined,
   },
 };
 
-export const StudentPageBreadcrumbsNav: Story = {
-  parameters: {
-    nextjs: {
-      router: {
-        pathname: "/students/studentId",
-        asPath: "/students/studentId",
-      },
-    },
+export const StudentPageBreadcrumbsDesign: Story = {
+  args: {
+    fullPath: "/students/studentId",
+    personData: {
+      first_name: "Alia",
+      last_name: "Atreides",
+    } as Student,
+  },
+};
+
+export const GoalPageBreadcrumbsDesign: Story = {
+  args: {
+    fullPath: "/students/studentId/goals/goal-id",
+    personData: {
+      first_name: "Alia",
+      last_name: "Atreides",
+    } as Student,
   },
 };
