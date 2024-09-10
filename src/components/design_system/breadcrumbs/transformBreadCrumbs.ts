@@ -44,5 +44,5 @@ export const transformPaths = ({
         linkable: false,
       } as BreadcrumbData;
     })
-    .filter((nullable) => nullable !== null); // TODO Remove filter
+    .filter((nullable) => nullable !== null) as BreadcrumbData[]; // TODO Remove filter when no longer needed.
 };
