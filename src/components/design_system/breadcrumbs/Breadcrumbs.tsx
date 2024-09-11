@@ -1,26 +1,8 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import $breadcrumbs from "./Breadcrumbs.module.css";
-import { transformPaths, BreadcrumbData } from "./transformBreadCrumbs";
+import { transformPaths } from "./transformBreadCrumbs";
 import { PersonData } from "./usePersonData";
 import Link from "next/link";
-
-export const BreadcrumbDesign = ({
-  data,
-  isCurrentPage,
-}: {
-  data: BreadcrumbData;
-  isCurrentPage: boolean;
-}) => {
-  if (!isCurrentPage && data.linkable) {
-    return (
-      <Link href={data.path} className={$breadcrumbs.link}>
-        {data.name}
-      </Link>
-    );
-  } else {
-    return <div className={$breadcrumbs["non-link-crumb"]}>{data.name}</div>;
-  }
-};
 
 const BreadcrumbsDesign = ({
   fullPath,
@@ -36,13 +18,21 @@ const BreadcrumbsDesign = ({
     <div className={$breadcrumbs.container}>
       <Breadcrumbs separator="/" aria-label="breadcrumb">
         {breadcrumbs.map((data, index) => {
-          return (
-            <BreadcrumbDesign
-              data={data}
-              key={index}
-              isCurrentPage={index + 1 === breadcrumbs.length}
-            />
-          );
+          const isCurrentPage = index + 1 === breadcrumbs.length;
+
+          if (!isCurrentPage && data.linkable) {
+            return (
+              <Link key={index} href={data.path} className={$breadcrumbs.link}>
+                {data.name}
+              </Link>
+            );
+          } else {
+            return (
+              <div key={index} className={$breadcrumbs["non-link-crumb"]}>
+                {data.name}
+              </div>
+            );
+          }
         })}
       </Breadcrumbs>
     </div>
