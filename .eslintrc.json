@@ -1,7 +1,10 @@
 {
   "parser": "@typescript-eslint/parser",
   "extends": ["next/core-web-vitals", "plugin:storybook/recommended"],
-  "ignorePatterns": ["*.json"],
+  "ignorePatterns": [
+    "*.json",
+    "storybook-static"
+  ],
   "overrides": [
     {
       "files": ["*.ts", "*.tsx"],
