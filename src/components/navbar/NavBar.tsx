@@ -20,7 +20,7 @@ import { useRouter } from "next/router";
 import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
-import BreadcrumbsNav from "../design_system/breadcrumbs/Breadcrumbs";
+import BreadcrumbsNav from "../design_system/breadcrumbs/BreadcrumbsNav";
 
 interface NavItemProps {
   href?: string;
