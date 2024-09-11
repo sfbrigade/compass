@@ -1,59 +1,32 @@
 import "@testing-library/jest-dom";
-import { describe, expect, jest, test } from "@jest/globals";
+import { describe, expect, test } from "@jest/globals";
 import { render } from "@testing-library/react";
-import mockRouter from "next-router-mock";
+import BreadcrumbsDesign from "./Breadcrumbs";
+import { Student } from "./usePersonData";
 
-// Based on: https://github.com/trpc/trpc/discussions/3612#discussion-4754448
-jest.mock("@/client/lib/trpc", () => {
-  return {
-    trpc: {
-      student: {
-        getStudentById: {
-          useQuery: jest.fn(() => {
-            return jest.fn();
-          }),
-        },
-      },
-      para: {
-        getParaById: {
-          useQuery: jest.fn(() => {
-            return jest.fn();
-          }),
-        },
-      },
-    },
-  };
-});
+describe("BreadcrumbsDesign", () => {
+  test("renders empty for /", () => {
+    const fullPath = "/";
+    const personData = undefined;
 
-import BreadcrumbsNav from "./Breadcrumbs";
-import { trpc } from "@/client/lib/trpc";
+    const breadcrumbComponent = render(
+      <BreadcrumbsDesign fullPath={fullPath} personData={personData} />
+    );
 
-describe("BreadcrumbsNav", () => {
-  test.failing("renders empty for /", async () => {
-    await mockRouter.push("/");
-    (trpc.student.getStudentById.useQuery as jest.Mock).mockReturnValueOnce({
-      data: {},
-    });
-    (trpc.para.getParaById.useQuery as jest.Mock).mockReturnValueOnce({
-      data: {},
-    });
-
-    const breadcrumbComponent = render(<BreadcrumbsNav />);
-
-    expect(breadcrumbComponent).toBeTruthy();
+    expect(breadcrumbComponent).toMatchSnapshot();
   });
 
-  test.failing("renders /students as expected", async () => {
-    await mockRouter.push("/students");
-    (trpc.student.getStudentById.useQuery as jest.Mock).mockReturnValueOnce({
-      data: { first_name: "Alia", last_name: "Atreides" },
-    });
-    (trpc.para.getParaById.useQuery as jest.Mock).mockReturnValueOnce({
-      data: {},
-    });
+  test("renders empty for /students/student-id", () => {
+    const fullPath = "/students/student-id";
+    const personData = {
+      first_name: "Alia",
+      last_name: "Atreides",
+    } as Student;
 
-    const breadcrumbComponent = render(<BreadcrumbsNav />);
+    const breadcrumbComponent = render(
+      <BreadcrumbsDesign fullPath={fullPath} personData={personData} />
+    );
 
-    expect(breadcrumbComponent).toBeTruthy();
+    expect(breadcrumbComponent).toMatchSnapshot();
   });
 });

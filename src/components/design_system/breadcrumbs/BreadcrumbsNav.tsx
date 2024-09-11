@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { PersonData, usePersonData } from "./usePersonData";
+import { usePersonData } from "./usePersonData";
 import BreadcrumbsDesign from "./Breadcrumbs";
 
 const BreadcrumbsNav = () => {

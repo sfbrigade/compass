@@ -1,31 +1,24 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import { useRouter } from "next/router";
 import $breadcrumbs from "./Breadcrumbs.module.css";
 import { transformPaths, BreadcrumbData } from "./transformBreadCrumbs";
-import { PersonData, usePersonData } from "./usePersonData";
+import { PersonData } from "./usePersonData";
 import Link from "next/link";
 
 export const BreadcrumbDesign = ({
   data,
-  key,
   isCurrentPage,
 }: {
   data: BreadcrumbData;
-  key: number;
   isCurrentPage: boolean;
 }) => {
   if (!isCurrentPage && data.linkable) {
     return (
-      <Link key={key} href={data.path} className={$breadcrumbs.link}>
+      <Link href={data.path} className={$breadcrumbs.link}>
         {data.name}
       </Link>
     );
   } else {
-    return (
-      <div key={key} className={$breadcrumbs["non-link-crumb"]}>
-        {data.name}
-      </div>
-    );
+    return <div className={$breadcrumbs["non-link-crumb"]}>{data.name}</div>;
   }
 };
 
