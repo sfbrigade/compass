@@ -3,9 +3,13 @@ import { SelectableForTable } from "zapatos/schema";
 
 export type Student = SelectableForTable<"student">;
 export type Para = SelectableForTable<"user">;
-export type PersonData = Student | Para | undefined;
+export interface BreadcrumbContext {
+  person: Student | Para | undefined;
+}
 
-export const usePersonData = (query: Record<string, string>): PersonData => {
+export const useBreadcrumbContext = (
+  query: Record<string, string>
+): BreadcrumbContext => {
   const { data: student } = trpc.student.getStudentById.useQuery(
     { student_id: query.student_id },
     { enabled: query.student_id !== undefined }
@@ -15,5 +19,5 @@ export const usePersonData = (query: Record<string, string>): PersonData => {
     { enabled: query.user_id !== undefined }
   );
 
-  return student || para;
+  return { person: student || para };
 };

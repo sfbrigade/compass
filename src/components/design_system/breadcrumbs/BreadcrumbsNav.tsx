@@ -1,12 +1,12 @@
 import { useRouter } from "next/router";
-import { usePersonData } from "./usePersonData";
+import { useBreadcrumbContext } from "./useBreadcrumbContext";
 import BreadcrumbsDesign from "./Breadcrumbs";
 
 const BreadcrumbsNav = () => {
   const { query, asPath } = useRouter();
-  const personData = usePersonData(query as Record<string, string>);
+  const contextData = useBreadcrumbContext(query as Record<string, string>);
 
-  return <BreadcrumbsDesign fullPath={asPath} personData={personData} />;
+  return <BreadcrumbsDesign fullPath={asPath} contextData={contextData} />;
 };
 
 export default BreadcrumbsNav;

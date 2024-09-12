@@ -1,18 +1,18 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
 import $breadcrumbs from "./Breadcrumbs.module.css";
-import { transformPaths } from "./transformBreadCrumbs";
-import { PersonData } from "./usePersonData";
+import { transformPaths } from "./transformBreadcrumbs";
+import { BreadcrumbContext } from "./useBreadcrumbContext";
 import Link from "next/link";
 
 const BreadcrumbsDesign = ({
   fullPath,
-  personData,
+  contextData,
 }: {
   fullPath: string;
-  personData: PersonData;
+  contextData: BreadcrumbContext | undefined;
 }) => {
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
-  const breadcrumbs = transformPaths({ fullPath, personData });
+  const breadcrumbs = transformPaths({ fullPath, contextData });
 
   return (
     <div className={$breadcrumbs.container}>

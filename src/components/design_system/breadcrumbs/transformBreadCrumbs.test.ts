@@ -1,10 +1,10 @@
 import { describe, expect, test } from "@jest/globals";
-import { transformPaths } from "./transformBreadCrumbs";
-import { Student } from "./usePersonData";
+import { transformPaths } from "./transformBreadcrumbs";
+import { Student } from "./useBreadcrumbContext";
 
 describe("transformPaths", () => {
   test("empty path", () => {
-    const actual = transformPaths({ fullPath: "/", personData: undefined });
+    const actual = transformPaths({ fullPath: "/", contextData: undefined });
 
     expect(actual).toEqual([]);
   });
@@ -19,7 +19,7 @@ describe("transformPaths", () => {
     ];
     const actual = transformPaths({
       fullPath: "/students",
-      personData: undefined,
+      contextData: undefined,
     });
 
     expect(actual).toEqual(expected);
@@ -40,7 +40,9 @@ describe("transformPaths", () => {
     ];
     const actual = transformPaths({
       fullPath: "/students/student-id",
-      personData: { first_name: "Alia", last_name: "Atreides" } as Student,
+      contextData: {
+        person: { first_name: "Alia", last_name: "Atreides" } as Student,
+      },
     });
 
     expect(actual).toEqual(expected);
@@ -71,7 +73,9 @@ describe("transformPaths", () => {
     ];
     const actual = transformPaths({
       fullPath: "/students/student-id/goals/goal-id",
-      personData: { first_name: "Alia", last_name: "Atreides" } as Student,
+      contextData: {
+        person: { first_name: "Alia", last_name: "Atreides" } as Student,
+      },
     });
 
     expect(actual).toEqual(expected);

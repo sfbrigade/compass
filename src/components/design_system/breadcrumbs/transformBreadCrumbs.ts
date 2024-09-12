@@ -1,5 +1,8 @@
-import { PersonData } from "./usePersonData";
+import { BreadcrumbContext } from "./useBreadcrumbContext";
 
+/**
+ * Represents a single segment or "crumb" of a Breadcrumbs
+ */
 export interface BreadcrumbData {
   name: string;
   path: string;
@@ -8,10 +11,10 @@ export interface BreadcrumbData {
 
 export const transformPaths = ({
   fullPath,
-  personData,
+  contextData,
 }: {
   fullPath: string;
-  personData: PersonData;
+  contextData: BreadcrumbContext | undefined;
 }): BreadcrumbData[] => {
   return fullPath
     .split("/")
@@ -31,8 +34,8 @@ export const transformPaths = ({
       // 2nd index is the ID referencing 1st index
       if (index === 2) {
         return {
-          name: `${personData?.first_name ?? ""} ${
-            personData?.last_name ?? ""
+          name: `${contextData?.person?.first_name ?? ""} ${
+            contextData?.person?.last_name ?? ""
           }`,
           path: `/${path}`,
           linkable: false,

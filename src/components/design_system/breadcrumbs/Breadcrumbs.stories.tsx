@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
 import BreadcrumbsDesign from "./Breadcrumbs";
-import { Student } from "./usePersonData";
+import { Student } from "./useBreadcrumbContext";
 
 const meta = {
   component: BreadcrumbsDesign,
@@ -14,26 +14,30 @@ type Story = StoryObj<typeof meta>;
 export const EmptyBreadcrumbsDesign: Story = {
   args: {
     fullPath: "/",
-    personData: undefined,
+    contextData: undefined,
   },
 };
 
 export const StudentPageBreadcrumbsDesign: Story = {
   args: {
-    fullPath: "/students/studentId",
-    personData: {
-      first_name: "Alia",
-      last_name: "Atreides",
-    } as Student,
+    fullPath: "/students/student-id",
+    contextData: {
+      person: {
+        first_name: "Alia",
+        last_name: "Atreides",
+      } as Student,
+    },
   },
 };
 
 export const GoalPageBreadcrumbsDesign: Story = {
   args: {
-    fullPath: "/students/studentId/goals/goal-id",
-    personData: {
-      first_name: "Alia",
-      last_name: "Atreides",
-    } as Student,
+    fullPath: "/students/student-id/goals/goal-id",
+    contextData: {
+      person: {
+        first_name: "Alia",
+        last_name: "Atreides",
+      } as Student,
+    },
   },
 };
