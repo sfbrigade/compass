@@ -7,6 +7,15 @@ Useful resources:
 - [Notion wiki](https://www.notion.so/sfbrigade/Compass-source-of-truth-db118a6d51344dccadc49d1988662d66)
 - [Slack channel](https://sfbrigade.slack.com/archives/C01R8E75N1K)
 
+## Filing a new issue
+
+If you run into an issue or would like to request a feature, please file an issue.
+
+When creating an issue, please assign the following issue labels where appropriate:
+
+- "design" label for a design or UX issue
+- "engineering" label for an engineering issue
+
 ## Contributing to our code base
 
 ### One time setup
