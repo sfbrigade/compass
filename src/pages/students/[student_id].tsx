@@ -86,7 +86,7 @@ const ViewStudentPage = () => {
       grade: Number(data.get("grade")) || 0,
     });
 
-    if (startDate && endDate) {
+    if (activeIep) {
       editIepMutation.mutate({
         student_id: student.student_id,
         start_date: new Date(parseISO(data.get("start_date") as string)),
