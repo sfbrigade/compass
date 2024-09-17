@@ -159,6 +159,7 @@ const Iep = ({ iep_id }: IepProps) => {
               src={noGoals}
               alt="no goals image"
               className={$Image.fitContent}
+              priority={true}
             />
             <p className={$Iep.noGoalText}>No goals yet</p>
             <p className={$Iep.noGoalTextSmall}>
