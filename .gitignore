@@ -34,3 +34,5 @@ next-env.d.ts
 .history
 
 .nsm
+
+storybook-static
