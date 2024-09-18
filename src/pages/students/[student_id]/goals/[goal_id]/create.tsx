@@ -1,18 +1,9 @@
 import { trpc } from "@/client/lib/trpc";
 import $button from "@/components/design_system/button/Button.module.css";
+import BenchmarkStepper from "@/components/design_system/stepper/stepper";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import { ChangeEvent } from "@/types/global";
-import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
-import {
-  Box,
-  Stack,
-  Step,
-  StepIconProps,
-  StepLabel,
-  Stepper,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Stack, TextField, Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState } from "react";
 
@@ -27,16 +18,6 @@ interface BenchmarkFields {
 interface BenchmarkFormEntry {
   [key: string]: string | number | "";
 }
-
-const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
-  const { completed = false } = stepIconProps;
-
-  if (completed) {
-    return <CheckCircle />;
-  } else {
-    return <TripOriginRounded />;
-  }
-};
 
 const CreateBenchmarkPage = () => {
   const router = useRouter();
@@ -222,15 +203,7 @@ const CreateBenchmarkPage = () => {
         <Typography variant="h3" textAlign="left" pb={2}>
           Create Benchmark
         </Typography>
-        <Stepper activeStep={viewState} alternativeLabel connector={null}>
-          {steps.map((label) => (
-            <Step key={label}>
-              <StepLabel StepIconComponent={BenchmarkStepperIcon}>
-                {label}
-              </StepLabel>
-            </Step>
-          ))}
-        </Stepper>
+        <BenchmarkStepper steps={steps} activeStep={viewState} />
       </Box>
 
       <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
