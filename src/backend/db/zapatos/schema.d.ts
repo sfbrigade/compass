@@ -1576,6 +1576,12 @@ declare module 'zapatos/schema' {
       */
       materials: string;
       /**
+      * **subgoal.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
+      /**
       * **subgoal.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -1661,6 +1667,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       materials: string;
+      /**
+      * **subgoal.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
       /**
       * **subgoal.target_level**
       * - `int2` in database
@@ -1748,6 +1760,12 @@ declare module 'zapatos/schema' {
       */
       materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **subgoal.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **subgoal.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -1834,6 +1852,12 @@ declare module 'zapatos/schema' {
       */
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
+      * **subgoal.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
       * **subgoal.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -1919,6 +1943,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **subgoal.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **subgoal.target_level**
       * - `int2` in database
