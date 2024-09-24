@@ -1,5 +1,4 @@
-import { jest } from "@jest/globals";
 import "@testing-library/jest-dom"; // Adds expect matchers.
 
-// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-jest.mock("next/router", () => require("next-router-mock"));
+// Source to be loaded before running all Jest tests may be added here.
+// See: https://jestjs.io/docs/configuration#setupfilesafterenv-array
