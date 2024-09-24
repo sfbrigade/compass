@@ -1,16 +1,16 @@
 import "@testing-library/jest-dom";
 import { describe, expect, test } from "@jest/globals";
 import { render } from "@testing-library/react";
-import BreadcrumbsDesign from "./Breadcrumbs";
-import { Student } from "./useBreadcrumbContext";
+import BreadcrumbTrail from "./BreadcrumbTrail";
+import { Student } from "../../breadcrumbs/StatefulBreadcrumbTrailContext";
 
-describe("BreadcrumbsDesign", () => {
+describe("BreadcrumbTrail", () => {
   test("renders empty for /", () => {
     const fullPath = "/";
     const contextData = undefined;
 
     const breadcrumbComponent = render(
-      <BreadcrumbsDesign fullPath={fullPath} contextData={contextData} />
+      <BreadcrumbTrail fullPath={fullPath} contextData={contextData} />
     );
 
     expect(breadcrumbComponent).toMatchSnapshot();
@@ -26,7 +26,7 @@ describe("BreadcrumbsDesign", () => {
     };
 
     const breadcrumbComponent = render(
-      <BreadcrumbsDesign fullPath={fullPath} contextData={contextData} />
+      <BreadcrumbTrail fullPath={fullPath} contextData={contextData} />
     );
 
     expect(breadcrumbComponent).toMatchSnapshot();

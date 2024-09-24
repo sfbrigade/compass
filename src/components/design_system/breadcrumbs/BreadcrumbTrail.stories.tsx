@@ -1,24 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
-import BreadcrumbsDesign from "./Breadcrumbs";
-import { Student } from "./useBreadcrumbContext";
+import BreadcrumbTrail from "./BreadcrumbTrail";
+import { Student } from "../../breadcrumbs/StatefulBreadcrumbTrailContext";
 
 const meta = {
-  component: BreadcrumbsDesign,
-} satisfies Meta<typeof BreadcrumbsDesign>;
+  component: BreadcrumbTrail,
+} satisfies Meta<typeof BreadcrumbTrail>;
 
 export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-export const EmptyBreadcrumbsDesign: Story = {
+export const EmptyBreadcrumbTrail: Story = {
   args: {
     fullPath: "/",
     contextData: undefined,
   },
 };
 
-export const StudentPageBreadcrumbsDesign: Story = {
+export const StudentPageBreadcrumbTrail: Story = {
   args: {
     fullPath: "/students/student-id",
     contextData: {
@@ -30,7 +30,7 @@ export const StudentPageBreadcrumbsDesign: Story = {
   },
 };
 
-export const GoalPageBreadcrumbsDesign: Story = {
+export const GoalPageBreadcrumbTrail: Story = {
   args: {
     fullPath: "/students/student-id/goals/goal-id",
     contextData: {

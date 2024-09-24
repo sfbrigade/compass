@@ -17,6 +17,6 @@
   text-decoration: underline;
 }
 
-.non-link-crumb {
+.nonLinkCrumb {
   color: var(--grey-10);
 }

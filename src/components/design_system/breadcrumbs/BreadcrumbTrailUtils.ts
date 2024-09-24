@@ -1,4 +1,4 @@
-import { BreadcrumbContext } from "./useBreadcrumbContext";
+import { BreadcrumbContext } from "../../breadcrumbs/StatefulBreadcrumbTrailContext";
 
 /**
  * Represents a single segment or "crumb" of a Breadcrumbs

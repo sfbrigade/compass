@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`BreadcrumbsDesign renders empty for / 1`] = `
+exports[`BreadcrumbTrail renders empty for / 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -87,7 +87,7 @@ exports[`BreadcrumbsDesign renders empty for / 1`] = `
 }
 `;
 
-exports[`BreadcrumbsDesign renders empty for /students/student-id 1`] = `
+exports[`BreadcrumbTrail renders empty for /students/student-id 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -122,7 +122,7 @@ exports[`BreadcrumbsDesign renders empty for /students/student-id 1`] = `
               class="MuiBreadcrumbs-li"
             >
               <div
-                class="non-link-crumb"
+                class="nonLinkCrumb"
               >
                 Alia Atreides
               </div>
@@ -163,7 +163,7 @@ exports[`BreadcrumbsDesign renders empty for /students/student-id 1`] = `
             class="MuiBreadcrumbs-li"
           >
             <div
-              class="non-link-crumb"
+              class="nonLinkCrumb"
             >
               Alia Atreides
             </div>

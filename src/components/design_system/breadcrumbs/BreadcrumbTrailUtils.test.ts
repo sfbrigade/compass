@@ -1,6 +1,6 @@
 import { describe, expect, test } from "@jest/globals";
-import { transformPaths } from "./transformBreadcrumbs";
-import { Student } from "./useBreadcrumbContext";
+import { transformPaths } from "./BreadcrumbTrailUtils";
+import { Student } from "@/components/breadcrumbs/StatefulBreadcrumbTrailContext";
 
 describe("transformPaths", () => {
   test("empty path", () => {

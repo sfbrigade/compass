@@ -1,10 +1,10 @@
 import Breadcrumbs from "@mui/material/Breadcrumbs";
-import $breadcrumbs from "./Breadcrumbs.module.css";
-import { transformPaths } from "./transformBreadcrumbs";
-import { BreadcrumbContext } from "./useBreadcrumbContext";
+import $breadcrumbs from "./BreadcrumbTrail.module.css";
+import { transformPaths } from "./BreadcrumbTrailUtils";
+import { BreadcrumbContext } from "@/components/breadcrumbs/StatefulBreadcrumbTrailContext";
 import Link from "next/link";
 
-const BreadcrumbsDesign = ({
+const BreadcrumbTrail = ({
   fullPath,
   contextData,
 }: {
@@ -28,7 +28,7 @@ const BreadcrumbsDesign = ({
             );
           } else {
             return (
-              <div key={index} className={$breadcrumbs["non-link-crumb"]}>
+              <div key={index} className={$breadcrumbs.nonLinkCrumb}>
                 {data.name}
               </div>
             );
@@ -39,4 +39,4 @@ const BreadcrumbsDesign = ({
   );
 };
 
-export default BreadcrumbsDesign;
+export default BreadcrumbTrail;
