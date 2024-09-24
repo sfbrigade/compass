@@ -86,11 +86,13 @@ const ViewStudentPage = () => {
       grade: Number(data.get("grade")) || 0,
     });
 
-    editIepMutation.mutate({
-      student_id: student.student_id,
-      start_date: new Date(parseISO(data.get("start_date") as string)),
-      end_date: new Date(parseISO(data.get("end_date") as string)),
-    });
+    if (activeIep) {
+      editIepMutation.mutate({
+        student_id: student.student_id,
+        start_date: new Date(parseISO(data.get("start_date") as string)),
+        end_date: new Date(parseISO(data.get("end_date") as string)),
+      });
+    }
 
     handleMainState();
   };
@@ -163,7 +165,11 @@ const ViewStudentPage = () => {
             <p id="modal-modal-title" className={$CompassModal.editModalHeader}>
               Editing {student?.first_name || "Student"}&apos;s Profile
             </p>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
               <Stack gap={0.5} sx={{ width: "100%" }}>
                 <form
                   className={$CompassModal.editForm}
@@ -319,6 +325,7 @@ const ViewStudentPage = () => {
                 src={noGoals}
                 alt="no IEP image"
                 className={$Image.fitContent}
+                priority={true}
               />
               <p className={$StudentPage.textSpacing}>
                 This student does not have an active IEP. Please create one.
