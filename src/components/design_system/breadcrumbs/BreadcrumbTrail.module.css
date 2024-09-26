@@ -16,3 +16,7 @@
 .link:hover {
   text-decoration: underline;
 }
+
+.nonLinkCrumb {
+  color: var(--grey-10);
+}
