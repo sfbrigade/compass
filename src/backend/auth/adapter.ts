@@ -6,14 +6,22 @@ import {
 } from "../lib";
 import { InsertObject, Selectable } from "kysely";
 
+// Extend AdapterUser type
+interface CustomAdapterUser extends AdapterUser {
+  profile?: {
+    role: string;
+  };
+}
+
 const mapStoredUserToAdapterUser = (
   user: Selectable<ZapatosTableNameToKyselySchema<"user">>
-): AdapterUser => ({
+): CustomAdapterUser => ({
   id: user.user_id,
   email: user.email,
   emailVerified: user.email_verified_at,
   name: `${user.first_name} ${user.last_name}`,
   image: user.image_url,
+  profile: { role: user.role }, // Add the role to the profile
 });
 
 const mapStoredSessionToAdapterSession = (
