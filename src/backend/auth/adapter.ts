@@ -5,13 +5,7 @@ import {
   ZapatosTableNameToKyselySchema,
 } from "../lib";
 import { InsertObject, Selectable } from "kysely";
-
-// Extend AdapterUser type
-interface CustomAdapterUser extends AdapterUser {
-  profile?: {
-    role: string;
-  };
-}
+import { CustomAdapterUser } from "@/types/auth";
 
 const mapStoredUserToAdapterUser = (
   user: Selectable<ZapatosTableNameToKyselySchema<"user">>
