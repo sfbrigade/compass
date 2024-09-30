@@ -1,21 +1,8 @@
 import { getNextAuthOptions } from "@/backend/auth/options";
 import { createContext } from "@/backend/context";
 import { NextApiHandler } from "next";
-import NextAuth from "next-auth";
-import type { Session, User } from "next-auth";
-
-interface UserWithRole extends User {
-  profile: {
-    role: string;
-  };
-}
-
-// Extend the Session type to include the role property
-export interface ExtendedSession extends Session {
-  user: Session["user"] & {
-    role: string;
-  };
-}
+import NextAuth, { Session, User } from "next-auth";
+import { ExtendedSession, UserWithRole } from "@/types/auth";
 
 const handler: NextApiHandler = async (req, res) => {
   const { db } = await createContext({

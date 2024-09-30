@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { ExtendedSession } from "@/pages/api/auth/[...nextauth]";
+import { ExtendedSession } from "@/types/auth";
 
 const Home: NextPage = () => {
   const router = useRouter();
