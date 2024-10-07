@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasAuthenticated, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
-  addGoal: authenticatedProcedure
+  addGoal: hasAuthenticated
     .input(
       z.object({
         iep_id: z.string(),
@@ -31,7 +31,7 @@ export const iep = router({
       return result;
     }),
 
-  editGoal: authenticatedProcedure
+  editGoal: hasAuthenticated
     .input(
       z.object({
         goal_id: z.string(),
@@ -70,7 +70,7 @@ export const iep = router({
       return result;
     }),
 
-  addSubgoal: authenticatedProcedure
+  addSubgoal: hasAuthenticated
     .input(
       z.object({
         // current_level not included, should be calculated as trial data is collected
@@ -123,7 +123,7 @@ export const iep = router({
       return result;
     }),
 
-  addTask: authenticatedProcedure
+  addTask: hasAuthenticated
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -148,7 +148,7 @@ export const iep = router({
 
       return result;
     }),
-  assignTaskToParas: authenticatedProcedure
+  assignTaskToParas: hasAuthenticated
     .input(
       z.object({
         subgoal_id: z.string().uuid(),
@@ -175,7 +175,7 @@ export const iep = router({
       return result;
     }),
   //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: authenticatedProcedure
+  tempAddTaskToSelf: hasAuthenticated
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -217,7 +217,7 @@ export const iep = router({
       return result;
     }),
 
-  addTrialData: authenticatedProcedure
+  addTrialData: hasAuthenticated
     .input(
       z.object({
         task_id: z.string(),
@@ -246,7 +246,7 @@ export const iep = router({
       return result;
     }),
 
-  updateTrialData: authenticatedProcedure
+  updateTrialData: hasAuthenticated
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -271,7 +271,7 @@ export const iep = router({
         .execute();
     }),
 
-  getGoals: authenticatedProcedure
+  getGoals: hasAuthenticated
     .input(
       z.object({
         iep_id: z.string(),
@@ -289,7 +289,7 @@ export const iep = router({
       return result;
     }),
 
-  getGoal: authenticatedProcedure
+  getGoal: hasAuthenticated
     .input(
       z.object({
         goal_id: z.string(),
@@ -307,7 +307,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoals: authenticatedProcedure
+  getSubgoals: hasAuthenticated
     .input(
       z.object({
         goal_id: z.string(),
@@ -325,7 +325,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoal: authenticatedProcedure
+  getSubgoal: hasAuthenticated
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -342,7 +342,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalsByAssignee: authenticatedProcedure
+  getSubgoalsByAssignee: hasAuthenticated
     .input(
       z.object({
         assignee_id: z.string(),
@@ -361,7 +361,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalAndTrialData: authenticatedProcedure
+  getSubgoalAndTrialData: hasAuthenticated
     .input(
       z.object({
         task_id: z.string(),
@@ -424,7 +424,7 @@ export const iep = router({
       return result;
     }),
 
-  markAsSeen: authenticatedProcedure
+  markAsSeen: hasAuthenticated
     .input(
       z.object({
         task_id: z.string(),
@@ -442,7 +442,7 @@ export const iep = router({
         .execute();
     }),
 
-  attachFileToTrialData: authenticatedProcedure
+  attachFileToTrialData: hasAuthenticated
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -461,7 +461,7 @@ export const iep = router({
         .execute();
     }),
 
-  removeFileFromTrialDataAndDelete: authenticatedProcedure
+  removeFileFromTrialDataAndDelete: hasAuthenticated
     .input(
       z.object({
         trial_data_id: z.string(),

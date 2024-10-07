@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasAuthenticated, router } from "../trpc";
 import { createPara } from "../lib/db_helpers/case_manager";
 
 export const para = router({
-  getParaById: authenticatedProcedure
+  getParaById: hasAuthenticated
     .input(z.object({ user_id: z.string().uuid() }))
     .query(async (req) => {
       const { user_id } = req.input;
@@ -17,7 +17,7 @@ export const para = router({
       return result;
     }),
 
-  getParaByEmail: authenticatedProcedure
+  getParaByEmail: hasAuthenticated
     .input(z.object({ email: z.string() }))
     .query(async (req) => {
       const { email } = req.input;
@@ -34,7 +34,7 @@ export const para = router({
   /**
    * Deprecated: use case_manager.addStaff instead
    */
-  createPara: authenticatedProcedure
+  createPara: hasAuthenticated
     .input(
       z.object({
         first_name: z.string(),
@@ -61,7 +61,7 @@ export const para = router({
       // TODO elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
     }),
 
-  getMyTasks: authenticatedProcedure.query(async (req) => {
+  getMyTasks: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db

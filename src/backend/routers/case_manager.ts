@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasAuthenticated, router } from "../trpc";
 import {
   createPara,
   assignParaToCaseManager,
@@ -10,7 +10,7 @@ export const case_manager = router({
   /**
    * Get all students assigned to the current user
    */
-  getMyStudents: authenticatedProcedure.query(async (req) => {
+  getMyStudents: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -22,7 +22,7 @@ export const case_manager = router({
     return result;
   }),
 
-  getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
+  getMyStudentsAndIepInfo: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const studentData = await req.ctx.db
@@ -50,7 +50,7 @@ export const case_manager = router({
    * it doesn't already exist. Throws an error if the student is already
    * assigned to another CM.
    */
-  addStudent: authenticatedProcedure
+  addStudent: hasAuthenticated
     .input(
       z.object({
         first_name: z.string(),
@@ -72,7 +72,7 @@ export const case_manager = router({
   /**
    * Edits the given student in the CM's roster. Throws an error if the student was not found in the db.
    */
-  editStudent: authenticatedProcedure
+  editStudent: hasAuthenticated
     .input(
       z.object({
         student_id: z.string(),
@@ -115,7 +115,7 @@ export const case_manager = router({
   /**
    * Removes the case manager associated with this student.
    */
-  removeStudent: authenticatedProcedure
+  removeStudent: hasAuthenticated
     .input(
       z.object({
         student_id: z.string(),
@@ -131,7 +131,7 @@ export const case_manager = router({
         .execute();
     }),
 
-  getMyParas: authenticatedProcedure.query(async (req) => {
+  getMyParas: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -152,7 +152,7 @@ export const case_manager = router({
    * Handles creation of para and assignment to user, attempts to send
    * email but does not await email success
    */
-  addStaff: authenticatedProcedure
+  addStaff: hasAuthenticated
     .input(
       z.object({
         first_name: z.string(),
@@ -180,7 +180,7 @@ export const case_manager = router({
   /**
    * Deprecated: use addStaff instead
    */
-  addPara: authenticatedProcedure
+  addPara: hasAuthenticated
     .input(
       z.object({
         para_id: z.string(),
@@ -195,7 +195,7 @@ export const case_manager = router({
       return;
     }),
 
-  editPara: authenticatedProcedure
+  editPara: hasAuthenticated
     .input(
       z.object({
         para_id: z.string(),
@@ -236,7 +236,7 @@ export const case_manager = router({
         .executeTakeFirstOrThrow();
     }),
 
-  removePara: authenticatedProcedure
+  removePara: hasAuthenticated
     .input(
       z.object({
         para_id: z.string(),

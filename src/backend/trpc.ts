@@ -2,6 +2,28 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import { createContext } from "./context";
 import superjson from "superjson";
 
+// Role-based access control type
+type RoleLevel = {
+  user: 0;
+  para: 1;
+  case_manager: 2;
+  admin: 3;
+};
+
+const ROLE_LEVELS: RoleLevel = {
+  user: 0,
+  para: 1,
+  case_manager: 2,
+  admin: 3,
+};
+
+type Role = keyof RoleLevel;
+
+// Function to compare roles
+function hasMinimumRole(userRole: Role, requiredRole: Role): boolean {
+  return ROLE_LEVELS[userRole] >= ROLE_LEVELS[requiredRole];
+}
+
 // initialize tRPC exactly once per application:
 export const t = initTRPC.context<typeof createContext>().create({
   // SuperJSON allows us to transparently use, e.g., standard Date/Map/Sets
@@ -22,8 +44,43 @@ const isAuthenticated = t.middleware(({ next, ctx }) => {
   });
 });
 
+const atLeastPara = t.middleware(({ next, ctx }) => {
+  if (
+    ctx.auth.type !== "session" ||
+    !hasMinimumRole(ctx.auth.role as Role, "para")
+  ) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      auth: ctx.auth,
+    },
+  });
+});
+
+const atLeastCaseManager = t.middleware(({ next, ctx }) => {
+  if (
+    ctx.auth.type !== "session" ||
+    !hasMinimumRole(ctx.auth.role as Role, "case_manager")
+  ) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
+
+  return next({
+    ctx: {
+      ...ctx,
+      auth: ctx.auth,
+    },
+  });
+});
+
 const isAdmin = t.middleware(({ next, ctx }) => {
-  if (ctx.auth.type !== "session" || ctx.auth.role !== "admin") {
+  if (
+    ctx.auth.type !== "session" ||
+    !hasMinimumRole(ctx.auth.role as Role, "admin")
+  ) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -37,6 +94,17 @@ const isAdmin = t.middleware(({ next, ctx }) => {
 
 // Define and export the tRPC router
 export const router = t.router;
-export const publicProcedure = t.procedure;
-export const authenticatedProcedure = t.procedure.use(isAuthenticated);
-export const adminProcedure = t.procedure.use(isAuthenticated).use(isAdmin);
+
+// Define and export the tRPC procedures that can be used as auth guards inside routes
+export const noAuth = t.procedure; // Can be used for public routes
+export const hasAuthenticated = t.procedure // for routes that require authentication only, no specific role
+  .use(isAuthenticated);
+export const hasPara = t.procedure // for routes that require at least para role
+  .use(isAuthenticated)
+  .use(atLeastPara);
+export const hasCaseManager = t.procedure // for routes that require at least case manager role
+  .use(isAuthenticated)
+  .use(atLeastCaseManager);
+export const hasAdmin = t.procedure // for routes that require admin role
+  .use(isAuthenticated)
+  .use(isAdmin);
