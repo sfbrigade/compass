@@ -53,7 +53,7 @@ export const createContext = async (
       type: "session",
       session,
       userId: user.user_id,
-      role: user.role,
+      role: user.role as UserType,
     };
   }
 

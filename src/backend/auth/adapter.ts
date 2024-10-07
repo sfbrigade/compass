@@ -16,7 +16,7 @@ const mapStoredUserToAdapterUser = (
   emailVerified: user.email_verified_at,
   name: `${user.first_name} ${user.last_name}`,
   image: user.image_url,
-  profile: { role: user.role }, // Add the role to the profile
+  profile: { role: user.role as UserType }, // Add the role to the profile
 });
 
 const mapStoredSessionToAdapterSession = (

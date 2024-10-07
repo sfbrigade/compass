@@ -18,10 +18,8 @@ const ROLE_LEVELS: RoleLevel = {
   admin: 3,
 };
 
-type Role = keyof RoleLevel;
-
 // Function to compare roles
-function hasMinimumRole(auth: Auth, requiredRole: Role): boolean {
+function hasMinimumRole(auth: Auth, requiredRole: UserType): boolean {
   const { type } = auth;
 
   return (

@@ -21,6 +21,8 @@ import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
 import BreadcrumbsNav from "../design_system/breadcrumbs/Breadcrumbs";
+import { ExtendedSession } from "@/types/auth";
+import { UserType } from "@/types/global";
 
 interface NavItemProps {
   href?: string;
@@ -34,7 +36,10 @@ export default function NavBar() {
   const desktop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
 
-  const { status } = useSession();
+  const { status, data: session } = useSession() as {
+    data: ExtendedSession | null;
+    status: "loading" | "authenticated" | "unauthenticated";
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -93,7 +98,10 @@ export default function NavBar() {
       <List>
         <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
         <NavItem href="/students" icon={<SchoolOutlined />} text="Students" />
-        <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+        {(session?.user.role === UserType.CaseManager ||
+          session?.user.role === UserType.Admin) && (
+          <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+        )}
         <NavItem href="/settings" icon={<SettingsOutlined />} text="Settings" />
         <NavItem
           icon={<Logout />}
