@@ -1,9 +1,10 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/global";
 
 test("getParaById", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { user_id } = await db
@@ -12,7 +13,7 @@ test("getParaById", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -23,7 +24,7 @@ test("getParaById", async (t) => {
 
 test("getParaByEmail", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { email } = await db
@@ -32,7 +33,7 @@ test("getParaByEmail", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -43,7 +44,7 @@ test("getParaByEmail", async (t) => {
 
 test("createPara", async (t) => {
   const { trpc, db, nodemailerMock } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.para.createPara.mutate({
@@ -69,7 +70,7 @@ test("createPara", async (t) => {
 
 test("paras are deduped by email", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   t.falsy(await trpc.para.getParaByEmail.query({ email: "foo.bar@email.com" }));
@@ -97,7 +98,7 @@ test("paras are deduped by email", async (t) => {
 
 test("createPara - invalid email", async (t) => {
   const { trpc } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await t.throwsAsync(
@@ -111,7 +112,7 @@ test("createPara - invalid email", async (t) => {
 
 test("getMyTasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const FIRST_NAME = "Foo";

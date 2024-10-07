@@ -1,10 +1,11 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 import { parseISO } from "date-fns";
+import { UserType } from "@/types/global";
 
 test("getStudentById", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { student_id } = await db
@@ -27,7 +28,7 @@ test("getStudentById", async (t) => {
 // Improve this test
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await db
@@ -60,7 +61,7 @@ test("doNotAddDuplicateEmails", async (t) => {
 
 test("addIep and getIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const start_date = new Date("2023-01-01");
@@ -84,7 +85,7 @@ test("addIep and getIep", async (t) => {
 
 test("editIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   // * must add student this way to populate the assigned_case_manager_id
@@ -136,7 +137,7 @@ test("editIep", async (t) => {
 
 test("getActiveStudentIep - return only one iep object", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const start_date = new Date("2023-01-01");
@@ -160,7 +161,7 @@ test("getActiveStudentIep - return only one iep object", async (t) => {
 
 test("checkAddedIEPEndDates", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
   const start_date = new Date("2023-01-01");
   const end_date = new Date("2022-01-01");
@@ -182,7 +183,7 @@ test("checkAddedIEPEndDates", async (t) => {
 
 test("checkEditedIEPEndDates", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.case_manager.addStudent.mutate({

@@ -1,10 +1,11 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/global";
 
 // TODO: Write more tests
 test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_id = seed.para.user_id;
@@ -90,7 +91,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
 
 test("add benchmark - check full schema", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const iep = await trpc.student.addIep.mutate({
@@ -138,7 +139,7 @@ test("add benchmark - check full schema", async (t) => {
 
 test("edit goal", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.case_manager.addStudent.mutate({

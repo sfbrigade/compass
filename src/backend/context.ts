@@ -4,8 +4,9 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Session, getServerSession } from "next-auth";
 import { Env } from "./lib/types";
 import { getNextAuthOptions } from "./auth/options";
+import { UserType } from "@/types/global";
 
-type Auth =
+export type Auth =
   | {
       type: "none";
     }
@@ -13,7 +14,7 @@ type Auth =
       type: "session";
       session: Session;
       userId: string;
-      role: string;
+      role: UserType;
     };
 
 export type tRPCContext = ReturnType<typeof getDb> & {

@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { ExtendedSession } from "@/types/auth";
+import { UserType } from "@/types/global";
 
 const Home: NextPage = () => {
   const router = useRouter();
@@ -14,7 +15,7 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (status === "authenticated" && session) {
       switch (session.user.role) {
-        case "para":
+        case UserType.Para:
           void router.push("/benchmarks");
           break;
         default:

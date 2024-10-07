@@ -5,10 +5,11 @@ import {
   STUDENT_ASSIGNED_TO_YOU_ERR,
   STUDENT_ALREADY_ASSIGNED_ERR,
 } from "@/backend/lib/db_helpers/case_manager";
+import { UserType } from "@/types/global";
 
 test("getMyStudents", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { student_id } = await db
@@ -30,7 +31,7 @@ test("getMyStudents", async (t) => {
 
 test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const student = await db
@@ -54,7 +55,7 @@ test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
 
 test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.case_manager.addStudent.mutate({
@@ -83,7 +84,7 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
 
 test("addStudent - student doesn't exist in db", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const myStudentsBefore = await trpc.case_manager.getMyStudents.query();
@@ -109,7 +110,7 @@ test("addStudent - student doesn't exist in db", async (t) => {
 
 test("addStudent - student exists in db but is unassigned", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const before = await trpc.case_manager.getMyStudents.query();
@@ -144,7 +145,7 @@ test("addStudent - student exists in db but is unassigned", async (t) => {
 
 test("addStudent - student exists in db and is already assigned to user", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const studentsBefore = await trpc.case_manager.getMyStudents.query();
@@ -175,7 +176,7 @@ test("addStudent - student exists in db and is already assigned to user", async 
 
 test("addStudent - student exists in db but is assigned to another case manager", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const studentsBefore = await trpc.case_manager.getMyStudents.query();
@@ -187,7 +188,7 @@ test("addStudent - student exists in db but is assigned to another case manager"
     .values({
       first_name: "Fake",
       last_name: "CM",
-      role: "admin",
+      role: UserType.Admin,
       email: "fakecm@test.com",
     })
     .returningAll()
@@ -249,7 +250,7 @@ test("addStudent - student exists in db but is assigned to another case manager"
 
 test("addStudent - invalid email", async (t) => {
   const { trpc } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const err = await t.throwsAsync(
@@ -279,7 +280,7 @@ test("addStudent - invalid email", async (t) => {
 
 test("removeStudent", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { student_id } = await db
@@ -307,7 +308,7 @@ test("removeStudent", async (t) => {
 
 test("getMyParas", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
@@ -327,7 +328,7 @@ test("getMyParas", async (t) => {
 
 test("addStaff", async (t) => {
   const { trpc } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const parasBeforeAdd = await trpc.case_manager.getMyParas.query();
@@ -352,7 +353,7 @@ test("addStaff", async (t) => {
 
 test("addPara", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
@@ -368,7 +369,7 @@ test("addPara", async (t) => {
 
 test("removePara", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await db

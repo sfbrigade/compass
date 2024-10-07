@@ -1,6 +1,7 @@
 import { TRPCError, initTRPC } from "@trpc/server";
-import { createContext } from "./context";
+import { Auth, createContext } from "./context";
 import superjson from "superjson";
+import { UserType } from "@/types/global";
 
 // Role-based access control type
 type RoleLevel = {
@@ -20,8 +21,12 @@ const ROLE_LEVELS: RoleLevel = {
 type Role = keyof RoleLevel;
 
 // Function to compare roles
-function hasMinimumRole(userRole: Role, requiredRole: Role): boolean {
-  return ROLE_LEVELS[userRole] >= ROLE_LEVELS[requiredRole];
+function hasMinimumRole(auth: Auth, requiredRole: Role): boolean {
+  const { type } = auth;
+
+  return (
+    type === "session" && ROLE_LEVELS[auth.role] >= ROLE_LEVELS[requiredRole]
+  );
 }
 
 // initialize tRPC exactly once per application:
@@ -45,10 +50,7 @@ const isAuthenticated = t.middleware(({ next, ctx }) => {
 });
 
 const atLeastPara = t.middleware(({ next, ctx }) => {
-  if (
-    ctx.auth.type !== "session" ||
-    !hasMinimumRole(ctx.auth.role as Role, "para")
-  ) {
+  if (!hasMinimumRole(ctx.auth, UserType.Para)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -61,10 +63,7 @@ const atLeastPara = t.middleware(({ next, ctx }) => {
 });
 
 const atLeastCaseManager = t.middleware(({ next, ctx }) => {
-  if (
-    ctx.auth.type !== "session" ||
-    !hasMinimumRole(ctx.auth.role as Role, "case_manager")
-  ) {
+  if (!hasMinimumRole(ctx.auth, UserType.CaseManager)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
@@ -77,10 +76,7 @@ const atLeastCaseManager = t.middleware(({ next, ctx }) => {
 });
 
 const isAdmin = t.middleware(({ next, ctx }) => {
-  if (
-    ctx.auth.type !== "session" ||
-    !hasMinimumRole(ctx.auth.role as Role, "admin")
-  ) {
+  if (!hasMinimumRole(ctx.auth, UserType.Admin)) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 

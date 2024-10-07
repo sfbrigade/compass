@@ -1,4 +1,5 @@
 import { KyselyDatabaseInstance } from "@/backend/lib";
+import { UserType } from "@/types/global";
 
 export type SeedResult = Awaited<ReturnType<typeof seed>>;
 
@@ -9,7 +10,7 @@ export const seed = async (db: KyselyDatabaseInstance) => {
       first_name: "Admin",
       last_name: "One",
       email: "admin1@example.com",
-      role: "admin",
+      role: UserType.Admin,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -20,7 +21,7 @@ export const seed = async (db: KyselyDatabaseInstance) => {
       first_name: "CaseManager",
       last_name: "One",
       email: "case_manager1@example.com",
-      role: "staff",
+      role: UserType.CaseManager,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -31,7 +32,7 @@ export const seed = async (db: KyselyDatabaseInstance) => {
       first_name: "Para",
       last_name: "One",
       email: "para1@example.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
