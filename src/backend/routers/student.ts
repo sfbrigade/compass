@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasAuthenticated, router } from "../trpc";
+import { hasAuthenticated, hasCaseManager, router } from "../trpc";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({
@@ -130,7 +130,7 @@ export const student = router({
    * per the MVP that there will only be one IEP per student,
    * but this should be revisited after the MVP.
    */
-  getActiveStudentIep: hasAuthenticated
+  getActiveStudentIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string().uuid(),
