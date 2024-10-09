@@ -1,4 +1,4 @@
-import { Adapter, AdapterSession, AdapterUser } from "next-auth/adapters";
+import { Adapter, AdapterSession } from "next-auth/adapters";
 import {
   KyselyDatabaseInstance,
   KyselySchema,

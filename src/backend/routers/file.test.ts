@@ -2,9 +2,12 @@ import test from "ava";
 import axios from "axios";
 import fs from "node:fs/promises";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/global";
 
 test("can upload files", async (t) => {
-  const { trpc, db } = await getTestServer(t, { authenticateAs: "para" });
+  const { trpc, db } = await getTestServer(t, {
+    authenticateAs: UserType.Para,
+  });
 
   const { url, key } = await trpc.file.getPresignedUrlForFileUpload.mutate({
     type: "image/png",
@@ -27,7 +30,7 @@ test("can upload files", async (t) => {
 });
 
 test("finishFileUpload throws if file already exists", async (t) => {
-  const { trpc } = await getTestServer(t, { authenticateAs: "para" });
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
 
   const { url, key } = await trpc.file.getPresignedUrlForFileUpload.mutate({
     type: "image/png",
@@ -50,7 +53,7 @@ test("finishFileUpload throws if file already exists", async (t) => {
 });
 
 test("finishFileUpload throws if invalid key is provided", async (t) => {
-  const { trpc } = await getTestServer(t, { authenticateAs: "para" });
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
 
   await t.throwsAsync(async () => {
     await trpc.file.finishFileUpload.mutate({
@@ -61,7 +64,7 @@ test("finishFileUpload throws if invalid key is provided", async (t) => {
 });
 
 test("can download files", async (t) => {
-  const { trpc } = await getTestServer(t, { authenticateAs: "para" });
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
 
   const { url, key } = await trpc.file.getPresignedUrlForFileUpload.mutate({
     type: "image/png",
