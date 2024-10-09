@@ -1,6 +1,6 @@
 import { logger } from "@/backend/lib";
 import { getDb } from "@/backend/db/lib/get-db";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 export const seedfile = async (databaseUrl: string) => {
   const { db } = getDb(databaseUrl);

@@ -2,7 +2,7 @@ import { Env } from "@/backend/lib/types";
 import { KyselyDatabaseInstance } from "@/backend/lib";
 import { getTransporter } from "@/backend/lib/nodemailer";
 import { user } from "zapatos/schema";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 interface paraInputProps {
   first_name: string;

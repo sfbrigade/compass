@@ -1,6 +1,6 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 test("getMe", async (t) => {
   const { trpc, seed } = await getTestServer(t, {

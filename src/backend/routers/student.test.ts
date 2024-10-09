@@ -1,7 +1,7 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 import { parseISO } from "date-fns";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 test("getStudentById", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {

@@ -1,6 +1,6 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 test("getPostgresInfo", async (t) => {
   const { trpc } = await getTestServer(t, { authenticateAs: UserType.Admin });

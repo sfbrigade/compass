@@ -4,7 +4,7 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Session, getServerSession } from "next-auth";
 import { Env } from "./lib/types";
 import { getNextAuthOptions } from "./auth/options";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 export type Auth =
   | {

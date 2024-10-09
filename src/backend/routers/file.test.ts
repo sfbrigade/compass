@@ -2,7 +2,7 @@ import test from "ava";
 import axios from "axios";
 import fs from "node:fs/promises";
 import { getTestServer } from "@/backend/tests";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 test("can upload files", async (t) => {
   const { trpc, db } = await getTestServer(t, {

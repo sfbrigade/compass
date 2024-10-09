@@ -5,8 +5,7 @@ import {
   ZapatosTableNameToKyselySchema,
 } from "../lib";
 import { InsertObject, Selectable } from "kysely";
-import { CustomAdapterUser } from "@/types/auth";
-import { UserType } from "@/types/global";
+import { CustomAdapterUser, UserType } from "@/types/auth";
 
 const mapStoredUserToAdapterUser = (
   user: Selectable<ZapatosTableNameToKyselySchema<"user">>

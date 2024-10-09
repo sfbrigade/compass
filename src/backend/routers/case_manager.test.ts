@@ -5,7 +5,7 @@ import {
   STUDENT_ASSIGNED_TO_YOU_ERR,
   STUDENT_ALREADY_ASSIGNED_ERR,
 } from "@/backend/lib/db_helpers/case_manager";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 test("getMyStudents", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {

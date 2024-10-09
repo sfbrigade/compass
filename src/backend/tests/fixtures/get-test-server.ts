@@ -11,7 +11,7 @@ import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
 import superjson from "superjson";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 export interface GetTestServerOptions {
   authenticateAs?: UserType.CaseManager | UserType.Para | UserType.Admin;

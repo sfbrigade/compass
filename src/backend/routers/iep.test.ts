@@ -1,6 +1,6 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 // TODO: Write more tests
 test("basic flow - add/get goals, subgoals, tasks", async (t) => {

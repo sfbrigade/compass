@@ -1,5 +1,5 @@
 import { KyselyDatabaseInstance } from "@/backend/lib";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 export type SeedResult = Awaited<ReturnType<typeof seed>>;
 

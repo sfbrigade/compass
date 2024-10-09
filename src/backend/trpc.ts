@@ -1,7 +1,7 @@
 import { TRPCError, initTRPC } from "@trpc/server";
 import { Auth, createContext } from "./context";
 import superjson from "superjson";
-import { UserType } from "@/types/global";
+import { UserType } from "@/types/auth";
 
 // Role-based access control type
 type RoleLevel = {

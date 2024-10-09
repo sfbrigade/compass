@@ -2,8 +2,7 @@ import type { NextPage } from "next";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
-import { ExtendedSession } from "@/types/auth";
-import { UserType } from "@/types/global";
+import { ExtendedSession, UserType } from "@/types/auth";
 
 const Home: NextPage = () => {
   const router = useRouter();

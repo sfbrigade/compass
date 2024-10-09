@@ -1,4 +1,3 @@
-import { UserType } from "@/types/global";
 import { User, Session } from "next-auth";
 import { AdapterUser } from "next-auth/adapters";
 
@@ -18,4 +17,11 @@ export interface CustomAdapterUser extends AdapterUser {
   profile?: {
     role: UserType;
   };
+}
+
+export enum UserType {
+  User = "user",
+  Para = "para",
+  CaseManager = "case_manager",
+  Admin = "admin",
 }

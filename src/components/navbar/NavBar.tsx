@@ -21,8 +21,7 @@ import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
 import BreadcrumbsNav from "../design_system/breadcrumbs/Breadcrumbs";
-import { ExtendedSession } from "@/types/auth";
-import { UserType } from "@/types/global";
+import { ExtendedSession, UserType } from "@/types/auth";
 
 interface NavItemProps {
   href?: string;
@@ -96,7 +95,9 @@ export default function NavBar() {
   const drawer = (
     <div className={$navbar.navbarDropdown}>
       <List>
-        <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
+        {session?.user.role === UserType.Para && (
+          <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
+        )}
         <NavItem href="/students" icon={<SchoolOutlined />} text="Students" />
         {(session?.user.role === UserType.CaseManager ||
           session?.user.role === UserType.Admin) && (
