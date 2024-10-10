@@ -42,7 +42,7 @@ const CreateBenchmarkPage = () => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) }
+    { enabled: Boolean(router.query.goal_id) },
   );
 
   const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
@@ -121,7 +121,7 @@ const CreateBenchmarkPage = () => {
       await router.push(
         `/students/${router.query.student_id as string}/goals/${
           router.query.goal_id as string
-        }`
+        }`,
       );
     } catch (error) {
       console.error("Error creating benchmark", error);

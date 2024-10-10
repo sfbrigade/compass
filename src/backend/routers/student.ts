@@ -44,7 +44,7 @@ export const student = router({
         student_id: z.string(),
         start_date: z.date(),
         end_date: z.date(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
@@ -73,7 +73,7 @@ export const student = router({
         student_id: z.string(),
         start_date: z.date(),
         end_date: z.date(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
@@ -108,7 +108,7 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { student_id } = req.input;
@@ -134,7 +134,7 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string().uuid(),
-      })
+      }),
     )
     .query(async (req) => {
       const { student_id } = req.input;

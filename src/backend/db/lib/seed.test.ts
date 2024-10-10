@@ -20,7 +20,7 @@ test("seedfile works with current schema", async (t) => {
     t.fail(
       `Seedfile execution failed: ${
         error instanceof Error ? error.message : String(error)
-      }`
+      }`,
     );
   } finally {
     await db.destroy();

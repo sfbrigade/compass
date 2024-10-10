@@ -12,7 +12,7 @@ const GoalPage = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id },
-    { enabled: Boolean(student_id), retry: false }
+    { enabled: Boolean(student_id), retry: false },
   );
   const { data: goals = [] } = trpc.iep.getGoals.useQuery({
     iep_id: activeIep?.iep_id || "",
@@ -20,12 +20,12 @@ const GoalPage = () => {
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
-    { enabled: Boolean(goal_id) }
+    { enabled: Boolean(goal_id) },
   );
 
   const { data: benchmarks } = trpc.iep.getSubgoals.useQuery(
     { goal_id: goal_id },
-    { enabled: Boolean(goal_id) }
+    { enabled: Boolean(goal_id) },
   );
 
   const goal_index = goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1;

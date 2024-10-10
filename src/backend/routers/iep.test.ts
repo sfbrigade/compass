@@ -84,7 +84,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
       .where("subgoal_id", "=", subgoal2Id)
       .where("assignee_id", "=", para_id)
       .selectAll()
-      .executeTakeFirstOrThrow()
+      .executeTakeFirstOrThrow(),
   );
 });
 
