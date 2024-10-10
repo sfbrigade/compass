@@ -20,7 +20,7 @@ export async function createPara(
   case_manager_id: string,
   from_email: string,
   to_email: string,
-  env: Env,
+  env: Env
 ): Promise<user.Selectable | undefined> {
   const { first_name, last_name, email } = para;
 
@@ -48,7 +48,7 @@ export async function createPara(
       to_email,
       first_name,
       case_manager_id,
-      env,
+      env
     );
   }
 
@@ -63,7 +63,7 @@ export async function sendInviteEmail(
   toEmail: string,
   first_name: string,
   caseManagerName: string,
-  env: Env,
+  env: Env
 ): Promise<void> {
   await getTransporter(env).sendMail({
     from: fromEmail,
@@ -92,7 +92,7 @@ Thank you for the key role you play in improving student outcomes!`,
 export async function assignParaToCaseManager(
   para_id: string,
   case_manager_id: string,
-  db: KyselyDatabaseInstance,
+  db: KyselyDatabaseInstance
 ): Promise<void> {
   await db
     .insertInto("paras_assigned_to_case_manager")
@@ -112,10 +112,10 @@ type createStudentProps = {
 };
 
 export const STUDENT_ASSIGNED_TO_YOU_ERR = new Error(
-  "This student is already assigned to you",
+  "This student is already assigned to you"
 );
 export const STUDENT_ALREADY_ASSIGNED_ERR = new Error(
-  "This student is already assigned to another case manager.",
+  "This student is already assigned to another case manager."
 );
 
 /**
@@ -164,7 +164,7 @@ export async function createAndAssignStudent({
       oc
         .column("email")
         .doUpdateSet({ assigned_case_manager_id: userId })
-        .where("student.assigned_case_manager_id", "is", null),
+        .where("student.assigned_case_manager_id", "is", null)
     )
     .returningAll()
     .executeTakeFirstOrThrow();

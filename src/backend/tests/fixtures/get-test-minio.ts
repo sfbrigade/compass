@@ -6,7 +6,7 @@ import { fileURLToPath } from "node:url";
 const worker = registerSharedTypeScriptWorker({
   filename: path.join(
     path.dirname(fileURLToPath(import.meta.url)),
-    "./workers/get-test-minio.worker.ts",
+    "./workers/get-test-minio.worker.ts"
   ),
 });
 

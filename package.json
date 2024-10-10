@@ -93,7 +93,6 @@
     "lint-staged": "^13.1.0",
     "nextjs-server-modules": "^4.7.0",
     "nodemailer-mock": "^2.0.1",
-    "prettier": "^2.8.8",
     "rewiremock": "^3.14.5",
     "storybook": "^8.1.11",
     "testcontainers": "^9.8.0",

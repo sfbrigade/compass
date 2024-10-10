@@ -28,7 +28,7 @@ export const case_manager = router({
     const studentData = await req.ctx.db
       .selectFrom("iep")
       .fullJoin("student", (join) =>
-        join.onRef("student.student_id", "=", "iep.student_id"),
+        join.onRef("student.student_id", "=", "iep.student_id")
       )
       .where("assigned_case_manager_id", "=", userId)
       .select([
@@ -57,7 +57,7 @@ export const case_manager = router({
         last_name: z.string(),
         email: z.string().email(),
         grade: z.number(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
@@ -80,7 +80,7 @@ export const case_manager = router({
         last_name: z.string(),
         email: z.string().email(),
         grade: z.number(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { student_id, first_name, last_name, email, grade } = req.input;
@@ -119,7 +119,7 @@ export const case_manager = router({
     .input(
       z.object({
         student_id: z.string(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { student_id } = req.input;
@@ -139,7 +139,7 @@ export const case_manager = router({
       .innerJoin(
         "paras_assigned_to_case_manager",
         "user.user_id",
-        "paras_assigned_to_case_manager.para_id",
+        "paras_assigned_to_case_manager.para_id"
       )
       .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
       .selectAll()
@@ -158,7 +158,7 @@ export const case_manager = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const para = await createPara(
@@ -167,13 +167,13 @@ export const case_manager = router({
         req.ctx.auth.userId,
         req.ctx.env.EMAIL,
         req.input.email,
-        req.ctx.env,
+        req.ctx.env
       );
 
       return await assignParaToCaseManager(
         para?.user_id || "",
         req.ctx.auth.userId,
-        req.ctx.db,
+        req.ctx.db
       );
     }),
 
@@ -184,13 +184,13 @@ export const case_manager = router({
     .input(
       z.object({
         para_id: z.string(),
-      }),
+      })
     )
     .mutation(async (req) => {
       await assignParaToCaseManager(
         req.input.para_id,
         req.ctx.auth.userId,
-        req.ctx.db,
+        req.ctx.db
       );
       return;
     }),
@@ -202,7 +202,7 @@ export const case_manager = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { para_id, first_name, last_name, email } = req.input;
@@ -214,7 +214,7 @@ export const case_manager = router({
           .innerJoin(
             "paras_assigned_to_case_manager",
             "user.user_id",
-            "paras_assigned_to_case_manager.para_id",
+            "paras_assigned_to_case_manager.para_id"
           )
           .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
           .selectAll();
@@ -240,7 +240,7 @@ export const case_manager = router({
     .input(
       z.object({
         para_id: z.string(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { para_id } = req.input;
