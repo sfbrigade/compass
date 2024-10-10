@@ -17,6 +17,7 @@ import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { compassTheme as theme } from "@/theme";
 import { FontProvider } from "@/components/font-provider";
+import { useRouter } from "next/router";
 
 interface CustomPageProps {
   session: Session;
@@ -36,6 +37,7 @@ export default function App({
   Component,
   pageProps,
 }: AppProps<CustomPageProps>) {
+  const router = useRouter();
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [queryClient] = useState(
@@ -44,15 +46,18 @@ export default function App({
         queryCache: new QueryCache({
           onError: (error) => {
             if (error instanceof Error) {
-              const errorMessages: { [key: string]: string } = {
-                BAD_REQUEST: "400: Bad request, please try again",
-                UNAUTHORIZED: "401: Unauthorized Error",
-                NOT_FOUND: "404: Page not found",
-              };
+              if (error.message === "UNAUTHORIZED") {
+                void router.push("/sorry");
+              } else {
+                const errorMessages: { [key: string]: string } = {
+                  BAD_REQUEST: "400: Bad request, please try again",
+                  NOT_FOUND: "404: Page not found",
+                };
 
-              const defaultMessage = "An error occured. Please try again";
-              const msg = errorMessages[error.message] || defaultMessage;
-              setErrorMessage(msg);
+                const defaultMessage = "An error occurred. Please try again";
+                const msg = errorMessages[error.message] || defaultMessage;
+                setErrorMessage(msg);
+              }
             }
           },
         }),

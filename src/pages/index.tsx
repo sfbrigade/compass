@@ -14,6 +14,9 @@ const Home: NextPage = () => {
   useEffect(() => {
     if (status === "authenticated" && session) {
       switch (session.user.role) {
+        case UserType.User:
+          void router.push("/sorry");
+          break;
         case UserType.Para:
           void router.push("/benchmarks");
           break;

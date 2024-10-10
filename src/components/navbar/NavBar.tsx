@@ -91,27 +91,87 @@ export default function NavBar() {
     );
   };
 
-  // Navigation Links
-  const drawer = (
-    <div className={$navbar.navbarDropdown}>
-      <List>
-        {session?.user.role === UserType.Para && (
-          <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
-        )}
-        <NavItem href="/students" icon={<SchoolOutlined />} text="Students" />
-        {(session?.user.role === UserType.CaseManager ||
-          session?.user.role === UserType.Admin) && (
-          <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
-        )}
-        <NavItem href="/settings" icon={<SettingsOutlined />} text="Settings" />
-        <NavItem
-          icon={<Logout />}
-          text="Logout"
-          onClick={() => signOut({ callbackUrl: "/" })}
-        />
-      </List>
-    </div>
-  );
+  const drawer = () => {
+    switch (session?.user.role) {
+      case UserType.Admin:
+        return (
+          <List>
+            <NavItem
+              href="/benchmarks"
+              icon={<ContentPaste />}
+              text="Assigned"
+            />
+            <NavItem
+              href="/students"
+              icon={<SchoolOutlined />}
+              text="Students"
+            />
+            <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      case UserType.CaseManager:
+        return (
+          <List>
+            <NavItem
+              href="/students"
+              icon={<SchoolOutlined />}
+              text="Students"
+            />
+            <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      case UserType.Para:
+        return (
+          <List>
+            <NavItem
+              href="/benchmarks"
+              icon={<ContentPaste />}
+              text="Assigned"
+            />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      default:
+        return (
+          <List>
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+    }
+  };
 
   return (
     <>
@@ -122,7 +182,7 @@ export default function NavBar() {
               {/* Sidebar for screens & breadcrumbs > md size */}
               <Box component="nav" aria-label="nav" className={$navbar.sidebar}>
                 {logo}
-                {drawer}
+                {drawer()}
               </Box>
               <BreadcrumbsNav />
             </>
@@ -156,7 +216,7 @@ export default function NavBar() {
                     <CloseIcon className={$navbar.burger} fontSize="large" />
                   }
                 />
-                {drawer}
+                {drawer()}
               </Drawer>
             </>
           )}
