@@ -18,7 +18,7 @@ const runWithGcpMetadata = async () => {
     const [projectId, regionPath, { access_token }]: [
       string,
       string,
-      { access_token: string }
+      { access_token: string },
     ] = await Promise.all([
       gcpMetadata.project("project-id"),
       gcpMetadata.instance("region"),
