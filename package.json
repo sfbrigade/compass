@@ -18,6 +18,7 @@
     "postinstall": "next build --no-lint && nsm build --skip-build --only-api-files && npm run type-css",
     "format": "prettier --write --ignore-unknown .",
     "format:check": "prettier --check --ignore-unknown .",
+    "format:version": "prettier --version",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "all:check": "npm run type:check && npm run type-css:check && npm run lint && npm run format:check && npm run test",
