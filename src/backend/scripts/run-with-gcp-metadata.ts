@@ -18,7 +18,7 @@ const runWithGcpMetadata = async () => {
     const [projectId, regionPath, { access_token }]: [
       string,
       string,
-      { access_token: string }
+      { access_token: string },
     ] = await Promise.all([
       gcpMetadata.project("project-id"),
       gcpMetadata.instance("region"),
@@ -33,19 +33,19 @@ const runWithGcpMetadata = async () => {
         headers: {
           Authorization: `Bearer ${access_token}`,
         },
-      }
+      },
     );
 
     if (process.env.NEXTAUTH_URL && process.env.NEXTAUTH_URL !== "") {
       console.log(
-        "🕵️  NEXTAUTH_URL already set, NEXTAUTH_URL and BASE_HTTP_ENDPOINT will not be modified."
+        "🕵️  NEXTAUTH_URL already set, NEXTAUTH_URL and BASE_HTTP_ENDPOINT will not be modified.",
       );
     } else {
       env.NEXTAUTH_URL = getServiceResponse.data.status.url;
       env.BASE_HTTP_ENDPOINT = getServiceResponse.data.status.url;
 
       console.log(
-        "🕵️  running on GCP, environment will be modified with NEXTAUTH_URL and BASE_HTTP_ENDPOINT."
+        "🕵️  running on GCP, environment will be modified with NEXTAUTH_URL and BASE_HTTP_ENDPOINT.",
       );
     }
   } else {
@@ -53,7 +53,7 @@ const runWithGcpMetadata = async () => {
   }
 
   const splitArgsAt = process.argv.findIndex((arg) =>
-    arg.endsWith("run-with-gcp-metadata.ts")
+    arg.endsWith("run-with-gcp-metadata.ts"),
   );
   const args = process.argv.slice(splitArgsAt + 1);
 

@@ -108,7 +108,7 @@ function Benchmarks() {
           <Box sx={{ height: "75vh", overflowY: "scroll" }}>
             {tasks?.map((task) => {
               const completed = Math.floor(
-                Number(task.completed_trials) / Number(task.number_of_trials)
+                Number(task.completed_trials) / Number(task.number_of_trials),
               );
               return (
                 <div key={task.task_id} className={$typo.noDecoration}>
