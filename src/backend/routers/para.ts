@@ -40,7 +40,7 @@ export const para = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { email } = req.input;
@@ -51,7 +51,7 @@ export const para = router({
         req.ctx.auth.session.user?.name ?? "",
         req.ctx.env.EMAIL_FROM,
         email,
-        req.ctx.env,
+        req.ctx.env
       );
 
       return para;
@@ -90,7 +90,7 @@ export const para = router({
           .where("trial_data.created_by_user_id", "=", userId)
           .where("trial_data.submitted", "=", true)
           .select(({ fn }) =>
-            fn.count("trial_data.trial_data_id").as("completed_trials"),
+            fn.count("trial_data.trial_data_id").as("completed_trials")
           )
           .as("completed_trials"),
       ])

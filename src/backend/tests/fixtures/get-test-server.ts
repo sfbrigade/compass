@@ -18,7 +18,7 @@ export interface GetTestServerOptions {
 
 export const getTestServer = async (
   t: ExecutionContext,
-  { authenticateAs }: GetTestServerOptions = {},
+  { authenticateAs }: GetTestServerOptions = {}
 ) => {
   const [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
