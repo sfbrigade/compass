@@ -18,7 +18,7 @@ export interface GetTestServerOptions {
 
 export const getTestServer = async (
   t: ExecutionContext,
-  { authenticateAs }: GetTestServerOptions = {}
+  { authenticateAs }: GetTestServerOptions = {},
 ) => {
   const [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -38,8 +38,12 @@ export const getTestServer = async (
     S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
     S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
     S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
-    EMAIL: "example string",
-    EMAIL_PASS: "example string",
+    EMAIL_SERVICE: "example string",
+    EMAIL_FROM: "example string",
+    EMAIL_AUTH_USER: "example string",
+    EMAIL_AUTH_PASS: "example string",
+    EMAIL_HOST: "example string",
+    EMAIL_PORT: "example string",
   };
 
   // Use statically-built Next.js fixture (if multiple instances of the built-in next() dev server are running, they try to concurrently mutate the same files).
