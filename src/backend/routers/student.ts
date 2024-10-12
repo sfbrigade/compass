@@ -3,7 +3,7 @@ import { hasAuthenticated, hasCaseManager, router } from "../trpc";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({
-  getStudentById: hasAuthenticated
+  getStudentById: hasCaseManager
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
       const { student_id } = req.input;
@@ -17,7 +17,7 @@ export const student = router({
       return result;
     }),
 
-  getStudentByTaskId: hasAuthenticated
+  getStudentByTaskId: hasCaseManager
     .input(z.object({ task_id: z.string().uuid() }))
     .query(async (req) => {
       const { task_id } = req.input;
@@ -38,7 +38,7 @@ export const student = router({
   /**
    * Adds a new IEP for the given student.
    */
-  addIep: hasAuthenticated
+  addIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -67,7 +67,7 @@ export const student = router({
   /**
    * Adds a new IEP for the given student.
    */
-  editIep: hasAuthenticated
+  editIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -104,7 +104,7 @@ export const student = router({
   /**
    * Returns all the IEPs associated with the given student.
    */
-  getIeps: hasAuthenticated
+  getIeps: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),

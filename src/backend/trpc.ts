@@ -27,6 +27,9 @@ function hasMinimumRole(auth: Auth, requiredRole: UserType): boolean {
   );
 }
 
+// Add this type at the top of the file
+type AuthenticatedAuth = Extract<Auth, { type: "session" }>;
+
 // initialize tRPC exactly once per application:
 export const t = initTRPC.context<typeof createContext>().create({
   // SuperJSON allows us to transparently use, e.g., standard Date/Map/Sets
@@ -55,7 +58,7 @@ const atLeastPara = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       ...ctx,
-      auth: ctx.auth,
+      auth: ctx.auth as AuthenticatedAuth,
     },
   });
 });
@@ -68,7 +71,7 @@ const atLeastCaseManager = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       ...ctx,
-      auth: ctx.auth,
+      auth: ctx.auth as AuthenticatedAuth,
     },
   });
 });
@@ -81,7 +84,7 @@ const isAdmin = t.middleware(({ next, ctx }) => {
   return next({
     ctx: {
       ...ctx,
-      auth: ctx.auth,
+      auth: ctx.auth as AuthenticatedAuth,
     },
   });
 });
