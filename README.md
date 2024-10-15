@@ -57,6 +57,12 @@ There are two ways to run Compass locally:
 
    NOTE: If you get into a login loop, double check that the Docker services are running
 
+4. Seed database (Optional)
+   ```sh
+   npm run db:seed           # Seed the database with test data
+                             # Must be done after login to Compass app
+   ```
+
 **Option 2: Run both server and supporting services locally**
 
 1. One time setup:

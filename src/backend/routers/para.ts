@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { getTransporter } from "../lib/nodemailer";
 import { authenticatedProcedure, router } from "../trpc";
 import { createPara } from "../lib/db_helpers/case_manager";
 
@@ -41,10 +40,10 @@ export const para = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      })
+      }),
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { email } = req.input;
 
       const para = await createPara(
         req.input,
@@ -52,7 +51,7 @@ export const para = router({
         req.ctx.auth.session.user?.name ?? "",
         req.ctx.env.EMAIL,
         email,
-        req.ctx.env
+        req.ctx.env,
       );
 
       return para;
@@ -91,7 +90,7 @@ export const para = router({
           .where("trial_data.created_by_user_id", "=", userId)
           .where("trial_data.submitted", "=", true)
           .select(({ fn }) =>
-            fn.count("trial_data.trial_data_id").as("completed_trials")
+            fn.count("trial_data.trial_data_id").as("completed_trials"),
           )
           .as("completed_trials"),
       ])

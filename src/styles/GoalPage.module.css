@@ -1,11 +1,12 @@
 .goalDescriptionContainer {
   background-color: var(--grey-100);
   border-radius: 10px;
-  padding: 0.5rem;
+  padding: 1.5rem;
+  padding-top: 1.5rem;
 }
 
 .benchmarksContainer {
-  background-color: var(--grey-100);
+  background: var(--grey-90);
   padding-bottom: 2rem;
   min-height: 50vh;
   max-height: 70vh;

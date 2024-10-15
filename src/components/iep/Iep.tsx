@@ -1,7 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
 import Goals from "@/components/goal/Goal";
 import $button from "@/components/design_system/button/Button.module.css";
-import $input from "@/styles/Input.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
@@ -26,7 +25,7 @@ const Iep = ({ iep_id }: IepProps) => {
 
   const { data: goals, isLoading } = trpc.iep.getGoals.useQuery(
     { iep_id: iep_id },
-    { enabled: Boolean(iep_id) }
+    { enabled: Boolean(iep_id) },
   );
 
   const router = useRouter();
@@ -160,6 +159,7 @@ const Iep = ({ iep_id }: IepProps) => {
               src={noGoals}
               alt="no goals image"
               className={$Image.fitContent}
+              priority={true}
             />
             <p className={$Iep.noGoalText}>No goals yet</p>
             <p className={$Iep.noGoalTextSmall}>
