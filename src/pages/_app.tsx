@@ -56,7 +56,7 @@ export default function App({
             }
           },
         }),
-      })
+      }),
   );
 
   const [trpcClient] = useState(() =>
@@ -74,7 +74,7 @@ export default function App({
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
-    })
+    }),
   );
 
   return (

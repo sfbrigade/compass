@@ -13,7 +13,7 @@ export const iep = router({
         iep_id: z.string(),
         description: z.string(),
         category: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { iep_id, description, category } = req.input;
@@ -36,7 +36,7 @@ export const iep = router({
       z.object({
         goal_id: z.string(),
         description: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { goal_id, description } = req.input;
@@ -85,7 +85,7 @@ export const iep = router({
         metric_name: z.string(),
         attempts_per_trial: z.number().nullable(),
         number_of_trials: z.number().nullable(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const {
@@ -130,7 +130,7 @@ export const iep = router({
         assignee_id: z.string(),
         due_date: z.date(),
         trial_count: z.number(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { benchmark_id, assignee_id, due_date, trial_count } = req.input;
@@ -155,7 +155,7 @@ export const iep = router({
         para_ids: z.string().uuid().array(),
         due_date: z.date().optional(),
         trial_count: z.number().optional(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { benchmark_id, para_ids, due_date, trial_count } = req.input;
@@ -168,7 +168,7 @@ export const iep = router({
             assignee_id: para_id,
             due_date,
             trial_count,
-          }))
+          })),
         )
         .returningAll()
         .executeTakeFirst();
@@ -181,7 +181,7 @@ export const iep = router({
         benchmark_id: z.string(),
         due_date: z.date(),
         trial_count: z.number(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { benchmark_id, due_date, trial_count } = req.input;
@@ -194,7 +194,7 @@ export const iep = router({
           eb.and([
             eb("benchmark_id", "=", benchmark_id),
             eb("assignee_id", "=", userId),
-          ])
+          ]),
         )
         .executeTakeFirst();
 
@@ -224,7 +224,7 @@ export const iep = router({
         success: z.number(),
         unsuccess: z.number(),
         notes: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
@@ -254,7 +254,7 @@ export const iep = router({
         unsuccess: z.number().optional(),
         submitted: z.boolean().optional(),
         notes: z.string().optional(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { trial_data_id, success, unsuccess, submitted, notes } = req.input;
@@ -275,7 +275,7 @@ export const iep = router({
     .input(
       z.object({
         iep_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { iep_id } = req.input;
@@ -293,7 +293,7 @@ export const iep = router({
     .input(
       z.object({
         goal_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { goal_id } = req.input;
@@ -311,7 +311,7 @@ export const iep = router({
     .input(
       z.object({
         goal_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { goal_id } = req.input;
@@ -329,7 +329,7 @@ export const iep = router({
     .input(
       z.object({
         benchmark_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { benchmark_id } = req.input;
@@ -346,7 +346,7 @@ export const iep = router({
     .input(
       z.object({
         assignee_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { assignee_id } = req.input;
@@ -365,7 +365,7 @@ export const iep = router({
     .input(
       z.object({
         task_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { task_id } = req.input;
@@ -405,18 +405,18 @@ export const iep = router({
                     .innerJoin(
                       "file",
                       "file.file_id",
-                      "trial_data_file.file_id"
+                      "trial_data_file.file_id",
                     )
-                    .selectAll("file")
+                    .selectAll("file"),
                 ).as("files"),
               ])
               .whereRef("trial_data.task_id", "=", "task.task_id")
               .whereRef(
                 "trial_data.created_by_user_id",
                 "=",
-                "task.assignee_id"
+                "task.assignee_id",
               )
-              .orderBy("trial_data.created_at")
+              .orderBy("trial_data.created_at"),
           ).as("trials"),
         ])
         .executeTakeFirstOrThrow();
@@ -428,7 +428,7 @@ export const iep = router({
     .input(
       z.object({
         task_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { task_id } = req.input;
@@ -447,7 +447,7 @@ export const iep = router({
       z.object({
         trial_data_id: z.string(),
         file_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { trial_data_id, file_id } = req.input;
@@ -466,7 +466,7 @@ export const iep = router({
       z.object({
         trial_data_id: z.string(),
         file_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { trial_data_id, file_id } = req.input;

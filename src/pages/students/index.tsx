@@ -33,7 +33,7 @@ const Students = () => {
         }
       } catch {
         alert(
-          `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
+          `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`,
         );
       }
     },

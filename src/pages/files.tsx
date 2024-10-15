@@ -12,7 +12,7 @@ const FilesPage = () => {
     event.preventDefault();
 
     const fileInput = event.currentTarget.elements.namedItem(
-      "file"
+      "file",
     ) as HTMLInputElement;
     if (!fileInput.files) return;
 

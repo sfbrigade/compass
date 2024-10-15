@@ -57,13 +57,13 @@ test("createPara", async (t) => {
       .selectFrom("user")
       .where("first_name", "=", "Foo")
       .selectAll()
-      .executeTakeFirst()
+      .executeTakeFirst(),
   );
 
   t.true(
     nodemailerMock.mock
       .getSentMail()
-      .some((mail) => mail.subject?.includes("confirmation"))
+      .some((mail) => mail.subject?.includes("confirmation")),
   );
 });
 
@@ -105,7 +105,7 @@ test("createPara - invalid email", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "invalid-email",
-    })
+    }),
   );
 });
 
