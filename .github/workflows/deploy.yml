@@ -11,7 +11,7 @@ jobs:
       contents: read
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Authenticate with Google Cloud
         id: auth
@@ -50,7 +50,7 @@ jobs:
       run:
         working-directory: ./terraform/gcs
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Authenticate with Google Cloud
         id: auth
