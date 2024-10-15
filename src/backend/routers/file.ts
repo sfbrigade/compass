@@ -22,7 +22,7 @@ export const file = router({
     .input(
       z.object({
         file_id: z.string().uuid(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const file = await req.ctx.db
@@ -54,7 +54,7 @@ export const file = router({
     .input(
       z.object({
         type: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const key = randomUUID();
@@ -76,7 +76,7 @@ export const file = router({
       z.object({
         filename: z.string(),
         key: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const command = new HeadObjectCommand({
@@ -103,7 +103,7 @@ export const file = router({
     .input(
       z.object({
         file_id: z.string().uuid(),
-      })
+      }),
     )
     .mutation(async (req) => {
       await deleteFile(req.input.file_id, req.ctx);

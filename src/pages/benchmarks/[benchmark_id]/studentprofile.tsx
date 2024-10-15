@@ -13,7 +13,7 @@ const StudentProfilePage = () => {
   const { benchmark_id } = router.query;
   const { data: student, isLoading } = trpc.student.getStudentByTaskId.useQuery(
     { task_id: benchmark_id as string },
-    { enabled: Boolean(benchmark_id) }
+    { enabled: Boolean(benchmark_id) },
   );
 
   if (!student || isLoading) {

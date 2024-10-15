@@ -40,7 +40,7 @@ export const para = router({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { email } = req.input;
@@ -51,7 +51,7 @@ export const para = router({
         req.ctx.auth.session.user?.name ?? "",
         req.ctx.env.EMAIL,
         email,
-        req.ctx.env
+        req.ctx.env,
       );
 
       return para;
@@ -65,9 +65,9 @@ export const para = router({
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
-      .selectFrom("subgoal")
-      .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
-      .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
+      .selectFrom("benchmark")
+      .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+      .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
       .innerJoin("iep", "goal.iep_id", "iep.iep_id")
       .innerJoin("student", "iep.student_id", "student.student_id")
       .where("task.assignee_id", "=", userId)
@@ -76,10 +76,10 @@ export const para = router({
         "student.first_name",
         "student.last_name",
         "goal.category",
-        "subgoal.description",
-        "subgoal.instructions",
-        "subgoal.attempts_per_trial",
-        "subgoal.number_of_trials",
+        "benchmark.description",
+        "benchmark.instructions",
+        "benchmark.attempts_per_trial",
+        "benchmark.number_of_trials",
         "task.due_date",
         "task.seen",
         "task.trial_count",
@@ -90,7 +90,7 @@ export const para = router({
           .where("trial_data.created_by_user_id", "=", userId)
           .where("trial_data.submitted", "=", true)
           .select(({ fn }) =>
-            fn.count("trial_data.trial_data_id").as("completed_trials")
+            fn.count("trial_data.trial_data_id").as("completed_trials"),
           )
           .as("completed_trials"),
       ])

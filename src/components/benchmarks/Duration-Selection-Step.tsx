@@ -33,7 +33,7 @@ export const DurationSelectionStep = ({
   onDurationChange,
 }: DurationSelectionStepProps) => {
   const handleTypeChange = (
-    event: SelectChangeEvent<AssignmentDuration["type"]>
+    event: SelectChangeEvent<AssignmentDuration["type"]>,
   ) => {
     switch (event.target.value) {
       case "forever":

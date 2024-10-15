@@ -9,8 +9,8 @@ export const logger = winston.createLogger({
         winston.format.timestamp(),
         winston.format.printf(
           ({ level, message, timestamp }) =>
-            `${timestamp as string} ${level}: ${message as string}`
-        )
+            `${timestamp as string} ${level}: ${message as string}`,
+        ),
       ),
     }),
   ],

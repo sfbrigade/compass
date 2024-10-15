@@ -76,7 +76,7 @@ test("All API endpoints are auth guarded", async (t) => {
         t.fail(
           `${fullProcedureName} threw an unexpected error: ${
             (error as Error).message
-          }`
+          }`,
         );
       }
     }

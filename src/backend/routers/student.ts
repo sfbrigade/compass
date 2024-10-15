@@ -24,8 +24,8 @@ export const student = router({
 
       const result = await req.ctx.db
         .selectFrom("task")
-        .innerJoin("subgoal", "subgoal.subgoal_id", "task.subgoal_id")
-        .innerJoin("goal", "goal.goal_id", "subgoal.goal_id")
+        .innerJoin("benchmark", "benchmark.benchmark_id", "task.benchmark_id")
+        .innerJoin("goal", "goal.goal_id", "benchmark.goal_id")
         .innerJoin("iep", "iep.iep_id", "goal.iep_id")
         .innerJoin("student", "student.student_id", "iep.student_id")
         .where("task.task_id", "=", task_id)
@@ -44,7 +44,7 @@ export const student = router({
         student_id: z.string(),
         start_date: z.date(),
         end_date: z.date(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
@@ -73,7 +73,7 @@ export const student = router({
         student_id: z.string(),
         start_date: z.date(),
         end_date: z.date(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id, start_date, end_date } = req.input;
@@ -108,7 +108,7 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string(),
-      })
+      }),
     )
     .query(async (req) => {
       const { student_id } = req.input;
@@ -134,7 +134,7 @@ export const student = router({
     .input(
       z.object({
         student_id: z.string().uuid(),
-      })
+      }),
     )
     .query(async (req) => {
       const { student_id } = req.input;

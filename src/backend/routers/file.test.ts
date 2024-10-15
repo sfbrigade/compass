@@ -22,7 +22,7 @@ test("can upload files", async (t) => {
     await db
       .selectFrom("file")
       .where("ext_s3_path", "=", key)
-      .executeTakeFirst()
+      .executeTakeFirst(),
   );
 });
 

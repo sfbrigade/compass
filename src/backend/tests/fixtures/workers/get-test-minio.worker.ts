@@ -5,7 +5,7 @@ import { CreateBucketCommand } from "@aws-sdk/client-s3";
 
 const startMinio = async () => {
   const container = await new GenericContainer(
-    "minio/minio:RELEASE.2023-05-18T00-05-36Z"
+    "minio/minio:RELEASE.2023-05-18T00-05-36Z",
   )
     .withExposedPorts(9000)
     .withCommand(["server", "/data"])

@@ -4,7 +4,7 @@ import { KyselySchema } from "../types";
 
 export const substituteTransactionOnContext = (
   trx: Transaction<KyselySchema>,
-  context: tRPCContext
+  context: tRPCContext,
 ): tRPCContext => ({
   ...context,
   db: trx,

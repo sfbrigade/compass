@@ -42,10 +42,10 @@ const CreateBenchmarkPage = () => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) }
+    { enabled: Boolean(router.query.goal_id) },
   );
 
-  const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
+  const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
 
   const VIEW_STATES = {
     BENCHMARK_PG_1: 0,
@@ -104,7 +104,7 @@ const CreateBenchmarkPage = () => {
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     // TO DO: frequency is not included in the mutation (but is included in the design) and should be added to the schema
     try {
-      await addSubgoalMutation.mutateAsync({
+      await addBenchmarkMutation.mutateAsync({
         goal_id: router.query.goal_id as string,
         status: "In Progress",
         description: benchmarkFormState["description"] as string,
@@ -121,7 +121,7 @@ const CreateBenchmarkPage = () => {
       await router.push(
         `/students/${router.query.student_id as string}/goals/${
           router.query.goal_id as string
-        }`
+        }`,
       );
     } catch (error) {
       console.error("Error creating benchmark", error);
@@ -233,7 +233,7 @@ const CreateBenchmarkPage = () => {
         </Stepper>
       </Box>
 
-      <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
+      <fieldset disabled={addBenchmarkMutation.isLoading} style={{ border: 0 }}>
         <Stack direction="row" spacing={4}>
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>
