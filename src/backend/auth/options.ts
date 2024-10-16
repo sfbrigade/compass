@@ -10,6 +10,11 @@ export const getNextAuthOptions = (
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+      authorization: {
+        params: {
+          prompt: "login", // Prompt for Google sign-in ("Choose an account") every time on log in.
+        },
+      },
     }),
   ],
   adapter: createPersistedAuthAdapter(db),
