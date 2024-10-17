@@ -12,7 +12,13 @@ test("getPostgresInfo", async (t) => {
 test("getPostgresInfo (throws if not admin)", async (t) => {
   const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
 
-  await t.throwsAsync(async () => {
+  const error = await t.throwsAsync(async () => {
     await trpc.admin.getPostgresInfo.query();
   });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
