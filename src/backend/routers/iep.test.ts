@@ -169,3 +169,35 @@ test("edit goal", async (t) => {
   t.is(modifiedGoal!.goal_id, goal!.goal_id);
   t.is(modifiedGoal?.description, "modified goal 1");
 });
+test("editGoal - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.editGoal.mutate({
+      goal_id: "goal_id",
+      description: "description",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
+test("getGoal - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.getGoal.query({
+      goal_id: "goal_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});

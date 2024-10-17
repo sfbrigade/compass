@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasAuthenticated, router } from "../trpc";
+import { hasCaseManager, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
-  addGoal: hasAuthenticated
+  addGoal: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -31,7 +31,7 @@ export const iep = router({
       return result;
     }),
 
-  editGoal: hasAuthenticated
+  editGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -70,7 +70,7 @@ export const iep = router({
       return result;
     }),
 
-  addSubgoal: hasAuthenticated
+  addSubgoal: hasCaseManager
     .input(
       z.object({
         // current_level not included, should be calculated as trial data is collected
@@ -123,7 +123,7 @@ export const iep = router({
       return result;
     }),
 
-  addTask: hasAuthenticated
+  addTask: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -148,7 +148,7 @@ export const iep = router({
 
       return result;
     }),
-  assignTaskToParas: hasAuthenticated
+  assignTaskToParas: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string().uuid(),
@@ -175,7 +175,7 @@ export const iep = router({
       return result;
     }),
   //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: hasAuthenticated
+  tempAddTaskToSelf: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -217,7 +217,7 @@ export const iep = router({
       return result;
     }),
 
-  addTrialData: hasAuthenticated
+  addTrialData: hasCaseManager
     .input(
       z.object({
         task_id: z.string(),
@@ -246,7 +246,7 @@ export const iep = router({
       return result;
     }),
 
-  updateTrialData: hasAuthenticated
+  updateTrialData: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -271,7 +271,7 @@ export const iep = router({
         .execute();
     }),
 
-  getGoals: hasAuthenticated
+  getGoals: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -289,7 +289,7 @@ export const iep = router({
       return result;
     }),
 
-  getGoal: hasAuthenticated
+  getGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -307,7 +307,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoals: hasAuthenticated
+  getSubgoals: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -325,7 +325,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoal: hasAuthenticated
+  getSubgoal: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -342,7 +342,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalsByAssignee: hasAuthenticated
+  getSubgoalsByAssignee: hasCaseManager
     .input(
       z.object({
         assignee_id: z.string(),
@@ -361,7 +361,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalAndTrialData: hasAuthenticated
+  getSubgoalAndTrialData: hasCaseManager
     .input(
       z.object({
         task_id: z.string(),
@@ -424,7 +424,7 @@ export const iep = router({
       return result;
     }),
 
-  markAsSeen: hasAuthenticated
+  markAsSeen: hasCaseManager
     .input(
       z.object({
         task_id: z.string(),
@@ -442,7 +442,7 @@ export const iep = router({
         .execute();
     }),
 
-  attachFileToTrialData: hasAuthenticated
+  attachFileToTrialData: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -461,7 +461,7 @@ export const iep = router({
         .execute();
     }),
 
-  removeFileFromTrialDataAndDelete: hasAuthenticated
+  removeFileFromTrialDataAndDelete: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),
