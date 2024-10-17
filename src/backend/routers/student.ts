@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasAuthenticated, hasCaseManager, router } from "../trpc";
+import { hasCaseManager, router } from "../trpc";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({

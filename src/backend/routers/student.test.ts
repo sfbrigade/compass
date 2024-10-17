@@ -3,7 +3,7 @@ import { getTestServer } from "@/backend/tests";
 import { parseISO } from "date-fns";
 import { UserType } from "@/types/auth";
 
-test("getStudentById", async (t) => {
+test("getStudentById - can query by student id", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
   });
@@ -22,6 +22,34 @@ test("getStudentById", async (t) => {
 
   const student = await trpc.student.getStudentById.query({ student_id });
   t.is(student?.student_id, student_id);
+});
+
+test("getStudentById - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getStudentById.query({ student_id: "student_id" });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
+test("getStudentByTaskId - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getStudentByTaskId.query({ task_id: "task_id" });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 // TODO: This test looks to be testing the `UNIQUE` constraing on the schema.
@@ -133,6 +161,24 @@ test("editIep", async (t) => {
   t.notDeepEqual(got[0].end_date, iep.end_date);
   t.deepEqual(got[0].start_date, updated_start_date);
   t.deepEqual(got[0].end_date, updated_end_date);
+});
+
+test("editIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.editIep.mutate({
+      student_id: "student_id",
+      start_date: new Date(parseISO("2023-03-02")),
+      end_date: new Date(parseISO("2023-03-02")),
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("getActiveStudentIep - return only one iep object", async (t) => {
