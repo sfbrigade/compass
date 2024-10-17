@@ -22,6 +22,22 @@ test("getParaById", async (t) => {
   t.is(para?.user_id, user_id);
 });
 
+test("getParaById - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getParaById.query({
+      user_id: "user_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("getParaByEmail", async (t) => {
   const { trpc, db } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
@@ -40,6 +56,22 @@ test("getParaByEmail", async (t) => {
 
   const para = await trpc.para.getParaByEmail.query({ email });
   t.is(para?.email, email);
+});
+
+test("getParaByEmail - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getParaByEmail.query({
+      email: "foo@bar.com",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("createPara", async (t) => {
@@ -65,6 +97,24 @@ test("createPara", async (t) => {
     nodemailerMock.mock
       .getSentMail()
       .some((mail) => mail.subject?.includes("confirmation"))
+  );
+});
+
+test("createPara - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.createPara.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -199,4 +249,26 @@ test("getMyTasks", async (t) => {
   t.deepEqual(task[0].due_date, DUE_DATE);
   t.is(task[0].instructions, INSTRUCTIONS);
   t.is(task[0].trial_count, TRIAL_COUNT);
+});
+
+test("getMyTasks - paras do have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  await t.notThrowsAsync(async () => {
+    await trpc.para.getMyTasks.query();
+  });
+});
+
+test("getMyTasks - regular users don't have access", async (t) => {
+  const { trpc } = await getTestServer(t, {});
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getMyTasks.query();
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
