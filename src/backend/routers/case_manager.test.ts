@@ -7,7 +7,7 @@ import {
 } from "@/backend/lib/db_helpers/case_manager";
 import { UserType } from "@/types/auth";
 
-test("getMyStudents", async (t) => {
+test("getMyStudents - can fetch students", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
   });
@@ -27,6 +27,20 @@ test("getMyStudents", async (t) => {
   const myStudents = await trpc.case_manager.getMyStudents.query();
   t.is(myStudents.length, 1);
   t.is(myStudents[0].student_id, student_id);
+});
+
+test("getMyStudents - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.getMyStudents.query();
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
@@ -80,6 +94,20 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
     await trpc.case_manager.getMyStudentsAndIepInfo.query();
   t.is(myStudentsAfter[0].iep_id, iep.iep_id);
   t.deepEqual(myStudentsAfter[0].end_date, iep.end_date);
+});
+
+test("getMyStudentsAndIepInfo - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.getMyStudentsAndIepInfo.query();
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("addStudent - student doesn't exist in db", async (t) => {
@@ -278,6 +306,25 @@ test("addStudent - invalid email", async (t) => {
   }
 });
 
+test("addStudent - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.addStudent.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "invalid-email",
+      grade: 6,
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("removeStudent", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
@@ -306,6 +353,22 @@ test("removeStudent", async (t) => {
   t.is(after.length, 0);
 });
 
+test("removeStudent - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.removeStudent.mutate({
+      student_id: "student_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("getMyParas", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
@@ -324,6 +387,20 @@ test("getMyParas", async (t) => {
 
   myParas = await trpc.case_manager.getMyParas.query();
   t.is(myParas.length, 1);
+});
+
+test("getMyParas - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.getMyParas.query();
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("addStaff", async (t) => {
@@ -351,6 +428,24 @@ test("addStaff", async (t) => {
   t.is(createdPara.email, newParaData.email);
 });
 
+test("addStaff - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.addStaff.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo@bar.com",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("addPara", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
@@ -365,6 +460,22 @@ test("addPara", async (t) => {
 
   myParas = await trpc.case_manager.getMyParas.query();
   t.is(myParas.length, 1);
+});
+
+test("addPara - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.addPara.mutate({
+      para_id: "para_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("removePara", async (t) => {
@@ -389,4 +500,20 @@ test("removePara", async (t) => {
 
   myParas = await trpc.case_manager.getMyParas.query();
   t.is(myParas.length, 0);
+});
+
+test("removePara - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.case_manager.removePara.mutate({
+      para_id: "para_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
