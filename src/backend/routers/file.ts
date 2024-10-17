@@ -5,12 +5,12 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { hasAuthenticated, router } from "../trpc";
+import { hasPara, router } from "../trpc";
 import { randomUUID } from "crypto";
 import { deleteFile } from "../lib/files";
 
 export const file = router({
-  getMyFiles: hasAuthenticated.query(async (req) => {
+  getMyFiles: hasPara.query(async (req) => {
     return req.ctx.db
       .selectFrom("file")
       .selectAll()
@@ -18,7 +18,7 @@ export const file = router({
       .execute();
   }),
 
-  getPresignedUrlForFileDownload: hasAuthenticated
+  getPresignedUrlForFileDownload: hasPara
     .input(
       z.object({
         file_id: z.string().uuid(),
@@ -50,7 +50,7 @@ export const file = router({
       };
     }),
 
-  getPresignedUrlForFileUpload: hasAuthenticated
+  getPresignedUrlForFileUpload: hasPara
     .input(
       z.object({
         type: z.string(),
@@ -71,7 +71,7 @@ export const file = router({
       return { url, key };
     }),
 
-  finishFileUpload: hasAuthenticated
+  finishFileUpload: hasPara
     .input(
       z.object({
         filename: z.string(),
@@ -99,7 +99,7 @@ export const file = router({
       return file;
     }),
 
-  deleteFile: hasAuthenticated
+  deleteFile: hasPara
     .input(
       z.object({
         file_id: z.string().uuid(),
