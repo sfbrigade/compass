@@ -111,6 +111,40 @@ test("addIep and getIep", async (t) => {
   t.deepEqual(got[0].end_date, added.end_date);
 });
 
+test("addIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.addIep.mutate({
+      student_id: "student_id",
+      start_date: new Date("2023-01-01"),
+      end_date: new Date("2023-01-01"),
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
+test("getIeps - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getIeps.query({
+      student_id: "student_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("editIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
@@ -203,6 +237,22 @@ test("getActiveStudentIep - return only one iep object", async (t) => {
   t.is(studentWithIep?.student_id, seed.student.student_id);
   t.deepEqual(studentWithIep?.start_date, addedIep.start_date);
   t.deepEqual(studentWithIep?.end_date, addedIep.end_date);
+});
+
+test("getActiveStudentIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getActiveStudentIep.query({
+      student_id: "student_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });
 
 test("checkAddedIEPEndDates", async (t) => {
