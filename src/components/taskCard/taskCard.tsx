@@ -56,10 +56,10 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
         {!task.seen
           ? "NEW"
           : completionRate >= 100
-          ? "DONE"
-          : `DUE: ${
-              task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
-            }`}
+            ? "DONE"
+            : `DUE: ${
+                task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
+              }`}
       </div>
       <div className={$taskCard.profile}>
         {task.first_name} {task.last_name}
