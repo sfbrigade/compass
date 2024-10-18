@@ -155,7 +155,7 @@ test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
 
   t.is(
     error?.message,
-    'duplicate key value violates unique constraint "uc_task"'
+    "Task already exists: This subgoal has already been assigned to the same para"
   );
 });
 

@@ -2165,7 +2165,7 @@ declare module 'zapatos/schema' {
       */
       seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
     }
-    export type UniqueIndex = 'task_pkey' | 'uc_task';
+    export type UniqueIndex = 'subgoal_assignee_unique' | 'task_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
