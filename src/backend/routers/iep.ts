@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasCaseManager, router } from "../trpc";
+import { hasCaseManager, hasPara, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
@@ -217,7 +217,7 @@ export const iep = router({
       return result;
     }),
 
-  addTrialData: hasCaseManager
+  addTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -246,7 +246,7 @@ export const iep = router({
       return result;
     }),
 
-  updateTrialData: hasCaseManager
+  updateTrialData: hasPara
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -361,7 +361,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalAndTrialData: hasCaseManager
+  getSubgoalAndTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -424,7 +424,7 @@ export const iep = router({
       return result;
     }),
 
-  markAsSeen: hasCaseManager
+  markAsSeen: hasPara
     .input(
       z.object({
         task_id: z.string(),

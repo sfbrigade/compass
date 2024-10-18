@@ -38,20 +38,6 @@ test("getStudentById - paras do not have access", async (t) => {
   );
 });
 
-test("getStudentByTaskId - paras do not have access", async (t) => {
-  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
-
-  const error = await t.throwsAsync(async () => {
-    await trpc.student.getStudentByTaskId.query({ task_id: "task_id" });
-  });
-
-  t.is(
-    error?.message,
-    "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message"
-  );
-});
-
 // TODO: This test looks to be testing the `UNIQUE` constraing on the schema.
 // Improve this test
 test("doNotAddDuplicateEmails", async (t) => {

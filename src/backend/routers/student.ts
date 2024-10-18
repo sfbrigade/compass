@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { hasCaseManager, router } from "../trpc";
+import { hasCaseManager, hasPara, router } from "../trpc";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({
@@ -17,7 +17,7 @@ export const student = router({
       return result;
     }),
 
-  getStudentByTaskId: hasCaseManager
+  getStudentByTaskId: hasPara
     .input(z.object({ task_id: z.string().uuid() }))
     .query(async (req) => {
       const { task_id } = req.input;
