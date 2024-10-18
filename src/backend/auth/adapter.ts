@@ -1,4 +1,4 @@
-import { Adapter, AdapterSession } from "next-auth/adapters";
+import { Adapter, AdapterSession, AdapterAccount } from "next-auth/adapters";
 import {
   KyselyDatabaseInstance,
   KyselySchema,
@@ -6,6 +6,12 @@ import {
 } from "../lib";
 import { InsertObject, Selectable } from "kysely";
 import { CustomAdapterUser, UserType } from "@/types/auth";
+
+// Extend the Adapter interface to include the implemented methods
+export interface ExtendedAdapter extends Adapter {
+  getUserByEmail: (email: string) => Promise<CustomAdapterUser | null>;
+  linkAccount: (account: AdapterAccount) => Promise<void>;
+}
 
 const mapStoredUserToAdapterUser = (
   user: Selectable<ZapatosTableNameToKyselySchema<"user">>
@@ -35,17 +41,18 @@ const mapStoredSessionToAdapterSession = (
  */
 export const createPersistedAuthAdapter = (
   db: KyselyDatabaseInstance
-): Adapter => ({
+): ExtendedAdapter => ({
   async createUser(user) {
     const numOfUsers = await db
       .selectFrom("user")
       .select((qb) => qb.fn.count("user_id").as("count"))
       .executeTakeFirstOrThrow();
 
-    // First created user is an admin
+    // First created user is an admin, else make them a user. This is to ensure there is always an admin user, but also to ensure we don't grant
+    // para or case_manager to folks not pre-added to the system.
     // todo: this should be pulled from an invite or something else instead of defaulting to a para - currently devs signing in are being assigned as paras
     const role =
-      Number(numOfUsers.count) === 0 ? UserType.Admin : UserType.Para;
+      Number(numOfUsers.count) === 0 ? UserType.Admin : UserType.User;
 
     const [first_name, last_name] = user.name?.split(" ") ?? [
       user.email?.split("@")[0],
