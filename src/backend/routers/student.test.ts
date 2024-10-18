@@ -1,10 +1,11 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
 import { parseISO } from "date-fns";
+import { UserType } from "@/types/auth";
 
-test("getStudentById", async (t) => {
+test("getStudentById - can query by student id", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { student_id } = await db
@@ -23,11 +24,25 @@ test("getStudentById", async (t) => {
   t.is(student?.student_id, student_id);
 });
 
+test("getStudentById - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getStudentById.query({ student_id: "student_id" });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 // TODO: This test looks to be testing the `UNIQUE` constraing on the schema.
 // Improve this test
 test("doNotAddDuplicateEmails", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await db
@@ -60,7 +75,7 @@ test("doNotAddDuplicateEmails", async (t) => {
 
 test("addIep and getIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const start_date = new Date("2023-01-01");
@@ -82,9 +97,43 @@ test("addIep and getIep", async (t) => {
   t.deepEqual(got[0].end_date, added.end_date);
 });
 
+test("addIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.addIep.mutate({
+      student_id: "student_id",
+      start_date: new Date("2023-01-01"),
+      end_date: new Date("2023-01-01"),
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
+test("getIeps - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getIeps.query({
+      student_id: "student_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("editIep", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   // * must add student this way to populate the assigned_case_manager_id
@@ -134,9 +183,27 @@ test("editIep", async (t) => {
   t.deepEqual(got[0].end_date, updated_end_date);
 });
 
+test("editIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.editIep.mutate({
+      student_id: "student_id",
+      start_date: new Date(parseISO("2023-03-02")),
+      end_date: new Date(parseISO("2023-03-02")),
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("getActiveStudentIep - return only one iep object", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const start_date = new Date("2023-01-01");
@@ -158,9 +225,25 @@ test("getActiveStudentIep - return only one iep object", async (t) => {
   t.deepEqual(studentWithIep?.end_date, addedIep.end_date);
 });
 
+test("getActiveStudentIep - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.student.getActiveStudentIep.query({
+      student_id: "student_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
 test("checkAddedIEPEndDates", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
   const start_date = new Date("2023-01-01");
   const end_date = new Date("2022-01-01");
@@ -182,7 +265,7 @@ test("checkAddedIEPEndDates", async (t) => {
 
 test("checkEditedIEPEndDates", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.case_manager.addStudent.mutate({

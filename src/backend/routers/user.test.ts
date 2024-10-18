@@ -1,9 +1,10 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/auth";
 
 test("getMe", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "para",
+    authenticateAs: UserType.Para,
   });
 
   const me = await trpc.user.getMe.query();
@@ -20,7 +21,7 @@ test("getMe (throws if missing auth)", async (t) => {
 
 test("isCaseManager (user is case_manager)", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   // Assign a para to the case manager
@@ -38,7 +39,7 @@ test("isCaseManager (user is case_manager)", async (t) => {
 
 test("isCaseManager (user is para)", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "para",
+    authenticateAs: UserType.Para,
   });
 
   // A user is not a case manager by default i.e. when paras_assigned_to_case_manager is empty
