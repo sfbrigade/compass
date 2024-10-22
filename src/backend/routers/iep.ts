@@ -176,7 +176,7 @@ export const iep = router({
       const existingTasks = await req.ctx.db
         .selectFrom("task")
         .where("subgoal_id", "=", subgoal_id)
-        .where("assignee_id", "=", para_ids)
+        .where("assignee_id", "in", para_ids)
         .selectAll()
         .execute();
 
