@@ -211,7 +211,7 @@ test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) =>
 
   t.is(
     error?.message,
-    "Task already exists: This subgoal has already been assigned to the same para"
+    "Task already exists: This subgoal has already been assigned to one or more of these paras"
   );
 });
 
