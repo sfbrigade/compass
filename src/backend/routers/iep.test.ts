@@ -84,7 +84,7 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
       .where("benchmark_id", "=", benchmark2Id)
       .where("assignee_id", "=", para_id)
       .selectAll()
-      .executeTakeFirstOrThrow(),
+      .executeTakeFirstOrThrow()
   );
 });
 

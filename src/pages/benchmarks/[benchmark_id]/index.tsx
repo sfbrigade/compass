@@ -39,7 +39,7 @@ const BenchmarkPage = () => {
     },
     {
       enabled: Boolean(benchmark_id),
-    },
+    }
   );
   const seenMutation = trpc.iep.markAsSeen.useMutation({
     onSuccess: async () =>
@@ -151,7 +151,7 @@ const BenchmarkPage = () => {
       }
     },
     1000,
-    [notesInputValue, successInputValue, unsuccessInputValue],
+    [notesInputValue, successInputValue, unsuccessInputValue]
   );
 
   // BUG?: Sometimes if the user reloads/navigates away and confirms, the update has time to go through and data is saved. Is this something we should fix?
