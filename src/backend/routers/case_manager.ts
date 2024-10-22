@@ -171,7 +171,7 @@ export const case_manager = router({
       );
 
       return await assignParaToCaseManager(
-        para?.user_id || "",
+        para.user_id,
         req.ctx.auth.userId,
         req.ctx.db
       );

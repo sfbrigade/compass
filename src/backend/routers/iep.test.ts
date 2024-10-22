@@ -164,7 +164,13 @@ test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) =>
     authenticateAs: "case_manager",
   });
 
-  const para_id = seed.para.user_id;
+  const para_1 = seed.para;
+
+  const para_2 = await trpc.para.createPara.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
 
   const iep = await trpc.student.addIep.mutate({
     student_id: seed.student.student_id,
@@ -195,7 +201,7 @@ test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) =>
 
   await trpc.iep.assignTaskToParas.mutate({
     subgoal_id: subgoal1Id,
-    para_ids: [para_id],
+    para_ids: [para_1.user_id],
     due_date: new Date("2023-12-31"),
     trial_count: 5,
   });
@@ -203,7 +209,7 @@ test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) =>
   const error = await t.throwsAsync(async () => {
     await trpc.iep.assignTaskToParas.mutate({
       subgoal_id: subgoal1Id,
-      para_ids: [para_id],
+      para_ids: [para_1.user_id, para_2.user_id],
       due_date: new Date("2024-03-31"),
       trial_count: 1,
     });

@@ -21,7 +21,7 @@ export async function createPara(
   from_email: string,
   to_email: string,
   env: Env
-): Promise<user.Selectable | undefined> {
+): Promise<user.Selectable> {
   const { first_name, last_name, email } = para;
 
   let paraData = await db
@@ -40,7 +40,7 @@ export async function createPara(
         role: "staff",
       })
       .returningAll()
-      .executeTakeFirst();
+      .executeTakeFirstOrThrow();
 
     // promise, will not interfere with returning paraData
     void sendInviteEmail(
