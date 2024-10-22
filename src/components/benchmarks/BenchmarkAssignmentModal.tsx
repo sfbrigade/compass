@@ -111,7 +111,9 @@ export const BenchmarkAssignmentModal = (
       } catch (err) {
         // TODO: issue #450
         console.log(err);
-        setErrorMessage(err.message as string);
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        }
       }
     }
   };
