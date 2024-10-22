@@ -159,6 +159,62 @@ test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
   );
 });
 
+test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const para_id = seed.para.user_id;
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const goal1 = await trpc.iep.addGoal.mutate({
+    iep_id: iep.iep_id,
+    description: "goal 1",
+    category: "writing",
+  });
+
+  const subgoal1 = await trpc.iep.addSubgoal.mutate({
+    goal_id: goal1!.goal_id,
+    status: "Complete",
+    description: "subgoal 1",
+    setup: "",
+    instructions: "",
+    materials: "materials",
+    target_level: 100,
+    baseline_level: 20,
+    metric_name: "words",
+    attempts_per_trial: 10,
+    number_of_trials: 30,
+  });
+  const subgoal1Id = subgoal1!.subgoal_id;
+
+  await trpc.iep.assignTaskToParas.mutate({
+    subgoal_id: subgoal1Id,
+    para_ids: [para_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
+  });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.assignTaskToParas.mutate({
+      subgoal_id: subgoal1Id,
+      para_ids: [para_id],
+      due_date: new Date("2024-03-31"),
+      trial_count: 1,
+    });
+  });
+
+  t.is(
+    error?.message,
+    "Task already exists: This subgoal has already been assigned to the same para"
+  );
+});
+
 test("add benchmark - check full schema", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",

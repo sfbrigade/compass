@@ -173,6 +173,19 @@ export const iep = router({
     .mutation(async (req) => {
       const { subgoal_id, para_ids, due_date, trial_count } = req.input;
 
+      const existingTasks = await req.ctx.db
+        .selectFrom("task")
+        .where("subgoal_id", "=", subgoal_id)
+        .where("assignee_id", "=", para_ids)
+        .selectAll()
+        .execute();
+
+      if (existingTasks.length > 0) {
+        throw new Error(
+          "Task already exists: This subgoal has already been assigned to the same para"
+        );
+      }
+
       const result = await req.ctx.db
         .insertInto("task")
         .values(
