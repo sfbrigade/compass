@@ -17,7 +17,7 @@ interface paraInputProps {
 export async function createPara(
   para: paraInputProps,
   db: KyselyDatabaseInstance,
-  case_manager_id: string,
+  case_manager_name: string,
   from_email: string,
   to_email: string,
   env: Env
@@ -47,7 +47,7 @@ export async function createPara(
       from_email,
       to_email,
       first_name,
-      case_manager_id,
+      case_manager_name,
       env
     );
   }
@@ -62,15 +62,24 @@ export async function sendInviteEmail(
   fromEmail: string,
   toEmail: string,
   first_name: string,
-  caseManagerName: string,
+  case_manager_name: string,
   env: Env
 ): Promise<void> {
   await getTransporter(env).sendMail({
     from: fromEmail,
     to: toEmail,
-    subject: "Para-professional email confirmation",
-    text: "Email confirmation",
-    html: `<p>Dear ${first_name},</p><p>Welcome to the data collection team for SFUSD.EDU!</p><p>I am writing to invite you to join our data collection efforts for our students. We are using an online platform called <strong>Project Compass</strong> to track and monitor student progress, and your participation is crucial to the success of this initiative.</p><p>To access Project Compass and begin collecting data, please follow these steps:</p><ul><li>Go to the website: (<a href="https://staging.compassiep.com/">https://staging.compassiep.com/</a>)</li> <li>Login using your provided username and password</li><li>Once logged in, navigate to the dashboard where you would see the student goals page</li></ul><p>By clicking on the <strong>data collection</strong> button, you will be directed to the instructions outlining the necessary steps for data collection. Simply follow the provided instructions and enter the required data points accurately.</p><p>If you encounter any difficulties or have any questions, please feel free to reach out to me. I am here to assist you throughout the process and ensure a smooth data collection experience. Your dedication and contribution will make a meaningful impact on our students' educational journeys.</p><p>Thank you,</p><p>${caseManagerName}<br>Case Manager</p>`,
+    subject: `Welcome to ${case_manager_name}'s classroom`,
+    text: `${first_name}, get set up for data collection with Compass`,
+    html: `Hi ${first_name}! <br/>
+${case_manager_name} has added you as a staff member for their classroom in Compass. <br/>
+Compass is an all in one tool for collecting data for students’ IEP goals and empowering your classroom team to better assist students. <br/> <br/>
+How does Compass work? <br/>
+Compass will help you organize data collection for the students you work with and securely store the data you collect. <br/>
+${case_manager_name} will add you to data collection tasks for specific student goals. Upon logging in, you’ll see which students you’re expected to collect data for. 
+Instructions from ${case_manager_name} will be available with each assignment. When you’re ready to begin, you’ll be able to collect and submit data and notes directly in the app. <br/><br/>
+Getting started <br/>
+To get set up with Compass, use the link below and log in with the email address you received this message at. <br/>
+Thank you for the key role you play in improving student outcomes!`,
   });
   return;
 }
