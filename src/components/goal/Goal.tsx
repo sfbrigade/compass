@@ -13,10 +13,10 @@ interface GoalProps {
 const Goals = ({ goal }: GoalProps) => {
   const router = useRouter();
 
-  // per current design, subgoals not currently showing in this component.
-  // trpc method, state for subgoals are here should that change, can be moved
+  // per current design, benchmarks not currently showing in this component.
+  // trpc method, state for benchmarks are here should that change, can be moved
   // to different page/component as needed
-  const { data: subgoals, isLoading } = trpc.iep.getSubgoals.useQuery({
+  const { data: benchmarks, isLoading } = trpc.iep.getBenchmarks.useQuery({
     goal_id: goal.goal_id,
   });
 
@@ -36,10 +36,10 @@ const Goals = ({ goal }: GoalProps) => {
             gap: "16px",
           }}
         >
-          <div className={$goal.subgoalCountBadge}>
-            <div className={$goal.subgoalCount}>
-              {subgoals?.length} active benchmark
-              {subgoals?.length !== 1 && "s"}
+          <div className={$goal.benchmarkCountBadge}>
+            <div className={$goal.benchmarkCount}>
+              {benchmarks?.length} active benchmark
+              {benchmarks?.length !== 1 && "s"}
             </div>
           </div>
           <div

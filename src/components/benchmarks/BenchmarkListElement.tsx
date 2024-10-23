@@ -1,4 +1,4 @@
-import { type Subgoal as Benchmark } from "@/types/global";
+import { Benchmark } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -176,7 +176,7 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
       <BenchmarkAssignmentModal
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
-        benchmark_id={benchmark.subgoal_id}
+        benchmark_id={benchmark.benchmark_id}
       />
     </Box>
   );

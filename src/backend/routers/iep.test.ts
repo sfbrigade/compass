@@ -2,7 +2,7 @@ import test from "ava";
 import { getTestServer } from "@/backend/tests";
 
 // TODO: Write more tests
-test("basic flow - add/get goals, subgoals, tasks", async (t) => {
+test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: "case_manager",
   });
@@ -21,10 +21,10 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
     category: "writing",
   });
 
-  await trpc.iep.addSubgoal.mutate({
+  await trpc.iep.addBenchmark.mutate({
     goal_id: goal1!.goal_id,
     status: "In Progress",
-    description: "subgoal 1",
+    description: "benchmark 1",
     setup: "Setup here",
     instructions: "instructions here",
     materials: "materials",
@@ -35,10 +35,10 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
     number_of_trials: 15,
   });
 
-  const subgoal2 = await trpc.iep.addSubgoal.mutate({
+  const benchmark2 = await trpc.iep.addBenchmark.mutate({
     goal_id: goal1!.goal_id,
     status: "Complete",
-    description: "subgoal 2",
+    description: "benchmark 2",
     setup: "",
     instructions: "",
     materials: "materials",
@@ -48,40 +48,40 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
     attempts_per_trial: 10,
     number_of_trials: 30,
   });
-  const subgoal2Id = subgoal2!.subgoal_id;
+  const benchmark2Id = benchmark2!.benchmark_id;
 
   await trpc.iep.addTask.mutate({
-    subgoal_id: subgoal2Id,
+    benchmark_id: benchmark2Id,
     assignee_id: para_id,
     due_date: new Date("2023-12-31"),
     trial_count: 5,
   });
 
   const assignTask = await trpc.iep.assignTaskToParas.mutate({
-    subgoal_id: subgoal2Id,
+    benchmark_id: benchmark2Id,
     para_ids: [para_id],
   });
-  t.is(assignTask?.subgoal_id, subgoal2Id);
+  t.is(assignTask?.benchmark_id, benchmark2Id);
   t.is(assignTask?.assignee_id, para_id);
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });
   t.is(gotGoals.length, 1);
 
-  const gotSubgoals = await trpc.iep.getSubgoals.query({
+  const gotBenchmarks = await trpc.iep.getBenchmarks.query({
     goal_id: goal1!.goal_id,
   });
-  t.is(gotSubgoals.length, 2);
+  t.is(gotBenchmarks.length, 2);
 
-  const gotSubgoal = await trpc.iep.getSubgoal.query({
-    subgoal_id: subgoal2Id,
+  const gotBenchmark = await trpc.iep.getBenchmark.query({
+    benchmark_id: benchmark2Id,
   });
-  t.is(gotSubgoal[0].description, "subgoal 2");
+  t.is(gotBenchmark[0].description, "benchmark 2");
 
   // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
     await db
       .selectFrom("task")
-      .where("subgoal_id", "=", subgoal2Id)
+      .where("benchmark_id", "=", benchmark2Id)
       .where("assignee_id", "=", para_id)
       .selectAll()
       .executeTakeFirstOrThrow()
@@ -105,10 +105,10 @@ test("add benchmark - check full schema", async (t) => {
     category: "writing",
   });
 
-  const subgoal_data = {
+  const benchmark_data = {
     goal_id: goal1!.goal_id,
     status: "In Progress",
-    description: "subgoal 1",
+    description: "benchmark 1",
     setup: "Setup here",
     instructions: "instructions here",
     materials: "materials",
@@ -119,21 +119,21 @@ test("add benchmark - check full schema", async (t) => {
     number_of_trials: 15,
   };
 
-  const created_subgoal = await trpc.iep.addSubgoal.mutate(subgoal_data);
+  const created_benchmark = await trpc.iep.addBenchmark.mutate(benchmark_data);
 
   // create explicitly string-indexable versions of these objects
-  const indexable_subgoal_data = subgoal_data as {
+  const indexable_benchmark_data = benchmark_data as {
     [index: string]: string | number | Date | null;
   };
-  const indexable_subgoal = created_subgoal as {
+  const indexable_benchmark = created_benchmark as {
     [index: string]: string | number | Date | null;
   };
 
-  for (const [key, val] of Object.entries(indexable_subgoal_data)) {
-    t.is(val, indexable_subgoal[key]);
+  for (const [key, val] of Object.entries(indexable_benchmark_data)) {
+    t.is(val, indexable_benchmark[key]);
   }
-  t.is(created_subgoal?.current_level, null);
-  t.truthy(created_subgoal?.created_at);
+  t.is(created_benchmark?.current_level, null);
+  t.truthy(created_benchmark?.created_at);
 });
 
 test("edit goal", async (t) => {
