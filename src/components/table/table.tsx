@@ -264,7 +264,7 @@ interface EnhancedTableProps<Person, Column> {
  */
 export default function EnhancedTable<
   Person extends StudentWithIep | Para,
-  Column extends HeadCell
+  Column extends HeadCell,
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
 

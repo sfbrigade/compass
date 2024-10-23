@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { getTransporter } from "../lib/nodemailer";
 import { authenticatedProcedure, router } from "../trpc";
 import { createPara } from "../lib/db_helpers/case_manager";
 
@@ -44,7 +43,7 @@ export const para = router({
       })
     )
     .mutation(async (req) => {
-      const { first_name, last_name, email } = req.input;
+      const { email } = req.input;
 
       const para = await createPara(
         req.input,
@@ -54,7 +53,6 @@ export const para = router({
         email,
         req.ctx.env
       );
-
       return para;
 
       // TODO: Logic for sending email to staff. Should email be sent everytime or only first time? Should staff be notified that they are added to a certain case manager's list?

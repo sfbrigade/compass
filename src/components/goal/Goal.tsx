@@ -71,7 +71,7 @@ const Goals = ({ goal }: GoalProps) => {
               href={`${router.asPath}/goals/${goal.goal_id}/create`}
               onClick={(e) => e.stopPropagation()}
             >
-              Add benchmark
+              Create benchmark
             </Link>
           </div>
         </div>
