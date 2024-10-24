@@ -21,6 +21,7 @@ import * as React from "react";
 import { MouseEventHandler } from "react";
 import $navbar from "./Navbar.module.css";
 import BreadcrumbsNav from "../design_system/breadcrumbs/Breadcrumbs";
+import { ExtendedSession, UserType } from "@/types/auth";
 
 interface NavItemProps {
   href?: string;
@@ -34,7 +35,10 @@ export default function NavBar() {
   const desktop = useMediaQuery("(min-width: 992px)");
   const router = useRouter();
 
-  const { status } = useSession();
+  const { status, data: session } = useSession() as {
+    data: ExtendedSession | null;
+    status: "loading" | "authenticated" | "unauthenticated";
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -87,22 +91,87 @@ export default function NavBar() {
     );
   };
 
-  // Navigation Links
-  const drawer = (
-    <div className={$navbar.navbarDropdown}>
-      <List>
-        <NavItem href="/benchmarks" icon={<ContentPaste />} text="Assigned" />
-        <NavItem href="/students" icon={<SchoolOutlined />} text="Students" />
-        <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
-        <NavItem href="/settings" icon={<SettingsOutlined />} text="Settings" />
-        <NavItem
-          icon={<Logout />}
-          text="Logout"
-          onClick={() => signOut({ callbackUrl: "/" })}
-        />
-      </List>
-    </div>
-  );
+  const drawer = () => {
+    switch (session?.user.role) {
+      case UserType.Admin:
+        return (
+          <List>
+            <NavItem
+              href="/benchmarks"
+              icon={<ContentPaste />}
+              text="Assigned"
+            />
+            <NavItem
+              href="/students"
+              icon={<SchoolOutlined />}
+              text="Students"
+            />
+            <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      case UserType.CaseManager:
+        return (
+          <List>
+            <NavItem
+              href="/students"
+              icon={<SchoolOutlined />}
+              text="Students"
+            />
+            <NavItem href="/staff" icon={<PeopleOutline />} text="Staff" />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      case UserType.Para:
+        return (
+          <List>
+            <NavItem
+              href="/benchmarks"
+              icon={<ContentPaste />}
+              text="Assigned"
+            />
+            <NavItem
+              href="/settings"
+              icon={<SettingsOutlined />}
+              text="Settings"
+            />
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+      default:
+        return (
+          <List>
+            <NavItem
+              icon={<Logout />}
+              text="Logout"
+              onClick={() => signOut({ callbackUrl: "/" })}
+            />
+          </List>
+        );
+    }
+  };
 
   return (
     <>
@@ -113,7 +182,7 @@ export default function NavBar() {
               {/* Sidebar for screens & breadcrumbs > md size */}
               <Box component="nav" aria-label="nav" className={$navbar.sidebar}>
                 {logo}
-                {drawer}
+                {drawer()}
               </Box>
               <BreadcrumbsNav />
             </>
@@ -147,7 +216,7 @@ export default function NavBar() {
                     <CloseIcon className={$navbar.burger} fontSize="large" />
                   }
                 />
-                {drawer}
+                {drawer()}
               </Drawer>
             </>
           )}

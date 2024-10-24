@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasCaseManager, hasPara, router } from "../trpc";
 
 // TODO: define .output() schemas for all procedures
 export const student = router({
-  getStudentById: authenticatedProcedure
+  getStudentById: hasCaseManager
     .input(z.object({ student_id: z.string().uuid() }))
     .query(async (req) => {
       const { student_id } = req.input;
@@ -17,7 +17,7 @@ export const student = router({
       return result;
     }),
 
-  getStudentByTaskId: authenticatedProcedure
+  getStudentByTaskId: hasPara
     .input(z.object({ task_id: z.string().uuid() }))
     .query(async (req) => {
       const { task_id } = req.input;
@@ -38,7 +38,7 @@ export const student = router({
   /**
    * Adds a new IEP for the given student.
    */
-  addIep: authenticatedProcedure
+  addIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -67,7 +67,7 @@ export const student = router({
   /**
    * Adds a new IEP for the given student.
    */
-  editIep: authenticatedProcedure
+  editIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -104,7 +104,7 @@ export const student = router({
   /**
    * Returns all the IEPs associated with the given student.
    */
-  getIeps: authenticatedProcedure
+  getIeps: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -130,7 +130,7 @@ export const student = router({
    * per the MVP that there will only be one IEP per student,
    * but this should be revisited after the MVP.
    */
-  getActiveStudentIep: authenticatedProcedure
+  getActiveStudentIep: hasCaseManager
     .input(
       z.object({
         student_id: z.string().uuid(),

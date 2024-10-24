@@ -2,6 +2,7 @@ import { Env } from "@/backend/lib/types";
 import { KyselyDatabaseInstance } from "@/backend/lib";
 import { getTransporter } from "@/backend/lib/nodemailer";
 import { user } from "zapatos/schema";
+import { UserType } from "@/types/auth";
 
 interface paraInputProps {
   first_name: string;
@@ -11,7 +12,7 @@ interface paraInputProps {
 
 /**
  * Checks for the existence of a user with the given email, if
- * they do not exist, create the user with the role of "staff",
+ * they do not exist, create the user with the role of "para",
  * initiate email sending without awaiting result
  */
 export async function createPara(
@@ -37,7 +38,7 @@ export async function createPara(
         first_name,
         last_name,
         email: email.toLowerCase(),
-        role: "staff",
+        role: UserType.Para,
       })
       .returningAll()
       .executeTakeFirstOrThrow();

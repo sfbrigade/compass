@@ -1,7 +1,7 @@
-import { publicProcedure, router } from "../trpc";
+import { noAuth, router } from "../trpc";
 
 export const publicRouter = router({
-  healthCheck: publicProcedure.query(() => {
+  healthCheck: noAuth.query(() => {
     return "Ok";
   }),
 });

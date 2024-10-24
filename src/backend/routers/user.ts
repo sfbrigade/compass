@@ -1,7 +1,7 @@
-import { authenticatedProcedure, router } from "../trpc";
+import { hasAuthenticated, router } from "../trpc";
 
 export const user = router({
-  getMe: authenticatedProcedure.query(async (req) => {
+  getMe: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const user = await req.ctx.db
@@ -23,7 +23,7 @@ export const user = router({
   /**
    * @returns Whether the current user is a case manager
    */
-  isCaseManager: authenticatedProcedure.query(async (req) => {
+  isCaseManager: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
