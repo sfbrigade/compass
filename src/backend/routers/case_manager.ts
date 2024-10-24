@@ -164,7 +164,7 @@ export const case_manager = router({
       const para = await createPara(
         req.input,
         req.ctx.db,
-        req.ctx.auth.userId,
+        req.ctx.auth.session.user?.name ?? "",
         req.ctx.env.EMAIL_FROM,
         req.input.email,
         req.ctx.env
