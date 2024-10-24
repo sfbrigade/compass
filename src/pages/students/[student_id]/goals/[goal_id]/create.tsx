@@ -67,13 +67,57 @@ const CreateBenchmarkPage = () => {
       number_of_trials: "",
     });
 
-  function checkFormFields() {
+  async function checkFormFields(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
+    console.log("checkTextFields: ", checkTextFields());
+    console.log("checkNumberFields: ", checkNumberFields());
     if (!checkTextFields() || !checkNumberFields()) {
-      alert("Please fill out all fields before proceeding");
+      alert(
+        "Please fill out all fields with valid information before proceeding"
+      );
+    } else {
+      await handleSubmit();
     }
   }
 
   function checkTextFields(): boolean {
+    const { description, setup, materials, instructions, frequency } =
+      benchmarkFormState;
+    return [description, setup, materials, instructions, frequency].every(
+      (field) => {
+        const castField = field as string;
+        return field !== "" && castField.trim().length > 0;
+      }
+    );
+  }
+
+  function checkNumberFields(): boolean {
+    const {
+      baseline_level,
+      target_level,
+      attempts_per_trial,
+      number_of_trials,
+    } = benchmarkFormState;
+
+    return (
+      [
+        baseline_level,
+        target_level,
+        attempts_per_trial,
+        number_of_trials,
+      ].every((field) => {
+        // confirm each number is an integer
+        typeof field === "number" && field % 1 === 0 && field > 0;
+      }) &&
+      [baseline_level, target_level].every((field) => {
+        (field as number) < 100;
+      })
+    );
+  }
+
+  function checkPageOneFields(): boolean {
     const { description, setup, materials, instructions } = benchmarkFormState;
     return [description, setup, materials, instructions].every((field) => {
       const castField = field as string;
@@ -81,30 +125,10 @@ const CreateBenchmarkPage = () => {
     });
   }
 
-  function checkNumberFields(): boolean {
-    const {
-      frequency,
-      baseline_level,
-      target_level,
-      attempts_per_trial,
-      number_of_trials,
-    } = benchmarkFormState;
-    return [
-      frequency,
-      baseline_level,
-      target_level,
-      attempts_per_trial,
-      number_of_trials,
-    ].every((field) => {
-      const castField = field as string;
-      return field !== "" && castField.replaceAll(" ", "").length > 0;
-    });
-  }
-
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
+    // e.preventDefault();
 
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
@@ -208,11 +232,11 @@ const CreateBenchmarkPage = () => {
 
   return (
     <Stack
-      component="form"
+      // component="form"
       bgcolor="white"
       borderRadius={2}
       gap={4}
-      onSubmit={handleSubmit}
+      // onSubmit={handleSubmit}
       maxWidth="1000px"
     >
       {goal && (
@@ -337,9 +361,11 @@ const CreateBenchmarkPage = () => {
             </button>
             <button
               onClick={() => {
-                checkTextFields()
+                checkPageOneFields()
                   ? setViewState(VIEW_STATES.BENCHMARK_PG_2)
-                  : alert("Please fill out all fields before proceeding");
+                  : alert(
+                      "Please fill out all fields with valid information before proceeding"
+                    );
               }}
               className={$button.default}
             >
@@ -358,7 +384,7 @@ const CreateBenchmarkPage = () => {
                 Back
               </button>
               <button
-                type="submit"
+                // type="submit"
                 className={$button.default}
                 onClick={checkFormFields}
               >
