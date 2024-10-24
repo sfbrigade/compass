@@ -165,7 +165,7 @@ export const case_manager = router({
         req.input,
         req.ctx.db,
         req.ctx.auth.session.user?.name ?? "",
-        req.ctx.env.EMAIL,
+        req.ctx.env.EMAIL_FROM,
         req.input.email,
         req.ctx.env
       );
