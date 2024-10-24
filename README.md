@@ -117,7 +117,7 @@ To update GOOGLE_CLIENT_SECRET:
 
 **Option 1: Use Mailcatcher in Docker**
 
-If you're following *Option 1* above to run supporting services in Docker, the `.env.example` file is already configured to send email to the Mailcatcher server running on port 1025 for SMTP. The Mailcatcher server will "catch" all email sent and save it in memory to be viewed in its web-based interface running on port 1080. Open it in your web browser at: http://localhost:1080
+If you're following _Option 1_ above to run supporting services in Docker, the `.env.example` file is already configured to send email to the Mailcatcher server running on port 1025 for SMTP. The Mailcatcher server will "catch" all email sent and save it in memory to be viewed in its web-based interface running on port 1080. Open it in your web browser at: http://localhost:1080
 
 **Option 2: Configure a live mail server**
 
