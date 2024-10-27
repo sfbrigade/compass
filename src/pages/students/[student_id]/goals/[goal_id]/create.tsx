@@ -155,17 +155,6 @@ const CreateBenchmarkPage = () => {
     }
   }
 
-  function checkTextFields(): boolean {
-    const { description, setup, materials, instructions, frequency } =
-      benchmarkFormState;
-    return [description, setup, materials, instructions, frequency].every(
-      (field) => {
-        const castField = field.value as string;
-        return field.value !== "" && castField.trim().length > 0;
-      }
-    );
-  }
-
   function checkPageOneFields(): boolean {
     const { description, setup, materials, instructions } = benchmarkFormState;
     return [description, setup, materials, instructions].every((field) => {
@@ -177,8 +166,6 @@ const CreateBenchmarkPage = () => {
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
   const handleSubmit = async () => {
-    // e.preventDefault();
-
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     try {
@@ -510,7 +497,6 @@ const CreateBenchmarkPage = () => {
                 Back
               </button>
               <button
-                // type="submit"
                 disabled={!pageTwoIsValid}
                 className={$button.default}
                 onClick={checkFormFields}
