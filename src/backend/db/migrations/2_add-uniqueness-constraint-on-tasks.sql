@@ -1,7 +1,7 @@
--- Each task should have a unique subgoal_id - assignee_id combination
+-- Each task should have a unique benchmark_id - assignee_id combination
 -- which corresponds to a unique benchmark / para combo
 ALTER TABLE task
-ADD CONSTRAINT subgoal_assignee_unique UNIQUE (subgoal_id, assignee_id);
+ADD CONSTRAINT benchmark_assignee_unique UNIQUE (benchmark_id, assignee_id);
 
 -- Add index to allow easy queries of tasks by assignee
 CREATE INDEX idx_task_assignee ON task(assignee_id);

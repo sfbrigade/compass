@@ -144,7 +144,7 @@ export const iep = router({
 
       if (existingTask) {
         throw new Error(
-          "Task already exists: This subgoal has already been assigned to the same para"
+          "Task already exists: This benchmark has already been assigned to the same para"
         );
       }
 
@@ -182,7 +182,7 @@ export const iep = router({
 
       if (existingTasks.length > 0) {
         throw new Error(
-          "Task already exists: This subgoal has already been assigned to one or more of these paras"
+          "Task already exists: This benchmark has already been assigned to one or more of these paras"
         );
       }
 

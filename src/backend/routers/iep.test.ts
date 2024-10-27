@@ -66,7 +66,7 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const benchmark2Id = benchmark2!.benchmark_id;
 
   await trpc.iep.addTask.mutate({
-    benchmark_id: benchmark2Id,
+    benchmark_id: benchmark1Id,
     assignee_id: para_id,
     due_date: new Date("2023-12-31"),
     trial_count: 5,
