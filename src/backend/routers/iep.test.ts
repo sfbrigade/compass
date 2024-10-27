@@ -35,6 +35,21 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
     number_of_trials: 15,
   });
 
+  const benchmark1 = await trpc.iep.addBenchmark.mutate({
+    goal_id: goal1!.goal_id,
+    status: "Complete",
+    description: "benchmark 1",
+    setup: "",
+    instructions: "",
+    materials: "materials",
+    target_level: 100,
+    baseline_level: 20,
+    metric_name: "words",
+    attempts_per_trial: 10,
+    number_of_trials: 30,
+  });
+  const benchmark1Id = benchmark1!.benchmark_id;
+
   const benchmark2 = await trpc.iep.addBenchmark.mutate({
     goal_id: goal1!.goal_id,
     status: "Complete",
@@ -70,7 +85,7 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const gotBenchmarks = await trpc.iep.getBenchmarks.query({
     goal_id: goal1!.goal_id,
   });
-  t.is(gotBenchmarks.length, 2);
+  t.is(gotBenchmarks.length, 3);
 
   const gotBenchmark = await trpc.iep.getBenchmark.query({
     benchmark_id: benchmark2Id,
@@ -85,6 +100,124 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
       .where("assignee_id", "=", para_id)
       .selectAll()
       .executeTakeFirstOrThrow()
+  );
+});
+
+test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const para_id = seed.para.user_id;
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const goal1 = await trpc.iep.addGoal.mutate({
+    iep_id: iep.iep_id,
+    description: "goal 1",
+    category: "writing",
+  });
+
+  const benchmark1 = await trpc.iep.addBenchmark.mutate({
+    goal_id: goal1!.goal_id,
+    status: "Complete",
+    description: "benchmark 1",
+    setup: "",
+    instructions: "",
+    materials: "materials",
+    target_level: 100,
+    baseline_level: 20,
+    metric_name: "words",
+    attempts_per_trial: 10,
+    number_of_trials: 30,
+  });
+  const benchmark1Id = benchmark1!.benchmark_id;
+
+  await trpc.iep.addTask.mutate({
+    benchmark_id: benchmark1Id,
+    assignee_id: para_id,
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
+  });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.addTask.mutate({
+      benchmark_id: benchmark1Id,
+      assignee_id: para_id,
+      due_date: new Date("2024-03-31"),
+      trial_count: 1,
+    });
+  });
+
+  t.is(
+    error?.message,
+    "Task already exists: This benchmark has already been assigned to the same para"
+  );
+});
+
+test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) => {
+  const { trpc, seed } = await getTestServer(t, {
+    authenticateAs: "case_manager",
+  });
+
+  const para_1 = seed.para;
+
+  const para_2 = await trpc.para.createPara.mutate({
+    first_name: "Foo",
+    last_name: "Bar",
+    email: "foo.bar@email.com",
+  });
+
+  const iep = await trpc.student.addIep.mutate({
+    student_id: seed.student.student_id,
+    start_date: new Date("2023-01-01"),
+    end_date: new Date("2023-12-31"),
+  });
+
+  const goal1 = await trpc.iep.addGoal.mutate({
+    iep_id: iep.iep_id,
+    description: "goal 1",
+    category: "writing",
+  });
+
+  const benchmark1 = await trpc.iep.addBenchmark.mutate({
+    goal_id: goal1!.goal_id,
+    status: "Complete",
+    description: "benchmark 1",
+    setup: "",
+    instructions: "",
+    materials: "materials",
+    target_level: 100,
+    baseline_level: 20,
+    metric_name: "words",
+    attempts_per_trial: 10,
+    number_of_trials: 30,
+  });
+  const benchmark1Id = benchmark1!.benchmark_id;
+
+  await trpc.iep.assignTaskToParas.mutate({
+    benchmark_id: benchmark1Id,
+    para_ids: [para_1.user_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
+  });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.assignTaskToParas.mutate({
+      benchmark_id: benchmark1Id,
+      para_ids: [para_1.user_id, para_2.user_id],
+      due_date: new Date("2024-03-31"),
+      trial_count: 1,
+    });
+  });
+
+  t.is(
+    error?.message,
+    "Task already exists: This benchmark has already been assigned to one or more of these paras"
   );
 });
 
