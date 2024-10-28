@@ -313,7 +313,7 @@ test("addStudent - paras do not have access", async (t) => {
     await trpc.case_manager.addStudent.mutate({
       first_name: "Foo",
       last_name: "Bar",
-      email: "invalid-email",
+      email: "foo@bar.com",
       grade: 6,
     });
   });
