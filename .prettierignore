@@ -1,4 +1,5 @@
 src/backend/db/zapatos
+storybook-static
 .next
 .nsm
 .terraform
