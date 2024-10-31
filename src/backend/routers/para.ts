@@ -49,7 +49,7 @@ export const para = router({
         req.input,
         req.ctx.db,
         req.ctx.auth.session.user?.name ?? "",
-        req.ctx.env.EMAIL,
+        req.ctx.env.EMAIL_FROM,
         email,
         req.ctx.env
       );

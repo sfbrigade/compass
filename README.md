@@ -113,6 +113,35 @@ To update GOOGLE_CLIENT_SECRET:
 
 - Copy the google client secret after creation of the client id
 
+### Email
+
+**Option 1: Use Mailcatcher in Docker**
+
+If you're following _Option 1_ above to run supporting services in Docker, the `.env.example` file is already configured to send email to the Mailcatcher server running on port 1025 for SMTP. The Mailcatcher server will "catch" all email sent and save it in memory to be viewed in its web-based interface running on port 1080. Open it in your web browser at: http://localhost:1080
+
+**Option 2: Configure a live mail server**
+
+If you're not running supporting services in Docker, or wish to test email sending to some test accounts (please take care not to send test emails to real people!), you can configure the following variables in your `.env` file:
+
+1. For an SMTP server
+   ```
+   EMAIL_SERVICE=smtp
+   EMAIL_AUTH_USER=[username for your SMTP server]
+   EMAIL_AUTH_PASS=[password for your SMTP server]
+   EMAIL_FROM=no-reply@compassiep.org
+   EMAIL_HOST=[host name for your SMTP server]
+   EMAIL_PORT=[port for your SMTP server- typically 587 or 465 for secure connections]
+   ```
+2. For a Gmail account
+   ```
+   EMAIL_SERVICE=gmail
+   EMAIL_AUTH_USER=[your Gmail address]
+   EMAIL_AUTH_PASS=[your Gmail password]
+   EMAIL_FROM=[your Gmail address]
+   EMAIL_HOST=
+   EMAIL_PORT=
+   ```
+
 ### Running tests
 
 The database container does not need to be started to run tests, but Docker Desktop must be running in the background.
