@@ -96,7 +96,7 @@ test("createPara", async (t) => {
   t.true(
     nodemailerMock.mock
       .getSentMail()
-      .some((mail) => mail.subject?.includes("confirmation"))
+      .some((mail) => mail.subject?.includes("classroom"))
   );
 });
 

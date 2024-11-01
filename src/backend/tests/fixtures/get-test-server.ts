@@ -39,8 +39,12 @@ export const getTestServer = async (
     S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
     S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
     S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
-    EMAIL: "example string",
-    EMAIL_PASS: "example string",
+    EMAIL_SERVICE: "smtp",
+    EMAIL_FROM: "no-reply@compassiep.org",
+    EMAIL_AUTH_USER: "", // note that these server settings will not be used, nodemailer is mocked
+    EMAIL_AUTH_PASS: "",
+    EMAIL_HOST: "localhost",
+    EMAIL_PORT: "1025",
   };
 
   // Use statically-built Next.js fixture (if multiple instances of the built-in next() dev server are running, they try to concurrently mutate the same files).

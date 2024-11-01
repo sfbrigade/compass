@@ -164,14 +164,14 @@ export const case_manager = router({
       const para = await createPara(
         req.input,
         req.ctx.db,
-        req.ctx.auth.userId,
-        req.ctx.env.EMAIL,
+        req.ctx.auth.session.user?.name ?? "",
+        req.ctx.env.EMAIL_FROM,
         req.input.email,
         req.ctx.env
       );
 
       return await assignParaToCaseManager(
-        para?.user_id || "",
+        para.user_id,
         req.ctx.auth.userId,
         req.ctx.db
       );

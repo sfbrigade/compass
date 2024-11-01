@@ -54,9 +54,12 @@ export const BenchmarkAssignmentModal = (
     subgoal_id: props.benchmark_id,
   });
 
+  const [errorMessage, setErrorMessage] = useState<string>("");
+
   const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
 
   const handleParaToggle = (paraId: string) => () => {
+    setErrorMessage("");
     setSelectedParaIds((prev) => {
       if (prev.includes(paraId)) {
         return prev.filter((id) => id !== paraId);
@@ -69,6 +72,7 @@ export const BenchmarkAssignmentModal = (
   const handleClose = () => {
     props.onClose();
     setSelectedParaIds([]);
+    setErrorMessage("");
     setCurrentModalSelection("PARA_SELECTION");
   };
 
@@ -90,19 +94,27 @@ export const BenchmarkAssignmentModal = (
       setCurrentModalSelection(nextStep);
     } else {
       // Reached end, save
-      await assignTaskToPara.mutateAsync({
-        subgoal_id: props.benchmark_id,
-        para_ids: selectedParaIds,
-        due_date:
-          assignmentDuration.type === "until_date"
-            ? assignmentDuration.date
-            : undefined,
-        trial_count:
-          assignmentDuration.type === "minimum_number_of_collections"
-            ? assignmentDuration.minimumNumberOfCollections
-            : undefined,
-      });
-      handleClose();
+      try {
+        await assignTaskToPara.mutateAsync({
+          subgoal_id: props.benchmark_id,
+          para_ids: selectedParaIds,
+          due_date:
+            assignmentDuration.type === "until_date"
+              ? assignmentDuration.date
+              : undefined,
+          trial_count:
+            assignmentDuration.type === "minimum_number_of_collections"
+              ? assignmentDuration.minimumNumberOfCollections
+              : undefined,
+        });
+        handleClose();
+      } catch (err) {
+        // TODO: issue #450
+        console.log(err);
+        if (err instanceof Error) {
+          setErrorMessage(err.message);
+        }
+      }
     }
   };
 
@@ -171,6 +183,12 @@ export const BenchmarkAssignmentModal = (
               onDurationChange={setAssignmentDuration}
               disabled={assignTaskToPara.isLoading}
             />
+          </Box>
+        )}
+
+        {errorMessage && (
+          <Box className={$benchmark.benchmarkDescriptionBox}>
+            {errorMessage}
           </Box>
         )}
         <DialogActions>

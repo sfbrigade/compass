@@ -49,11 +49,10 @@ export const para = router({
         req.input,
         req.ctx.db,
         req.ctx.auth.session.user?.name ?? "",
-        req.ctx.env.EMAIL,
+        req.ctx.env.EMAIL_FROM,
         email,
         req.ctx.env
       );
-
       return para;
 
       // TODO: Logic for sending email to staff. Should email be sent everytime or only first time? Should staff be notified that they are added to a certain case manager's list?
