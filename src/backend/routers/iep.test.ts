@@ -1,10 +1,11 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/auth";
 
 // TODO: Write more tests
 test("basic flow - add/get goals, subgoals, tasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_id = seed.para.user_id;
@@ -105,7 +106,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
 
 test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_id = seed.para.user_id;
@@ -161,7 +162,7 @@ test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
 
 test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_1 = seed.para;
@@ -223,7 +224,7 @@ test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) =>
 
 test("add benchmark - check full schema", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const iep = await trpc.student.addIep.mutate({
@@ -271,7 +272,7 @@ test("add benchmark - check full schema", async (t) => {
 
 test("edit goal", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.case_manager.addStudent.mutate({
@@ -300,4 +301,36 @@ test("edit goal", async (t) => {
 
   t.is(modifiedGoal!.goal_id, goal!.goal_id);
   t.is(modifiedGoal?.description, "modified goal 1");
+});
+test("editGoal - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.editGoal.mutate({
+      goal_id: "goal_id",
+      description: "description",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
+});
+
+test("getGoal - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.iep.getGoal.query({
+      goal_id: "goal_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message"
+  );
 });

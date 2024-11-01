@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasCaseManager, hasPara, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
-  addGoal: authenticatedProcedure
+  addGoal: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -31,7 +31,7 @@ export const iep = router({
       return result;
     }),
 
-  editGoal: authenticatedProcedure
+  editGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -70,7 +70,7 @@ export const iep = router({
       return result;
     }),
 
-  addSubgoal: authenticatedProcedure
+  addSubgoal: hasCaseManager
     .input(
       z.object({
         // current_level not included, should be calculated as trial data is collected
@@ -123,7 +123,7 @@ export const iep = router({
       return result;
     }),
 
-  addTask: authenticatedProcedure
+  addTask: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -161,7 +161,7 @@ export const iep = router({
 
       return result;
     }),
-  assignTaskToParas: authenticatedProcedure
+  assignTaskToParas: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string().uuid(),
@@ -201,7 +201,7 @@ export const iep = router({
       return result;
     }),
   //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: authenticatedProcedure
+  tempAddTaskToSelf: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -243,7 +243,7 @@ export const iep = router({
       return result;
     }),
 
-  addTrialData: authenticatedProcedure
+  addTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -272,7 +272,7 @@ export const iep = router({
       return result;
     }),
 
-  updateTrialData: authenticatedProcedure
+  updateTrialData: hasPara
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -297,7 +297,7 @@ export const iep = router({
         .execute();
     }),
 
-  getGoals: authenticatedProcedure
+  getGoals: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -315,7 +315,7 @@ export const iep = router({
       return result;
     }),
 
-  getGoal: authenticatedProcedure
+  getGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -333,7 +333,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoals: authenticatedProcedure
+  getSubgoals: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -351,7 +351,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoal: authenticatedProcedure
+  getSubgoal: hasCaseManager
     .input(
       z.object({
         subgoal_id: z.string(),
@@ -368,7 +368,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalsByAssignee: authenticatedProcedure
+  getSubgoalsByAssignee: hasCaseManager
     .input(
       z.object({
         assignee_id: z.string(),
@@ -387,7 +387,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalAndTrialData: authenticatedProcedure
+  getSubgoalAndTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -450,7 +450,7 @@ export const iep = router({
       return result;
     }),
 
-  markAsSeen: authenticatedProcedure
+  markAsSeen: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -468,7 +468,7 @@ export const iep = router({
         .execute();
     }),
 
-  attachFileToTrialData: authenticatedProcedure
+  attachFileToTrialData: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -487,7 +487,7 @@ export const iep = router({
         .execute();
     }),
 
-  removeFileFromTrialDataAndDelete: authenticatedProcedure
+  removeFileFromTrialDataAndDelete: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),

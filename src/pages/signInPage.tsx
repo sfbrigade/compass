@@ -32,7 +32,7 @@ const SignInPage = () => {
         className={$button.default}
         onClick={() =>
           signIn("google", {
-            callbackUrl: "/students",
+            callbackUrl: "/",
           })
         }
       >

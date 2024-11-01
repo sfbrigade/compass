@@ -1,6 +1,7 @@
 import { trpc } from "./trpc";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { UserType } from "@/types/auth";
 
 export const requiresAdminAuth =
   <Props extends object>(WrappedPage: React.ComponentType<Props>) =>
@@ -10,7 +11,7 @@ export const requiresAdminAuth =
     const { data: me, error } = trpc.user.getMe.useQuery();
 
     useEffect(() => {
-      if ((me && me.role !== "admin") || error) {
+      if ((me && me.role !== UserType.Admin) || error) {
         void router.push("/");
       }
     }, [me, error, router]);
@@ -19,7 +20,7 @@ export const requiresAdminAuth =
       return "Loading...";
     }
 
-    if (me?.role === "admin") {
+    if (me?.role === UserType.Admin) {
       return <WrappedPage {...props} />;
     }
   };

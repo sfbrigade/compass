@@ -2605,6 +2605,8 @@ declare module 'zapatos/schema' {
       last_name: string;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2649,6 +2651,8 @@ declare module 'zapatos/schema' {
       last_name: string;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2693,6 +2697,8 @@ declare module 'zapatos/schema' {
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2737,6 +2743,8 @@ declare module 'zapatos/schema' {
       last_name: string | db.Parameter<string> | db.SQLFragment;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2781,6 +2789,8 @@ declare module 'zapatos/schema' {
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */

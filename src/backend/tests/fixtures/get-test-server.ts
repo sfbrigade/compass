@@ -11,9 +11,10 @@ import ms from "ms";
 import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
 import superjson from "superjson";
+import { UserType } from "@/types/auth";
 
 export interface GetTestServerOptions {
-  authenticateAs?: "case_manager" | "para" | "admin";
+  authenticateAs?: UserType.CaseManager | UserType.Para | UserType.Admin;
 }
 
 export const getTestServer = async (
