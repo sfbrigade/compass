@@ -106,7 +106,7 @@ test("basic flow - add/get goals, subgoals, tasks", async (t) => {
 
 test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_id = seed.para.user_id;
@@ -162,7 +162,7 @@ test("addTask - no duplicate subgoal_id + assigned_id combo", async (t) => {
 
 test("assignTaskToParas - no duplicate subgoal_id + para_id combo", async (t) => {
   const { trpc, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const para_1 = seed.para;
