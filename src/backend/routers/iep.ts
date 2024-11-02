@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasCaseManager, hasPara, router } from "../trpc";
 import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
@@ -7,7 +7,7 @@ import { TRPCError } from "@trpc/server";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
-  addGoal: authenticatedProcedure
+  addGoal: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -31,7 +31,7 @@ export const iep = router({
       return result;
     }),
 
-  editGoal: authenticatedProcedure
+  editGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -70,7 +70,7 @@ export const iep = router({
       return result;
     }),
 
-  addBenchmark: authenticatedProcedure
+  addBenchmark: hasCaseManager
     .input(
       z.object({
         // current_level not included, should be calculated as trial data is collected
@@ -80,6 +80,7 @@ export const iep = router({
         setup: z.string(),
         instructions: z.string(),
         materials: z.string(),
+        frequency: z.string(),
         target_level: z.number().min(0).max(100),
         baseline_level: z.number().min(0).max(100),
         metric_name: z.string(),
@@ -95,6 +96,7 @@ export const iep = router({
         setup,
         instructions,
         materials,
+        frequency,
         target_level,
         baseline_level,
         metric_name,
@@ -111,6 +113,7 @@ export const iep = router({
           setup,
           instructions,
           materials,
+          frequency,
           target_level,
           baseline_level,
           metric_name,
@@ -123,7 +126,7 @@ export const iep = router({
       return result;
     }),
 
-  addTask: authenticatedProcedure
+  addTask: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string(),
@@ -161,7 +164,7 @@ export const iep = router({
 
       return result;
     }),
-  assignTaskToParas: authenticatedProcedure
+  assignTaskToParas: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string().uuid(),
@@ -201,7 +204,7 @@ export const iep = router({
       return result;
     }),
   //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: authenticatedProcedure
+  tempAddTaskToSelf: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string(),
@@ -243,7 +246,7 @@ export const iep = router({
       return result;
     }),
 
-  addTrialData: authenticatedProcedure
+  addTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -272,7 +275,7 @@ export const iep = router({
       return result;
     }),
 
-  updateTrialData: authenticatedProcedure
+  updateTrialData: hasPara
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -297,7 +300,7 @@ export const iep = router({
         .execute();
     }),
 
-  getGoals: authenticatedProcedure
+  getGoals: hasCaseManager
     .input(
       z.object({
         iep_id: z.string(),
@@ -315,7 +318,7 @@ export const iep = router({
       return result;
     }),
 
-  getGoal: authenticatedProcedure
+  getGoal: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -333,7 +336,7 @@ export const iep = router({
       return result;
     }),
 
-  getBenchmarks: authenticatedProcedure
+  getBenchmarks: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -351,7 +354,7 @@ export const iep = router({
       return result;
     }),
 
-  getBenchmark: authenticatedProcedure
+  getBenchmark: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string(),
@@ -368,7 +371,7 @@ export const iep = router({
       return result;
     }),
 
-  getBenchmarksByAssignee: authenticatedProcedure
+  getBenchmarkByAssignee: hasCaseManager
     .input(
       z.object({
         assignee_id: z.string(),
@@ -387,7 +390,7 @@ export const iep = router({
       return result;
     }),
 
-  getBenchmarkAndTrialData: authenticatedProcedure
+  getBenchmarkAndTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -410,6 +413,7 @@ export const iep = router({
           "goal.category",
           "benchmark.description",
           "benchmark.instructions",
+          "benchmark.frequency",
           "benchmark.number_of_trials",
           "benchmark.benchmark_id",
           "task.due_date",
@@ -450,7 +454,7 @@ export const iep = router({
       return result;
     }),
 
-  markAsSeen: authenticatedProcedure
+  markAsSeen: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -468,7 +472,7 @@ export const iep = router({
         .execute();
     }),
 
-  attachFileToTrialData: authenticatedProcedure
+  attachFileToTrialData: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),
@@ -487,7 +491,7 @@ export const iep = router({
         .execute();
     }),
 
-  removeFileFromTrialDataAndDelete: authenticatedProcedure
+  removeFileFromTrialDataAndDelete: hasCaseManager
     .input(
       z.object({
         trial_data_id: z.string(),

@@ -425,6 +425,12 @@ declare module 'zapatos/schema' {
       */
       materials: string;
       /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
+      /**
       * **benchmark.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -510,6 +516,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       materials: string;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
       /**
       * **benchmark.target_level**
       * - `int2` in database
@@ -597,6 +609,12 @@ declare module 'zapatos/schema' {
       */
       materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **benchmark.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -683,6 +701,12 @@ declare module 'zapatos/schema' {
       */
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
       * **benchmark.target_level**
       * - `int2` in database
       * - `NOT NULL`, no default
@@ -768,6 +792,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `''::text`
       */
       materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
       * **benchmark.target_level**
       * - `int2` in database
@@ -2605,6 +2635,8 @@ declare module 'zapatos/schema' {
       last_name: string;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2649,6 +2681,8 @@ declare module 'zapatos/schema' {
       last_name: string;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2693,6 +2727,8 @@ declare module 'zapatos/schema' {
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2737,6 +2773,8 @@ declare module 'zapatos/schema' {
       last_name: string | db.Parameter<string> | db.SQLFragment;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */
@@ -2781,6 +2819,8 @@ declare module 'zapatos/schema' {
       last_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **user.role**
+      *
+      * User role: user, para, case_manager, or admin
       * - `text` in database
       * - `NOT NULL`, no default
       */

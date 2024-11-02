@@ -1,8 +1,8 @@
 import { sql } from "kysely";
-import { adminProcedure, router } from "../trpc";
+import { hasAdmin, router } from "../trpc";
 
 export const admin = router({
-  getPostgresInfo: adminProcedure.query(async (req) => {
+  getPostgresInfo: hasAdmin.query(async (req) => {
     const result = await sql<{ version: string }>`SELECT version()`.execute(
       req.ctx.db
     );
