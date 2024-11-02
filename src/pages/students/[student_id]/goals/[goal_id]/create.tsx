@@ -50,7 +50,7 @@ const CreateBenchmarkPage = () => {
     { enabled: Boolean(router.query.goal_id) }
   );
 
-  const addSubgoalMutation = trpc.iep.addSubgoal.useMutation();
+  const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
 
   const VIEW_STATES = {
     BENCHMARK_PG_1: 0,
@@ -169,7 +169,7 @@ const CreateBenchmarkPage = () => {
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     try {
-      await addSubgoalMutation.mutateAsync({
+      await addBenchmarkMutation.mutateAsync({
         goal_id: router.query.goal_id as string,
         status: "In Progress",
         description: benchmarkFormState["description"].value as string,
@@ -308,7 +308,7 @@ const CreateBenchmarkPage = () => {
         </Stepper>
       </Box>
 
-      <fieldset disabled={addSubgoalMutation.isLoading} style={{ border: 0 }}>
+      <fieldset disabled={addBenchmarkMutation.isLoading} style={{ border: 0 }}>
         <Stack direction="row" spacing={4}>
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>

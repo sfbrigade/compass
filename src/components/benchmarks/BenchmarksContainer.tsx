@@ -7,7 +7,7 @@ import Button from "@mui/material/Button";
 import $GoalPage from "@/styles/GoalPage.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
-import { type Subgoal as Benchmark } from "@/types/global";
+import { type Benchmark } from "@/types/global";
 import BenchmarkListElement from "./BenchmarkListElement";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
 
@@ -119,7 +119,7 @@ export default function BenchmarksContainer({
             ) : (
               filteredBenchmarks.map((benchmark, index) => (
                 <BenchmarkListElement
-                  key={benchmark.subgoal_id}
+                  key={benchmark.benchmark_id}
                   benchmark={benchmark}
                   index={index}
                 />

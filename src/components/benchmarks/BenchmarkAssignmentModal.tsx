@@ -50,8 +50,8 @@ export const BenchmarkAssignmentModal = (
   const [currentModalSelection, setCurrentModalSelection] =
     useState<Step>("PARA_SELECTION");
   const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
-  const { data: benchmark } = trpc.iep.getSubgoal.useQuery({
-    subgoal_id: props.benchmark_id,
+  const { data: benchmark } = trpc.iep.getBenchmark.useQuery({
+    benchmark_id: props.benchmark_id,
   });
 
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -96,7 +96,7 @@ export const BenchmarkAssignmentModal = (
       // Reached end, save
       try {
         await assignTaskToPara.mutateAsync({
-          subgoal_id: props.benchmark_id,
+          benchmark_id: props.benchmark_id,
           para_ids: selectedParaIds,
           due_date:
             assignmentDuration.type === "until_date"

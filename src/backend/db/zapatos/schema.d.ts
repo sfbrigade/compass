@@ -376,6 +376,479 @@ declare module 'zapatos/schema' {
   }
 
   /**
+   * **benchmark**
+   * - Table in database
+   */
+  export namespace benchmark {
+    export type Table = 'benchmark';
+    export interface Selectable {
+      /**
+      * **benchmark.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      benchmark_id: string;
+      /**
+      * **benchmark.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id: string | null;
+      /**
+      * **benchmark.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status: string;
+      /**
+      * **benchmark.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **benchmark.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
+      /**
+      * **benchmark.instructions**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      instructions: string;
+      /**
+      * **benchmark.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials: string;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
+      /**
+      * **benchmark.target_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number;
+      /**
+      * **benchmark.baseline_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number;
+      /**
+      * **benchmark.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level: number | null;
+      /**
+      * **benchmark.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string;
+      /**
+      * **benchmark.attempts_per_trial**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      attempts_per_trial: number | null;
+      /**
+      * **benchmark.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials: number | null;
+      /**
+      * **benchmark.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
+      * **benchmark.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      benchmark_id: string;
+      /**
+      * **benchmark.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id: string | null;
+      /**
+      * **benchmark.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status: string;
+      /**
+      * **benchmark.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string;
+      /**
+      * **benchmark.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string;
+      /**
+      * **benchmark.instructions**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      instructions: string;
+      /**
+      * **benchmark.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials: string;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency: string;
+      /**
+      * **benchmark.target_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number;
+      /**
+      * **benchmark.baseline_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number;
+      /**
+      * **benchmark.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level: number | null;
+      /**
+      * **benchmark.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string;
+      /**
+      * **benchmark.attempts_per_trial**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      attempts_per_trial: number | null;
+      /**
+      * **benchmark.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials: number | null;
+      /**
+      * **benchmark.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
+    }
+    export interface Whereable {
+      /**
+      * **benchmark.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      benchmark_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.instructions**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      instructions?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.target_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      target_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.baseline_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.attempts_per_trial**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      attempts_per_trial?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+      /**
+      * **benchmark.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      benchmark_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **benchmark.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **benchmark.instructions**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.target_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      target_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **benchmark.baseline_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **benchmark.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **benchmark.attempts_per_trial**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
+      /**
+      * **benchmark.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+      /**
+      * **benchmark.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, default: `uuid_generate_v4()`
+      */
+      benchmark_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.goal_id**
+      * - `uuid` in database
+      * - Nullable, no default
+      */
+      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.status**
+      * - `text` in database
+      * - `NOT NULL`, default: `'In Progress'::text`
+      */
+      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.description**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **benchmark.setup**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      setup?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **benchmark.instructions**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.materials**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.frequency**
+      * - `text` in database
+      * - `NOT NULL`, default: `''::text`
+      */
+      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.target_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      target_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **benchmark.baseline_level**
+      * - `int2` in database
+      * - `NOT NULL`, no default
+      */
+      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **benchmark.current_level**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.metric_name**
+      * - `text` in database
+      * - `NOT NULL`, no default
+      */
+      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **benchmark.attempts_per_trial**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.number_of_trials**
+      * - `int2` in database
+      * - Nullable, no default
+      */
+      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **benchmark.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
+    }
+    export type UniqueIndex = 'benchmark_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  /**
    * **file**
    * - Table in database
    */
@@ -1527,479 +2000,6 @@ declare module 'zapatos/schema' {
   }
 
   /**
-   * **subgoal**
-   * - Table in database
-   */
-  export namespace subgoal {
-    export type Table = 'subgoal';
-    export interface Selectable {
-      /**
-      * **subgoal.subgoal_id**
-      * - `uuid` in database
-      * - `NOT NULL`, default: `uuid_generate_v4()`
-      */
-      subgoal_id: string;
-      /**
-      * **subgoal.goal_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      goal_id: string | null;
-      /**
-      * **subgoal.status**
-      * - `text` in database
-      * - `NOT NULL`, default: `'In Progress'::text`
-      */
-      status: string;
-      /**
-      * **subgoal.description**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      description: string;
-      /**
-      * **subgoal.setup**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      setup: string;
-      /**
-      * **subgoal.instructions**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      instructions: string;
-      /**
-      * **subgoal.materials**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      materials: string;
-      /**
-      * **subgoal.frequency**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      frequency: string;
-      /**
-      * **subgoal.target_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      target_level: number;
-      /**
-      * **subgoal.baseline_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      baseline_level: number;
-      /**
-      * **subgoal.current_level**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      current_level: number | null;
-      /**
-      * **subgoal.metric_name**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      metric_name: string;
-      /**
-      * **subgoal.attempts_per_trial**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      attempts_per_trial: number | null;
-      /**
-      * **subgoal.number_of_trials**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      number_of_trials: number | null;
-      /**
-      * **subgoal.created_at**
-      * - `timestamptz` in database
-      * - `NOT NULL`, default: `now()`
-      */
-      created_at: Date;
-    }
-    export interface JSONSelectable {
-      /**
-      * **subgoal.subgoal_id**
-      * - `uuid` in database
-      * - `NOT NULL`, default: `uuid_generate_v4()`
-      */
-      subgoal_id: string;
-      /**
-      * **subgoal.goal_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      goal_id: string | null;
-      /**
-      * **subgoal.status**
-      * - `text` in database
-      * - `NOT NULL`, default: `'In Progress'::text`
-      */
-      status: string;
-      /**
-      * **subgoal.description**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      description: string;
-      /**
-      * **subgoal.setup**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      setup: string;
-      /**
-      * **subgoal.instructions**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      instructions: string;
-      /**
-      * **subgoal.materials**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      materials: string;
-      /**
-      * **subgoal.frequency**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      frequency: string;
-      /**
-      * **subgoal.target_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      target_level: number;
-      /**
-      * **subgoal.baseline_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      baseline_level: number;
-      /**
-      * **subgoal.current_level**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      current_level: number | null;
-      /**
-      * **subgoal.metric_name**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      metric_name: string;
-      /**
-      * **subgoal.attempts_per_trial**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      attempts_per_trial: number | null;
-      /**
-      * **subgoal.number_of_trials**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      number_of_trials: number | null;
-      /**
-      * **subgoal.created_at**
-      * - `timestamptz` in database
-      * - `NOT NULL`, default: `now()`
-      */
-      created_at: db.TimestampTzString;
-    }
-    export interface Whereable {
-      /**
-      * **subgoal.subgoal_id**
-      * - `uuid` in database
-      * - `NOT NULL`, default: `uuid_generate_v4()`
-      */
-      subgoal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.goal_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.status**
-      * - `text` in database
-      * - `NOT NULL`, default: `'In Progress'::text`
-      */
-      status?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.description**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.setup**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      setup?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.instructions**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      instructions?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.materials**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      materials?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.frequency**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      frequency?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.target_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      target_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.baseline_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.current_level**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      current_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.metric_name**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.attempts_per_trial**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      attempts_per_trial?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.number_of_trials**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      number_of_trials?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **subgoal.created_at**
-      * - `timestamptz` in database
-      * - `NOT NULL`, default: `now()`
-      */
-      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-    }
-    export interface Insertable {
-      /**
-      * **subgoal.subgoal_id**
-      * - `uuid` in database
-      * - `NOT NULL`, default: `uuid_generate_v4()`
-      */
-      subgoal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.goal_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.status**
-      * - `text` in database
-      * - `NOT NULL`, default: `'In Progress'::text`
-      */
-      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.description**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      description: string | db.Parameter<string> | db.SQLFragment;
-      /**
-      * **subgoal.setup**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      setup: string | db.Parameter<string> | db.SQLFragment;
-      /**
-      * **subgoal.instructions**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.materials**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.frequency**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.target_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      target_level: number | db.Parameter<number> | db.SQLFragment;
-      /**
-      * **subgoal.baseline_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      baseline_level: number | db.Parameter<number> | db.SQLFragment;
-      /**
-      * **subgoal.current_level**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.metric_name**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      metric_name: string | db.Parameter<string> | db.SQLFragment;
-      /**
-      * **subgoal.attempts_per_trial**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.number_of_trials**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
-      /**
-      * **subgoal.created_at**
-      * - `timestamptz` in database
-      * - `NOT NULL`, default: `now()`
-      */
-      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
-    }
-    export interface Updatable {
-      /**
-      * **subgoal.subgoal_id**
-      * - `uuid` in database
-      * - `NOT NULL`, default: `uuid_generate_v4()`
-      */
-      subgoal_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.goal_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.status**
-      * - `text` in database
-      * - `NOT NULL`, default: `'In Progress'::text`
-      */
-      status?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.description**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      /**
-      * **subgoal.setup**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      setup?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      /**
-      * **subgoal.instructions**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      instructions?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.materials**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      materials?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.frequency**
-      * - `text` in database
-      * - `NOT NULL`, default: `''::text`
-      */
-      frequency?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.target_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      target_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
-      /**
-      * **subgoal.baseline_level**
-      * - `int2` in database
-      * - `NOT NULL`, no default
-      */
-      baseline_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
-      /**
-      * **subgoal.current_level**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      current_level?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.metric_name**
-      * - `text` in database
-      * - `NOT NULL`, no default
-      */
-      metric_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
-      /**
-      * **subgoal.attempts_per_trial**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      attempts_per_trial?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.number_of_trials**
-      * - `int2` in database
-      * - Nullable, no default
-      */
-      number_of_trials?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
-      /**
-      * **subgoal.created_at**
-      * - `timestamptz` in database
-      * - `NOT NULL`, default: `now()`
-      */
-      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
-    }
-    export type UniqueIndex = 'subgoal_pkey';
-    export type Column = keyof Selectable;
-    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
-    export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
-    export type SQL = SQLExpression | SQLExpression[];
-  }
-
-  /**
    * **task**
    * - Table in database
    */
@@ -2013,11 +2013,11 @@ declare module 'zapatos/schema' {
       */
       task_id: string;
       /**
-      * **task.subgoal_id**
+      * **task.benchmark_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id: string | null;
+      benchmark_id: string | null;
       /**
       * **task.assignee_id**
       * - `uuid` in database
@@ -2051,11 +2051,11 @@ declare module 'zapatos/schema' {
       */
       task_id: string;
       /**
-      * **task.subgoal_id**
+      * **task.benchmark_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id: string | null;
+      benchmark_id: string | null;
       /**
       * **task.assignee_id**
       * - `uuid` in database
@@ -2089,11 +2089,11 @@ declare module 'zapatos/schema' {
       */
       task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **task.subgoal_id**
+      * **task.benchmark_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      benchmark_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **task.assignee_id**
       * - `uuid` in database
@@ -2127,11 +2127,11 @@ declare module 'zapatos/schema' {
       */
       task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
       /**
-      * **task.subgoal_id**
+      * **task.benchmark_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      benchmark_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
       * **task.assignee_id**
       * - `uuid` in database
@@ -2165,11 +2165,11 @@ declare module 'zapatos/schema' {
       */
       task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
       /**
-      * **task.subgoal_id**
+      * **task.benchmark_id**
       * - `uuid` in database
       * - Nullable, no default
       */
-      subgoal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      benchmark_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **task.assignee_id**
       * - `uuid` in database
@@ -2195,7 +2195,7 @@ declare module 'zapatos/schema' {
       */
       seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment>;
     }
-    export type UniqueIndex = 'subgoal_assignee_unique' | 'task_pkey';
+    export type UniqueIndex = 'benchmark_assignee_unique' | 'task_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
@@ -2854,20 +2854,20 @@ declare module 'zapatos/schema' {
   /* --- aggregate types --- */
 
   export namespace public {  
-    export type Table = account.Table | file.Table | goal.Table | iep.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | subgoal.Table | task.Table | trial_data.Table | trial_data_file.Table | user.Table;
-    export type Selectable = account.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | subgoal.Selectable | task.Selectable | trial_data.Selectable | trial_data_file.Selectable | user.Selectable;
-    export type JSONSelectable = account.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | subgoal.JSONSelectable | task.JSONSelectable | trial_data.JSONSelectable | trial_data_file.JSONSelectable | user.JSONSelectable;
-    export type Whereable = account.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | subgoal.Whereable | task.Whereable | trial_data.Whereable | trial_data_file.Whereable | user.Whereable;
-    export type Insertable = account.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | subgoal.Insertable | task.Insertable | trial_data.Insertable | trial_data_file.Insertable | user.Insertable;
-    export type Updatable = account.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | subgoal.Updatable | task.Updatable | trial_data.Updatable | trial_data_file.Updatable | user.Updatable;
-    export type UniqueIndex = account.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | subgoal.UniqueIndex | task.UniqueIndex | trial_data.UniqueIndex | trial_data_file.UniqueIndex | user.UniqueIndex;
-    export type Column = account.Column | file.Column | goal.Column | iep.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | subgoal.Column | task.Column | trial_data.Column | trial_data_file.Column | user.Column;
+    export type Table = account.Table | benchmark.Table | file.Table | goal.Table | iep.Table | migrations.Table | paras_assigned_to_case_manager.Table | session.Table | student.Table | task.Table | trial_data.Table | trial_data_file.Table | user.Table;
+    export type Selectable = account.Selectable | benchmark.Selectable | file.Selectable | goal.Selectable | iep.Selectable | migrations.Selectable | paras_assigned_to_case_manager.Selectable | session.Selectable | student.Selectable | task.Selectable | trial_data.Selectable | trial_data_file.Selectable | user.Selectable;
+    export type JSONSelectable = account.JSONSelectable | benchmark.JSONSelectable | file.JSONSelectable | goal.JSONSelectable | iep.JSONSelectable | migrations.JSONSelectable | paras_assigned_to_case_manager.JSONSelectable | session.JSONSelectable | student.JSONSelectable | task.JSONSelectable | trial_data.JSONSelectable | trial_data_file.JSONSelectable | user.JSONSelectable;
+    export type Whereable = account.Whereable | benchmark.Whereable | file.Whereable | goal.Whereable | iep.Whereable | migrations.Whereable | paras_assigned_to_case_manager.Whereable | session.Whereable | student.Whereable | task.Whereable | trial_data.Whereable | trial_data_file.Whereable | user.Whereable;
+    export type Insertable = account.Insertable | benchmark.Insertable | file.Insertable | goal.Insertable | iep.Insertable | migrations.Insertable | paras_assigned_to_case_manager.Insertable | session.Insertable | student.Insertable | task.Insertable | trial_data.Insertable | trial_data_file.Insertable | user.Insertable;
+    export type Updatable = account.Updatable | benchmark.Updatable | file.Updatable | goal.Updatable | iep.Updatable | migrations.Updatable | paras_assigned_to_case_manager.Updatable | session.Updatable | student.Updatable | task.Updatable | trial_data.Updatable | trial_data_file.Updatable | user.Updatable;
+    export type UniqueIndex = account.UniqueIndex | benchmark.UniqueIndex | file.UniqueIndex | goal.UniqueIndex | iep.UniqueIndex | migrations.UniqueIndex | paras_assigned_to_case_manager.UniqueIndex | session.UniqueIndex | student.UniqueIndex | task.UniqueIndex | trial_data.UniqueIndex | trial_data_file.UniqueIndex | user.UniqueIndex;
+    export type Column = account.Column | benchmark.Column | file.Column | goal.Column | iep.Column | migrations.Column | paras_assigned_to_case_manager.Column | session.Column | student.Column | task.Column | trial_data.Column | trial_data_file.Column | user.Column;
   
-    export type AllBaseTables = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
+    export type AllBaseTables = [account.Table, benchmark.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
     export type AllForeignTables = [];
     export type AllViews = [];
     export type AllMaterializedViews = [];
-    export type AllTablesAndViews = [account.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, subgoal.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
+    export type AllTablesAndViews = [account.Table, benchmark.Table, file.Table, goal.Table, iep.Table, migrations.Table, paras_assigned_to_case_manager.Table, session.Table, student.Table, task.Table, trial_data.Table, trial_data_file.Table, user.Table];
   }
 
 
@@ -2896,6 +2896,7 @@ declare module 'zapatos/schema' {
 
   export type SelectableForTable<T extends Table> = {
     "account": account.Selectable;
+    "benchmark": benchmark.Selectable;
     "file": file.Selectable;
     "goal": goal.Selectable;
     "iep": iep.Selectable;
@@ -2903,7 +2904,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Selectable;
     "session": session.Selectable;
     "student": student.Selectable;
-    "subgoal": subgoal.Selectable;
     "task": task.Selectable;
     "trial_data": trial_data.Selectable;
     "trial_data_file": trial_data_file.Selectable;
@@ -2912,6 +2912,7 @@ declare module 'zapatos/schema' {
 
   export type JSONSelectableForTable<T extends Table> = {
     "account": account.JSONSelectable;
+    "benchmark": benchmark.JSONSelectable;
     "file": file.JSONSelectable;
     "goal": goal.JSONSelectable;
     "iep": iep.JSONSelectable;
@@ -2919,7 +2920,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.JSONSelectable;
     "session": session.JSONSelectable;
     "student": student.JSONSelectable;
-    "subgoal": subgoal.JSONSelectable;
     "task": task.JSONSelectable;
     "trial_data": trial_data.JSONSelectable;
     "trial_data_file": trial_data_file.JSONSelectable;
@@ -2928,6 +2928,7 @@ declare module 'zapatos/schema' {
 
   export type WhereableForTable<T extends Table> = {
     "account": account.Whereable;
+    "benchmark": benchmark.Whereable;
     "file": file.Whereable;
     "goal": goal.Whereable;
     "iep": iep.Whereable;
@@ -2935,7 +2936,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Whereable;
     "session": session.Whereable;
     "student": student.Whereable;
-    "subgoal": subgoal.Whereable;
     "task": task.Whereable;
     "trial_data": trial_data.Whereable;
     "trial_data_file": trial_data_file.Whereable;
@@ -2944,6 +2944,7 @@ declare module 'zapatos/schema' {
 
   export type InsertableForTable<T extends Table> = {
     "account": account.Insertable;
+    "benchmark": benchmark.Insertable;
     "file": file.Insertable;
     "goal": goal.Insertable;
     "iep": iep.Insertable;
@@ -2951,7 +2952,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Insertable;
     "session": session.Insertable;
     "student": student.Insertable;
-    "subgoal": subgoal.Insertable;
     "task": task.Insertable;
     "trial_data": trial_data.Insertable;
     "trial_data_file": trial_data_file.Insertable;
@@ -2960,6 +2960,7 @@ declare module 'zapatos/schema' {
 
   export type UpdatableForTable<T extends Table> = {
     "account": account.Updatable;
+    "benchmark": benchmark.Updatable;
     "file": file.Updatable;
     "goal": goal.Updatable;
     "iep": iep.Updatable;
@@ -2967,7 +2968,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Updatable;
     "session": session.Updatable;
     "student": student.Updatable;
-    "subgoal": subgoal.Updatable;
     "task": task.Updatable;
     "trial_data": trial_data.Updatable;
     "trial_data_file": trial_data_file.Updatable;
@@ -2976,6 +2976,7 @@ declare module 'zapatos/schema' {
 
   export type UniqueIndexForTable<T extends Table> = {
     "account": account.UniqueIndex;
+    "benchmark": benchmark.UniqueIndex;
     "file": file.UniqueIndex;
     "goal": goal.UniqueIndex;
     "iep": iep.UniqueIndex;
@@ -2983,7 +2984,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.UniqueIndex;
     "session": session.UniqueIndex;
     "student": student.UniqueIndex;
-    "subgoal": subgoal.UniqueIndex;
     "task": task.UniqueIndex;
     "trial_data": trial_data.UniqueIndex;
     "trial_data_file": trial_data_file.UniqueIndex;
@@ -2992,6 +2992,7 @@ declare module 'zapatos/schema' {
 
   export type ColumnForTable<T extends Table> = {
     "account": account.Column;
+    "benchmark": benchmark.Column;
     "file": file.Column;
     "goal": goal.Column;
     "iep": iep.Column;
@@ -2999,7 +3000,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.Column;
     "session": session.Column;
     "student": student.Column;
-    "subgoal": subgoal.Column;
     "task": task.Column;
     "trial_data": trial_data.Column;
     "trial_data_file": trial_data_file.Column;
@@ -3008,6 +3008,7 @@ declare module 'zapatos/schema' {
 
   export type SQLForTable<T extends Table> = {
     "account": account.SQL;
+    "benchmark": benchmark.SQL;
     "file": file.SQL;
     "goal": goal.SQL;
     "iep": iep.SQL;
@@ -3015,7 +3016,6 @@ declare module 'zapatos/schema' {
     "paras_assigned_to_case_manager": paras_assigned_to_case_manager.SQL;
     "session": session.SQL;
     "student": student.SQL;
-    "subgoal": subgoal.SQL;
     "task": task.SQL;
     "trial_data": trial_data.SQL;
     "trial_data_file": trial_data_file.SQL;
