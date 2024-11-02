@@ -5,6 +5,7 @@ import { ChangeEvent } from "@/types/global";
 import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
 import {
   Box,
+  InputAdornment,
   Stack,
   Step,
   StepIconProps,
@@ -14,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 interface BenchmarkFields {
   title: string;
@@ -25,7 +26,11 @@ interface BenchmarkFields {
 }
 
 interface BenchmarkFormEntry {
-  [key: string]: string | number | "";
+  [key: string]: {
+    value: string | number | "";
+    valid: boolean;
+    touched: boolean;
+  };
 }
 
 const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
@@ -56,66 +61,129 @@ const CreateBenchmarkPage = () => {
 
   const [benchmarkFormState, setBenchmarkFormState] =
     useState<BenchmarkFormEntry>({
-      description: "",
-      setup: "",
-      materials: "",
-      instructions: "",
-      baseline_level: "",
-      target_level: "",
-      attempts_per_trial: "",
-      number_of_trials: "",
+      description: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      setup: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      materials: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      instructions: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      frequency: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      baseline_level: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      target_level: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      attempts_per_trial: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
+      number_of_trials: {
+        value: "",
+        valid: false,
+        touched: false,
+      },
     });
 
-  function checkFormFields() {
-    if (!checkTextFields() || !checkNumberFields()) {
-      alert("Please fill out all fields before proceeding");
-    }
-  }
+  const [pageOneIsValid, setPageOneIsValid] = useState(false);
+  const [pageTwoIsValid, setPageTwoIsValid] = useState(false);
 
-  function checkTextFields(): boolean {
+  // check page one validity
+  useEffect(() => {
     const { description, setup, materials, instructions } = benchmarkFormState;
-    return [description, setup, materials, instructions].every((field) => {
-      const castField = field as string;
-      return field !== "" && castField.replaceAll(" ", "").length > 0;
-    });
-  }
+    setPageOneIsValid(
+      [description, setup, materials, instructions].every(
+        (field) => field.valid
+      )
+    );
+  }, [benchmarkFormState]);
 
-  function checkNumberFields(): boolean {
+  // check page two validity
+  useEffect(() => {
     const {
+      frequency,
       baseline_level,
       target_level,
       attempts_per_trial,
       number_of_trials,
     } = benchmarkFormState;
-    return [
-      baseline_level,
-      target_level,
-      attempts_per_trial,
-      number_of_trials,
-    ].every((field) => field !== "");
+
+    setPageTwoIsValid(
+      [
+        frequency,
+        baseline_level,
+        target_level,
+        attempts_per_trial,
+        number_of_trials,
+      ].every((field) => field.valid)
+    );
+  }, [benchmarkFormState]);
+
+  async function checkFormFields(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.preventDefault();
+    if (!pageOneIsValid || !pageTwoIsValid) {
+      alert(
+        "Please fill out all fields with valid information before proceeding"
+      );
+    } else {
+      await handleSubmit();
+    }
+  }
+
+  function checkPageOneFields(): boolean {
+    const { description, setup, materials, instructions } = benchmarkFormState;
+    return [description, setup, materials, instructions].every((field) => {
+      const castField = field.value as string;
+      return field.value !== "" && castField.replaceAll(" ", "").length > 0;
+    });
   }
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
-    // TO DO: frequency is not included in the mutation (but is included in the design) and should be added to the schema
     try {
       await addSubgoalMutation.mutateAsync({
         goal_id: router.query.goal_id as string,
         status: "In Progress",
-        description: benchmarkFormState["description"] as string,
-        setup: benchmarkFormState["setup"] as string,
-        instructions: benchmarkFormState["instructions"] as string,
-        materials: benchmarkFormState["materials"] as string,
-        target_level: benchmarkFormState["target_level"] as number,
-        baseline_level: benchmarkFormState["baseline_level"] as number,
+        description: benchmarkFormState["description"].value as string,
+        setup: benchmarkFormState["setup"].value as string,
+        instructions: benchmarkFormState["instructions"].value as string,
+        materials: benchmarkFormState["materials"].value as string,
+        frequency: benchmarkFormState["frequency"].value as string,
+        target_level: benchmarkFormState["target_level"].value as number,
+        baseline_level: benchmarkFormState["baseline_level"].value as number,
         metric_name: "" as string,
-        attempts_per_trial: benchmarkFormState["attempts_per_trial"] as number,
-        number_of_trials: benchmarkFormState["number_of_trials"] as number,
+        attempts_per_trial: benchmarkFormState["attempts_per_trial"]
+          .value as number,
+        number_of_trials: benchmarkFormState["number_of_trials"]
+          .value as number,
       });
 
       await router.push(
@@ -187,11 +255,25 @@ const CreateBenchmarkPage = () => {
           multiline
           rows={4}
           name={field.name}
-          value={benchmarkFormState[field.name] || ""}
+          value={benchmarkFormState[field.name].value || ""}
+          error={
+            !benchmarkFormState[field.name].valid &&
+            benchmarkFormState[field.name].touched
+          }
+          helperText={
+            !benchmarkFormState[field.name].valid &&
+            benchmarkFormState[field.name].touched &&
+            "Required"
+          }
           onChange={(e: ChangeEvent) =>
             setBenchmarkFormState({
               ...benchmarkFormState,
-              [field.name]: e.target.value,
+              [field.name]: {
+                ...benchmarkFormState[field.name],
+                value: e.target.value,
+                valid: e.target.value.trim().length > 0,
+                touched: true,
+              },
             })
           }
           placeholder={field.placeholder}
@@ -201,14 +283,7 @@ const CreateBenchmarkPage = () => {
   };
 
   return (
-    <Stack
-      component="form"
-      bgcolor="white"
-      borderRadius={2}
-      gap={4}
-      onSubmit={handleSubmit}
-      maxWidth="1000px"
-    >
+    <Stack bgcolor="white" borderRadius={2} gap={4} maxWidth="1000px">
       {goal && (
         <GoalHeader
           name="[placeholder] 1st Goal"
@@ -256,63 +331,130 @@ const CreateBenchmarkPage = () => {
               <Stack spacing={2}>
                 <Typography variant="h4">Metric to track</Typography>
                 <Stack direction="row" spacing={4} justifyContent="left">
-                  <Stack direction="row" alignItems="center">
-                    <TextField
-                      label="Baseline Level"
-                      required
-                      type="number"
-                      name="baseline_level"
-                      value={benchmarkFormState["baseline_level"] || ""}
-                      onChange={(e: ChangeEvent) =>
-                        setBenchmarkFormState({
-                          ...benchmarkFormState,
-                          ["baseline_level"]: Number(e.target.value),
-                        })
-                      }
-                    />
-                    <Typography ml={1}>%</Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems="center">
-                    <TextField
-                      label="Target Level"
-                      required
-                      type="number"
-                      name="target_level"
-                      value={benchmarkFormState["target_level"] || ""}
-                      onChange={(e: ChangeEvent) =>
-                        setBenchmarkFormState({
-                          ...benchmarkFormState,
-                          ["target_level"]: Number(e.target.value),
-                        })
-                      }
-                    />
-                    <Typography ml={1}>%</Typography>
-                  </Stack>
+                  <TextField
+                    label="Baseline Level"
+                    required
+                    type="number"
+                    name="baseline_level"
+                    value={benchmarkFormState["baseline_level"].value}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">%</InputAdornment>
+                      ),
+                    }}
+                    error={
+                      !benchmarkFormState["baseline_level"].valid &&
+                      benchmarkFormState["baseline_level"].touched
+                    }
+                    helperText={
+                      !benchmarkFormState["baseline_level"].valid &&
+                      benchmarkFormState["baseline_level"].touched &&
+                      "Please enter an integer between 0 and 100"
+                    }
+                    onChange={(e: ChangeEvent) => {
+                      const numValue = Number(e.target.value);
+                      setBenchmarkFormState({
+                        ...benchmarkFormState,
+                        ["baseline_level"]: {
+                          value: numValue,
+                          valid:
+                            numValue >= 0 &&
+                            numValue <= 100 &&
+                            numValue % 1 === 0,
+                          touched: true,
+                        },
+                      });
+                    }}
+                  />
+                  <TextField
+                    label="Target Level"
+                    required
+                    type="number"
+                    name="target_level"
+                    value={benchmarkFormState["target_level"].value}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">%</InputAdornment>
+                      ),
+                    }}
+                    error={
+                      !benchmarkFormState["target_level"].valid &&
+                      benchmarkFormState["target_level"].touched
+                    }
+                    helperText={
+                      !benchmarkFormState["target_level"].valid &&
+                      benchmarkFormState["target_level"].touched &&
+                      "Please enter an integer between 0 and 100"
+                    }
+                    onChange={(e: ChangeEvent) => {
+                      const numValue = Number(e.target.value);
+                      console.log(numValue);
+                      setBenchmarkFormState({
+                        ...benchmarkFormState,
+                        ["target_level"]: {
+                          value: numValue,
+                          valid:
+                            numValue >= 0 &&
+                            numValue <= 100 &&
+                            numValue % 1 === 0,
+                          touched: true,
+                        },
+                      });
+                    }}
+                  />
                   <TextField
                     label="Attempts Per Trial"
                     type="number"
                     name="attempts_per_trial"
                     required
-                    value={benchmarkFormState["attempts_per_trial"] || ""}
-                    onChange={(e: ChangeEvent) =>
+                    value={benchmarkFormState["attempts_per_trial"].value}
+                    error={
+                      !benchmarkFormState["attempts_per_trial"].valid &&
+                      benchmarkFormState["attempts_per_trial"].touched
+                    }
+                    helperText={
+                      !benchmarkFormState["attempts_per_trial"].valid &&
+                      benchmarkFormState["attempts_per_trial"].touched &&
+                      "Please enter an integer greater than 0"
+                    }
+                    onChange={(e: ChangeEvent) => {
+                      const numValue = Number(e.target.value);
                       setBenchmarkFormState({
                         ...benchmarkFormState,
-                        ["attempts_per_trial"]: Number(e.target.value),
-                      })
-                    }
+                        ["attempts_per_trial"]: {
+                          valid: numValue % 1 === 0 && numValue > 0,
+                          touched: true,
+                          value: numValue,
+                        },
+                      });
+                    }}
                   />
                   <TextField
                     label="Number of Trials"
                     type="number"
                     name="number_of_trials"
                     required
-                    value={benchmarkFormState["number_of_trials"] || ""}
-                    onChange={(e: ChangeEvent) =>
+                    value={benchmarkFormState["number_of_trials"].value}
+                    error={
+                      !benchmarkFormState["number_of_trials"].valid &&
+                      benchmarkFormState["number_of_trials"].touched
+                    }
+                    helperText={
+                      !benchmarkFormState["number_of_trials"].valid &&
+                      benchmarkFormState["number_of_trials"].touched &&
+                      "Please enter an integer greater than 0"
+                    }
+                    onChange={(e: ChangeEvent) => {
+                      const numValue = Number(e.target.value);
                       setBenchmarkFormState({
                         ...benchmarkFormState,
-                        ["number_of_trials"]: Number(e.target.value),
-                      })
-                    }
+                        ["number_of_trials"]: {
+                          value: numValue,
+                          valid: numValue % 1 === 0 && numValue > 0,
+                          touched: true,
+                        },
+                      });
+                    }}
                   />
                 </Stack>
               </Stack>
@@ -330,10 +472,13 @@ const CreateBenchmarkPage = () => {
               Cancel
             </button>
             <button
+              disabled={!pageOneIsValid}
               onClick={() => {
-                checkTextFields()
+                checkPageOneFields()
                   ? setViewState(VIEW_STATES.BENCHMARK_PG_2)
-                  : alert("Please fill out all fields before proceeding");
+                  : alert(
+                      "Please fill out all fields with valid information before proceeding"
+                    );
               }}
               className={$button.default}
             >
@@ -352,7 +497,7 @@ const CreateBenchmarkPage = () => {
                 Back
               </button>
               <button
-                type="submit"
+                disabled={!pageTwoIsValid}
                 className={$button.default}
                 onClick={checkFormFields}
               >

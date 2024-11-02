@@ -27,7 +27,7 @@ const InstructionsPage = () => {
       </div>
       <div className={$box.default}>
         <h4>Frequency:</h4>
-        <p>*insert frequency here*</p>
+        <p>{subgoal.frequency}</p>
       </div>
       <div className={$box.default}>
         <h4>Materials:</h4>
