@@ -59,7 +59,8 @@ There are two ways to run Compass locally:
 
 4. Seed database (Optional)
 
-   This runs the seed script with test data. You will first need to log in to Compass with Google OAuth to create the first user. Then, run the following:
+   This runs the seed script with test data. You will first need to log in to Compass with Google OAuth
+   to create the first user (see **Authentication** section below). Then, run the following:
    ```sh
    npm run db:seed           # Seed the database with test data
    ```
