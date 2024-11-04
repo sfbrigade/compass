@@ -101,7 +101,7 @@ There are two ways to run Compass locally:
 
 ### Authentication
 
-.env.local file will need to be updated for sign in with Google
+Your `.env.local` file will need to be updated with valid values for `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. This will allow you to log in with Google OAuth into Compass.
 
 To update GOOGLE_CLIENT_ID:
 
