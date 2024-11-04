@@ -168,9 +168,9 @@ test("getMyTasks", async (t) => {
   const FIRST_NAME = "Foo";
   const LAST_NAME = "Bar";
   const STATUS = "In Progress";
-  const DESCRIPTION = "Subgoal description";
+  const DESCRIPTION = "Benchmark description";
   const SETUP = "Setup";
-  const INSTRUCTIONS = "subgoal instructions foobar";
+  const INSTRUCTIONS = "benchmark instructions foobar";
   const CATEGORY = "writing";
   const DUE_DATE = new Date();
   const ATTEMPTS_PER_TRIAL = 15;
@@ -210,8 +210,8 @@ test("getMyTasks", async (t) => {
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const { subgoal_id } = await db
-    .insertInto("subgoal")
+  const { benchmark_id } = await db
+    .insertInto("benchmark")
     .values({
       goal_id: goal_id,
       status: STATUS,
@@ -219,6 +219,7 @@ test("getMyTasks", async (t) => {
       setup: SETUP,
       instructions: INSTRUCTIONS,
       materials: "materials",
+      frequency: "FREQUENCY",
       target_level: 100,
       baseline_level: 20,
       metric_name: "words",
@@ -231,7 +232,7 @@ test("getMyTasks", async (t) => {
   const { task_id } = await db
     .insertInto("task")
     .values({
-      subgoal_id: subgoal_id,
+      benchmark_id: benchmark_id,
       assignee_id: seed.case_manager.user_id,
       due_date: DUE_DATE,
       trial_count: TRIAL_COUNT,

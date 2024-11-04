@@ -23,7 +23,7 @@ const GoalPage = () => {
     { enabled: Boolean(goal_id) }
   );
 
-  const { data: benchmarks } = trpc.iep.getSubgoals.useQuery(
+  const { data: benchmarks } = trpc.iep.getBenchmarks.useQuery(
     { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );

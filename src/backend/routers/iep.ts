@@ -70,7 +70,7 @@ export const iep = router({
       return result;
     }),
 
-  addSubgoal: hasCaseManager
+  addBenchmark: hasCaseManager
     .input(
       z.object({
         // current_level not included, should be calculated as trial data is collected
@@ -80,6 +80,7 @@ export const iep = router({
         setup: z.string(),
         instructions: z.string(),
         materials: z.string(),
+        frequency: z.string(),
         target_level: z.number().min(0).max(100),
         baseline_level: z.number().min(0).max(100),
         metric_name: z.string(),
@@ -95,6 +96,7 @@ export const iep = router({
         setup,
         instructions,
         materials,
+        frequency,
         target_level,
         baseline_level,
         metric_name,
@@ -103,7 +105,7 @@ export const iep = router({
       } = req.input;
 
       const result = await req.ctx.db
-        .insertInto("subgoal")
+        .insertInto("benchmark")
         .values({
           goal_id,
           status,
@@ -111,6 +113,7 @@ export const iep = router({
           setup,
           instructions,
           materials,
+          frequency,
           target_level,
           baseline_level,
           metric_name,
@@ -126,32 +129,32 @@ export const iep = router({
   addTask: hasCaseManager
     .input(
       z.object({
-        subgoal_id: z.string(),
+        benchmark_id: z.string(),
         assignee_id: z.string(),
         due_date: z.date(),
         trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, assignee_id, due_date, trial_count } = req.input;
+      const { benchmark_id, assignee_id, due_date, trial_count } = req.input;
 
       const existingTask = await req.ctx.db
         .selectFrom("task")
-        .where("subgoal_id", "=", subgoal_id)
+        .where("benchmark_id", "=", benchmark_id)
         .where("assignee_id", "=", assignee_id)
         .selectAll()
         .executeTakeFirst();
 
       if (existingTask) {
         throw new Error(
-          "Task already exists: This subgoal has already been assigned to the same para"
+          "Task already exists: This benchmark has already been assigned to the same para"
         );
       }
 
       const result = await req.ctx.db
         .insertInto("task")
         .values({
-          subgoal_id,
+          benchmark_id,
           assignee_id,
           due_date,
           trial_count,
@@ -164,25 +167,25 @@ export const iep = router({
   assignTaskToParas: hasCaseManager
     .input(
       z.object({
-        subgoal_id: z.string().uuid(),
+        benchmark_id: z.string().uuid(),
         para_ids: z.string().uuid().array(),
         due_date: z.date().optional(),
         trial_count: z.number().optional(),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, para_ids, due_date, trial_count } = req.input;
+      const { benchmark_id, para_ids, due_date, trial_count } = req.input;
 
       const existingTasks = await req.ctx.db
         .selectFrom("task")
-        .where("subgoal_id", "=", subgoal_id)
+        .where("benchmark_id", "=", benchmark_id)
         .where("assignee_id", "in", para_ids)
         .selectAll()
         .execute();
 
       if (existingTasks.length > 0) {
         throw new Error(
-          "Task already exists: This subgoal has already been assigned to one or more of these paras"
+          "Task already exists: This benchmark has already been assigned to one or more of these paras"
         );
       }
 
@@ -190,7 +193,7 @@ export const iep = router({
         .insertInto("task")
         .values(
           para_ids.map((para_id) => ({
-            subgoal_id,
+            benchmark_id,
             assignee_id: para_id,
             due_date,
             trial_count,
@@ -204,13 +207,13 @@ export const iep = router({
   tempAddTaskToSelf: hasCaseManager
     .input(
       z.object({
-        subgoal_id: z.string(),
+        benchmark_id: z.string(),
         due_date: z.date(),
         trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { subgoal_id, due_date, trial_count } = req.input;
+      const { benchmark_id, due_date, trial_count } = req.input;
       const { userId } = req.ctx.auth;
 
       const shouldAdd = await req.ctx.db
@@ -218,7 +221,7 @@ export const iep = router({
         .selectAll()
         .where((eb) =>
           eb.and([
-            eb("subgoal_id", "=", subgoal_id),
+            eb("benchmark_id", "=", benchmark_id),
             eb("assignee_id", "=", userId),
           ])
         )
@@ -232,7 +235,7 @@ export const iep = router({
       const result = await req.ctx.db
         .insertInto("task")
         .values({
-          subgoal_id,
+          benchmark_id,
           assignee_id: userId,
           due_date,
           trial_count,
@@ -333,7 +336,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoals: hasCaseManager
+  getBenchmarks: hasCaseManager
     .input(
       z.object({
         goal_id: z.string(),
@@ -343,7 +346,7 @@ export const iep = router({
       const { goal_id } = req.input;
 
       const result = await req.ctx.db
-        .selectFrom("subgoal")
+        .selectFrom("benchmark")
         .where("goal_id", "=", goal_id)
         .selectAll()
         .execute();
@@ -351,24 +354,24 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoal: hasCaseManager
+  getBenchmark: hasCaseManager
     .input(
       z.object({
-        subgoal_id: z.string(),
+        benchmark_id: z.string(),
       })
     )
     .query(async (req) => {
-      const { subgoal_id } = req.input;
+      const { benchmark_id } = req.input;
 
       const result = await req.ctx.db
-        .selectFrom("subgoal")
-        .where("subgoal.subgoal_id", "=", subgoal_id)
+        .selectFrom("benchmark")
+        .where("benchmark.benchmark_id", "=", benchmark_id)
         .selectAll()
         .execute();
       return result;
     }),
 
-  getSubgoalsByAssignee: hasCaseManager
+  getBenchmarkByAssignee: hasCaseManager
     .input(
       z.object({
         assignee_id: z.string(),
@@ -378,8 +381,8 @@ export const iep = router({
       const { assignee_id } = req.input;
 
       const result = await req.ctx.db
-        .selectFrom("subgoal")
-        .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
+        .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
         .where("task.assignee_id", "=", assignee_id)
         .selectAll()
         .execute();
@@ -387,7 +390,7 @@ export const iep = router({
       return result;
     }),
 
-  getSubgoalAndTrialData: hasPara
+  getBenchmarkAndTrialData: hasPara
     .input(
       z.object({
         task_id: z.string(),
@@ -397,9 +400,9 @@ export const iep = router({
       const { task_id } = req.input;
 
       const result = await req.ctx.db
-        .selectFrom("subgoal")
-        .innerJoin("task", "subgoal.subgoal_id", "task.subgoal_id")
-        .innerJoin("goal", "subgoal.goal_id", "goal.goal_id")
+        .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+        .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
         .innerJoin("iep", "goal.iep_id", "iep.iep_id")
         .innerJoin("student", "iep.student_id", "student.student_id")
         .where("task.task_id", "=", task_id)
@@ -408,10 +411,11 @@ export const iep = router({
           "student.first_name",
           "student.last_name",
           "goal.category",
-          "subgoal.description",
-          "subgoal.instructions",
-          "subgoal.number_of_trials",
-          "subgoal.subgoal_id",
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.benchmark_id",
           "task.due_date",
           "task.seen",
           "task.trial_count",
