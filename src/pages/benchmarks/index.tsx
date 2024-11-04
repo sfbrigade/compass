@@ -11,9 +11,7 @@ import { useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
 import noBenchmarks from "../../public/img/no-benchmarks.png";
 import SearchIcon from "@mui/icons-material/Search";
-
-type SortProperty = "first_name";
-type SortDirection = "asc" | "desc";
+import { SortDirection, SortProperty } from "@/types/global";
 
 function Benchmarks() {
   const [isPara, setIsPara] = useState(false);
@@ -21,7 +19,7 @@ function Benchmarks() {
   const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
-  const { data: tasksData, isLoading, error } = trpc.para.getMyTasks.useQuery();
+  const { data: tasksData, isLoading } = trpc.para.getMyTasks.useQuery();
 
   const handleTogglePara = () => {
     setIsPara(!isPara);
@@ -29,6 +27,7 @@ function Benchmarks() {
 
   const getSortedTasks = () => {
     if (!tasksData) return [];
+
     return [...tasksData].sort((a, b) => {
       if (a[sortProperty] < b[sortProperty])
         return sortDirection === "asc" ? -1 : 1;
