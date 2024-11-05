@@ -58,9 +58,12 @@ There are two ways to run Compass locally:
    NOTE: If you get into a login loop, double check that the Docker services are running
 
 4. Seed database (Optional)
+
+   This runs the seed script with test data. You will first need to log in to Compass with Google OAuth
+   to create the first user (see **Authentication** section below). Then, run the following:
+
    ```sh
    npm run db:seed           # Seed the database with test data
-                             # Must be done after login to Compass app
    ```
 
 **Option 2: Run both server and supporting services locally**
@@ -98,7 +101,7 @@ There are two ways to run Compass locally:
 
 ### Authentication
 
-.env.local file will need to be updated for sign in with Google
+Your `.env.local` file will need to be updated with valid values for `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. This will allow you to log in with Google OAuth into Compass.
 
 To update GOOGLE_CLIENT_ID:
 
@@ -162,11 +165,24 @@ Run `npm run db:migrate` to migrate the database. However, until Compass is depl
 
 ### Troubleshooting
 
-Compass app is not running:
+#### Compass app is not running:
 
 Make sure that Docker is running in the background
 
-Client id is required:
+#### Login screen flashes like it is stuck in a loop
+
+Make sure that Docker is running in the background
+
+#### Seeding script does not work
+
+Log in with your Google credentials first, and rerun to generate the first user.
+
+### Postgres refuses to start
+
+Ensure you have port forwarding for port 5432 from Docker to your local machine set up,
+and that you are not already running Postgres in the background for another servie.
+
+#### Client id is required:
 
 Fill out the Google Client ID and Google Client Secret in .env.local
 
