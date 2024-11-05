@@ -165,11 +165,24 @@ Run `npm run db:migrate` to migrate the database. However, until Compass is depl
 
 ### Troubleshooting
 
-Compass app is not running:
+#### Compass app is not running:
 
 Make sure that Docker is running in the background
 
-Client id is required:
+#### Login screen flashes like it is stuck in a loop
+
+Make sure that Docker is running in the background
+
+#### Seeding script does not work
+
+Log in with your Google credentials first, and rerun to generate the first user.
+
+### Postgres refuses to start
+
+Ensure you have port forwarding for port 5432 from Docker to your local machine set up,
+and that you are not already running Postgres in the background for another servie.
+
+#### Client id is required:
 
 Fill out the Google Client ID and Google Client Secret in .env.local
 
