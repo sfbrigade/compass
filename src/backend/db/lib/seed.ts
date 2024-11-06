@@ -174,7 +174,7 @@ export const seedfile = async (databaseUrl: string) => {
     })
     .execute();
 
-  const { benchmark_id: benchmark_student_2_goal_id } = await db
+  const { benchmark_id: benchmark_1_student_2_goal_id } = await db
     .insertInto("benchmark")
     .values({
       goal_id: student_2_goal_id,
@@ -197,7 +197,35 @@ export const seedfile = async (databaseUrl: string) => {
   await db
     .insertInto("task")
     .values({
-      benchmark_id: benchmark_student_2_goal_id,
+      benchmark_id: benchmark_1_student_2_goal_id,
+      assignee_id: firstuser.user_id,
+    })
+    .execute();
+
+  const { benchmark_id: benchmark_2_student_2_goal_id } = await db
+    .insertInto("benchmark")
+    .values({
+      goal_id: student_2_goal_id,
+      status: "In Progress",
+      description: "Insert handouts into notebooks in appropriate place",
+      setup: "N/A",
+      instructions:
+        "Have student insert sorted notes into notebooks in appropriate position by dates",
+      materials: "Pen, folders for each class",
+      frequency: "Tuesdays and Fridays",
+      target_level: 80,
+      baseline_level: 0,
+      attempts_per_trial: 4,
+      number_of_trials: 16,
+      metric_name: "",
+    })
+    .returning("benchmark_id")
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("task")
+    .values({
+      benchmark_id: benchmark_2_student_2_goal_id,
       assignee_id: firstuser.user_id,
     })
     .execute();
