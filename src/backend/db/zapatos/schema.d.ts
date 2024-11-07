@@ -2031,6 +2031,14 @@ declare module 'zapatos/schema' {
       */
       seen: boolean;
       /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+    }
+    export interface JSONSelectable {
+      /**
       * **task.task_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
@@ -2068,6 +2076,17 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `false`
       */
       seen: boolean;
+<<<<<<< HEAD
+=======
+      /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
+    }
+    export interface Whereable {
+>>>>>>> 6568904 (add created_at timestamp to task table)
       /**
       * **task.task_id**
       * - `uuid` in database
@@ -2106,6 +2125,17 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `false`
       */
       seen?: boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, boolean | db.Parameter<boolean> | db.SQLFragment | db.ParentColumn>;
+<<<<<<< HEAD
+=======
+      /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+    }
+    export interface Insertable {
+>>>>>>> 6568904 (add created_at timestamp to task table)
       /**
       * **task.task_id**
       * - `uuid` in database
@@ -2144,6 +2174,17 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `false`
       */
       seen?: boolean | db.Parameter<boolean> | db.DefaultType | db.SQLFragment;
+<<<<<<< HEAD
+=======
+      /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+    }
+    export interface Updatable {
+>>>>>>> 6568904 (add created_at timestamp to task table)
       /**
       * **task.task_id**
       * - `uuid` in database
@@ -2194,6 +2235,11 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'benchmark_assignee_unique' | 'task_pkey';
     export type Column = keyof Selectable;
