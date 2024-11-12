@@ -7,11 +7,11 @@ import Sort from "@mui/icons-material/Sort";
 import { Box, Container } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
 import noBenchmarks from "../../public/img/no-benchmarks.png";
 import SearchIcon from "@mui/icons-material/Search";
-import { SortDirection, SortProperty } from "@/types/global";
+import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
 function Benchmarks() {
   const [isPara, setIsPara] = useState(false);
@@ -19,23 +19,29 @@ function Benchmarks() {
   const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
+  const [displayedTasks, setDisplayedTasks] = useState<TaskData[]>([]);
+
   const { data: tasksData, isLoading } = trpc.para.getMyTasks.useQuery();
 
   const handleTogglePara = () => {
     setIsPara(!isPara);
   };
 
-  const getSortedTasks = () => {
-    if (!tasksData) return [];
-
-    return [...tasksData].sort((a, b) => {
-      if (a[sortProperty] < b[sortProperty])
-        return sortDirection === "asc" ? -1 : 1;
-      if (a[sortProperty] > b[sortProperty])
-        return sortDirection === "asc" ? 1 : -1;
-      return 0;
-    });
-  };
+  useEffect(() => {
+    if (!tasksData) {
+      setDisplayedTasks([]);
+    } else {
+      setDisplayedTasks(
+        [...tasksData].sort((a, b) => {
+          if (a[sortProperty] < b[sortProperty])
+            return sortDirection === "asc" ? -1 : 1;
+          if (a[sortProperty] > b[sortProperty])
+            return sortDirection === "asc" ? 1 : -1;
+          return 0;
+        })
+      );
+    }
+  }, [sortDirection, sortProperty, tasksData]);
 
   const handleSort = (property: SortProperty) => {
     if (property === sortProperty) {
@@ -45,8 +51,6 @@ function Benchmarks() {
       setSortDirection("asc");
     }
   };
-
-  const displayedTasks = getSortedTasks();
 
   if (isLoading) {
     return <div>Loading...</div>;
