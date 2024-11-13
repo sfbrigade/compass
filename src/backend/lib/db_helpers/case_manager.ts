@@ -66,21 +66,17 @@ export async function sendInviteEmail(
   case_manager_name: string,
   env: Env
 ): Promise<void> {
-  await getTransporter(env).sendMail({
-    from: fromEmail,
-    to: toEmail,
-    subject: `Welcome to ${case_manager_name}'s classroom`,
-    text: `${first_name}, get set up for data collection with Compass`,
-    html: `Hi ${first_name}! <br/>
-${case_manager_name} has added you as a staff member for their classroom in Compass. <br/>
-Compass is an all in one tool for collecting data for students’ IEP goals and empowering your classroom team to better assist students. <br/> <br/>
-How does Compass work? <br/>
-Compass will help you organize data collection for the students you work with and securely store the data you collect. <br/>
-${case_manager_name} will add you to data collection tasks for specific student goals. Upon logging in, you’ll see which students you’re expected to collect data for. 
-Instructions from ${case_manager_name} will be available with each assignment. When you’re ready to begin, you’ll be able to collect and submit data and notes directly in the app. <br/><br/>
-Getting started <br/>
-To get set up with Compass, use the link below and log in with the email address you received this message at. <br/>
-Thank you for the key role you play in improving student outcomes!`,
+  await getTransporter(env).send({
+    message: {
+      from: fromEmail,
+      to: toEmail,
+    },
+    template: "invite_para",
+    locals: {
+      case_manager_name,
+      first_name,
+      env,
+    },
   });
   return;
 }
