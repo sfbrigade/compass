@@ -3,19 +3,33 @@ import { trpc } from "@/client/lib/trpc";
 import { Table2, Column, BaseEntity } from "@/components/table/table2";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import {
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import { SelectChangeEvent } from "@mui/material/Select";
 
 interface User extends BaseEntity {
   user_id: string;
   role: string;
 }
 
+const ROLE_OPTIONS = [
+  { label: "Para", value: "PARA" },
+  { label: "Case Manager", value: "CASE_MANAGER" },
+  { label: "Admin", value: "ADMIN" },
+] as const;
+
 const AdminHome: React.FC = () => {
+  const utils = trpc.useContext();
   const router = useRouter();
   const [page, setPage] = useState(1);
   const [sortBy, setSortBy] = useState<keyof User>("first_name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
-  const [searchTerm] = useState("");
-  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const pageSize = 10;
 
   const { data, isLoading } = trpc.user.getUsers.useQuery({
@@ -23,8 +37,25 @@ const AdminHome: React.FC = () => {
     pageSize,
     sortBy,
     sortOrder,
-    search: debouncedSearchTerm,
+    search: searchTerm,
   });
+
+  const createUserMutation = trpc.user.createUser.useMutation({
+    onSuccess: async () => {
+      await utils.user.getUsers.invalidate();
+    },
+  });
+
+  const handleAddUser = async (userData: Omit<User, "id">) => {
+    try {
+      await createUserMutation.mutateAsync({
+        ...userData,
+        role: userData.role || "PARA", // Set default role if needed
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const handleSort = (newSortBy: keyof User, newSortOrder: "asc" | "desc") => {
     setSortBy(newSortBy);
@@ -32,17 +63,75 @@ const AdminHome: React.FC = () => {
   };
 
   const handleSearch = (search: string) => {
-    setDebouncedSearchTerm(search);
+    setSearchTerm(search);
     setPage(1); // Reset to first page when searching
   };
 
   if (isLoading) return <div>Loading...</div>;
 
   const columns: Column<User>[] = [
-    { id: "first_name", label: "First Name" },
-    { id: "last_name", label: "Last Name" },
-    { id: "email", label: "Email" },
-    { id: "role", label: "Role" },
+    {
+      id: "first_name",
+      label: "First Name",
+      renderInput: (value, onChange) => (
+        <TextField
+          size="small"
+          label="First Name"
+          value={(value as string) || ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ),
+    },
+    {
+      id: "last_name",
+      label: "Last Name",
+      renderInput: (value, onChange) => (
+        <TextField
+          size="small"
+          label="Last Name"
+          value={(value as string) || ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ),
+    },
+    {
+      id: "email",
+      label: "Email",
+      renderInput: (value, onChange) => (
+        <TextField
+          size="small"
+          label="Email"
+          value={(value as string) || ""}
+          onChange={(e) => onChange(e.target.value)}
+        />
+      ),
+    },
+    {
+      id: "role",
+      label: "Role",
+      renderInput: (value, onChange) => (
+        <FormControl size="small">
+          <InputLabel>Role</InputLabel>
+          <Select
+            value={(value as (typeof ROLE_OPTIONS)[number]["value"]) || ""}
+            label="Role"
+            onChange={(e: SelectChangeEvent) => onChange(e.target.value)}
+            sx={{ minWidth: 120 }}
+            MenuProps={{
+              PaperProps: {
+                elevation: 1,
+              },
+            }}
+          >
+            {ROLE_OPTIONS.map(({ label, value }) => (
+              <MenuItem key={value} value={value}>
+                {label}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      ),
+    },
   ];
 
   const handleRowClick = async (user: User) => {
@@ -65,6 +154,8 @@ const AdminHome: React.FC = () => {
         onSort={handleSort}
         onSearch={handleSearch}
         searchTerm={searchTerm}
+        onAdd={handleAddUser}
+        showAddRow={true}
       />
     </div>
   );

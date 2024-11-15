@@ -27,13 +27,13 @@ export interface BaseEntity {
 export interface Column<T> {
   id: keyof T;
   label: string;
-  hasInput?: boolean;
+  renderInput?: (value: any, onChange: (value: any) => void) => React.ReactNode;
 }
 
 interface TableProps<T extends BaseEntity> {
   data: T[];
   columns: Column<T>[];
-  type: "Students" | "Staff" | "Users";
+  type: string;
   onRowClick?: (row: T) => void;
   page?: number;
   totalPages?: number;
@@ -43,6 +43,8 @@ interface TableProps<T extends BaseEntity> {
   onSort: (sortBy: keyof T, sortOrder: "asc" | "desc") => void;
   onSearch?: (search: string) => void;
   searchTerm?: string;
+  onAdd?: (data: Omit<T, "id">) => Promise<void>;
+  showAddRow?: boolean;
 }
 
 const StyledTableRow = styled(TableRow)(() => ({
@@ -68,8 +70,12 @@ export function Table2<T extends BaseEntity>({
   onSort,
   onSearch,
   searchTerm = "",
+  onAdd,
+  showAddRow = false,
 }: TableProps<T>) {
   const [localSearchTerm, setLocalSearchTerm] = useState(searchTerm);
+  const [newRowData, setNewRowData] = useState<Partial<T>>({});
+  const [isAddingRow, setIsAddingRow] = useState(false);
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     if (event.key === "Enter") {
@@ -83,10 +89,30 @@ export function Table2<T extends BaseEntity>({
     onSort(property, isAsc ? "desc" : "asc");
   };
 
+  const handleAddRow = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (onAdd) {
+      try {
+        await onAdd(newRowData as Omit<T, "id">);
+        setNewRowData({});
+        setIsAddingRow(false);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
+
   return (
     <Box sx={{ width: "100%" }}>
       <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}>
-        <h3>{type}</h3>
+        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
+          <h3>{type}</h3>
+          {onAdd && !isAddingRow && showAddRow && (
+            <Button variant="contained" onClick={() => setIsAddingRow(true)}>
+              Add {type.slice(0, -1)}
+            </Button>
+          )}
+        </Box>
         <TextField
           size="small"
           placeholder="Search..."
@@ -129,6 +155,56 @@ export function Table2<T extends BaseEntity>({
             </TableRow>
           </TableHead>
           <TableBody>
+            {isAddingRow && (
+              <TableRow>
+                <TableCell colSpan={columns.length + 1}>
+                  <form onSubmit={handleAddRow}>
+                    <Box
+                      sx={{ display: "flex", gap: 2, alignItems: "flex-end" }}
+                    >
+                      {columns.map((column) => (
+                        <Box key={column.id.toString()}>
+                          {column.renderInput?.(
+                            newRowData[column.id],
+                            (value: T[keyof T]) =>
+                              setNewRowData((prev) => ({
+                                ...prev,
+                                [column.id]: value,
+                              }))
+                          ) ?? (
+                            <TextField
+                              size="small"
+                              label={column.label}
+                              value={newRowData[column.id] || ""}
+                              onChange={(e) =>
+                                setNewRowData((prev) => ({
+                                  ...prev,
+                                  [column.id]: e.target.value,
+                                }))
+                              }
+                            />
+                          )}
+                        </Box>
+                      ))}
+                      <Box sx={{ display: "flex", gap: 1 }}>
+                        <Button type="submit" variant="contained" size="small">
+                          Add
+                        </Button>
+                        <Button
+                          onClick={() => {
+                            setIsAddingRow(false);
+                            setNewRowData({});
+                          }}
+                          size="small"
+                        >
+                          Cancel
+                        </Button>
+                      </Box>
+                    </Box>
+                  </form>
+                </TableCell>
+              </TableRow>
+            )}
             {data.map((row, index) => (
               <StyledTableRow
                 key={row.id || index}

@@ -14,6 +14,15 @@ const paginationInput = z.object({
   search: z.string().optional(),
 });
 
+const createUserSchema = z.object({
+  first_name: z.string(),
+  last_name: z.string(),
+  email: z.string().email(),
+  role: z
+    .enum(["ADMIN", "CASE_MANAGER", "PARA"])
+    .transform((role) => role.toLowerCase()),
+});
+
 export const user = router({
   getMe: hasAuthenticated.query(async (req) => {
     const { userId } = req.ctx.auth;
@@ -105,5 +114,33 @@ export const user = router({
       .execute();
 
     return result.length > 0;
+  }),
+
+  createUser: hasAdmin.input(createUserSchema).mutation(async (req) => {
+    const { first_name, last_name, email, role } = req.input;
+
+    // Check if user already exists
+    const existingUser = await req.ctx.db
+      .selectFrom("user")
+      .where("email", "=", email)
+      .selectAll()
+      .executeTakeFirst();
+
+    if (existingUser) {
+      throw new Error("User with this email already exists");
+    }
+
+    const user = await req.ctx.db
+      .insertInto("user")
+      .values({
+        first_name,
+        last_name,
+        email,
+        role,
+      })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+
+    return user;
   }),
 });
