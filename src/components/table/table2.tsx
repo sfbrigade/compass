@@ -24,10 +24,13 @@ export interface BaseEntity {
   [key: string]: string | number | undefined;
 }
 
-export interface Column<T> {
+export interface Column<T extends BaseEntity> {
   id: keyof T;
   label: string;
-  renderInput?: (value: any, onChange: (value: any) => void) => React.ReactNode;
+  renderInput?: (
+    value: T[keyof T] | undefined,
+    onChange: (value: T[keyof T]) => void
+  ) => React.ReactNode;
 }
 
 interface TableProps<T extends BaseEntity> {
