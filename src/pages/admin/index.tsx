@@ -137,7 +137,6 @@ const AdminHome: React.FC = () => {
 
   return (
     <div>
-      <h3>Admin Utilities</h3>
       <Table2<User>
         data={data?.users ?? []}
         columns={columns}

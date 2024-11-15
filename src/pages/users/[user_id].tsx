@@ -1,5 +1,6 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack } from "@mui/material";
+import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { UserType, ROLE_OPTIONS } from "@/types/auth";
@@ -8,6 +9,7 @@ import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "@/styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
 import { getRoleLabel } from "@/types/auth";
+import { Dropdown } from "@/components/design_system/dropdown/Dropdown";
 
 interface UserFormData {
   first_name: string;
@@ -42,18 +44,21 @@ const ViewUserPage = () => {
     onSuccess: () => utils.user.getUserById.invalidate(),
   });
 
+  const [selectedRole, setSelectedRole] = useState(
+    user?.role.toUpperCase() || ""
+  );
+
   const handleEditUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
 
     if (!user) return;
 
-    const role = formData.get("role") as string;
     const userData: UserFormData = {
       first_name: formData.get("firstName") as string,
       last_name: formData.get("lastName") as string,
       email: formData.get("email") as string,
-      role: role as UserType,
+      role: selectedRole as UserType,
     };
 
     editMutation.mutate({
@@ -74,7 +79,9 @@ const ViewUserPage = () => {
           <h1>
             {user.first_name} {user.last_name}
           </h1>
-          <Button onClick={handleOpen}>Edit User</Button>
+          <Button onClick={handleOpen} className={`${$button.secondary}`}>
+            Edit
+          </Button>
         </Box>
 
         <Box sx={{ display: "grid", gap: 2 }}>
@@ -89,65 +96,86 @@ const ViewUserPage = () => {
         <Modal
           open={open}
           onClose={handleClose}
-          aria-labelledby="edit-user-modal"
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
         >
-          <Box className={$CompassModal.modalContent}>
-            <h2>Edit User</h2>
-            <form onSubmit={handleEditUser} className={$Form.formPadding}>
-              <div className={$input.default}>
-                <input
-                  type="text"
-                  name="firstName"
-                  defaultValue={user.first_name}
-                  placeholder="First Name"
-                  required
-                />
-                <input
-                  type="text"
-                  name="lastName"
-                  defaultValue={user.last_name}
-                  placeholder="Last Name"
-                  required
-                />
-                <input
-                  type="email"
-                  name="email"
-                  defaultValue={user.email}
-                  placeholder="Email"
-                  required
-                />
-                <select
-                  name="role"
-                  defaultValue={user.role.toUpperCase()}
-                  required
+          <Box className={$CompassModal.editModalContent}>
+            <p id="modal-modal-title" className={$CompassModal.editModalHeader}>
+              Editing {user?.first_name || "User"} {user?.last_name || ""}
+            </p>
+            <Typography
+              id="modal-modal-description"
+              sx={{ mt: 2 }}
+              component="div"
+            >
+              <Stack gap={0.5} sx={{ width: "100%" }}>
+                <form
+                  className={$CompassModal.editForm}
+                  id="edit"
+                  onSubmit={handleEditUser}
                 >
-                  {ROLE_OPTIONS.map(({ value, label }) => (
-                    <option key={value} value={value}>
-                      {label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <Box
-                sx={{
-                  display: "flex",
-                  gap: 2,
-                  justifyContent: "flex-end",
-                  mt: 2,
-                }}
-              >
-                <button type="submit" className={$button.default}>
-                  Save Changes
-                </button>
-                <button
-                  type="button"
-                  onClick={handleClose}
-                  className={$button.default}
-                >
-                  Cancel
-                </button>
-              </Box>
-            </form>
+                  <Stack gap={0.5}>
+                    <Container className={$CompassModal.editModalContainer}>
+                      <TextField
+                        className={$CompassModal.editModalTextfield}
+                        label="First Name"
+                        type="text"
+                        name="firstName"
+                        defaultValue={user?.first_name || ""}
+                        required
+                      />
+                    </Container>
+                    <Container className={$CompassModal.editModalContainer}>
+                      <TextField
+                        className={$CompassModal.editModalTextfield}
+                        label="Last Name"
+                        type="text"
+                        name="lastName"
+                        defaultValue={user?.last_name || ""}
+                        required
+                      />
+                    </Container>
+                    <Container className={$CompassModal.editModalContainer}>
+                      <TextField
+                        className={$CompassModal.editModalTextfield}
+                        label="Email"
+                        type="text"
+                        name="email"
+                        defaultValue={user?.email || ""}
+                        required
+                      />
+                    </Container>
+                    <Container className={$CompassModal.editModalContainer}>
+                      <Dropdown
+                        itemList={ROLE_OPTIONS}
+                        selectedOption={selectedRole}
+                        setSelectedOption={setSelectedRole}
+                        label="Role"
+                        className={$CompassModal.editModalTextfield}
+                      />
+                    </Container>
+                  </Stack>
+                </form>
+
+                <Container className={$CompassModal.editModalContainerButtons}>
+                  <Box className={$CompassModal.editModalButtonWrap}>
+                    <Button
+                      onClick={handleClose}
+                      className={`${$button.secondary}`}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      className={`${$button.default}`}
+                      type="submit"
+                      form="edit"
+                    >
+                      Save
+                    </Button>
+                  </Box>
+                </Container>
+              </Stack>
+            </Typography>
           </Box>
         </Modal>
       </Container>

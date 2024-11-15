@@ -24,7 +24,7 @@ interface DropdownProps {
   optionDisabled?: string[];
 }
 
-const Dropdown = ({
+export const Dropdown = ({
   itemList,
   selectedOption,
   setSelectedOption,
