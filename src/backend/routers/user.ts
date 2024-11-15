@@ -73,13 +73,13 @@ export const user = router({
     }
 
     // Separate count query
-    const countQuery = req.ctx.db
+    let countQuery = req.ctx.db
       .selectFrom("user")
       .select(req.ctx.db.fn.countAll().as("count"));
 
     // Apply search filter to count query if exists
     if (search) {
-      countQuery.where((eb) =>
+      countQuery = countQuery.where((eb) =>
         eb.or([
           eb("first_name", "ilike", `%${search}%`),
           eb("last_name", "ilike", `%${search}%`),

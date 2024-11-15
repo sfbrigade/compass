@@ -150,8 +150,9 @@ const ViewUserPage = () => {
                         itemList={ROLE_OPTIONS}
                         selectedOption={selectedRole}
                         setSelectedOption={setSelectedRole}
-                        label="Role"
+                        label="Role *"
                         className={$CompassModal.editModalTextfield}
+                        required
                       />
                     </Container>
                   </Stack>

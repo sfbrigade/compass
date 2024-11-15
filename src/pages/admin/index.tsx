@@ -26,7 +26,7 @@ const AdminHome: React.FC = () => {
   const [sortBy, setSortBy] = useState<keyof User>("first_name");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
   const [searchTerm, setSearchTerm] = useState("");
-  const pageSize = 10;
+  const pageSize = 2;
 
   const { data, isLoading } = trpc.user.getUsers.useQuery({
     page,
