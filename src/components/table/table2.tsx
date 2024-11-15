@@ -31,6 +31,7 @@ export interface Column<T extends BaseEntity> {
     value: T[keyof T] | undefined,
     onChange: (value: T[keyof T]) => void
   ) => React.ReactNode;
+  renderCell?: (value: T[keyof T]) => React.ReactNode;
 }
 
 interface TableProps<T extends BaseEntity> {
@@ -215,7 +216,9 @@ export function Table2<T extends BaseEntity>({
               >
                 {columns.map((column) => (
                   <TableCell key={column.id.toString()}>
-                    {row[column.id]}
+                    {column.renderCell
+                      ? column.renderCell(row[column.id])
+                      : row[column.id]}
                   </TableCell>
                 ))}
               </StyledTableRow>

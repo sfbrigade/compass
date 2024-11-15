@@ -3,6 +3,7 @@ import { trpc } from "@/client/lib/trpc";
 import { Table2, Column, BaseEntity } from "@/components/table/table2";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { ROLE_OPTIONS } from "@/types/auth";
 import {
   TextField,
   FormControl,
@@ -11,17 +12,12 @@ import {
   MenuItem,
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
+import { getRoleLabel } from "@/types/auth";
 
 interface User extends BaseEntity {
   user_id: string;
   role: string;
 }
-
-const ROLE_OPTIONS = [
-  { label: "Para", value: "PARA" },
-  { label: "Case Manager", value: "CASE_MANAGER" },
-  { label: "Admin", value: "ADMIN" },
-] as const;
 
 const AdminHome: React.FC = () => {
   const utils = trpc.useContext();
@@ -109,11 +105,12 @@ const AdminHome: React.FC = () => {
     {
       id: "role",
       label: "Role",
+      renderCell: (value) => getRoleLabel(value as string),
       renderInput: (value, onChange) => (
         <FormControl size="small">
           <InputLabel>Role</InputLabel>
           <Select
-            value={(value as (typeof ROLE_OPTIONS)[number]["value"]) || ""}
+            value={(value as string)?.toUpperCase() || ""}
             label="Role"
             onChange={(e: SelectChangeEvent) => onChange(e.target.value)}
             sx={{ minWidth: 120 }}
@@ -135,7 +132,7 @@ const AdminHome: React.FC = () => {
   ];
 
   const handleRowClick = async (user: User) => {
-    await router.push(`/staff/${user.user_id}`);
+    await router.push(`/users/${user.user_id}`);
   };
 
   return (

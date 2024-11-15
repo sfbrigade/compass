@@ -1,5 +1,6 @@
 import { hasAuthenticated, hasAdmin, router } from "../trpc";
 import { z } from "zod";
+import { UserType, ROLE_OPTIONS } from "@/types/auth";
 
 const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
 const sortBySchema = z
@@ -22,6 +23,8 @@ const createUserSchema = z.object({
     .enum(["ADMIN", "CASE_MANAGER", "PARA"])
     .transform((role) => role.toLowerCase()),
 });
+
+const roleValues = ROLE_OPTIONS.map((r) => r.value) as [string, ...string[]];
 
 export const user = router({
   getMe: hasAuthenticated.query(async (req) => {
@@ -143,4 +146,53 @@ export const user = router({
 
     return user;
   }),
+
+  getUserById: hasAdmin
+    .input(z.object({ user_id: z.string() }))
+    .query(async (req) => {
+      const { user_id } = req.input;
+
+      return await req.ctx.db
+        .selectFrom("user")
+        .selectAll()
+        .where("user_id", "=", user_id)
+        .executeTakeFirstOrThrow();
+    }),
+
+  editUser: hasAdmin
+    .input(
+      z.object({
+        user_id: z.string(),
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email(),
+        role: z.enum(roleValues).transform((role) => {
+          switch (role) {
+            case "ADMIN":
+              return UserType.Admin;
+            case "CASE_MANAGER":
+              return UserType.CaseManager;
+            case "PARA":
+              return UserType.Para;
+            default:
+              return UserType.User;
+          }
+        }),
+      })
+    )
+    .mutation(async (req) => {
+      const { user_id, first_name, last_name, email, role } = req.input;
+
+      return await req.ctx.db
+        .updateTable("user")
+        .set({
+          first_name,
+          last_name,
+          email: email.toLowerCase(),
+          role,
+        })
+        .where("user_id", "=", user_id)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+    }),
 });
