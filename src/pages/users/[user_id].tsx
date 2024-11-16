@@ -2,7 +2,7 @@ import { trpc } from "@/client/lib/trpc";
 import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { UserType, ROLE_OPTIONS } from "@/types/auth";
 import $CompassModal from "@/components/design_system/modal/CompassModal.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
@@ -44,9 +44,13 @@ const ViewUserPage = () => {
     onSuccess: () => utils.user.getUserById.invalidate(),
   });
 
-  const [selectedRole, setSelectedRole] = useState(
-    user?.role.toUpperCase() || ""
-  );
+  const [selectedRole, setSelectedRole] = useState("");
+
+  useEffect(() => {
+    if (user?.role) {
+      setSelectedRole(user.role.toUpperCase());
+    }
+  }, [user?.role]);
 
   const handleEditUser = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

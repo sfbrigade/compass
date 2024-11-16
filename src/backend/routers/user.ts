@@ -2,8 +2,8 @@ import { hasAuthenticated, hasAdmin, router } from "../trpc";
 import { z } from "zod";
 import { UserType, ROLE_OPTIONS } from "@/types/auth";
 
-const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
-const sortBySchema = z
+export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
+export const sortBySchema = z
   .enum(["first_name", "last_name", "email", "role"])
   .default("first_name");
 

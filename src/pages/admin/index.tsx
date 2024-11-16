@@ -13,18 +13,23 @@ import {
 } from "@mui/material";
 import { SelectChangeEvent } from "@mui/material/Select";
 import { getRoleLabel } from "@/types/auth";
+import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
+import { z } from "zod";
 
 interface User extends BaseEntity {
   user_id: string;
   role: string;
 }
 
+type SortBy = z.infer<typeof sortBySchema>;
+type SortOrder = z.infer<typeof sortOrderSchema>;
+
 const AdminHome: React.FC = () => {
   const utils = trpc.useContext();
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<keyof User>("first_name");
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [sortBy, setSortBy] = useState<SortBy>("first_name");
+  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const pageSize = 2;
 
@@ -46,14 +51,14 @@ const AdminHome: React.FC = () => {
     try {
       await createUserMutation.mutateAsync({
         ...userData,
-        role: userData.role || "PARA", // Set default role if needed
+        role: userData.role || "PARA",
       });
     } catch (error) {
       console.error(error);
     }
   };
 
-  const handleSort = (newSortBy: keyof User, newSortOrder: "asc" | "desc") => {
+  const handleSort = (newSortBy: SortBy, newSortOrder: SortOrder) => {
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
   };
