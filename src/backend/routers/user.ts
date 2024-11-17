@@ -1,6 +1,7 @@
 import { hasAuthenticated, hasAdmin, router } from "../trpc";
 import { z } from "zod";
 import { UserType, ROLE_OPTIONS } from "@/types/auth";
+import { TRPCError } from "@trpc/server";
 
 export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
 export const sortBySchema = z
@@ -130,7 +131,10 @@ export const user = router({
       .executeTakeFirst();
 
     if (existingUser) {
-      throw new Error("User with this email already exists");
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "User with this email already exists",
+      });
     }
 
     const user = await req.ctx.db
