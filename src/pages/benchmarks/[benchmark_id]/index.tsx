@@ -273,8 +273,8 @@ const BenchmarkPage = () => {
         {hasInputChanged || updateTrialMutation.isLoading
           ? "Saving..."
           : updateTrialMutation.isError
-          ? "uh oh"
-          : "Saved to Cloud"}
+            ? "uh oh"
+            : "Saved to Cloud"}
       </div>
 
       <Grid container spacing={2}>
