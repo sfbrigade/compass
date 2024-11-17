@@ -7,49 +7,17 @@ import {
   TableHead,
   TableRow,
   Box,
-  TextField,
   Button,
   TableSortLabel,
+  TextField,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
-import styles from "./Table.module.css";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
-
-export interface BaseEntity {
-  id?: string | number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  [key: string]: string | number | undefined;
-}
-
-export interface Column<T extends BaseEntity> {
-  id: keyof T;
-  label: string;
-  renderInput?: (
-    value: T[keyof T] | undefined,
-    onChange: (value: T[keyof T]) => void
-  ) => React.ReactNode;
-  renderCell?: (value: T[keyof T]) => React.ReactNode;
-}
-
-interface TableProps<T extends BaseEntity> {
-  data: T[];
-  columns: Column<T>[];
-  type: string;
-  onRowClick?: (row: T) => void;
-  page?: number;
-  totalPages?: number;
-  onPageChange?: (page: number) => void;
-  sortBy: keyof T;
-  sortOrder: "asc" | "desc";
-  onSort: (sortBy: keyof T, sortOrder: "asc" | "desc") => void;
-  onSearch?: (search: string) => void;
-  searchTerm?: string;
-  onAdd?: (data: Omit<T, "id">) => Promise<void>;
-  showAddRow?: boolean;
-}
+import { TableProps, BaseEntity } from "./types";
+import { renderTableInput, renderTableCell } from "./renderers";
+import $table from "./Table.module.css";
+import $button from "@/components/design_system/button/Button.module.css";
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
@@ -96,30 +64,18 @@ export function Table2<T extends BaseEntity>({
   const handleAddRow = async (e: React.FormEvent) => {
     e.preventDefault();
     if (onAdd) {
-      try {
-        await onAdd(newRowData as Omit<T, "id">);
-        setNewRowData({});
-        setIsAddingRow(false);
-      } catch (error) {
-        console.error(error);
-      }
+      await onAdd(newRowData as Omit<T, "id">);
+      setIsAddingRow(false);
+      setNewRowData({});
     }
   };
 
   return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ mb: 2, display: "flex", justifyContent: "space-between" }}>
-        <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
-          <h3>{type}</h3>
-          {onAdd && !isAddingRow && showAddRow && (
-            <Button variant="contained" onClick={() => setIsAddingRow(true)}>
-              Add {type.slice(0, -1)}
-            </Button>
-          )}
-        </Box>
+    <Box>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
         <TextField
           size="small"
-          placeholder="Search..."
+          placeholder={`Search ${type}`}
           value={localSearchTerm}
           onChange={(e) => setLocalSearchTerm(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -127,32 +83,36 @@ export function Table2<T extends BaseEntity>({
             startAdornment: <SearchIcon />,
           }}
         />
+        {showAddRow && !isAddingRow && (
+          <button
+            onClick={() => setIsAddingRow(true)}
+            className={$button.default}
+          >
+            Add {type}
+          </button>
+        )}
       </Box>
 
       <TableContainer>
         <Table>
-          <TableHead className={styles.header}>
+          <TableHead className={$table.header}>
             <TableRow>
               {columns.map((column) => (
-                <TableCell
-                  key={column.id.toString()}
-                  align="left"
-                  sortDirection={sortBy === column.id ? sortOrder : false}
-                >
+                <TableCell key={column.id.toString()}>
                   <TableSortLabel
                     active={sortBy === column.id}
                     direction={sortBy === column.id ? sortOrder : "asc"}
                     onClick={() => handleRequestSort(column.id)}
-                    className={styles.headerLabel}
+                    className={$table.headerLabel}
                   >
                     {column.label}
-                    {sortBy === column.id ? (
+                    {sortBy === column.id && (
                       <Box component="span" sx={visuallyHidden}>
                         {sortOrder === "desc"
                           ? "sorted descending"
                           : "sorted ascending"}
                       </Box>
-                    ) : null}
+                    )}
                   </TableSortLabel>
                 </TableCell>
               ))}
@@ -161,32 +121,21 @@ export function Table2<T extends BaseEntity>({
           <TableBody>
             {isAddingRow && (
               <TableRow>
-                <TableCell colSpan={columns.length + 1}>
+                <TableCell colSpan={columns.length}>
                   <form onSubmit={handleAddRow}>
                     <Box
                       sx={{ display: "flex", gap: 2, alignItems: "flex-end" }}
                     >
                       {columns.map((column) => (
                         <Box key={column.id.toString()}>
-                          {column.renderInput?.(
+                          {renderTableInput<T>(
+                            column,
                             newRowData[column.id],
-                            (value: T[keyof T]) =>
+                            (value) =>
                               setNewRowData((prev) => ({
                                 ...prev,
                                 [column.id]: value,
                               }))
-                          ) ?? (
-                            <TextField
-                              size="small"
-                              label={column.label}
-                              value={newRowData[column.id] || ""}
-                              onChange={(e) =>
-                                setNewRowData((prev) => ({
-                                  ...prev,
-                                  [column.id]: e.target.value,
-                                }))
-                              }
-                            />
                           )}
                         </Box>
                       ))}
@@ -209,16 +158,14 @@ export function Table2<T extends BaseEntity>({
                 </TableCell>
               </TableRow>
             )}
-            {data.map((row, index) => (
+            {data.map((row) => (
               <StyledTableRow
-                key={row.id || index}
+                key={row.id || row.email}
                 onClick={() => onRowClick?.(row)}
               >
                 {columns.map((column) => (
                   <TableCell key={column.id.toString()}>
-                    {column.renderCell
-                      ? column.renderCell(row[column.id])
-                      : row[column.id]}
+                    {renderTableCell(column, row[column.id])}
                   </TableCell>
                 ))}
               </StyledTableRow>
