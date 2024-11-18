@@ -4,14 +4,17 @@ import { Table2 } from "@/components/table/table2";
 import { ColumnDefinition, BaseEntity } from "@/components/table/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { ROLE_OPTIONS } from "@/types/auth";
+import { ROLE_OPTIONS, Roles } from "@/types/auth";
 import { getRoleLabel } from "@/types/auth";
 import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
 import { z } from "zod";
 
 interface User extends BaseEntity {
   user_id: string;
-  role: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  role: Roles;
 }
 
 type SortBy = z.infer<typeof sortBySchema>;
@@ -21,7 +24,8 @@ const AdminHome: React.FC = () => {
   const utils = trpc.useContext();
   const router = useRouter();
   const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] = useState<SortBy>("first_name");
+  const [sortBy, setSortBy] =
+    useState<Omit<keyof User, "user_id">>("first_name");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [searchTerm, setSearchTerm] = useState("");
   const pageSize = 10;
@@ -29,7 +33,7 @@ const AdminHome: React.FC = () => {
   const { data, isLoading } = trpc.user.getUsers.useQuery({
     page,
     pageSize,
-    sortBy,
+    sortBy: sortBy as SortBy,
     sortOrder,
     search: searchTerm,
   });
@@ -51,7 +55,7 @@ const AdminHome: React.FC = () => {
     }
   };
 
-  const handleSort = (newSortBy: SortBy, newSortOrder: SortOrder) => {
+  const handleSort = (newSortBy: keyof User, newSortOrder: SortOrder) => {
     setSortBy(newSortBy);
     setSortOrder(newSortOrder);
   };
@@ -85,7 +89,7 @@ const AdminHome: React.FC = () => {
       id: "role",
       label: "Role",
       type: "select",
-      options: ROLE_OPTIONS,
+      options: [...ROLE_OPTIONS],
       customRender: (value) => (value ? getRoleLabel(value as string) : ""),
     },
   ];
@@ -95,14 +99,14 @@ const AdminHome: React.FC = () => {
   return (
     <div>
       <Table2<User>
-        data={data?.users ?? []}
+        data={(data?.users as User[]) ?? []}
         columns={columns}
         type="Users"
         onRowClick={handleRowClick}
         page={page}
         totalPages={data?.totalPages ?? 1}
         onPageChange={setPage}
-        sortBy={sortBy}
+        sortBy={sortBy as SortBy}
         sortOrder={sortOrder}
         onSort={handleSort}
         onSearch={handleSearch}

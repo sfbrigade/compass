@@ -1,6 +1,6 @@
 import { hasAuthenticated, hasAdmin, router } from "../trpc";
 import { z } from "zod";
-import { UserType, ROLE_OPTIONS } from "@/types/auth";
+import { UserType, ROLE_OPTIONS, Roles } from "@/types/auth";
 import { TRPCError } from "@trpc/server";
 
 export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
@@ -20,9 +20,7 @@ const createUserSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   email: z.string().email(),
-  role: z
-    .enum(["ADMIN", "CASE_MANAGER", "PARA"])
-    .transform((role) => role.toLowerCase()),
+  role: z.string().transform((role) => role.toUpperCase() as Roles),
 });
 
 const roleValues = ROLE_OPTIONS.map((r) => r.value) as [string, ...string[]];

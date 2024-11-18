@@ -1,3 +1,5 @@
+import { Roles } from "@/types/auth";
+
 export type ColumnType = "text" | "number" | "select" | "date";
 
 export interface BaseEntity {
@@ -5,7 +7,7 @@ export interface BaseEntity {
   first_name: string;
   last_name: string;
   email: string;
-  [key: string]: string | number | Date | undefined;
+  role: Roles;
 }
 
 export interface SelectOption {

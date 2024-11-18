@@ -149,12 +149,11 @@ const ViewUserPage = () => {
                     </Container>
                     <Container className={$CompassModal.editModalContainer}>
                       <Dropdown
-                        itemList={ROLE_OPTIONS}
+                        itemList={[...ROLE_OPTIONS]}
                         selectedOption={selectedRole}
                         setSelectedOption={setSelectedRole}
                         label="Role *"
                         className={$CompassModal.editModalTextfield}
-                        required
                       />
                     </Container>
                   </Stack>

@@ -27,10 +27,13 @@ export enum UserType {
 }
 
 export const ROLE_OPTIONS = [
+  { label: "User", value: "USER" },
   { label: "Para", value: "PARA" },
   { label: "Case Manager", value: "CASE_MANAGER" },
   { label: "Admin", value: "ADMIN" },
 ] as const;
+
+export type Roles = (typeof ROLE_OPTIONS)[number]["value"];
 
 export function getRoleLabel(role: string): string {
   const option = ROLE_OPTIONS.find(
