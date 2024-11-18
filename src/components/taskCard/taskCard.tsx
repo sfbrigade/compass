@@ -83,7 +83,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
 
           <Link
             href={
-              task.seen
+              task.completed_trials !== "0"
                 ? `/benchmarks/${task.task_id}`
                 : `/benchmarks/${task.task_id}/instructions`
             }
