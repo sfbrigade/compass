@@ -56,10 +56,10 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
         {!task.seen
           ? "NEW"
           : completionRate >= 100
-            ? "DONE"
-            : `DUE: ${
-                task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
-              }`}
+          ? "DONE"
+          : `DUE: ${
+              task.due_date ? format(task.due_date, "MM-dd-yyyy") : "N/A"
+            }`}
       </div>
       <div className={$taskCard.profile}>
         {task.first_name} {task.last_name}
@@ -82,7 +82,11 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
           ) : null}
 
           <Link
-            href={`/benchmarks/${task.task_id}`}
+            href={
+              task.seen
+                ? `/benchmarks/${task.task_id}`
+                : `/benchmarks/${task.task_id}/instructions`
+            }
             className={`${$button.default} ${
               completionRate >= 100 ? $button.inactive : ""
             }`}
