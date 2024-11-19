@@ -14,7 +14,7 @@ import {
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
-import { TableProps, BaseEntity } from "./types";
+import { TableProps, UserBase } from "./types";
 import { renderTableInput, renderTableCell } from "./renderers";
 import $table from "./Table.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
@@ -29,7 +29,7 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export function Table2<T extends BaseEntity>({
+export function Table2<T extends UserBase>({
   data,
   columns,
   type,

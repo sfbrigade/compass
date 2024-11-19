@@ -1,8 +1,8 @@
 import { TextField } from "@mui/material";
 import { Dropdown } from "@/components/design_system/dropdown/Dropdown";
-import { ColumnDefinition, BaseEntity, SelectOption } from "./types";
+import { ColumnDefinition, UserBase, SelectOption } from "./types";
 
-export function renderTableInput<T extends BaseEntity>(
+export function renderTableInput<T extends UserBase>(
   column: ColumnDefinition<T>,
   value: T[keyof T] | undefined,
   onChange: (value: T[keyof T]) => void
@@ -41,7 +41,7 @@ export function renderTableInput<T extends BaseEntity>(
   }
 }
 
-export function renderTableCell<T extends BaseEntity>(
+export function renderTableCell<T extends UserBase>(
   column: ColumnDefinition<T>,
   value: T[keyof T]
 ): React.ReactNode {

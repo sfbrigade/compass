@@ -185,6 +185,21 @@ export const user = router({
     .mutation(async (req) => {
       const { user_id, first_name, last_name, email, role } = req.input;
 
+      const { userId } = req.ctx.auth;
+
+      const dbUser = await req.ctx.db
+        .selectFrom("user")
+        .where("user_id", "=", user_id)
+        .selectAll()
+        .executeTakeFirstOrThrow();
+
+      if (userId === user_id && dbUser.role !== role) {
+        throw new TRPCError({
+          code: "BAD_REQUEST",
+          message: "You cannot change your own role",
+        });
+      }
+
       return await req.ctx.db
         .updateTable("user")
         .set({

@@ -2,7 +2,7 @@ import { Roles } from "@/types/auth";
 
 export type ColumnType = "text" | "number" | "select" | "date";
 
-export interface BaseEntity {
+export interface UserBase {
   id?: string | number;
   first_name: string;
   last_name: string;
@@ -15,7 +15,7 @@ export interface SelectOption {
   label: string;
 }
 
-export interface ColumnDefinition<T extends BaseEntity> {
+export interface ColumnDefinition<T extends UserBase> {
   id: keyof T;
   label: string;
   type: ColumnType;
@@ -24,7 +24,7 @@ export interface ColumnDefinition<T extends BaseEntity> {
   customRender?: (value: T[keyof T]) => React.ReactNode;
 }
 
-export interface TableProps<T extends BaseEntity> {
+export interface TableProps<T extends UserBase> {
   data: T[];
   columns: ColumnDefinition<T>[];
   type: string;

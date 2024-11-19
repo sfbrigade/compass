@@ -1,7 +1,7 @@
 import { requiresAdminAuth } from "@/client/lib/protected-page";
 import { trpc } from "@/client/lib/trpc";
 import { Table2 } from "@/components/table/table2";
-import { ColumnDefinition, BaseEntity } from "@/components/table/types";
+import { ColumnDefinition, UserBase } from "@/components/table/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { ROLE_OPTIONS, Roles } from "@/types/auth";
@@ -9,7 +9,7 @@ import { getRoleLabel } from "@/types/auth";
 import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
 import { z } from "zod";
 
-interface User extends BaseEntity {
+interface User extends UserBase {
   user_id: string;
   first_name: string;
   last_name: string;
