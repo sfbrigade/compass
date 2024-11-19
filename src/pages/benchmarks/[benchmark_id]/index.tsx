@@ -115,6 +115,8 @@ const BenchmarkPage = () => {
       (task.trials.length === 0 ||
         task.trials[task.trials.length - 1]?.submitted === true)
     ) {
+      // FIXME: This mutation runs twice if the page is loaded from the link in the instructions page
+      // It only runs once if the page is loaded at this URL from scratch
       addTrialMutation.mutate({
         task_id: task.task_id,
         success: 0,
@@ -273,8 +275,8 @@ const BenchmarkPage = () => {
         {hasInputChanged || updateTrialMutation.isLoading
           ? "Saving..."
           : updateTrialMutation.isError
-            ? "uh oh"
-            : "Saved to Cloud"}
+          ? "uh oh"
+          : "Saved to Cloud"}
       </div>
 
       <Grid container spacing={2}>
