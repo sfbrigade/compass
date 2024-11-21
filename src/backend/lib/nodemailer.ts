@@ -31,5 +31,6 @@ export const getTransporter = (env: Env) => {
       },
     },
     juice: false,
+    preview: false,
   });
 };
