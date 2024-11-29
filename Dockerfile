@@ -31,7 +31,7 @@ COPY --chown=node:node package*.json ./
 # We install Husky via a "prepare" lifecycle script - disable it in prod
 # See: https://typicode.github.io/husky/guide.html#disable-husky-in-ci-docker-prod
 RUN npm pkg delete scripts.prepare && npm pkg delete scripts.postinstall
-RUN npm ci
+RUN npm ci --force
 
 # Copy the project files into the app directory
 COPY --chown=node:node . $APP_HOME
