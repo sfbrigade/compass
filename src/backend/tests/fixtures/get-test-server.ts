@@ -26,7 +26,7 @@ export const getTestServer = async (
     { connectionString: databaseConnectionString, beforeTemplateIsBakedResult },
     appPort,
     minio,
-  ] = await Promise.all([getTestDatabase(), getPort(), getTestMinio()]);
+  ] = await Promise.all([getTestDatabase(t), getPort(), getTestMinio()]);
 
   const seed = beforeTemplateIsBakedResult as SeedResult;
 

@@ -3,6 +3,8 @@ const avaConfig = {
   files: ["src/**/*.test.ts"],
   extensions: ["ts"],
   require: ["@esbuild-kit/cjs-loader"],
-  ignoredByWatcher: ["**/.next/**"],
+  watchMode: {
+    ignoreChanges: ["**/.next/**"],
+  },
 };
 export default avaConfig;
