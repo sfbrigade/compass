@@ -94,7 +94,7 @@
     "nextjs-server-modules": "^4.8.2",
     "nodemailer-mock": "^2.0.6",
     "prettier": "^3.3.3",
-    "rewiremock": "^3.14.5",
+    "quibble": "^0.9.2",
     "storybook": "^8.4.5",
     "testcontainers": "^10.15.0",
     "type-fest": "^3.5.4",
