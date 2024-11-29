@@ -17,7 +17,7 @@
 
 
 # Start with the latest Node.js LTS release
-FROM --platform=linux/amd64 node:18-bullseye-slim
+FROM --platform=linux/amd64 node:22-bullseye-slim
 
 # Set env variables
 ENV NODE_ENV production
