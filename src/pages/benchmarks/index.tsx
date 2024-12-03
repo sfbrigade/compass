@@ -7,17 +7,49 @@ import Sort from "@mui/icons-material/Sort";
 import { Box, Container } from "@mui/material";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
-import noBenchmarks from "../../public/img/no-benchmarks.png";
+import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
 import SearchIcon from "@mui/icons-material/Search";
+import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
 function Benchmarks() {
   const [isPara, setIsPara] = useState(false);
-  const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
+
+  const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+  const [displayedTasks, setDisplayedTasks] = useState<TaskData[]>([]);
+
+  const { data: tasksData, isLoading } = trpc.para.getMyTasks.useQuery();
 
   const handleTogglePara = () => {
     setIsPara(!isPara);
+  };
+
+  useEffect(() => {
+    if (!tasksData) {
+      setDisplayedTasks([]);
+    } else {
+      setDisplayedTasks(
+        [...tasksData].sort((a, b) => {
+          if (a[sortProperty] < b[sortProperty])
+            return sortDirection === "asc" ? -1 : 1;
+          if (a[sortProperty] > b[sortProperty])
+            return sortDirection === "asc" ? 1 : -1;
+          return 0;
+        })
+      );
+    }
+  }, [sortDirection, sortProperty, tasksData]);
+
+  const handleSort = (property: SortProperty) => {
+    if (property === sortProperty) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortProperty(property);
+      setSortDirection("asc");
+    }
   };
 
   if (isLoading) {
@@ -26,7 +58,7 @@ function Benchmarks() {
 
   return (
     <>
-      {tasks?.length === 0 ? (
+      {displayedTasks?.length === 0 ? (
         <Container sx={{ marginTop: "4rem" }}>
           <Box
             sx={{
@@ -90,7 +122,12 @@ function Benchmarks() {
                 <FilterAlt /> Filter <KeyboardArrowDown />
               </span>
 
-              {/* Sort Pill Placeholder*/}
+              {
+                // TODO: replace simple sort pill w/this sort pill placeholder
+                /*
+              TODO: replace simple sort pill w/this sort pill placeholder
+
+              Sort Pill Placeholder
               <span
                 className={`${$button.pilled}`}
                 style={{
@@ -102,11 +139,27 @@ function Benchmarks() {
               >
                 <Sort /> Sort <KeyboardArrowDown />
               </span>
+              */
+              }
+
+              {/* simple sort pill POC (see TODO above) */}
+              <button
+                onClick={() => handleSort("first_name")}
+                className={`${$button.pilled}`}
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <Sort /> Sort by name
+              </button>
             </div>
           </Box>
 
           <Box sx={{ height: "75vh", overflowY: "scroll" }}>
-            {tasks?.map((task) => {
+            {displayedTasks?.map((task) => {
               const completed = Math.floor(
                 Number(task.completed_trials) / Number(task.number_of_trials)
               );

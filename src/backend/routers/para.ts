@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { hasCaseManager, hasPara, router } from "../trpc";
 import { createPara } from "../lib/db_helpers/case_manager";
+import { TaskData } from "@/types/global";
 
 export const para = router({
   getParaById: hasCaseManager
@@ -60,7 +61,7 @@ export const para = router({
       // TODO elsewhere: add "email_verified_at" timestamp when para first signs in with their email address (entered into db by cm)
     }),
 
-  getMyTasks: hasPara.query(async (req) => {
+  getMyTasks: hasPara.query(async (req): Promise<TaskData[]> => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
