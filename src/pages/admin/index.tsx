@@ -48,7 +48,7 @@ const AdminHome: React.FC = () => {
     try {
       await createUserMutation.mutateAsync({
         ...userData,
-        role: userData.role || "PARA",
+        role: userData.role || "para",
       });
     } catch (error) {
       console.error(error);

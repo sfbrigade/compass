@@ -46,7 +46,7 @@ const ViewUserPage = () => {
 
   useEffect(() => {
     if (user?.role) {
-      setSelectedRole(user.role.toUpperCase());
+      setSelectedRole(user.role);
     }
   }, [user?.role]);
 

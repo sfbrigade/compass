@@ -20,7 +20,7 @@ const createUserSchema = z.object({
   first_name: z.string(),
   last_name: z.string(),
   email: z.string().email(),
-  role: z.string().transform((role) => role.toUpperCase() as Roles),
+  role: z.string(),
 });
 
 const roleValues = ROLE_OPTIONS.map((r) => r.value) as [string, ...string[]];
@@ -170,11 +170,11 @@ export const user = router({
         email: z.string().email(),
         role: z.enum(roleValues).transform((role) => {
           switch (role) {
-            case "ADMIN":
+            case "admin":
               return UserType.Admin;
-            case "CASE_MANAGER":
+            case "case_manager":
               return UserType.CaseManager;
-            case "PARA":
+            case "para":
               return UserType.Para;
             default:
               return UserType.User;
