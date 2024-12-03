@@ -1,6 +1,6 @@
 import { requiresAdminAuth } from "@/client/lib/protected-page";
 import { trpc } from "@/client/lib/trpc";
-import { Table2 } from "@/components/table/table2";
+import { PaginatedTable } from "@/components/table/PaginatedTable";
 import { ColumnDefinition, UserBase } from "@/components/table/types";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -98,7 +98,7 @@ const AdminHome: React.FC = () => {
 
   return (
     <div>
-      <Table2<User>
+      <PaginatedTable<User>
         data={(data?.users as User[]) ?? []}
         columns={columns}
         type="Users"

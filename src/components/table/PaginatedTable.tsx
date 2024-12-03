@@ -29,7 +29,7 @@ const StyledTableRow = styled(TableRow)(() => ({
   },
 }));
 
-export function Table2<T extends UserBase>({
+export function PaginatedTable<T extends UserBase>({
   data,
   columns,
   type,
