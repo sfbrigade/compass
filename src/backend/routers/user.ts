@@ -1,6 +1,6 @@
 import { hasAuthenticated, hasAdmin, router } from "../trpc";
 import { z } from "zod";
-import { UserType, ROLE_OPTIONS, Roles } from "@/types/auth";
+import { UserType, ROLE_OPTIONS } from "@/types/auth";
 import { TRPCError } from "@trpc/server";
 
 export const sortOrderSchema = z.enum(["asc", "desc"]).default("asc");
