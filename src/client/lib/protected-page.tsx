@@ -11,7 +11,7 @@ export const requiresAdminAuth =
     const { data: me, error } = trpc.user.getMe.useQuery();
 
     useEffect(() => {
-      if ((me && me.role !== UserType.Admin) || error) {
+      if ((me && (me.role as UserType) !== UserType.Admin) || error) {
         void router.push("/");
       }
     }, [me, error, router]);
@@ -20,7 +20,7 @@ export const requiresAdminAuth =
       return "Loading...";
     }
 
-    if (me?.role === UserType.Admin) {
+    if ((me?.role as UserType) === UserType.Admin) {
       return <WrappedPage {...props} />;
     }
   };

@@ -10,7 +10,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: 22
           cache: "npm"
       - name: Install dependencies & generate css types
         run: npm ci
@@ -26,10 +26,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: 22
           cache: "npm"
       - name: Install dependencies
-        run: npm i --ci
+        run: npm ci
       - name: Run format:check
         run: |
           npm run format:version
@@ -46,10 +46,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 18
+          node-version: 22
           cache: "npm"
       - name: Install dependencies
-        run: npm i --ci
+        run: npm ci
       - name: Pre-pull Postgres image
         run: docker pull postgres:15
       - name: Run tests
