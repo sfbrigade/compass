@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
-import noBenchmarks from "../../public/img/no-benchmarks.png";
+import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import { SortDirection, SortProperty, TaskData } from "@/types/global";
 

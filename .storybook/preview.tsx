@@ -16,6 +16,7 @@ const preview: Preview = {
       },
     },
   },
+
   decorators: [
     (Story) => (
       <FontProvider>
@@ -27,6 +28,8 @@ const preview: Preview = {
       </FontProvider>
     ),
   ],
+
+  tags: ["autodocs"],
 };
 
 export default preview;

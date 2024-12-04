@@ -1,4 +1,9 @@
-import { Adapter, AdapterSession, AdapterAccount } from "next-auth/adapters";
+import {
+  Adapter,
+  AdapterSession,
+  AdapterAccount,
+  AdapterUser,
+} from "next-auth/adapters";
 import {
   KyselyDatabaseInstance,
   KyselySchema,
@@ -42,7 +47,7 @@ const mapStoredSessionToAdapterSession = (
 export const createPersistedAuthAdapter = (
   db: KyselyDatabaseInstance
 ): ExtendedAdapter => ({
-  async createUser(user) {
+  async createUser(user: Omit<AdapterUser, "id">) {
     const numOfUsers = await db
       .selectFrom("user")
       .select((qb) => qb.fn.count("user_id").as("count"))
@@ -163,7 +168,10 @@ export const createPersistedAuthAdapter = (
       )
       .execute();
   },
-  async unlinkAccount({ providerAccountId, provider }) {
+  async unlinkAccount({
+    providerAccountId,
+    provider,
+  }: Pick<AdapterAccount, "provider" | "providerAccountId">) {
     await db
       .deleteFrom("account")
       .where("provider_account_id", "=", providerAccountId)

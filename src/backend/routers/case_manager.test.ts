@@ -291,7 +291,7 @@ test("addStudent - invalid email", async (t) => {
   );
   // should be zod error
   t.is(typeof err?.message, "string");
-  const parsed = (JSON.parse(err?.message as string) || []) as Array<{
+  const parsed = (JSON.parse(err?.message) || []) as Array<{
     [index: string]: string;
   }>;
   if (parsed instanceof Array && parsed.length > 0) {

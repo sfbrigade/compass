@@ -13,7 +13,7 @@ const useConfirmBeforeLeave = (
       typeof isConfirm === "function" ? isConfirm() : isConfirm;
     const handler = () => {
       if (finalConfirm && !window.confirm(message)) {
-        throw "Route cancelled.";
+        throw new Error("Route cancelled.");
       }
     };
 

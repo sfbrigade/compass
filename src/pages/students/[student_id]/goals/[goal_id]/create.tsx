@@ -27,7 +27,7 @@ interface BenchmarkFields {
 
 interface BenchmarkFormEntry {
   [key: string]: {
-    value: string | number | "";
+    value: string | number;
     valid: boolean;
     touched: boolean;
   };
@@ -474,11 +474,13 @@ const CreateBenchmarkPage = () => {
             <button
               disabled={!pageOneIsValid}
               onClick={() => {
-                checkPageOneFields()
-                  ? setViewState(VIEW_STATES.BENCHMARK_PG_2)
-                  : alert(
-                      "Please fill out all fields with valid information before proceeding"
-                    );
+                if (checkPageOneFields()) {
+                  setViewState(VIEW_STATES.BENCHMARK_PG_2);
+                } else {
+                  alert(
+                    "Please fill out all fields with valid information before proceeding"
+                  );
+                }
               }}
               className={$button.default}
             >

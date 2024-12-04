@@ -151,8 +151,6 @@ The database container does not need to be started to run tests, but Docker Desk
 
 Run all tests with `npm run test`. An individual test file can be run with `npm run test <path/to/file>` (e.x. `npm run test src/routes/students.test.ts`).
 
-To run tests in watch mode, use `npm run test:watch`. This will run tests whenever a file is changed, but will not take database schema changes into account.
-
 ### Database
 
 #### Creating migrations
