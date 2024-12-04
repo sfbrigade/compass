@@ -21,4 +21,5 @@ export interface TaskData {
   trial_count: number | null;
   seen: boolean;
   completed_trials: string | number | bigint | null;
+  created_at: Date;
 }
