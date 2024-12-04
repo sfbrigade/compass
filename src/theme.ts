@@ -202,5 +202,36 @@ export const compassTheme = createTheme({
         }),
       },
     },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "var(--primary)",
+            borderWidth: "1px",
+          },
+          "&.Mui-focused": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "2px",
+            },
+          },
+          "&:hover:not(.Mui-focused)": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--grey-10)",
+            },
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-10)",
+          "&.Mui-focused": {
+            color: "var(--primary)",
+          },
+        },
+      },
+    },
   },
 });

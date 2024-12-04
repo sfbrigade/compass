@@ -24,7 +24,7 @@ interface DropdownProps {
   optionDisabled?: string[];
 }
 
-const Dropdown = ({
+export const Dropdown = ({
   itemList,
   selectedOption,
   setSelectedOption,
@@ -38,7 +38,6 @@ const Dropdown = ({
   };
 
   return (
-    // Minimum styles used. More can be defined in className.
     <Box sx={{ minWidth: 120, maxWidth: "fit-content" }} className={className}>
       <FormControl fullWidth>
         <InputLabel id="dropdown-label">{label}</InputLabel>
@@ -48,8 +47,13 @@ const Dropdown = ({
           value={selectedOption}
           label={label}
           onChange={handleChange}
-          // Allow disabling of form
           disabled={formDisabled}
+          MenuProps={{
+            PaperProps: {
+              elevation: 1,
+              sx: { maxHeight: 300 },
+            },
+          }}
         >
           {itemList?.map((item) => (
             <MenuItem
@@ -58,7 +62,6 @@ const Dropdown = ({
               className={`${
                 selectedOption === item.value ? $dropdown.selected : ""
               } ${$dropdown.default}`}
-              // Allow disabling of named keys used as an array of strings
               disabled={optionDisabled?.includes(item.value)}
             >
               {item.label}

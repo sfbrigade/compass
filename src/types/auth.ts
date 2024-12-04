@@ -25,3 +25,19 @@ export enum UserType {
   CaseManager = "case_manager",
   Admin = "admin",
 }
+
+export const ROLE_OPTIONS = [
+  { label: "User", value: UserType.User },
+  { label: "Para", value: UserType.Para },
+  { label: "Case Manager", value: UserType.CaseManager },
+  { label: "Admin", value: UserType.Admin },
+] as const;
+
+export type Roles = (typeof ROLE_OPTIONS)[number]["value"];
+
+export function getRoleLabel(role: string): string {
+  const option = ROLE_OPTIONS.find(
+    (opt) => opt.value.toLowerCase() === role.toLowerCase()
+  );
+  return option?.label || role;
+}
