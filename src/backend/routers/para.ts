@@ -83,6 +83,7 @@ export const para = router({
         "task.due_date",
         "task.seen",
         "task.trial_count",
+        "task.created_at",
 
         eb
           .selectFrom("trial_data")
