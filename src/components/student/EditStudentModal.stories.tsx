@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { EditStudentModal } from "./EditStudentModal";
-import { expect, within, userEvent } from "@storybook/test";
+import { expect, userEvent, screen } from "@storybook/test";
 
 const meta = {
   title: "Components/Student/EditStudentModal",
@@ -36,10 +36,10 @@ export const Basic: Story = {
     setStartDate: fn(),
     onSubmit: fn(),
   },
-  play: async ({ canvasElement }) => {
-    const canvas = within(canvasElement);
+  play: async () => {
+    screen.debug(document.body);
 
-    const firstNameInput = await canvas.findByRole("textbox", {
+    const firstNameInput = await screen.findByRole("textbox", {
       name: /first name/i,
     });
 
