@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import { Box, Button, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -15,7 +15,6 @@ import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
 
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -71,9 +70,9 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
-  const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleEditStudent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const data = new FormData(e.currentTarget as HTMLFormElement);
 
     if (!student) {
       return; // TODO: improve error handling
