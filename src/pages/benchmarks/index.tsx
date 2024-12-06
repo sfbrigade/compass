@@ -144,6 +144,20 @@ function Benchmarks() {
 
               {/* simple sort pill POC (see TODO above) */}
               <button
+                onClick={() => handleSort("created_at")}
+                className={`${$button.pilled}`}
+                style={{
+                  display: "flex",
+                  maxWidth: "fit-content",
+                  alignItems: "center",
+                  gap: "4px",
+                }}
+              >
+                <Sort /> Sort by date
+              </button>
+
+              {/* simple sort pill POC (see TODO above) */}
+              <button
                 onClick={() => handleSort("first_name")}
                 className={`${$button.pilled}`}
                 style={{
