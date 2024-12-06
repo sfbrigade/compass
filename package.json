@@ -12,7 +12,6 @@
     "type-css:check": "npx tcm src --listDifferent",
     "test": "next build --no-lint && ava",
     "test-storybook": "test-storybook --maxWorkers=2",
-    "test-storybook:ci": "test-storybook --maxWorkers=2 --watchAll=false",
     "db:migrate": "npx tsx src/backend/scripts/migrate-database.ts",
     "db:reset": "npx tsx src/backend/scripts/reset-database.ts",
     "db:seed": "npx tsx src/backend/scripts/seed-database.ts",
