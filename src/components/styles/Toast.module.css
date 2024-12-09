@@ -3,6 +3,7 @@
   bottom: 0;
   right: 0;
   width: 400px;
+  z-index: 9999;
 }
 
 .customToast {
