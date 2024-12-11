@@ -3,6 +3,7 @@ import PeopleOutline from "@mui/icons-material/PeopleOutline";
 import Logout from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import SchoolOutlined from "@mui/icons-material/SchoolOutlined";
+import AdminPanelSettings from "@mui/icons-material/AdminPanelSettings";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import SettingsOutlined from "@mui/icons-material/SettingsOutlined";
 import AppBar from "@mui/material/AppBar";
@@ -112,6 +113,7 @@ export default function NavBar() {
               icon={<SettingsOutlined />}
               text="Settings"
             />
+            <NavItem href="/admin" icon={<AdminPanelSettings />} text="Admin" />
             <NavItem
               icon={<Logout />}
               text="Logout"
