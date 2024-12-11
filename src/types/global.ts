@@ -5,7 +5,7 @@ export type Benchmark = SelectableForTable<"benchmark">;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 
-export type SortProperty = "first_name";
+export type SortProperty = "first_name" | "created_at";
 export type SortDirection = "asc" | "desc";
 
 export interface TaskData {
@@ -21,4 +21,5 @@ export interface TaskData {
   trial_count: number | null;
   seen: boolean;
   completed_trials: string | number | bigint | null;
+  created_at: Date;
 }
