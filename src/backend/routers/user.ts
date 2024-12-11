@@ -193,7 +193,7 @@ export const user = router({
         .selectAll()
         .executeTakeFirstOrThrow();
 
-      if (userId === user_id && dbUser.role !== role) {
+      if (userId === user_id && dbUser.role !== (role as string)) {
         throw new TRPCError({
           code: "BAD_REQUEST",
           message: "You cannot change your own role",

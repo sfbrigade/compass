@@ -7,7 +7,6 @@ import $breadcrumbs from "./Breadcrumbs.module.css";
 
 type Student = SelectableForTable<"student">;
 type Para = SelectableForTable<"user">;
-type User = SelectableForTable<"user">;
 
 const BreadcrumbsNav = () => {
   const router = useRouter();
@@ -28,7 +27,7 @@ const BreadcrumbsNav = () => {
     { enabled: Boolean(paths[2] && paths[1] === "admin") }
   );
 
-  const personData: Student | Para | User | undefined = student || para || user;
+  const personData: Student | Para | undefined = student || para || user;
 
   // An array of breadcrumbs fixed to students/staff as the first index. This will be modified depending on how the address bar will be displayed.
   const breadcrumbs = paths.map((path, index) => {
