@@ -122,27 +122,7 @@ function Benchmarks() {
                 <FilterAlt /> Filter <KeyboardArrowDown />
               </span>
 
-              {
-                // TODO: replace simple sort pill w/this sort pill placeholder
-                /*
-              TODO: replace simple sort pill w/this sort pill placeholder
-
-              Sort Pill Placeholder
-              <span
-                className={`${$button.pilled}`}
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <Sort /> Sort <KeyboardArrowDown />
-              </span>
-              */
-              }
-
-              {/* simple sort pill POC (see TODO above) */}
+              {/* simple sort pill POC (TODO: add `<KeyboardArrowDown/>` if dropdown needed) */}
               <button
                 onClick={() => handleSort("created_at")}
                 className={`${$button.pilled}`}
