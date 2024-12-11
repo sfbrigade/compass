@@ -1,35 +1,43 @@
 import { Kysely, PostgresDialect } from "kysely";
 import { KyselyDatabaseInstance, KyselySchema } from "@/backend/lib";
-import { Pool } from "pg";
+import pg from "pg";
 
-type DatabaseInstanceAndPool = { db: KyselyDatabaseInstance; pool: Pool };
+const { Pool } = pg;
+
+type DatabaseInstanceAndPool = {
+  db: KyselyDatabaseInstance;
+  pool: typeof Pool;
+};
 
 const databaseUrlToSingleton = new Map<string, DatabaseInstanceAndPool>();
-const poolToSingleton = new WeakMap<Pool, DatabaseInstanceAndPool>();
+const poolToSingleton = new WeakMap<typeof Pool, DatabaseInstanceAndPool>();
 
 type GetDb = {
   (databaseUrl: string): DatabaseInstanceAndPool;
-  (pool: Pool): DatabaseInstanceAndPool;
+  (pool: typeof Pool): DatabaseInstanceAndPool;
 };
 
 export const getDb: GetDb = (databaseUrlOrPool) => {
   if (databaseUrlOrPool instanceof Pool) {
-    if (!poolToSingleton.has(databaseUrlOrPool)) {
+    if (!poolToSingleton.has(databaseUrlOrPool as typeof Pool)) {
       const db = new Kysely<KyselySchema>({
         dialect: new PostgresDialect({
           pool: databaseUrlOrPool,
         }),
       });
 
-      const dbAndPool = { db, pool: databaseUrlOrPool };
-      poolToSingleton.set(databaseUrlOrPool, dbAndPool);
+      const dbAndPool = {
+        db,
+        pool: databaseUrlOrPool,
+      } as DatabaseInstanceAndPool;
+      poolToSingleton.set(databaseUrlOrPool as typeof Pool, dbAndPool);
     }
 
-    return poolToSingleton.get(databaseUrlOrPool)!;
+    return poolToSingleton.get(databaseUrlOrPool as typeof Pool)!;
   }
-  if (!databaseUrlToSingleton.has(databaseUrlOrPool)) {
+  if (!databaseUrlToSingleton.has(databaseUrlOrPool as string)) {
     const pool = new Pool({
-      connectionString: databaseUrlOrPool,
+      connectionString: databaseUrlOrPool as string,
     });
 
     const db = new Kysely<KyselySchema>({
@@ -38,8 +46,11 @@ export const getDb: GetDb = (databaseUrlOrPool) => {
       }),
     });
 
-    databaseUrlToSingleton.set(databaseUrlOrPool, { db, pool });
+    databaseUrlToSingleton.set(databaseUrlOrPool as string, {
+      db,
+      pool: Pool as unknown as typeof Pool,
+    });
   }
 
-  return databaseUrlToSingleton.get(databaseUrlOrPool)!;
+  return databaseUrlToSingleton.get(databaseUrlOrPool as string)!;
 };

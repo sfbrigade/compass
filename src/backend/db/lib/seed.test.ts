@@ -5,7 +5,7 @@ import { seedfile } from "@/backend/db/lib/seed";
 
 test("seedfile works with current schema", async (t) => {
   // note that this also seeds the database from tests/seed.ts
-  const { connectionString } = await getTestDatabase();
+  const { connectionString } = await getTestDatabase(t);
   const { db } = getDb(connectionString);
 
   try {

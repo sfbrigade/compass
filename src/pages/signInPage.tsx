@@ -12,7 +12,9 @@ const SignInPage = () => {
   const { status } = useSession();
 
   useEffect(() => {
-    status === "authenticated" ? void router.push("/students") : null;
+    if (status === "authenticated") {
+      void router.push("/students");
+    }
   }, [router, status]);
 
   return (
