@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import { Box, Button, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -12,9 +12,9 @@ import $Form from "../../styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
+import { EditStudentModal } from "@/components/student/EditStudentModal";
 
 import * as React from "react";
-import Typography from "@mui/material/Typography";
 
 const ViewStudentPage = () => {
   const [open, setOpen] = useState(false);
@@ -70,9 +70,9 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
-  const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleEditStudent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const data = new FormData(e.currentTarget as HTMLFormElement);
 
     if (!student) {
       return; // TODO: improve error handling
@@ -155,118 +155,16 @@ const ViewStudentPage = () => {
       }}
     >
       <div>
-        <Modal
+        <EditStudentModal
           open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box className={$CompassModal.editModalContent}>
-            <p id="modal-modal-title" className={$CompassModal.editModalHeader}>
-              Editing {student?.first_name || "Student"}&apos;s Profile
-            </p>
-            <Typography
-              id="modal-modal-description"
-              sx={{ mt: 2 }}
-              component="div"
-            >
-              <Stack gap={0.5} sx={{ width: "100%" }}>
-                <form
-                  className={$CompassModal.editForm}
-                  id="edit"
-                  onSubmit={handleEditStudent}
-                >
-                  <Stack gap={0.5}>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextField
-                        className={$CompassModal.editModalTextfield}
-                        label="First Name"
-                        type="text"
-                        name="firstName"
-                        defaultValue={student?.first_name || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextField
-                        className={$CompassModal.editModalTextfield}
-                        label="Last Name"
-                        type="text"
-                        name="lastName"
-                        defaultValue={student?.last_name || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextField
-                        className={$CompassModal.editModalTextfield}
-                        label="Email"
-                        type="text"
-                        name="email"
-                        defaultValue={student?.email || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextField
-                        className={$CompassModal.editModalTextfield}
-                        label="Grade"
-                        type="number"
-                        name="grade"
-                        defaultValue={(student?.grade || 0).toString()}
-                        required
-                      />
-                    </Container>
-                    {activeIep != null && (
-                      <div>
-                        <Container className={$CompassModal.editModalContainer}>
-                          <TextField
-                            className={$CompassModal.editModalTextfield}
-                            label="IEP Start Date"
-                            type="date"
-                            name="start_date"
-                            defaultValue={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            required
-                          />
-                        </Container>
-                        <Container className={$CompassModal.editModalContainer}>
-                          <TextField
-                            className={$CompassModal.editModalTextfield}
-                            label="IEP End Date"
-                            type="date"
-                            name="end_date"
-                            defaultValue={endDate}
-                            inputProps={{ min: startDate }}
-                            required
-                          />
-                        </Container>
-                      </div>
-                    )}
-                  </Stack>
-                </form>
-
-                <Container className={$CompassModal.editModalContainerButtons}>
-                  <Box className={$CompassModal.editModalButtonWrap}>
-                    <Button
-                      onClick={handleMainState}
-                      className={`${$button.secondary}`}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      className={`${$button.default}`}
-                      type="submit"
-                      form="edit"
-                    >
-                      Save
-                    </Button>
-                  </Box>
-                </Container>
-              </Stack>
-            </Typography>
-          </Box>
-        </Modal>
+          handleClose={handleClose}
+          student={student}
+          activeIep={activeIep}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          onSubmit={handleEditStudent}
+        />
       </div>
       <Container
         className={$StudentPage.studentInfoContainer}
