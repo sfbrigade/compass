@@ -2019,6 +2019,12 @@ declare module 'zapatos/schema' {
       */
       benchmark_id: string | null;
       /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: Date;
+      /**
       * **task.due_date**
       * - `timestamptz` in database
       * - Nullable, no default
@@ -2056,6 +2062,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       benchmark_id: string | null;
+      /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at: db.TimestampTzString;
       /**
       * **task.due_date**
       * - `timestamptz` in database
@@ -2095,6 +2107,12 @@ declare module 'zapatos/schema' {
       */
       benchmark_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
+      /**
       * **task.due_date**
       * - `timestamptz` in database
       * - Nullable, no default
@@ -2133,6 +2151,12 @@ declare module 'zapatos/schema' {
       */
       benchmark_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
+      /**
       * **task.due_date**
       * - `timestamptz` in database
       * - Nullable, no default
@@ -2170,6 +2194,12 @@ declare module 'zapatos/schema' {
       * - Nullable, no default
       */
       benchmark_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      /**
+      * **task.created_at**
+      * - `timestamptz` in database
+      * - `NOT NULL`, default: `now()`
+      */
+      created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
       /**
       * **task.due_date**
       * - `timestamptz` in database
