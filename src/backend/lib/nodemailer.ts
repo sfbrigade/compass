@@ -21,7 +21,7 @@ export const getTransporter = (env: Env) => {
     options.port = parseInt(env.EMAIL_PORT, 10);
   }
   const transport = createTransport(options);
-  return new Email({
+  const email = new Email({
     send: true,
     transport,
     views: {
@@ -33,4 +33,19 @@ export const getTransporter = (env: Env) => {
     juice: false,
     preview: false,
   });
+  return {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    send(options: Email.EmailOptions<any>) {
+      return email.send({
+        ...options,
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        locals: {
+          ...options.locals,
+          env: {
+            BASE_URL: env.BASE_URL,
+          },
+        },
+      });
+    },
+  };
 };

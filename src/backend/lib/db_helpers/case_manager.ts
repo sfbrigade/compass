@@ -75,7 +75,6 @@ export async function sendInviteEmail(
     locals: {
       case_manager_name,
       first_name,
-      env,
     },
   });
   return;
