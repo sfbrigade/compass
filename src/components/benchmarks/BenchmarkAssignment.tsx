@@ -1,21 +1,8 @@
 import { trpc } from "@/client/lib/trpc";
-import {
-  Box,
-  Dialog,
-  DialogTitle,
-  Button,
-  DialogContent,
-  DialogActions,
-} from "@mui/material";
 import { useState, useRef } from "react";
 
-import {
-  AssignmentDuration,
-  DurationSelectionStep,
-} from "./Duration-Selection-Step";
-import $button from "@/components/design_system/button/Button.module.css";
-import $benchmark from "./BenchmarkAssignmentModal.module.css";
-import { ParaSelectionStep } from "@/components/benchmarks/ParaSelectionStep";
+import { AssignmentDuration } from "./Duration-Selection-Step";
+import { BenchmarkAssignmentModal } from "@/components/benchmarks/BenchmarkAssignmentModal";
 
 interface BenchmarkAssignmentProps {
   isOpen: boolean;
@@ -23,8 +10,8 @@ interface BenchmarkAssignmentProps {
   benchmark_id: string;
 }
 
-const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
-type Step = (typeof STEPS)[number];
+export const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
+export type Step = (typeof STEPS)[number];
 
 export const BenchmarkAssignment = (props: BenchmarkAssignmentProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
@@ -103,76 +90,21 @@ export const BenchmarkAssignment = (props: BenchmarkAssignmentProps) => {
   };
 
   return (
-    <Dialog
-      open={props.isOpen}
-      onClose={handleClose}
-      className={$benchmark.assignBenchmarkModal}
-      maxWidth="sm"
-      fullWidth
-    >
-      <DialogTitle className={$benchmark.assignBenchmarkModalTitle}>
-        Assign to benchmark
-      </DialogTitle>
-
-      <DialogContent>
-        <Box className={$benchmark.benchmarkDescriptionBox}>
-          <p className={$benchmark.benchmarkTitle}>Benchmark</p>
-          {benchmark?.map((thisBenchmark) => (
-            <p
-              className={$benchmark.benchmarkDescription}
-              key="thisBenchmark.description"
-            >
-              {thisBenchmark.description}
-            </p>
-          ))}
-        </Box>
-        {currentModalSelection === "PARA_SELECTION" && (
-          <ParaSelectionStep
-            myParas={myParas}
-            selectedParaIds={selectedParaIds}
-            handleParaToggle={handleParaToggle}
-          />
-        )}
-        {currentModalSelection === "DURATION_SELECTION" && (
-          <Box>
-            <DurationSelectionStep
-              selectedDuration={assignmentDuration}
-              onDurationChange={setAssignmentDuration}
-              disabled={assignTaskToPara.isLoading}
-            />
-          </Box>
-        )}
-
-        {errorMessage && (
-          <Box className={$benchmark.benchmarkDescriptionBox}>
-            {errorMessage}
-          </Box>
-        )}
-        <DialogActions>
-          {currentModalSelection !== STEPS[0] && (
-            <Button
-              className={$button.secondary}
-              onClick={handleBack}
-              disabled={assignTaskToPara.isLoading}
-            >
-              Back
-            </Button>
-          )}
-          {/* we should have reusable variables/classNames for all of this sx:CSS once the global themes are resolved */}
-          <Button
-            className={$button.default}
-            onClick={handleNext}
-            ref={nextButtonRef}
-            disabled={
-              assignTaskToPara.isLoading || selectedParaIds.length === 0
-            }
-          >
-            {currentModalSelection === STEPS[STEPS.length - 1]
-              ? "Save"
-              : "Next"}
-          </Button>
-        </DialogActions>
-      </DialogContent>
-    </Dialog>
+    <BenchmarkAssignmentModal
+      isOpen={props.isOpen}
+      handleClose={handleClose}
+      benchmark={benchmark}
+      myParas={myParas}
+      currentModalSelection={currentModalSelection}
+      errorMessage={errorMessage}
+      selectedParaIds={selectedParaIds}
+      handleParaToggle={handleParaToggle}
+      assignmentDuration={assignmentDuration}
+      setAssignmentDuration={setAssignmentDuration}
+      isAssignTaskToParaLoading={assignTaskToPara.isLoading}
+      handleBack={handleBack}
+      handleNext={handleNext}
+      nextButtonRef={nextButtonRef}
+    />
   );
 };
