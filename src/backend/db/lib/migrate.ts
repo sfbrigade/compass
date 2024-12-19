@@ -1,9 +1,10 @@
-import { parse } from "pg-connection-string";
+import pgConnectionString from "pg-connection-string";
 import * as postgresMigrations from "postgres-migrations";
 import * as zg from "zapatos/generate";
 import path from "node:path";
 import { logger } from "@/backend/lib";
 
+const { parse } = pgConnectionString;
 interface MigrateOptions {
   silent?: boolean;
   shouldGenerateTypes?: boolean;
