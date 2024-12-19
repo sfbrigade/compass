@@ -4,37 +4,23 @@ import {
   Dialog,
   DialogTitle,
   Button,
-  List,
-  ListItem,
   DialogContent,
   DialogActions,
 } from "@mui/material";
 import { useState, useRef } from "react";
-import $benchmark from "./BenchmarkAssignmentModal.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 
 import {
   AssignmentDuration,
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
-import DS_Checkbox from "../design_system/checkbox/Checkbox";
+import $button from "@/components/design_system/button/Button.module.css";
+import $benchmark from "./BenchmarkAssignmentModal.module.css";
+import { ParaSelectionStep } from "@/components/benchmarks/ParaSelectionStep";
 
 interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
   onClose: () => void;
   benchmark_id: string;
-}
-
-interface ParaProps {
-  role: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  para_id: string;
-  case_manager_id: string;
-  user_id: string;
-  email_verified_at: Date | null;
-  image_url: string | null;
 }
 
 const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
@@ -143,38 +129,11 @@ export const BenchmarkAssignmentModal = (
           ))}
         </Box>
         {currentModalSelection === "PARA_SELECTION" && (
-          <Box>
-            <p>Select one or more paras:</p>
-            <Box
-              sx={{
-                my: 2,
-                maxHeight: "10rem",
-                overflow: "auto",
-                border: "1px solid var(--grey-70)",
-                borderRadius: 1,
-              }}
-            >
-              <List sx={{ p: 0 }} className={$benchmark.staffListItemText}>
-                {myParas
-                  ?.filter((para): para is ParaProps => para !== undefined)
-                  .map((para) => (
-                    <ListItem
-                      key={para.user_id}
-                      sx={{
-                        px: 0,
-                        py: 0,
-                      }}
-                    >
-                      <DS_Checkbox
-                        onClickAction={handleParaToggle(para.user_id)}
-                        text={`${para.first_name} ${para.last_name}`}
-                        checked={selectedParaIds.includes(para.user_id)}
-                      />
-                    </ListItem>
-                  ))}
-              </List>
-            </Box>
-          </Box>
+          <ParaSelectionStep
+            myParas={myParas}
+            selectedParaIds={selectedParaIds}
+            handleParaToggle={handleParaToggle}
+          />
         )}
         {currentModalSelection === "DURATION_SELECTION" && (
           <Box>
