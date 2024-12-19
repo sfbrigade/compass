@@ -366,7 +366,7 @@ export const iep = router({
       const result = await req.ctx.db
         .selectFrom("benchmark")
         .where("benchmark.benchmark_id", "=", benchmark_id)
-        .selectAll()
+        .selectAll() // add second query to get the tasks associated with benchmark
         .execute();
       return result;
     }),

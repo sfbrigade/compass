@@ -17,7 +17,7 @@ import $button from "@/components/design_system/button/Button.module.css";
 import $benchmark from "./BenchmarkAssignmentModal.module.css";
 import { ParaSelectionStep } from "@/components/benchmarks/ParaSelectionStep";
 
-interface BenchmarkAssignmentModalProps {
+interface BenchmarkAssignmentProps {
   isOpen: boolean;
   onClose: () => void;
   benchmark_id: string;
@@ -26,9 +26,7 @@ interface BenchmarkAssignmentModalProps {
 const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
 type Step = (typeof STEPS)[number];
 
-export const BenchmarkAssignmentModal = (
-  props: BenchmarkAssignmentModalProps
-) => {
+export const BenchmarkAssignment = (props: BenchmarkAssignmentProps) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
   const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [assignmentDuration, setAssignmentDuration] =
@@ -38,7 +36,7 @@ export const BenchmarkAssignmentModal = (
   const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
   const { data: benchmark } = trpc.iep.getBenchmark.useQuery({
     benchmark_id: props.benchmark_id,
-  });
+  }); // maybe it should include assignments, or have a flag to include assignments
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 

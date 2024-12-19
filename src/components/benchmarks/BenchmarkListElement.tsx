@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
-import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
+import { BenchmarkAssignment } from "./BenchmarkAssignment";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
@@ -173,7 +173,7 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
           </Info>
         </Box>
       </Box>
-      <BenchmarkAssignmentModal
+      <BenchmarkAssignment
         isOpen={isAssignmentModalOpen}
         onClose={() => setIsAssignmentModalOpen(false)}
         benchmark_id={benchmark.benchmark_id}
