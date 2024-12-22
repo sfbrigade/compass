@@ -389,7 +389,11 @@ export const iep = router({
         .where("task.assignee_id", "=", "user.user_id")
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
-          "*",
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.benchmark_id",
           jsonArrayFrom(
             eb
               .selectFrom("user")
@@ -399,7 +403,6 @@ export const iep = router({
           ).as("assignees"),
         ])
         .executeTakeFirstOrThrow();
-      // .execute();
       return result;
     }),
 
