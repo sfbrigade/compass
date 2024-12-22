@@ -354,42 +354,6 @@ export const iep = router({
       return result;
     }),
 
-  //.innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
-  // .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
-  // .innerJoin("iep", "goal.iep_id", "iep.iep_id")
-  // .innerJoin("student", "iep.student_id", "student.student_id")
-
-  // "task.task_id",
-  // "student.first_name",
-  // "student.last_name",
-  // "goal.category",
-  // "benchmark.description",
-  // "benchmark.instructions",
-  // "benchmark.frequency",
-  // "benchmark.number_of_trials",
-  // "benchmark.benchmark_id",
-  // "task.due_date",
-  // "task.seen",
-  // "task.trial_count",
-
-  // .select([
-  //   "benchmark.description",
-  //   "benchmark.instructions",
-  //   "benchmark.frequency",
-  //   "benchmark.number_of_trials",
-  //   "benchmark.benchmark_id",
-  // ])
-
-  // {
-  //   benchmark: {
-  //     id,
-  //     title,
-  //     desc,
-  //     assignees: [
-  //       { id:, name }
-  //     ]
-  //   }
-  // }
   getBenchmark: hasCaseManager
     .input(
       z.object({
@@ -399,24 +363,24 @@ export const iep = router({
     .query(async (req) => {
       const { benchmark_id } = req.input;
 
-      // NOTE: existing code
-      const result = await req.ctx.db
-        .selectFrom("benchmark")
-        .where("benchmark.benchmark_id", "=", benchmark_id)
-        .selectAll() // works
-        // .select("*") // doesn't work, but maybe it'll work if we do the function form
-        .execute();
-      return result;
-
-      // // NOTE: no errors, but the app may blow up b/c we're returning multiple rows
+      // // NOTE: existing code
       // const result = await req.ctx.db
       //   .selectFrom("benchmark")
-      //   .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
-      //   .innerJoin("user", "task.assignee_id", "user.user_id")
       //   .where("benchmark.benchmark_id", "=", benchmark_id)
-      //   .selectAll()
+      //   .selectAll() // works
+      //   // .select("*") // doesn't work, but maybe it'll work if we do the function form
       //   .execute();
       // return result;
+
+      // NOTE: no errors, but the app may blow up b/c we're returning multiple rows
+      const result = await req.ctx.db
+        .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+        .innerJoin("user", "task.assignee_id", "user.user_id")
+        .where("benchmark.benchmark_id", "=", benchmark_id)
+        .selectAll()
+        .execute();
+      return result;
 
       // const result = await req.ctx.db
       //   .selectFrom("benchmark")
@@ -457,6 +421,43 @@ export const iep = router({
       // // .execute();
       // return result;
     }),
+
+  //.innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+  // .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
+  // .innerJoin("iep", "goal.iep_id", "iep.iep_id")
+  // .innerJoin("student", "iep.student_id", "student.student_id")
+
+  // "task.task_id",
+  // "student.first_name",
+  // "student.last_name",
+  // "goal.category",
+  // "benchmark.description",
+  // "benchmark.instructions",
+  // "benchmark.frequency",
+  // "benchmark.number_of_trials",
+  // "benchmark.benchmark_id",
+  // "task.due_date",
+  // "task.seen",
+  // "task.trial_count",
+
+  // .select([
+  //   "benchmark.description",
+  //   "benchmark.instructions",
+  //   "benchmark.frequency",
+  //   "benchmark.number_of_trials",
+  //   "benchmark.benchmark_id",
+  // ])
+
+  // {
+  //   benchmark: {
+  //     id,
+  //     title,
+  //     desc,
+  //     assignees: [
+  //       { id:, name }
+  //     ]
+  //   }
+  // }
 
   getBenchmarkByAssignee: hasCaseManager
     .input(
