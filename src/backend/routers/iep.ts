@@ -373,53 +373,34 @@ export const iep = router({
       // return result;
 
       // NOTE: no errors, but the app may blow up b/c we're returning multiple rows
-      const result = await req.ctx.db
-        .selectFrom("benchmark")
-        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
-        .innerJoin("user", "task.assignee_id", "user.user_id")
-        .where("benchmark.benchmark_id", "=", benchmark_id)
-        .selectAll()
-        .execute();
-      return result;
-
       // const result = await req.ctx.db
       //   .selectFrom("benchmark")
       //   .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
       //   .innerJoin("user", "task.assignee_id", "user.user_id")
-      //   .where("task.assignee_id", "=", "user.user_id")
       //   .where("benchmark.benchmark_id", "=", benchmark_id)
-      //   .select((eb) => [
-      //     "*",
-      //     // jsonArrayFrom(
-      //     //   eb
-      //     //     .selectFrom("user")
-      //     //     .selectAll()
-      //     //     .whereRef("task.assignee_id", "=", "user.user_id")
-      //     //     .orderBy("user.first_name")
-      //     // ).as("assignees"),
-      //     jsonArrayFrom(
-      //       eb
-      //         .selectFrom("trial_data")
-      //         .select([
-      //           "trial_data.trial_data_id",
-      //           "trial_data.success",
-      //           "trial_data.unsuccess",
-      //           "trial_data.submitted",
-      //           "trial_data.notes",
-      //           "trial_data.created_at",
-      //         ])
-      //         .whereRef("trial_data.task_id", "=", "task.task_id")
-      //         .whereRef(
-      //           "trial_data.created_by_user_id",
-      //           "=",
-      //           "task.assignee_id"
-      //         )
-      //         .orderBy("trial_data.created_at")
-      //     ).as("assignees"),
-      //   ])
-      //   .executeTakeFirstOrThrow();
-      // // .execute();
+      //   .selectAll()
+      //   .execute();
       // return result;
+
+      const result = await req.ctx.db
+        .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+        .innerJoin("user", "task.assignee_id", "user.user_id")
+        .where("task.assignee_id", "=", "user.user_id")
+        .where("benchmark.benchmark_id", "=", benchmark_id)
+        .select((eb) => [
+          "*",
+          jsonArrayFrom(
+            eb
+              .selectFrom("user")
+              .selectAll()
+              .whereRef("task.assignee_id", "=", "user.user_id")
+              .orderBy("user.first_name")
+          ).as("assignees"),
+        ])
+        .executeTakeFirstOrThrow();
+      // .execute();
+      return result;
     }),
 
   //.innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
@@ -458,6 +439,26 @@ export const iep = router({
   //     ]
   //   }
   // }
+
+  // jsonArrayFrom(
+  //   eb
+  //     .selectFrom("trial_data")
+  //     .select([
+  //       "trial_data.trial_data_id",
+  //       "trial_data.success",
+  //       "trial_data.unsuccess",
+  //       "trial_data.submitted",
+  //       "trial_data.notes",
+  //       "trial_data.created_at",
+  //     ])
+  //     .whereRef("trial_data.task_id", "=", "task.task_id")
+  //     .whereRef(
+  //       "trial_data.created_by_user_id",
+  //       "=",
+  //       "task.assignee_id"
+  //     )
+  //     .orderBy("trial_data.created_at")
+  // ).as("assignees"),
 
   getBenchmarkByAssignee: hasCaseManager
     .input(
