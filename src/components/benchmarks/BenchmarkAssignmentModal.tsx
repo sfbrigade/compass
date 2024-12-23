@@ -51,6 +51,9 @@ export const BenchmarkAssignmentModal = ({
   handleNext,
   nextButtonRef,
 }: BenchmarkAssignmentModalProps) => {
+  if (!benchmark) {
+    return <div>Loading!</div>;
+  }
   return (
     <Dialog
       open={isOpen}
@@ -66,14 +69,12 @@ export const BenchmarkAssignmentModal = ({
       <DialogContent>
         <Box className={$benchmark.benchmarkDescriptionBox}>
           <p className={$benchmark.benchmarkTitle}>Benchmark</p>
-          {benchmark?.map((thisBenchmark) => (
-            <p
-              className={$benchmark.benchmarkDescription}
-              key="thisBenchmark.description"
-            >
-              {thisBenchmark.description}
-            </p>
-          ))}
+          <p
+            className={$benchmark.benchmarkDescription}
+            key="thisBenchmark.description"
+          >
+            {benchmark.description}
+          </p>
         </Box>
         {currentModalSelection === "PARA_SELECTION" && (
           <ParaSelectionStep

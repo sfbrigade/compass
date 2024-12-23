@@ -363,27 +363,10 @@ export const iep = router({
     .query(async (req) => {
       const { benchmark_id } = req.input;
 
-      // // NOTE: existing code
-      // const result = await req.ctx.db
-      //   .selectFrom("benchmark")
-      //   .where("benchmark.benchmark_id", "=", benchmark_id)
-      //   .selectAll() // works
-      //   // .select("*") // doesn't work, but maybe it'll work if we do the function form
-      //   .execute();
-      // return result;
-
-      // NOTE: no errors, but the app may blow up b/c we're returning multiple rows
-      // const result = await req.ctx.db
-      //   .selectFrom("benchmark")
-      //   .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
-      //   .innerJoin("user", "task.assignee_id", "user.user_id")
-      //   .where("benchmark.benchmark_id", "=", benchmark_id)
-      //   .selectAll()
-      //   .execute();
-      // return result;
-
+      // NOTE: existing code
       const result = await req.ctx.db
         .selectFrom("benchmark")
+        .where("benchmark.benchmark_id", "=", benchmark_id)
         .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
         .innerJoin("user", "task.assignee_id", "user.user_id")
         .where("task.assignee_id", "=", "user.user_id")
