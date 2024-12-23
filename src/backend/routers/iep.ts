@@ -366,10 +366,8 @@ export const iep = router({
       // NOTE: existing code
       const result = await req.ctx.db
         .selectFrom("benchmark")
-        .where("benchmark.benchmark_id", "=", benchmark_id)
         .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
         .innerJoin("user", "task.assignee_id", "user.user_id")
-        .where("task.assignee_id", "=", "user.user_id")
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
           "benchmark.description",
