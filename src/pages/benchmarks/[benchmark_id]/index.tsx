@@ -71,7 +71,7 @@ const BenchmarkPage = () => {
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = task?.trials[currentTrialIdx] || null;
 
-  const trialAddedRef = useRef(false);
+  const trialAddedRef = useRef<boolean>(false);
 
   const hasInputChanged =
     currentTrial?.notes !== notesInputValue ||
