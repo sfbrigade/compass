@@ -393,18 +393,21 @@ export const iep = router({
   getBenchmarkAndTrialData: hasPara
     .input(
       z.object({
-        benchmark_id: z.string(),
+        task_id: z.string(),
       })
     )
     .query(async (req) => {
-      const { benchmark_id } = req.input;
+      const { task_id } = req.input;
 
       const result = await req.ctx.db
         .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
         .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
         .innerJoin("iep", "goal.iep_id", "iep.iep_id")
         .innerJoin("student", "iep.student_id", "student.student_id")
+        .where("task.task_id", "=", task_id)
         .select((eb) => [
+          "task.task_id",
           "benchmark.benchmark_id",
           "student.first_name",
           "student.last_name",
@@ -414,6 +417,9 @@ export const iep = router({
           "benchmark.frequency",
           "benchmark.number_of_trials",
           "benchmark.benchmark_id",
+          "task.due_date",
+          "task.seen",
+          "task.trial_count",
           jsonArrayFrom(
             eb
               .selectFrom("trial_data")
@@ -440,10 +446,14 @@ export const iep = router({
                 "=",
                 "benchmark.benchmark_id"
               )
+              .whereRef(
+                "trial_data.created_by_user_id",
+                "=",
+                "task.assignee_id"
+              )
               .orderBy("trial_data.created_at")
           ).as("trials"),
         ])
-        .where("benchmark.benchmark_id", "=", benchmark_id)
         .executeTakeFirstOrThrow();
 
       return result;

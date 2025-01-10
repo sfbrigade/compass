@@ -35,7 +35,7 @@ const BenchmarkPage = () => {
     isError,
   } = trpc.iep.getBenchmarkAndTrialData.useQuery(
     {
-      task_id: benchmark_id as string,
+      task_id: benchmark_id as string, // how does this line make sense?
     },
     {
       enabled: Boolean(benchmark_id),
