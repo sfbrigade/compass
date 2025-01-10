@@ -249,7 +249,7 @@ export const iep = router({
   addTrialData: hasPara
     .input(
       z.object({
-        task_id: z.string(),
+        benchmark_id: z.string(),
         success: z.number(),
         unsuccess: z.number(),
         notes: z.string(),
@@ -435,11 +435,10 @@ export const iep = router({
                     .selectAll("file")
                 ).as("files"),
               ])
-              .whereRef("trial_data.task_id", "=", "task.task_id")
               .whereRef(
-                "trial_data.created_by_user_id",
+                "trial_data.benchmark_id",
                 "=",
-                "task.assignee_id"
+                "benchmark.benchmark_id"
               )
               .orderBy("trial_data.created_at")
           ).as("trials"),
