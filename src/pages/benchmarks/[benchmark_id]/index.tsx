@@ -30,12 +30,12 @@ const BenchmarkPage = () => {
   const { benchmark_id } = router.query;
   const utils = trpc.useContext();
   const {
-    data: task,
-    isLoading: taskIsLoading,
+    data: benchmark,
+    isLoading: benchmarkIsLoading,
     isError,
   } = trpc.iep.getBenchmarkAndTrialData.useQuery(
     {
-      task_id: benchmark_id as string, // how does this line make sense?
+      benchmark_id: benchmark_id as string, // how does this line make sense?
     },
     {
       enabled: Boolean(benchmark_id),
@@ -69,7 +69,7 @@ const BenchmarkPage = () => {
   const [unsuccessInputValue, setUnsuccessInputValue] = useState(0);
 
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
-  const currentTrial = task?.trials[currentTrialIdx] || null;
+  const currentTrial = benchmark?.trials[currentTrialIdx] || null;
 
   const [trialAdded, setTrialAdded] = useState(false);
 
@@ -80,10 +80,10 @@ const BenchmarkPage = () => {
 
   // Sets the current trial to most recent whenever a new task is loaded.
   useEffect(() => {
-    if (task && task.trials.length > 0) {
-      setCurrentTrialIdx(task.trials.length - 1);
+    if (benchmark && benchmark.trials.length > 0) {
+      setCurrentTrialIdx(benchmark.trials.length - 1);
     }
-  }, [task]);
+  }, [benchmark]);
 
   // Sets all input states to saved values
   useEffect(() => {
@@ -98,36 +98,45 @@ const BenchmarkPage = () => {
     }
   }, [currentTrial?.notes, currentTrial?.success, currentTrial?.unsuccess]);
 
+  // Move this to the backend, this page shouldn't have to deal with tasks, only
+  // benchmarks, we don't want mutations in useEffect, useEffect should be responding
+  // to UI changes and not making backend changes.
   // Marks this benchmark as seen (if it hasn't been seen yet)
+  // or: we can modify the seenMutation to take the benchmark_id and ask it to look up
+  // the task based on the current user id being the task's assignee_id
   useEffect(() => {
-    if (!seenMutation.isLoading && !taskIsLoading && task && !task.seen) {
-      seenMutation.mutate({ task_id: task.task_id });
+    if (!seenMutation.isLoading && !benchmarkIsLoading && benchmark) {
+      seenMutation.mutate({ benchmark_id: benchmark.benchmark_id });
     }
-  }, [task, seenMutation, taskIsLoading]);
+  }, [benchmark, seenMutation, benchmarkIsLoading]);
 
   // Creates a new data collection instance (if there are none in progress)
   useEffect(() => {
     if (
       !trialAdded &&
       !addTrialMutation.isLoading &&
-      !taskIsLoading &&
-      task &&
-      (task.trials.length === 0 ||
-        task.trials[task.trials.length - 1]?.submitted === true)
+      !benchmarkIsLoading &&
+      benchmark &&
+      (benchmark.trials.length === 0 ||
+        benchmark.trials[benchmark.trials.length - 1]?.submitted === true)
     ) {
       addTrialMutation.mutate({
-        task_id: task.task_id,
+        benchmark_id: benchmark.benchmark_id,
         success: 0,
         unsuccess: 0,
         notes: "",
       });
       setTrialAdded(true);
     }
-  }, [task, addTrialMutation, taskIsLoading, trialAdded]);
+  }, [benchmark, addTrialMutation, benchmarkIsLoading, trialAdded]);
 
   const handleUpdate = (updates: DataUpdate) => {
     //Can only update if we're on the most recent trial
-    if (task && currentTrial && currentTrialIdx === task.trials.length - 1) {
+    if (
+      benchmark &&
+      currentTrial &&
+      currentTrialIdx === benchmark.trials.length - 1
+    ) {
       updateTrialMutation.mutate({
         trial_data_id: currentTrial.trial_data_id,
         ...updates,
@@ -179,7 +188,7 @@ const BenchmarkPage = () => {
     });
   };
 
-  if (taskIsLoading || !currentTrial) {
+  if (benchmarkIsLoading || !currentTrial) {
     return <div>Loading...</div>;
   }
 
@@ -194,7 +203,7 @@ const BenchmarkPage = () => {
       </Link>
       <ParaNav />
       <p className={$box.default}>
-        <strong>Task:</strong> {task.description}
+        <strong>Benchmark:</strong> {benchmark.description}
       </p>
       <div className={`${$box.topAndBottomBorder} ${$box.flex}`}>
         <button
@@ -208,7 +217,7 @@ const BenchmarkPage = () => {
         <button
           className={`${$button.default} ${$button.circular}`}
           onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
-          disabled={currentTrialIdx === task.trials.length - 1}
+          disabled={currentTrialIdx === benchmark.trials.length - 1}
         >
           <ChevronRightIcon />
         </button>
@@ -228,9 +237,10 @@ const BenchmarkPage = () => {
           onDecrement={() => {
             setSuccessInputValue(successInputValue - 1);
           }}
-          disableInc={currentTrialIdx !== task.trials.length - 1}
+          disableInc={currentTrialIdx !== benchmark.trials.length - 1}
           disableDec={
-            currentTrialIdx !== task.trials.length - 1 || successInputValue <= 0
+            currentTrialIdx !== benchmark.trials.length - 1 ||
+            successInputValue <= 0
           }
           color="green"
         />
@@ -247,23 +257,23 @@ const BenchmarkPage = () => {
           onDecrement={() => {
             setUnsuccessInputValue(unsuccessInputValue - 1);
           }}
-          disableInc={currentTrialIdx !== task.trials.length - 1}
+          disableInc={currentTrialIdx !== benchmark.trials.length - 1}
           disableDec={
-            currentTrialIdx !== task.trials.length - 1 ||
+            currentTrialIdx !== benchmark.trials.length - 1 ||
             unsuccessInputValue <= 0
           }
           color="red"
         />
         <p className={`${$typo.centeredText} ${$typo.bold}`}>
           {successInputValue + unsuccessInputValue} attempts out of{" "}
-          {task.number_of_trials ?? "-"}
+          {benchmark.number_of_trials ?? "-"}
         </p>
       </div>
       <textarea
         className={$box.default}
         placeholder="Type your observation notes here..."
         rows={5}
-        readOnly={currentTrialIdx !== task.trials.length - 1}
+        readOnly={currentTrialIdx !== benchmark.trials.length - 1}
         value={notesInputValue}
         onChange={onNoteChange}
       ></textarea>
@@ -296,7 +306,9 @@ const BenchmarkPage = () => {
       <Link
         href={`${router.asPath}/review`}
         className={`${$button.default} ${
-          currentTrialIdx !== task.trials.length - 1 ? $button.inactive : ""
+          currentTrialIdx !== benchmark.trials.length - 1
+            ? $button.inactive
+            : ""
         }`}
       >
         Review

@@ -22,4 +22,5 @@ export interface TaskData {
   seen: boolean;
   completed_trials: string | number | bigint | null;
   created_at: Date;
+  benchmark_id: string;
 }
