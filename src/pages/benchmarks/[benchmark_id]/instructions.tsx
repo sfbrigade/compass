@@ -12,7 +12,7 @@ const InstructionsPage = () => {
   const { benchmark_id } = router.query;
   const { data: benchmark, isLoading } =
     trpc.iep.getBenchmarkAndTrialData.useQuery(
-      { task_id: benchmark_id as string },
+      { benchmark_id: benchmark_id as string },
       { enabled: Boolean(benchmark_id) }
     );
 
