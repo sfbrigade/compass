@@ -86,6 +86,8 @@ export const iep = router({
         metric_name: z.string(),
         attempts_per_trial: z.number().nullable(),
         number_of_trials: z.number().nullable(),
+        due_date: z.date(),
+        trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
@@ -102,6 +104,8 @@ export const iep = router({
         metric_name,
         attempts_per_trial,
         number_of_trials,
+        due_date,
+        trial_count,
       } = req.input;
 
       const result = await req.ctx.db
@@ -119,6 +123,8 @@ export const iep = router({
           metric_name,
           attempts_per_trial,
           number_of_trials,
+          due_date,
+          trial_count,
         })
         .returningAll()
         .executeTakeFirst();
@@ -126,17 +132,76 @@ export const iep = router({
       return result;
     }),
 
+  updateBenchmark: hasPara
+    .input(
+      z.object({
+        benchmark_id: z.string(),
+        goal_id: z.string().optional(),
+        status: z.string().optional(),
+        description: z.string().optional(),
+        setup: z.string().optional(),
+        instructions: z.string().optional(),
+        materials: z.string().optional(),
+        frequency: z.string().optional(),
+        target_level: z.number().min(0).max(100).optional(),
+        baseline_level: z.number().min(0).max(100).optional(),
+        metric_name: z.string().optional(),
+        attempts_per_trial: z.number().nullable().optional(),
+        number_of_trials: z.number().nullable().optional(),
+        due_date: z.date().optional(),
+        trial_count: z.number().optional(),
+      })
+    )
+    .mutation(async (req) => {
+      const {
+        benchmark_id,
+        goal_id,
+        status,
+        description,
+        setup,
+        instructions,
+        materials,
+        frequency,
+        target_level,
+        baseline_level,
+        metric_name,
+        attempts_per_trial,
+        number_of_trials,
+        due_date,
+        trial_count,
+      } = req.input;
+
+      await req.ctx.db
+        .updateTable("benchmark")
+        .set({
+          goal_id,
+          status,
+          description,
+          setup,
+          instructions,
+          materials,
+          frequency,
+          target_level,
+          baseline_level,
+          metric_name,
+          attempts_per_trial,
+          number_of_trials,
+          due_date,
+          trial_count,
+        })
+        .where("benchmark.benchmark_id", "=", benchmark_id)
+        .execute();
+    }),
+
   addTask: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string(),
         assignee_id: z.string(),
-        due_date: z.date(),
-        trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { benchmark_id, assignee_id, due_date, trial_count } = req.input;
+      const { benchmark_id, assignee_id } = req.input;
 
       const existingTask = await req.ctx.db
         .selectFrom("task")
@@ -156,8 +221,6 @@ export const iep = router({
         .values({
           benchmark_id,
           assignee_id,
-          due_date,
-          trial_count,
         })
         .returningAll()
         .executeTakeFirst();
@@ -169,12 +232,10 @@ export const iep = router({
       z.object({
         benchmark_id: z.string().uuid(),
         para_ids: z.string().uuid().array(),
-        due_date: z.date().optional(),
-        trial_count: z.number().optional(),
       })
     )
     .mutation(async (req) => {
-      const { benchmark_id, para_ids, due_date, trial_count } = req.input;
+      const { benchmark_id, para_ids } = req.input;
 
       const existingTasks = await req.ctx.db
         .selectFrom("task")
@@ -195,54 +256,10 @@ export const iep = router({
           para_ids.map((para_id) => ({
             benchmark_id,
             assignee_id: para_id,
-            due_date,
-            trial_count,
           }))
         )
         .returningAll()
         .executeTakeFirst();
-      return result;
-    }),
-  //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: hasCaseManager
-    .input(
-      z.object({
-        benchmark_id: z.string(),
-        due_date: z.date(),
-        trial_count: z.number(),
-      })
-    )
-    .mutation(async (req) => {
-      const { benchmark_id, due_date, trial_count } = req.input;
-      const { userId } = req.ctx.auth;
-
-      const shouldAdd = await req.ctx.db
-        .selectFrom("task")
-        .selectAll()
-        .where((eb) =>
-          eb.and([
-            eb("benchmark_id", "=", benchmark_id),
-            eb("assignee_id", "=", userId),
-          ])
-        )
-        .executeTakeFirst();
-
-      // Prevent multiple assignments of the same task
-      if (shouldAdd !== undefined) {
-        return null;
-      }
-
-      const result = await req.ctx.db
-        .insertInto("task")
-        .values({
-          benchmark_id,
-          assignee_id: userId,
-          due_date,
-          trial_count,
-        })
-        .returningAll()
-        .executeTakeFirst();
-
       return result;
     }),
 

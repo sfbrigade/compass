@@ -98,6 +98,7 @@ export const BenchmarkAssignmentModal = (
         await assignTaskToPara.mutateAsync({
           benchmark_id: props.benchmark_id,
           para_ids: selectedParaIds,
+          // this should be written to benchmarks:
           due_date:
             assignmentDuration.type === "until_date"
               ? assignmentDuration.date
