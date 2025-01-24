@@ -363,13 +363,86 @@ export const iep = router({
     .query(async (req) => {
       const { benchmark_id } = req.input;
 
+      // NOTE: existing code
       const result = await req.ctx.db
         .selectFrom("benchmark")
+        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+        .innerJoin("user", "task.assignee_id", "user.user_id")
         .where("benchmark.benchmark_id", "=", benchmark_id)
-        .selectAll()
-        .execute();
+        .select((eb) => [
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.benchmark_id",
+          jsonArrayFrom(
+            eb
+              .selectFrom("user")
+              .selectAll()
+              .whereRef("task.assignee_id", "=", "user.user_id")
+              .orderBy("user.first_name")
+          ).as("assignees"),
+        ])
+        .executeTakeFirstOrThrow();
       return result;
     }),
+
+  //.innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
+  // .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
+  // .innerJoin("iep", "goal.iep_id", "iep.iep_id")
+  // .innerJoin("student", "iep.student_id", "student.student_id")
+
+  // "task.task_id",
+  // "student.first_name",
+  // "student.last_name",
+  // "goal.category",
+  // "benchmark.description",
+  // "benchmark.instructions",
+  // "benchmark.frequency",
+  // "benchmark.number_of_trials",
+  // "benchmark.benchmark_id",
+  // "task.due_date",
+  // "task.seen",
+  // "task.trial_count",
+
+  // .select([
+  //   "benchmark.description",
+  //   "benchmark.instructions",
+  //   "benchmark.frequency",
+  //   "benchmark.number_of_trials",
+  //   "benchmark.benchmark_id",
+  // ])
+
+  // {
+  //   benchmark: {
+  //     id,
+  //     title,
+  //     desc,
+  //     assignees: [
+  //       { id:, name }
+  //     ]
+  //   }
+  // }
+
+  // jsonArrayFrom(
+  //   eb
+  //     .selectFrom("trial_data")
+  //     .select([
+  //       "trial_data.trial_data_id",
+  //       "trial_data.success",
+  //       "trial_data.unsuccess",
+  //       "trial_data.submitted",
+  //       "trial_data.notes",
+  //       "trial_data.created_at",
+  //     ])
+  //     .whereRef("trial_data.task_id", "=", "task.task_id")
+  //     .whereRef(
+  //       "trial_data.created_by_user_id",
+  //       "=",
+  //       "task.assignee_id"
+  //     )
+  //     .orderBy("trial_data.created_at")
+  // ).as("assignees"),
 
   getBenchmarkByAssignee: hasCaseManager
     .input(
