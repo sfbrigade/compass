@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Counter from "@/components/counter/counter";
 import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
@@ -71,7 +71,7 @@ const BenchmarkPage = () => {
   const [currentTrialIdx, setCurrentTrialIdx] = useState(0);
   const currentTrial = benchmark?.trials[currentTrialIdx] || null;
 
-  const [trialAdded, setTrialAdded] = useState(false);
+  const trialAddedRef = useRef<boolean>(false);
 
   const hasInputChanged =
     currentTrial?.notes !== notesInputValue ||
@@ -113,7 +113,7 @@ const BenchmarkPage = () => {
   // Creates a new data collection instance (if there are none in progress)
   useEffect(() => {
     if (
-      !trialAdded &&
+      !trialAddedRef.current &&
       !addTrialMutation.isLoading &&
       !benchmarkIsLoading &&
       benchmark &&
@@ -126,9 +126,9 @@ const BenchmarkPage = () => {
         unsuccess: 0,
         notes: "",
       });
-      setTrialAdded(true);
+      trialAddedRef.current = true;
     }
-  }, [benchmark, addTrialMutation, benchmarkIsLoading, trialAdded]);
+  }, [benchmark, addTrialMutation, benchmarkIsLoading, trialAddedRef]);
 
   const handleUpdate = (updates: DataUpdate) => {
     //Can only update if we're on the most recent trial

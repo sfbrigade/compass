@@ -62,6 +62,7 @@ export const getTestServer = async (
   const { db, pool } = getDb(databaseConnectionString);
 
   const env: Env = {
+    BASE_URL: "http://localhost:3000",
     DATABASE_URL: databaseConnectionString,
     S3_USER_UPLOADS_ENDPOINT: minio.endpoint,
     S3_USER_UPLOADS_REGION: minio.region,

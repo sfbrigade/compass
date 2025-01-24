@@ -1,4 +1,5 @@
 export interface Env {
+  BASE_URL: string;
   DATABASE_URL: string;
   S3_USER_UPLOADS_ENDPOINT: string;
   S3_USER_UPLOADS_REGION: string;
