@@ -141,22 +141,20 @@ test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   const benchmark1Id = benchmark1!.benchmark_id;
 
   await trpc.iep.addTask.mutate({
     benchmark_id: benchmark1Id,
     assignee_id: para_id,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
 
   const error = await t.throwsAsync(async () => {
     await trpc.iep.addTask.mutate({
       benchmark_id: benchmark1Id,
       assignee_id: para_id,
-      due_date: new Date("2024-03-31"),
-      trial_count: 1,
     });
   });
 
@@ -204,22 +202,20 @@ test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) 
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   const benchmark1Id = benchmark1!.benchmark_id;
 
   await trpc.iep.assignTaskToParas.mutate({
     benchmark_id: benchmark1Id,
     para_ids: [para_1.user_id],
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
 
   const error = await t.throwsAsync(async () => {
     await trpc.iep.assignTaskToParas.mutate({
       benchmark_id: benchmark1Id,
       para_ids: [para_1.user_id, para_2.user_id],
-      due_date: new Date("2024-03-31"),
-      trial_count: 1,
     });
   });
 

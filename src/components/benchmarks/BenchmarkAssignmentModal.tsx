@@ -99,14 +99,14 @@ export const BenchmarkAssignmentModal = (
           benchmark_id: props.benchmark_id,
           para_ids: selectedParaIds,
           // this should be written to benchmarks:
-          due_date:
-            assignmentDuration.type === "until_date"
-              ? assignmentDuration.date
-              : undefined,
-          trial_count:
-            assignmentDuration.type === "minimum_number_of_collections"
-              ? assignmentDuration.minimumNumberOfCollections
-              : undefined,
+          // due_date:
+          //   assignmentDuration.type === "until_date"
+          //     ? assignmentDuration.date
+          //     : undefined,
+          // trial_count:
+          //   assignmentDuration.type === "minimum_number_of_collections"
+          //     ? assignmentDuration.minimumNumberOfCollections
+          //     : undefined,
         });
         handleClose();
       } catch (err) {

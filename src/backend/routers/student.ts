@@ -29,7 +29,11 @@ export const student = router({
         .innerJoin("iep", "iep.iep_id", "goal.iep_id")
         .innerJoin("student", "student.student_id", "iep.student_id")
         .where("task.task_id", "=", task_id)
-        .select(["student.first_name", "student.last_name", "task.due_date"])
+        .select([
+          "student.first_name",
+          "student.last_name",
+          "benchmark.due_date",
+        ])
         .executeTakeFirstOrThrow();
 
       return result;
