@@ -237,6 +237,9 @@ export const iep = router({
     .mutation(async (req) => {
       const { benchmark_id, para_ids } = req.input;
 
+      // TODO: instead of throwing an error if a task already exists,
+      // just add/remove existing tasks as needed.
+
       const existingTasks = await req.ctx.db
         .selectFrom("task")
         .where("benchmark_id", "=", benchmark_id)

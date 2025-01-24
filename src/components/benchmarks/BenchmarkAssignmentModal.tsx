@@ -57,6 +57,7 @@ export const BenchmarkAssignmentModal = (
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
+  const updateBenchmark = trpc.iep.updateBenchmark.useMutation();
 
   const handleParaToggle = (paraId: string) => () => {
     setErrorMessage("");
@@ -95,18 +96,21 @@ export const BenchmarkAssignmentModal = (
     } else {
       // Reached end, save
       try {
+        // maybe invoke these two in parallel?
         await assignTaskToPara.mutateAsync({
           benchmark_id: props.benchmark_id,
           para_ids: selectedParaIds,
-          // this should be written to benchmarks:
-          // due_date:
-          //   assignmentDuration.type === "until_date"
-          //     ? assignmentDuration.date
-          //     : undefined,
-          // trial_count:
-          //   assignmentDuration.type === "minimum_number_of_collections"
-          //     ? assignmentDuration.minimumNumberOfCollections
-          //     : undefined,
+        });
+        await updateBenchmark.mutateAsync({
+          benchmark_id: props.benchmark_id,
+          due_date:
+            assignmentDuration.type === "until_date"
+              ? assignmentDuration.date
+              : undefined,
+          trial_count:
+            assignmentDuration.type === "minimum_number_of_collections"
+              ? assignmentDuration.minimumNumberOfCollections
+              : undefined,
         });
         handleClose();
       } catch (err) {
