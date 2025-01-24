@@ -237,32 +237,56 @@ export const iep = router({
     .mutation(async (req) => {
       const { benchmark_id, para_ids } = req.input;
 
-      // TODO: instead of throwing an error if a task already exists,
-      // just add/remove existing tasks as needed.
-
+      // fetch all existing task records for this benchmark
       const existingTasks = await req.ctx.db
         .selectFrom("task")
         .where("benchmark_id", "=", benchmark_id)
-        .where("assignee_id", "in", para_ids)
         .selectAll()
         .execute();
 
-      if (existingTasks.length > 0) {
-        throw new Error(
-          "Task already exists: This benchmark has already been assigned to one or more of these paras"
-        );
-      }
-
-      const result = await req.ctx.db
-        .insertInto("task")
-        .values(
-          para_ids.map((para_id) => ({
-            benchmark_id,
-            assignee_id: para_id,
-          }))
+      // collect list of task records to delete (if assignee_id not in para_ids)
+      const deleteTaskIds = existingTasks
+        .filter(
+          (task) => task.assignee_id && !para_ids.includes(task.assignee_id)
         )
-        .returningAll()
-        .executeTakeFirst();
+        .map((task) => task.task_id);
+
+      // collect a list of new assignee_ids to insert
+      const newAssigneeIds = para_ids.filter(
+        (para_id) => !existingTasks.find((task) => task.assignee_id === para_id)
+      );
+
+      let result:
+        | {
+            benchmark_id: string | null;
+            assignee_id: string | null;
+            created_at: Date;
+            seen: boolean;
+            task_id: string;
+          }
+        | undefined;
+      await req.ctx.db.transaction().execute(async (trx) => {
+        // delete tasks whose assignees that are not in para_ids
+        if (deleteTaskIds.length > 0) {
+          await trx
+            .deleteFrom("task")
+            .where("task_id", "in", deleteTaskIds)
+            .execute();
+        }
+        // insert new tasks for new assignees
+        if (newAssigneeIds.length > 0) {
+          result = await req.ctx.db
+            .insertInto("task")
+            .values(
+              newAssigneeIds.map((para_id) => ({
+                benchmark_id,
+                assignee_id: para_id,
+              }))
+            )
+            .returningAll()
+            .executeTakeFirst();
+        }
+      });
       return result;
     }),
 

@@ -97,21 +97,23 @@ export const BenchmarkAssignmentModal = (
       // Reached end, save
       try {
         // maybe invoke these two in parallel?
-        await assignTaskToPara.mutateAsync({
-          benchmark_id: props.benchmark_id,
-          para_ids: selectedParaIds,
-        });
-        await updateBenchmark.mutateAsync({
-          benchmark_id: props.benchmark_id,
-          due_date:
-            assignmentDuration.type === "until_date"
-              ? assignmentDuration.date
-              : undefined,
-          trial_count:
-            assignmentDuration.type === "minimum_number_of_collections"
-              ? assignmentDuration.minimumNumberOfCollections
-              : undefined,
-        });
+        await Promise.all([
+          assignTaskToPara.mutateAsync({
+            benchmark_id: props.benchmark_id,
+            para_ids: selectedParaIds,
+          }),
+          updateBenchmark.mutateAsync({
+            benchmark_id: props.benchmark_id,
+            due_date:
+              assignmentDuration.type === "until_date"
+                ? assignmentDuration.date
+                : undefined,
+            trial_count:
+              assignmentDuration.type === "minimum_number_of_collections"
+                ? assignmentDuration.minimumNumberOfCollections
+                : undefined,
+          }),
+        ]);
         handleClose();
       } catch (err) {
         // TODO: issue #450

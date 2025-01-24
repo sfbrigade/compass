@@ -165,7 +165,7 @@ test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
 });
 
 test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) => {
-  const { trpc, seed } = await getTestServer(t, {
+  const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
   });
 
@@ -212,17 +212,18 @@ test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) 
     para_ids: [para_1.user_id],
   });
 
-  const error = await t.throwsAsync(async () => {
-    await trpc.iep.assignTaskToParas.mutate({
-      benchmark_id: benchmark1Id,
-      para_ids: [para_1.user_id, para_2.user_id],
-    });
+  await trpc.iep.assignTaskToParas.mutate({
+    benchmark_id: benchmark1Id,
+    para_ids: [para_1.user_id, para_2.user_id],
   });
 
-  t.is(
-    error?.message,
-    "Task already exists: This benchmark has already been assigned to one or more of these paras"
-  );
+  const result = await db
+    .selectFrom("task")
+    .where("benchmark_id", "=", benchmark1Id)
+    .selectAll()
+    .execute();
+
+  t.is(result.length, 2);
 });
 
 test("add benchmark - check full schema", async (t) => {
