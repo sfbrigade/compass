@@ -66,14 +66,14 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   const benchmark2Id = benchmark2!.benchmark_id;
 
   await trpc.iep.addTask.mutate({
     benchmark_id: benchmark1Id,
     assignee_id: para_id,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
 
   const assignTask = await trpc.iep.assignTaskToParas.mutate({
@@ -95,6 +95,8 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
     benchmark_id: benchmark2Id,
   });
   t.is(gotBenchmark[0].description, "benchmark 2");
+  t.deepEqual(gotBenchmark[0].due_date, new Date("2023-12-31"));
+  t.is(gotBenchmark[0].trial_count, 5);
 
   // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
