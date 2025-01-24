@@ -94,7 +94,7 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const gotBenchmark = await trpc.iep.getBenchmark.query({
     benchmark_id: benchmark2Id,
   });
-  t.is(gotBenchmark[0].description, "benchmark 2");
+  t.is(gotBenchmark.description, "benchmark 2");
 
   // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
