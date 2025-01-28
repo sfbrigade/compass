@@ -9,7 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
-import noBenchmarks from "../../public/img/no-benchmarks.png";
+import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
@@ -122,13 +122,9 @@ function Benchmarks() {
                 <FilterAlt /> Filter <KeyboardArrowDown />
               </span>
 
-              {
-                // TODO: replace simple sort pill w/this sort pill placeholder
-                /*
-              TODO: replace simple sort pill w/this sort pill placeholder
-
-              Sort Pill Placeholder
-              <span
+              {/* simple sort pill POC (TODO: add `<KeyboardArrowDown/>` if dropdown needed) */}
+              <button
+                onClick={() => handleSort("created_at")}
                 className={`${$button.pilled}`}
                 style={{
                   display: "flex",
@@ -137,10 +133,8 @@ function Benchmarks() {
                   gap: "4px",
                 }}
               >
-                <Sort /> Sort <KeyboardArrowDown />
-              </span>
-              */
-              }
+                <Sort /> Sort by date
+              </button>
 
               {/* simple sort pill POC (see TODO above) */}
               <button

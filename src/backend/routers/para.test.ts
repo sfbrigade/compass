@@ -93,6 +93,11 @@ test("createPara", async (t) => {
       .executeTakeFirst()
   );
 
+  // mail is sent asynchronously in promise, so wait a bit
+  await new Promise((resolve) => {
+    setTimeout(resolve, 100);
+  });
+
   t.true(
     nodemailerMock.mock
       .getSentMail()

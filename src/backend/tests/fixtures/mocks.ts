@@ -1,8 +1,6 @@
-import rewiremock from "rewiremock";
 import * as nodemailerMock from "nodemailer-mock";
+import quibble from "quibble";
 
-rewiremock.overrideEntryPoint(module); // this is important. This command is "transfering" this module parent to rewiremock
-rewiremock("nodemailer").with(nodemailerMock);
-rewiremock.enable();
+quibble("nodemailer", nodemailerMock);
 
 export { nodemailerMock };
