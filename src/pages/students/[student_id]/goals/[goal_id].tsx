@@ -14,9 +14,14 @@ const GoalPage = () => {
     { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
   );
-  const { data: goals = [] } = trpc.iep.getGoals.useQuery({
-    iep_id: activeIep?.iep_id || "",
-  });
+  const { data: goals = [] } = trpc.iep.getGoals.useQuery(
+    {
+      iep_id: activeIep?.iep_id || "",
+    },
+    {
+      enabled: Boolean(activeIep),
+    }
+  );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },

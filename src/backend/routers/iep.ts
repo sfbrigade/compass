@@ -392,7 +392,33 @@ export const iep = router({
       const result = await req.ctx.db
         .selectFrom("benchmark")
         .where("goal_id", "=", goal_id)
-        .selectAll()
+        .select((eb) => [
+          "benchmark.benchmark_id",
+          "benchmark.status",
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.materials",
+          "benchmark.metric_name",
+          "benchmark.setup",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.attempts_per_trial",
+          "benchmark.trial_count",
+          "benchmark.baseline_level",
+          "benchmark.current_level",
+          "benchmark.target_level",
+          "benchmark.created_at",
+          "benchmark.due_date",
+          "benchmark.goal_id",
+          jsonArrayFrom(
+            eb
+              .selectFrom("user")
+              .innerJoin("task", "task.assignee_id", "user.user_id")
+              .whereRef("task.benchmark_id", "=", "benchmark.benchmark_id")
+              .orderBy("user.first_name")
+              .selectAll()
+          ).as("assignees"),
+        ])
         .execute();
 
       return result;

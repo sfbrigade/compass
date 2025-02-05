@@ -2,11 +2,16 @@ import { SelectableForTable } from "zapatos/schema";
 
 export type Goal = SelectableForTable<"goal">;
 export type Benchmark = SelectableForTable<"benchmark">;
+export type User = SelectableForTable<"user">;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 
 export type SortProperty = "first_name" | "created_at";
 export type SortDirection = "asc" | "desc";
+
+export interface BenchmarkWithAssignees extends Benchmark {
+  assignees: User[];
+}
 
 export interface TaskData {
   task_id: string;
