@@ -2,5 +2,6 @@
 .git
 node_modules
 .next
+build
 .nsm
 **/.terraform

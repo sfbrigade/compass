@@ -17,6 +17,8 @@ const nextConfig = {
     // Types are checked separately
     ignoreBuildErrors: true,
   },
+
+  distDir: "build",
 };
 
 export default nextConfig;
