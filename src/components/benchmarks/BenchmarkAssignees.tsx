@@ -1,14 +1,14 @@
 import { Box, Button, Stack } from "@mui/material";
-import { BenchmarkWithAssignees } from "@/types/global";
 import { format } from "date-fns";
 
 import $button from "@/components/design_system/button/Button.module.css";
+import { Benchmark } from "@/types/global";
 
 const BenchmarkAssignees = ({
   benchmark,
   onAssign,
 }: {
-  benchmark: BenchmarkWithAssignees;
+  benchmark: Benchmark;
   onAssign: () => void;
 }) => {
   const { assignees, due_date, trial_count } = benchmark;

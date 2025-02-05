@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import $benchmark from "./BenchmarkAssignmentModal.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 
@@ -50,9 +50,19 @@ export const BenchmarkAssignmentModal = (
   const [currentModalSelection, setCurrentModalSelection] =
     useState<Step>("PARA_SELECTION");
   const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
-  const { data: benchmark } = trpc.iep.getBenchmark.useQuery({
-    benchmark_id: props.benchmark_id,
-  });
+  const { data: benchmark, isError: benchmarkFetchError } =
+    trpc.iep.getBenchmark.useQuery({
+      benchmark_id: props.benchmark_id,
+    });
+
+  useEffect(() => {
+    const paraIds =
+      benchmark?.assignees
+        .map(({ assignee_id }) => assignee_id)
+        .filter((ele) => ele !== null) ?? [];
+
+    setSelectedParaIds(paraIds);
+  }, [benchmark]);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
@@ -125,6 +135,11 @@ export const BenchmarkAssignmentModal = (
     }
   };
 
+  // does this matter to prevent error typed values?
+  if (benchmarkFetchError) {
+    return <div>Oops! Error fetching benchmark</div>;
+  }
+
   return (
     <Dialog
       open={props.isOpen}
@@ -140,14 +155,9 @@ export const BenchmarkAssignmentModal = (
       <DialogContent>
         <Box className={$benchmark.benchmarkDescriptionBox}>
           <p className={$benchmark.benchmarkTitle}>Benchmark</p>
-          {benchmark?.map((thisBenchmark) => (
-            <p
-              className={$benchmark.benchmarkDescription}
-              key="thisBenchmark.description"
-            >
-              {thisBenchmark.description}
-            </p>
-          ))}
+          <p className={$benchmark.benchmarkDescription}>
+            {benchmark?.description}
+          </p>
         </Box>
         {currentModalSelection === "PARA_SELECTION" && (
           <Box>

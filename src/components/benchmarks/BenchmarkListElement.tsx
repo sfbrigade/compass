@@ -1,4 +1,3 @@
-import { BenchmarkWithAssignees } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
@@ -10,9 +9,10 @@ import Typography from "@mui/material/Typography";
 
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
+import { Benchmark } from "@/types/global";
 
 interface BenchmarkProps {
-  benchmark: BenchmarkWithAssignees;
+  benchmark: Benchmark;
   index?: number;
 }
 
@@ -47,6 +47,11 @@ const Info = ({ description, children }: InfoProps) => {
 
 const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+
+  const closeModal = () => {
+    setIsAssignmentModalOpen(false);
+  };
+
   return (
     <Box
       sx={{
@@ -67,7 +72,7 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
           display="block"
           gutterBottom
         >
-          #{(index ?? 0) + 1} created on {format(benchmark.created_at, "P")}
+          #{(index ?? 0) + 1} created on {format(benchmark?.created_at, "P")}
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
@@ -170,7 +175,7 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
       </Box>
       <BenchmarkAssignmentModal
         isOpen={isAssignmentModalOpen}
-        onClose={() => setIsAssignmentModalOpen(false)}
+        onClose={closeModal}
         benchmark_id={benchmark.benchmark_id}
       />
     </Box>

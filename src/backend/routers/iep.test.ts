@@ -94,9 +94,9 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const gotBenchmark = await trpc.iep.getBenchmark.query({
     benchmark_id: benchmark2Id,
   });
-  t.is(gotBenchmark[0].description, "benchmark 2");
-  t.deepEqual(gotBenchmark[0].due_date, new Date("2023-12-31"));
-  t.is(gotBenchmark[0].trial_count, 5);
+  t.is(gotBenchmark.description, "benchmark 2");
+  t.deepEqual(gotBenchmark.due_date, new Date("2023-12-31"));
+  t.is(gotBenchmark.trial_count, 5);
 
   // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
