@@ -4,6 +4,7 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import { GoalHeader } from "@/components/goal-header/goal-header";
+import { Benchmark } from "@/types/global";
 
 const GoalPage = () => {
   const router = useRouter();
@@ -14,9 +15,14 @@ const GoalPage = () => {
     { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
   );
-  const { data: goals = [] } = trpc.iep.getGoals.useQuery({
-    iep_id: activeIep?.iep_id || "",
-  });
+  const { data: goals = [] } = trpc.iep.getGoals.useQuery(
+    {
+      iep_id: activeIep?.iep_id || "",
+    },
+    {
+      enabled: Boolean(activeIep),
+    }
+  );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
@@ -29,6 +35,11 @@ const GoalPage = () => {
   );
 
   const goal_index = goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1;
+
+  function onUpdate(benchmark: Benchmark) {
+    console.log('update the cached benchmarks data in react query here', benchmark);
+  }
+
   return (
     <Stack
       spacing={2}
@@ -57,7 +68,7 @@ const GoalPage = () => {
           <h2>Benchmarks</h2>
         </Grid>
       </Grid>
-      <BenchmarksContainer benchmarks={benchmarks || []} />
+      <BenchmarksContainer benchmarks={benchmarks || []} onUpdate={onUpdate} />
     </Stack>
   );
 };

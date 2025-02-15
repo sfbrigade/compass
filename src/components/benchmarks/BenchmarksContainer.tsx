@@ -55,8 +55,10 @@ const SelectableTab = ({
 
 export default function BenchmarksContainer({
   benchmarks,
+  onUpdate,
 }: {
   benchmarks: Benchmark[];
+  onUpdate: (benchmark: Benchmark) => void;
 }) {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<selectableTabs>(
@@ -122,6 +124,7 @@ export default function BenchmarksContainer({
                   key={benchmark.benchmark_id}
                   benchmark={benchmark}
                   index={index}
+                  onUpdate={onUpdate}
                 />
               ))
             );

@@ -162,7 +162,7 @@ function Benchmarks() {
                   {/* Temporary CM & Para View */}
                   {isPara && !completed ? (
                     <Link
-                      href={`/benchmarks/${task.task_id}`}
+                      href={`/benchmarks/${task.benchmark_id}`}
                       style={{ color: "black", textDecoration: "none" }}
                     >
                       <TaskCard task={task} isPara={isPara} />

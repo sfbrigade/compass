@@ -9,7 +9,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import $benchmark from "./BenchmarkAssignmentModal.module.css";
 import $button from "@/components/design_system/button/Button.module.css";
 
@@ -18,10 +18,11 @@ import {
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
 import DS_Checkbox from "../design_system/checkbox/Checkbox";
+import { Benchmark } from "@/types/global";
 
 interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (benchmark?: Benchmark) => void;
   benchmark_id: string;
 }
 
@@ -50,13 +51,24 @@ export const BenchmarkAssignmentModal = (
   const [currentModalSelection, setCurrentModalSelection] =
     useState<Step>("PARA_SELECTION");
   const { data: myParas } = trpc.case_manager.getMyParas.useQuery();
-  const { data: benchmark } = trpc.iep.getBenchmark.useQuery({
-    benchmark_id: props.benchmark_id,
-  });
+  const { data: benchmark, isError: benchmarkFetchError } =
+    trpc.iep.getBenchmark.useQuery({
+      benchmark_id: props.benchmark_id,
+    });
+
+  useEffect(() => {
+    const paraIds =
+      benchmark?.assignees
+        .map(({ assignee_id }) => assignee_id)
+        .filter((ele) => ele !== null) ?? [];
+
+    setSelectedParaIds(paraIds);
+  }, [benchmark]);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
+  const updateBenchmark = trpc.iep.updateBenchmark.useMutation();
 
   const handleParaToggle = (paraId: string) => () => {
     setErrorMessage("");
@@ -69,8 +81,8 @@ export const BenchmarkAssignmentModal = (
     });
   };
 
-  const handleClose = () => {
-    props.onClose();
+  const handleClose = (benchmark?: Benchmark) => {
+    props.onClose(benchmark);
     setSelectedParaIds([]);
     setErrorMessage("");
     setCurrentModalSelection("PARA_SELECTION");
@@ -95,19 +107,19 @@ export const BenchmarkAssignmentModal = (
     } else {
       // Reached end, save
       try {
-        await assignTaskToPara.mutateAsync({
+        const benchmark = await assignTaskToPara.mutateAsync({
           benchmark_id: props.benchmark_id,
           para_ids: selectedParaIds,
           due_date:
             assignmentDuration.type === "until_date"
               ? assignmentDuration.date
-              : undefined,
+              : null,
           trial_count:
             assignmentDuration.type === "minimum_number_of_collections"
               ? assignmentDuration.minimumNumberOfCollections
-              : undefined,
+              : null,
         });
-        handleClose();
+        handleClose(benchmark);
       } catch (err) {
         // TODO: issue #450
         console.log(err);
@@ -117,6 +129,11 @@ export const BenchmarkAssignmentModal = (
       }
     }
   };
+
+  // does this matter to prevent error typed values?
+  if (benchmarkFetchError) {
+    return <div>Oops! Error fetching benchmark</div>;
+  }
 
   return (
     <Dialog
@@ -133,14 +150,9 @@ export const BenchmarkAssignmentModal = (
       <DialogContent>
         <Box className={$benchmark.benchmarkDescriptionBox}>
           <p className={$benchmark.benchmarkTitle}>Benchmark</p>
-          {benchmark?.map((thisBenchmark) => (
-            <p
-              className={$benchmark.benchmarkDescription}
-              key="thisBenchmark.description"
-            >
-              {thisBenchmark.description}
-            </p>
-          ))}
+          <p className={$benchmark.benchmarkDescription}>
+            {benchmark?.description}
+          </p>
         </Box>
         {currentModalSelection === "PARA_SELECTION" && (
           <Box>

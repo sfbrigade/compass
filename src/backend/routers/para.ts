@@ -76,19 +76,18 @@ export const para = router({
         "student.first_name",
         "student.last_name",
         "goal.category",
+        "benchmark.benchmark_id",
         "benchmark.description",
         "benchmark.instructions",
         "benchmark.attempts_per_trial",
         "benchmark.number_of_trials",
-        "task.due_date",
+        "benchmark.due_date",
         "task.seen",
-        "task.trial_count",
+        "benchmark.trial_count",
         "task.created_at",
-
         eb
           .selectFrom("trial_data")
-          .whereRef("trial_data.task_id", "=", "task.task_id")
-          .where("trial_data.created_by_user_id", "=", userId)
+          .whereRef("trial_data.benchmark_id", "=", "benchmark.benchmark_id")
           .where("trial_data.submitted", "=", true)
           .select(({ fn }) =>
             fn.count("trial_data.trial_data_id").as("completed_trials")
