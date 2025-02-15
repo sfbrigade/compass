@@ -117,11 +117,11 @@ export const BenchmarkAssignmentModal = (
             due_date:
               assignmentDuration.type === "until_date"
                 ? assignmentDuration.date
-                : undefined,
+                : null,
             trial_count:
               assignmentDuration.type === "minimum_number_of_collections"
                 ? assignmentDuration.minimumNumberOfCollections
-                : undefined,
+                : null,
           }),
         ]);
         handleClose();

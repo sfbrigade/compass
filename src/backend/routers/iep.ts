@@ -148,8 +148,8 @@ export const iep = router({
         metric_name: z.string().optional(),
         attempts_per_trial: z.number().nullable().optional(),
         number_of_trials: z.number().nullable().optional(),
-        due_date: z.date().optional(),
-        trial_count: z.number().optional(),
+        due_date: z.date().nullable().optional(),
+        trial_count: z.number().nullable().optional(),
       })
     )
     .mutation(async (req) => {
