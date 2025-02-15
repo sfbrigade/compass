@@ -171,7 +171,7 @@ export const iep = router({
         trial_count,
       } = req.input;
 
-      await req.ctx.db
+      const benchmark = await req.ctx.db
         .updateTable("benchmark")
         .set({
           goal_id,
@@ -190,7 +190,9 @@ export const iep = router({
           trial_count,
         })
         .where("benchmark.benchmark_id", "=", benchmark_id)
-        .execute();
+        .returningAll()
+        .executeTakeFirstOrThrow();
+      return benchmark;
     }),
 
   addTask: hasCaseManager
@@ -232,10 +234,12 @@ export const iep = router({
       z.object({
         benchmark_id: z.string().uuid(),
         para_ids: z.string().uuid().array(),
+        due_date: z.date().nullable().optional(),
+        trial_count: z.number().nullable().optional(),
       })
     )
     .mutation(async (req) => {
-      const { benchmark_id, para_ids } = req.input;
+      const { benchmark_id, para_ids, due_date, trial_count } = req.input;
 
       // fetch all existing task records for this benchmark
       const existingTasks = await req.ctx.db
@@ -255,17 +259,8 @@ export const iep = router({
       const newAssigneeIds = para_ids.filter(
         (para_id) => !existingTasks.find((task) => task.assignee_id === para_id)
       );
-
-      let result:
-        | {
-            benchmark_id: string | null;
-            assignee_id: string | null;
-            created_at: Date;
-            seen: boolean;
-            task_id: string;
-          }
-        | undefined;
-      await req.ctx.db.transaction().execute(async (trx) => {
+      
+      return await req.ctx.db.transaction().execute(async (trx) => {
         // delete tasks whose assignees that are not in para_ids
         if (deleteTaskIds.length > 0) {
           await trx
@@ -275,7 +270,7 @@ export const iep = router({
         }
         // insert new tasks for new assignees
         if (newAssigneeIds.length > 0) {
-          result = await req.ctx.db
+          await trx
             .insertInto("task")
             .values(
               newAssigneeIds.map((para_id) => ({
@@ -286,8 +281,26 @@ export const iep = router({
             .returningAll()
             .executeTakeFirst();
         }
+        // update benchmark
+        const result = await trx
+          .updateTable("benchmark")
+          .set({
+            due_date,
+            trial_count,
+          })
+          .where("benchmark.benchmark_id", "=", benchmark_id)
+          .returningAll()
+          .executeTakeFirstOrThrow();
+        // now refetch all the assignees
+        (result as any).assignees = await trx
+          .selectFrom("user")
+          .innerJoin("task", "task.assignee_id", "user.user_id")
+          .where("task.benchmark_id", "=", benchmark_id)
+          .orderBy("user.first_name")
+          .selectAll()
+          .execute();
+        return result;
       });
-      return result;
     }),
 
   addTrialData: hasPara

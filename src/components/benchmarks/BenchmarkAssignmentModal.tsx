@@ -18,10 +18,11 @@ import {
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
 import DS_Checkbox from "../design_system/checkbox/Checkbox";
+import { Benchmark } from "@/types/global";
 
 interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
-  onClose: () => void;
+  onClose: (benchmark?: Benchmark) => void;
   benchmark_id: string;
 }
 
@@ -80,8 +81,8 @@ export const BenchmarkAssignmentModal = (
     });
   };
 
-  const handleClose = () => {
-    props.onClose();
+  const handleClose = (benchmark?: Benchmark) => {
+    props.onClose(benchmark);
     setSelectedParaIds([]);
     setErrorMessage("");
     setCurrentModalSelection("PARA_SELECTION");
@@ -106,25 +107,19 @@ export const BenchmarkAssignmentModal = (
     } else {
       // Reached end, save
       try {
-        // maybe invoke these two in parallel?
-        await Promise.all([
-          assignTaskToPara.mutateAsync({
-            benchmark_id: props.benchmark_id,
-            para_ids: selectedParaIds,
-          }),
-          updateBenchmark.mutateAsync({
-            benchmark_id: props.benchmark_id,
-            due_date:
-              assignmentDuration.type === "until_date"
-                ? assignmentDuration.date
-                : null,
-            trial_count:
-              assignmentDuration.type === "minimum_number_of_collections"
-                ? assignmentDuration.minimumNumberOfCollections
-                : null,
-          }),
-        ]);
-        handleClose();
+        const benchmark = await assignTaskToPara.mutateAsync({
+          benchmark_id: props.benchmark_id,
+          para_ids: selectedParaIds,
+          due_date:
+            assignmentDuration.type === "until_date"
+              ? assignmentDuration.date
+              : null,
+          trial_count:
+            assignmentDuration.type === "minimum_number_of_collections"
+              ? assignmentDuration.minimumNumberOfCollections
+              : null,
+        });
+        handleClose(benchmark);
       } catch (err) {
         // TODO: issue #450
         console.log(err);

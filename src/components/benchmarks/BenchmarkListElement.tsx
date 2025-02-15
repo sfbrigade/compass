@@ -14,6 +14,7 @@ import { Benchmark } from "@/types/global";
 interface BenchmarkProps {
   benchmark: Benchmark;
   index?: number;
+  onUpdate: (benchmark: Benchmark) => void;
 }
 
 interface InfoProps {
@@ -45,11 +46,14 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
+const BenchmarkListElement = ({ benchmark, index, onUpdate }: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
-  const closeModal = () => {
+  const closeModal = (benchmark?: Benchmark) => {
     setIsAssignmentModalOpen(false);
+    if (benchmark) {
+      onUpdate(benchmark);
+    }
   };
 
   return (
