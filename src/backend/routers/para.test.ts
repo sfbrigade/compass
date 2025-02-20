@@ -228,6 +228,8 @@ test("getMyTasks", async (t) => {
       target_level: 100,
       baseline_level: 20,
       metric_name: "words",
+      due_date: DUE_DATE,
+      trial_count: TRIAL_COUNT,
       attempts_per_trial: ATTEMPTS_PER_TRIAL,
       number_of_trials: NUMBER_OF_TRIALS,
     })
@@ -239,8 +241,6 @@ test("getMyTasks", async (t) => {
     .values({
       benchmark_id: benchmark_id,
       assignee_id: seed.case_manager.user_id,
-      due_date: DUE_DATE,
-      trial_count: TRIAL_COUNT,
     })
     .returningAll()
     .executeTakeFirstOrThrow();

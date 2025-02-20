@@ -72,16 +72,16 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   await trpc.iep.addTask.mutate({
     benchmark_id: benchmark1Id,
     assignee_id: para_id,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
 
   const assignTask = await trpc.iep.assignTaskToParas.mutate({
     benchmark_id: benchmark2Id,
     para_ids: [para_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   t.is(assignTask?.benchmark_id, benchmark2Id);
-  t.is(assignTask?.assignee_id, para_id);
+  t.is(assignTask?.assignees?.[0]?.assignee_id, para_id);
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });
   t.is(gotGoals.length, 1);
@@ -94,7 +94,9 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const gotBenchmark = await trpc.iep.getBenchmark.query({
     benchmark_id: benchmark2Id,
   });
-  t.is(gotBenchmark[0].description, "benchmark 2");
+  t.is(gotBenchmark.description, "benchmark 2");
+  t.deepEqual(gotBenchmark.due_date, new Date("2023-12-31"));
+  t.is(gotBenchmark.trial_count, 5);
 
   // TODO: Don't query db directly and use an API method instead. Possibly create a getTasks method later
   t.truthy(
@@ -139,22 +141,20 @@ test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   const benchmark1Id = benchmark1!.benchmark_id;
 
   await trpc.iep.addTask.mutate({
     benchmark_id: benchmark1Id,
     assignee_id: para_id,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
 
   const error = await t.throwsAsync(async () => {
     await trpc.iep.addTask.mutate({
       benchmark_id: benchmark1Id,
       assignee_id: para_id,
-      due_date: new Date("2024-03-31"),
-      trial_count: 1,
     });
   });
 
@@ -165,7 +165,7 @@ test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
 });
 
 test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) => {
-  const { trpc, seed } = await getTestServer(t, {
+  const { trpc, db, seed } = await getTestServer(t, {
     authenticateAs: UserType.CaseManager,
   });
 
@@ -212,19 +212,20 @@ test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) 
     trial_count: 5,
   });
 
-  const error = await t.throwsAsync(async () => {
-    await trpc.iep.assignTaskToParas.mutate({
-      benchmark_id: benchmark1Id,
-      para_ids: [para_1.user_id, para_2.user_id],
-      due_date: new Date("2024-03-31"),
-      trial_count: 1,
-    });
+  await trpc.iep.assignTaskToParas.mutate({
+    benchmark_id: benchmark1Id,
+    para_ids: [para_1.user_id, para_2.user_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
 
-  t.is(
-    error?.message,
-    "Task already exists: This benchmark has already been assigned to one or more of these paras"
-  );
+  const result = await db
+    .selectFrom("task")
+    .where("benchmark_id", "=", benchmark1Id)
+    .selectAll()
+    .execute();
+
+  t.is(result.length, 2);
 });
 
 test("add benchmark - check full schema", async (t) => {

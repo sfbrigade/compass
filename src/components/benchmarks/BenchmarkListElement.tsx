@@ -1,16 +1,20 @@
-import { Benchmark } from "@/types/global";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
-import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
+
+import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
+import BenchmarkAssignees from "./BenchmarkAssignees";
+import { Benchmark } from "@/types/global";
+
 interface BenchmarkProps {
   benchmark: Benchmark;
   index?: number;
+  onUpdate: (benchmark: Benchmark) => void;
 }
 
 interface InfoProps {
@@ -42,8 +46,20 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
+const BenchmarkListElement = ({
+  benchmark,
+  index,
+  onUpdate,
+}: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+
+  const closeModal = (benchmark?: Benchmark) => {
+    setIsAssignmentModalOpen(false);
+    if (benchmark) {
+      onUpdate(benchmark);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -64,7 +80,7 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
           display="block"
           gutterBottom
         >
-          #{(index ?? 0) + 1} created on {format(benchmark.created_at, "P")}
+          #{(index ?? 0) + 1} created on {format(benchmark?.created_at, "P")}
         </Typography>
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
@@ -112,6 +128,12 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
             {" "}
             {benchmark?.number_of_trials || "N/A"}
           </Info>
+          <Info description={"STAFF"}>
+            <BenchmarkAssignees
+              benchmark={benchmark}
+              onAssign={() => setIsAssignmentModalOpen(true)}
+            />
+          </Info>
           <Info description="DATA">
             <Box
               sx={{
@@ -157,27 +179,15 @@ const BenchmarkListElement = ({ benchmark, index }: BenchmarkProps) => {
               </Box>
             </Box>
           </Info>
-          <Info description={"STAFF"}>
-            <Button
-              className={$button.secondary}
-              onClick={() => setIsAssignmentModalOpen(true)}
-              sx={{
-                paddingTop: ".4rem !important",
-                paddingBottom: ".4rem !important",
-                paddingLeft: ".4rem !important",
-                paddingRight: ".4rem !important",
-              }}
-            >
-              Assign
-            </Button>
-          </Info>
         </Box>
       </Box>
-      <BenchmarkAssignmentModal
-        isOpen={isAssignmentModalOpen}
-        onClose={() => setIsAssignmentModalOpen(false)}
-        benchmark_id={benchmark.benchmark_id}
-      />
+      {isAssignmentModalOpen && (
+        <BenchmarkAssignmentModal
+          isOpen={true}
+          onClose={closeModal}
+          benchmark_id={benchmark.benchmark_id}
+        />
+      )}
     </Box>
   );
 };

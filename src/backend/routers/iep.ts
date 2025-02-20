@@ -86,6 +86,8 @@ export const iep = router({
         metric_name: z.string(),
         attempts_per_trial: z.number().nullable(),
         number_of_trials: z.number().nullable(),
+        due_date: z.date().nullable().optional(),
+        trial_count: z.number().nullable().optional(),
       })
     )
     .mutation(async (req) => {
@@ -102,6 +104,8 @@ export const iep = router({
         metric_name,
         attempts_per_trial,
         number_of_trials,
+        due_date,
+        trial_count,
       } = req.input;
 
       const result = await req.ctx.db
@@ -119,6 +123,8 @@ export const iep = router({
           metric_name,
           attempts_per_trial,
           number_of_trials,
+          due_date,
+          trial_count,
         })
         .returningAll()
         .executeTakeFirst();
@@ -126,17 +132,78 @@ export const iep = router({
       return result;
     }),
 
+  updateBenchmark: hasPara
+    .input(
+      z.object({
+        benchmark_id: z.string(),
+        goal_id: z.string().optional(),
+        status: z.string().optional(),
+        description: z.string().optional(),
+        setup: z.string().optional(),
+        instructions: z.string().optional(),
+        materials: z.string().optional(),
+        frequency: z.string().optional(),
+        target_level: z.number().min(0).max(100).optional(),
+        baseline_level: z.number().min(0).max(100).optional(),
+        metric_name: z.string().optional(),
+        attempts_per_trial: z.number().nullable().optional(),
+        number_of_trials: z.number().nullable().optional(),
+        due_date: z.date().nullable().optional(),
+        trial_count: z.number().nullable().optional(),
+      })
+    )
+    .mutation(async (req) => {
+      const {
+        benchmark_id,
+        goal_id,
+        status,
+        description,
+        setup,
+        instructions,
+        materials,
+        frequency,
+        target_level,
+        baseline_level,
+        metric_name,
+        attempts_per_trial,
+        number_of_trials,
+        due_date,
+        trial_count,
+      } = req.input;
+
+      const benchmark = await req.ctx.db
+        .updateTable("benchmark")
+        .set({
+          goal_id,
+          status,
+          description,
+          setup,
+          instructions,
+          materials,
+          frequency,
+          target_level,
+          baseline_level,
+          metric_name,
+          attempts_per_trial,
+          number_of_trials,
+          due_date,
+          trial_count,
+        })
+        .where("benchmark.benchmark_id", "=", benchmark_id)
+        .returningAll()
+        .executeTakeFirstOrThrow();
+      return benchmark;
+    }),
+
   addTask: hasCaseManager
     .input(
       z.object({
         benchmark_id: z.string(),
         assignee_id: z.string(),
-        due_date: z.date(),
-        trial_count: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { benchmark_id, assignee_id, due_date, trial_count } = req.input;
+      const { benchmark_id, assignee_id } = req.input;
 
       const existingTask = await req.ctx.db
         .selectFrom("task")
@@ -156,8 +223,6 @@ export const iep = router({
         .values({
           benchmark_id,
           assignee_id,
-          due_date,
-          trial_count,
         })
         .returningAll()
         .executeTakeFirst();
@@ -169,87 +234,97 @@ export const iep = router({
       z.object({
         benchmark_id: z.string().uuid(),
         para_ids: z.string().uuid().array(),
-        due_date: z.date().optional(),
-        trial_count: z.number().optional(),
+        due_date: z.date().nullable(),
+        trial_count: z.number().nullable(),
       })
     )
     .mutation(async (req) => {
       const { benchmark_id, para_ids, due_date, trial_count } = req.input;
 
+      // fetch all existing task records for this benchmark
       const existingTasks = await req.ctx.db
         .selectFrom("task")
         .where("benchmark_id", "=", benchmark_id)
-        .where("assignee_id", "in", para_ids)
         .selectAll()
         .execute();
 
-      if (existingTasks.length > 0) {
-        throw new Error(
-          "Task already exists: This benchmark has already been assigned to one or more of these paras"
-        );
-      }
+      // collect list of task records to delete (if assignee_id not in para_ids)
+      const deleteTaskIds = existingTasks
+        .filter(
+          (task) => task.assignee_id && !para_ids.includes(task.assignee_id)
+        )
+        .map((task) => task.task_id);
 
-      const result = await req.ctx.db
-        .insertInto("task")
-        .values(
-          para_ids.map((para_id) => ({
-            benchmark_id,
-            assignee_id: para_id,
+      // collect a list of new assignee_ids to insert
+      const newAssigneeIds = para_ids.filter(
+        (para_id) => !existingTasks.find((task) => task.assignee_id === para_id)
+      );
+
+      return await req.ctx.db.transaction().execute(async (trx) => {
+        // delete tasks whose assignees that are not in para_ids
+        if (deleteTaskIds.length > 0) {
+          await trx
+            .deleteFrom("task")
+            .where("task_id", "in", deleteTaskIds)
+            .execute();
+        }
+        // insert new tasks for new assignees
+        if (newAssigneeIds.length > 0) {
+          await trx
+            .insertInto("task")
+            .values(
+              newAssigneeIds.map((para_id) => ({
+                benchmark_id,
+                assignee_id: para_id,
+              }))
+            )
+            .returningAll()
+            .executeTakeFirst();
+        }
+        // update benchmark
+        const result = await trx
+          .updateTable("benchmark")
+          .set({
             due_date,
             trial_count,
-          }))
-        )
-        .returningAll()
-        .executeTakeFirst();
-      return result;
-    }),
-  //Temporary function to easily assign tasks to self for testing
-  tempAddTaskToSelf: hasCaseManager
-    .input(
-      z.object({
-        benchmark_id: z.string(),
-        due_date: z.date(),
-        trial_count: z.number(),
-      })
-    )
-    .mutation(async (req) => {
-      const { benchmark_id, due_date, trial_count } = req.input;
-      const { userId } = req.ctx.auth;
-
-      const shouldAdd = await req.ctx.db
-        .selectFrom("task")
-        .selectAll()
-        .where((eb) =>
-          eb.and([
-            eb("benchmark_id", "=", benchmark_id),
-            eb("assignee_id", "=", userId),
+          })
+          .where("benchmark.benchmark_id", "=", benchmark_id)
+          .returning((eb) => [
+            "benchmark.benchmark_id",
+            "benchmark.status",
+            "benchmark.description",
+            "benchmark.instructions",
+            "benchmark.materials",
+            "benchmark.metric_name",
+            "benchmark.setup",
+            "benchmark.frequency",
+            "benchmark.number_of_trials",
+            "benchmark.attempts_per_trial",
+            "benchmark.trial_count",
+            "benchmark.baseline_level",
+            "benchmark.current_level",
+            "benchmark.target_level",
+            "benchmark.created_at",
+            "benchmark.due_date",
+            "benchmark.goal_id",
+            jsonArrayFrom(
+              eb
+                .selectFrom("user")
+                .innerJoin("task", "task.assignee_id", "user.user_id")
+                .whereRef("task.benchmark_id", "=", "benchmark.benchmark_id")
+                .orderBy("user.first_name")
+                .selectAll()
+            ).as("assignees"),
           ])
-        )
-        .executeTakeFirst();
-
-      // Prevent multiple assignments of the same task
-      if (shouldAdd !== undefined) {
-        return null;
-      }
-
-      const result = await req.ctx.db
-        .insertInto("task")
-        .values({
-          benchmark_id,
-          assignee_id: userId,
-          due_date,
-          trial_count,
-        })
-        .returningAll()
-        .executeTakeFirst();
-
-      return result;
+          .executeTakeFirstOrThrow();
+        return result;
+      });
     }),
 
   addTrialData: hasPara
     .input(
       z.object({
-        task_id: z.string(),
+        benchmark_id: z.string(),
         success: z.number(),
         unsuccess: z.number(),
         notes: z.string(),
@@ -258,12 +333,12 @@ export const iep = router({
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
 
-      const { task_id, success, unsuccess, notes } = req.input;
+      const { benchmark_id, success, unsuccess, notes } = req.input;
 
       const result = await req.ctx.db
         .insertInto("trial_data")
         .values({
-          task_id,
+          benchmark_id,
           created_by_user_id: userId,
           success,
           unsuccess,
@@ -348,7 +423,33 @@ export const iep = router({
       const result = await req.ctx.db
         .selectFrom("benchmark")
         .where("goal_id", "=", goal_id)
-        .selectAll()
+        .select((eb) => [
+          "benchmark.benchmark_id",
+          "benchmark.status",
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.materials",
+          "benchmark.metric_name",
+          "benchmark.setup",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.attempts_per_trial",
+          "benchmark.trial_count",
+          "benchmark.baseline_level",
+          "benchmark.current_level",
+          "benchmark.target_level",
+          "benchmark.created_at",
+          "benchmark.due_date",
+          "benchmark.goal_id",
+          jsonArrayFrom(
+            eb
+              .selectFrom("user")
+              .innerJoin("task", "task.assignee_id", "user.user_id")
+              .whereRef("task.benchmark_id", "=", "benchmark.benchmark_id")
+              .orderBy("user.first_name")
+              .selectAll()
+          ).as("assignees"),
+        ])
         .execute();
 
       return result;
@@ -366,8 +467,35 @@ export const iep = router({
       const result = await req.ctx.db
         .selectFrom("benchmark")
         .where("benchmark.benchmark_id", "=", benchmark_id)
-        .selectAll()
-        .execute();
+        .select((eb) => [
+          "benchmark.benchmark_id",
+          "benchmark.status",
+          "benchmark.description",
+          "benchmark.instructions",
+          "benchmark.materials",
+          "benchmark.metric_name",
+          "benchmark.setup",
+          "benchmark.frequency",
+          "benchmark.number_of_trials",
+          "benchmark.attempts_per_trial",
+          "benchmark.trial_count",
+          "benchmark.baseline_level",
+          "benchmark.current_level",
+          "benchmark.target_level",
+          "benchmark.created_at",
+          "benchmark.due_date",
+          "benchmark.goal_id",
+          jsonArrayFrom(
+            eb
+              .selectFrom("user")
+              .innerJoin("task", "task.assignee_id", "user.user_id")
+              .whereRef("task.benchmark_id", "=", "benchmark.benchmark_id")
+              .orderBy("user.first_name")
+              .selectAll()
+          ).as("assignees"),
+        ])
+        .executeTakeFirstOrThrow();
+
       return result;
     }),
 
@@ -390,24 +518,24 @@ export const iep = router({
       return result;
     }),
 
+  // Not just hasPara, but check to make sure that the userId has a task with the benchmark_id
   getBenchmarkAndTrialData: hasPara
     .input(
       z.object({
-        task_id: z.string(),
+        benchmark_id: z.string(),
       })
     )
     .query(async (req) => {
-      const { task_id } = req.input;
+      const { benchmark_id } = req.input;
 
       const result = await req.ctx.db
         .selectFrom("benchmark")
-        .innerJoin("task", "benchmark.benchmark_id", "task.benchmark_id")
         .innerJoin("goal", "benchmark.goal_id", "goal.goal_id")
         .innerJoin("iep", "goal.iep_id", "iep.iep_id")
         .innerJoin("student", "iep.student_id", "student.student_id")
-        .where("task.task_id", "=", task_id)
+        .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
-          "task.task_id",
+          "benchmark.benchmark_id",
           "student.first_name",
           "student.last_name",
           "goal.category",
@@ -416,9 +544,8 @@ export const iep = router({
           "benchmark.frequency",
           "benchmark.number_of_trials",
           "benchmark.benchmark_id",
-          "task.due_date",
-          "task.seen",
-          "task.trial_count",
+          "benchmark.due_date",
+          "benchmark.trial_count",
           jsonArrayFrom(
             eb
               .selectFrom("trial_data")
@@ -440,11 +567,10 @@ export const iep = router({
                     .selectAll("file")
                 ).as("files"),
               ])
-              .whereRef("trial_data.task_id", "=", "task.task_id")
               .whereRef(
-                "trial_data.created_by_user_id",
+                "trial_data.benchmark_id",
                 "=",
-                "task.assignee_id"
+                "benchmark.benchmark_id"
               )
               .orderBy("trial_data.created_at")
           ).as("trials"),
@@ -457,19 +583,34 @@ export const iep = router({
   markAsSeen: hasPara
     .input(
       z.object({
-        task_id: z.string(),
+        benchmark_id: z.string(),
       })
     )
     .mutation(async (req) => {
-      const { task_id } = req.input;
+      const { benchmark_id } = req.input;
+      const { userId } = req.ctx.auth;
 
-      await req.ctx.db
-        .updateTable("task")
-        .set({
-          seen: true,
-        })
-        .where("task.task_id", "=", task_id)
-        .execute();
+      const task = await req.ctx.db
+        .selectFrom("task")
+        .where("benchmark_id", "=", benchmark_id)
+        .where("assignee_id", "=", userId)
+        .selectAll()
+        .executeTakeFirst();
+
+      if (task?.seen) {
+        await req.ctx.db
+          .updateTable("task")
+          .set({
+            seen: true,
+          })
+          .where((eb) =>
+            eb.and([
+              eb("benchmark_id", "=", benchmark_id),
+              eb("assignee_id", "=", userId),
+            ])
+          )
+          .execute();
+      }
     }),
 
   attachFileToTrialData: hasCaseManager

@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import $taskCard from "./TaskCard.module.css";
 
 interface ParaTaskCard {
+  // this should be based on TaskData, maybe have some Omit's.
   task_id: string;
   first_name: string;
   last_name: string;
@@ -17,6 +18,7 @@ interface ParaTaskCard {
   seen: boolean;
   trial_count: number | null;
   completed_trials: string | number | bigint | null;
+  benchmark_id: string;
 }
 
 interface TaskCardProps {
@@ -74,7 +76,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
           {/* Para smaller screen view can click on card instead */}
           {!isPara ? (
             <Link
-              href={`/benchmarks/${task.task_id}`}
+              href={`/benchmarks/${task.benchmark_id}`}
               className={`${$button.secondary}`}
             >
               View benchmark
@@ -82,7 +84,7 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
           ) : null}
 
           <Link
-            href={`/benchmarks/${task.task_id}`}
+            href={`/benchmarks/${task.benchmark_id}`}
             className={`${$button.default} ${
               completionRate >= 100 ? $button.inactive : ""
             }`}

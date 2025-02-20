@@ -4,19 +4,27 @@ import Stack from "@mui/material/Stack";
 import Grid from "@mui/material/Grid";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import { GoalHeader } from "@/components/goal-header/goal-header";
+import { Benchmark } from "@/types/global";
 
 const GoalPage = () => {
   const router = useRouter();
   const goal_id = (router.query?.goal_id as string) || "";
   const student_id = (router.query?.student_id as string) || "";
 
+  const utils = trpc.useUtils();
+
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
   );
-  const { data: goals = [] } = trpc.iep.getGoals.useQuery({
-    iep_id: activeIep?.iep_id || "",
-  });
+  const { data: goals = [] } = trpc.iep.getGoals.useQuery(
+    {
+      iep_id: activeIep?.iep_id || "",
+    },
+    {
+      enabled: Boolean(activeIep),
+    }
+  );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
@@ -29,6 +37,16 @@ const GoalPage = () => {
   );
 
   const goal_index = goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1;
+
+  function onUpdate(benchmark: Benchmark) {
+    const newBenchmarks = [...(benchmarks ?? [])];
+    const index = newBenchmarks.findIndex(
+      (b) => b.benchmark_id === benchmark.benchmark_id
+    );
+    newBenchmarks[index] = benchmark;
+    utils.iep.getBenchmarks.setData({ goal_id: goal_id }, newBenchmarks);
+  }
+
   return (
     <Stack
       spacing={2}
@@ -57,7 +75,7 @@ const GoalPage = () => {
           <h2>Benchmarks</h2>
         </Grid>
       </Grid>
-      <BenchmarksContainer benchmarks={benchmarks || []} />
+      <BenchmarksContainer benchmarks={benchmarks || []} onUpdate={onUpdate} />
     </Stack>
   );
 };

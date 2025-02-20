@@ -7,14 +7,15 @@ import $button from "@/components/design_system/button/Button.module.css";
 const ReviewPage = () => {
   const router = useRouter();
   const { benchmark_id } = router.query;
-  const { data: task, isLoading } = trpc.iep.getBenchmarkAndTrialData.useQuery(
-    {
-      task_id: benchmark_id as string,
-    },
-    {
-      enabled: Boolean(benchmark_id),
-    }
-  );
+  const { data: benchmark, isLoading } =
+    trpc.iep.getBenchmarkAndTrialData.useQuery(
+      {
+        benchmark_id: benchmark_id as string, // how does this line make sense?
+      },
+      {
+        enabled: Boolean(benchmark_id),
+      }
+    );
 
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation();
 
@@ -32,20 +33,20 @@ const ReviewPage = () => {
     }
   };
 
-  if (isLoading || !task) {
+  if (isLoading || !benchmark) {
     return <div>Loading...</div>;
   }
 
-  const currentTrial = task.trials[task.trials.length - 1];
+  const currentTrial = benchmark.trials[benchmark.trials.length - 1];
 
   return (
     <div>
       <h2 className={`${$box.topAndBottomBorder} ${$box.flex}`}>
-        Trial {task.trials.length}
+        Trial {benchmark.trials.length}
       </h2>
       <div className={$box.default}>
-        {task.first_name} completed {currentTrial.success} successful attempts
-        and {currentTrial.unsuccess} unsuccessful attempts.
+        {benchmark.first_name} completed {currentTrial.success} successful
+        attempts and {currentTrial.unsuccess} unsuccessful attempts.
       </div>
       <div className={$box.default}>
         <h4>Observation Notes:</h4>

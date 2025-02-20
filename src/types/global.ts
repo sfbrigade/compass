@@ -1,7 +1,9 @@
+import { RouterOutputs } from "@/client/lib/trpc";
 import { SelectableForTable } from "zapatos/schema";
 
 export type Goal = SelectableForTable<"goal">;
-export type Benchmark = SelectableForTable<"benchmark">;
+export type Benchmark = RouterOutputs["iep"]["getBenchmark"];
+export type User = SelectableForTable<"user">;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type FormEvent = React.FormEvent<HTMLFormElement>;
 
@@ -22,4 +24,5 @@ export interface TaskData {
   seen: boolean;
   completed_trials: string | number | bigint | null;
   created_at: Date;
+  benchmark_id: string;
 }

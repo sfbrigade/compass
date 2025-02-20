@@ -419,6 +419,12 @@ declare module 'zapatos/schema' {
       */
       description: string;
       /**
+      * **benchmark.due_date**
+      * - `timestamptz` in database
+      * - Nullable, no default
+      */
+      due_date: Date | null;
+      /**
       * **benchmark.frequency**
       * - `text` in database
       * - `NOT NULL`, default: `''::text`
@@ -472,6 +478,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       target_level: number;
+      /**
+      * **benchmark.trial_count**
+      * - `int4` in database
+      * - Nullable, no default
+      */
+      trial_count: number | null;
     }
     export interface JSONSelectable {
       /**
@@ -511,6 +523,12 @@ declare module 'zapatos/schema' {
       */
       description: string;
       /**
+      * **benchmark.due_date**
+      * - `timestamptz` in database
+      * - Nullable, no default
+      */
+      due_date: db.TimestampTzString | null;
+      /**
       * **benchmark.frequency**
       * - `text` in database
       * - `NOT NULL`, default: `''::text`
@@ -564,6 +582,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       target_level: number;
+      /**
+      * **benchmark.trial_count**
+      * - `int4` in database
+      * - Nullable, no default
+      */
+      trial_count: number | null;
     }
     export interface Whereable {
       /**
@@ -602,6 +626,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.due_date**
+      * - `timestamptz` in database
+      * - Nullable, no default
+      */
+      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
       * **benchmark.frequency**
       * - `text` in database
@@ -656,6 +686,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       target_level?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.trial_count**
+      * - `int4` in database
+      * - Nullable, no default
+      */
+      trial_count?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -694,6 +730,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       description: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **benchmark.due_date**
+      * - `timestamptz` in database
+      * - Nullable, no default
+      */
+      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment;
       /**
       * **benchmark.frequency**
       * - `text` in database
@@ -748,6 +790,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       target_level: number | db.Parameter<number> | db.SQLFragment;
+      /**
+      * **benchmark.trial_count**
+      * - `int4` in database
+      * - Nullable, no default
+      */
+      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -786,6 +834,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       description?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **benchmark.due_date**
+      * - `timestamptz` in database
+      * - Nullable, no default
+      */
+      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **benchmark.frequency**
       * - `text` in database
@@ -840,6 +894,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       target_level?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
+      /**
+      * **benchmark.trial_count**
+      * - `int4` in database
+      * - Nullable, no default
+      */
+      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'benchmark_pkey';
     export type Column = keyof Selectable;
@@ -2025,12 +2085,6 @@ declare module 'zapatos/schema' {
       */
       created_at: Date;
       /**
-      * **task.due_date**
-      * - `timestamptz` in database
-      * - Nullable, no default
-      */
-      due_date: Date | null;
-      /**
       * **task.seen**
       * - `bool` in database
       * - `NOT NULL`, default: `false`
@@ -2042,12 +2096,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       task_id: string;
-      /**
-      * **task.trial_count**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      trial_count: number | null;
     }
     export interface JSONSelectable {
       /**
@@ -2069,12 +2117,6 @@ declare module 'zapatos/schema' {
       */
       created_at: db.TimestampTzString;
       /**
-      * **task.due_date**
-      * - `timestamptz` in database
-      * - Nullable, no default
-      */
-      due_date: db.TimestampTzString | null;
-      /**
       * **task.seen**
       * - `bool` in database
       * - `NOT NULL`, default: `false`
@@ -2086,12 +2128,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       task_id: string;
-      /**
-      * **task.trial_count**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      trial_count: number | null;
     }
     export interface Whereable {
       /**
@@ -2113,12 +2149,6 @@ declare module 'zapatos/schema' {
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **task.due_date**
-      * - `timestamptz` in database
-      * - Nullable, no default
-      */
-      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.SQLFragment | db.ParentColumn>;
-      /**
       * **task.seen**
       * - `bool` in database
       * - `NOT NULL`, default: `false`
@@ -2130,12 +2160,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
-      * **task.trial_count**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      trial_count?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -2157,12 +2181,6 @@ declare module 'zapatos/schema' {
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment;
       /**
-      * **task.due_date**
-      * - `timestamptz` in database
-      * - Nullable, no default
-      */
-      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment;
-      /**
       * **task.seen**
       * - `bool` in database
       * - `NOT NULL`, default: `false`
@@ -2174,12 +2192,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment;
-      /**
-      * **task.trial_count**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -2201,12 +2213,6 @@ declare module 'zapatos/schema' {
       */
       created_at?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | db.DefaultType | db.SQLFragment>;
       /**
-      * **task.due_date**
-      * - `timestamptz` in database
-      * - Nullable, no default
-      */
-      due_date?: (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, (db.TimestampTzString | Date) | db.Parameter<(db.TimestampTzString | Date)> | null | db.DefaultType | db.SQLFragment>;
-      /**
       * **task.seen**
       * - `bool` in database
       * - `NOT NULL`, default: `false`
@@ -2218,12 +2224,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, default: `uuid_generate_v4()`
       */
       task_id?: string | db.Parameter<string> | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.DefaultType | db.SQLFragment>;
-      /**
-      * **task.trial_count**
-      * - `int4` in database
-      * - Nullable, no default
-      */
-      trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
     }
     export type UniqueIndex = 'benchmark_assignee_unique' | 'task_pkey';
     export type Column = keyof Selectable;
@@ -2239,6 +2239,12 @@ declare module 'zapatos/schema' {
   export namespace trial_data {
     export type Table = 'trial_data';
     export interface Selectable {
+      /**
+      * **trial_data.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      benchmark_id: string;
       /**
       * **trial_data.created_at**
       * - `timestamptz` in database
@@ -2270,12 +2276,6 @@ declare module 'zapatos/schema' {
       */
       success: number;
       /**
-      * **trial_data.task_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      task_id: string | null;
-      /**
       * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
@@ -2289,6 +2289,12 @@ declare module 'zapatos/schema' {
       unsuccess: number;
     }
     export interface JSONSelectable {
+      /**
+      * **trial_data.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      benchmark_id: string;
       /**
       * **trial_data.created_at**
       * - `timestamptz` in database
@@ -2320,12 +2326,6 @@ declare module 'zapatos/schema' {
       */
       success: number;
       /**
-      * **trial_data.task_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      task_id: string | null;
-      /**
       * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
@@ -2339,6 +2339,12 @@ declare module 'zapatos/schema' {
       unsuccess: number;
     }
     export interface Whereable {
+      /**
+      * **trial_data.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      benchmark_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
       * **trial_data.created_at**
       * - `timestamptz` in database
@@ -2370,12 +2376,6 @@ declare module 'zapatos/schema' {
       */
       success?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
-      * **trial_data.task_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      task_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
-      /**
       * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
@@ -2389,6 +2389,12 @@ declare module 'zapatos/schema' {
       unsuccess?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
+      /**
+      * **trial_data.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      benchmark_id: string | db.Parameter<string> | db.SQLFragment;
       /**
       * **trial_data.created_at**
       * - `timestamptz` in database
@@ -2420,12 +2426,6 @@ declare module 'zapatos/schema' {
       */
       success: number | db.Parameter<number> | db.SQLFragment;
       /**
-      * **trial_data.task_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      task_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
-      /**
       * **trial_data.trial_data_id**
       * - `uuid` in database
       * - `NOT NULL`, default: `uuid_generate_v4()`
@@ -2439,6 +2439,12 @@ declare module 'zapatos/schema' {
       unsuccess: number | db.Parameter<number> | db.SQLFragment;
     }
     export interface Updatable {
+      /**
+      * **trial_data.benchmark_id**
+      * - `uuid` in database
+      * - `NOT NULL`, no default
+      */
+      benchmark_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **trial_data.created_at**
       * - `timestamptz` in database
@@ -2469,12 +2475,6 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       success?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
-      /**
-      * **trial_data.task_id**
-      * - `uuid` in database
-      * - Nullable, no default
-      */
-      task_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **trial_data.trial_data_id**
       * - `uuid` in database
