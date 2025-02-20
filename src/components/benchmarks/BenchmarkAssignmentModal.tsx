@@ -63,12 +63,24 @@ export const BenchmarkAssignmentModal = (
         .filter((ele) => ele !== null) ?? [];
 
     setSelectedParaIds(paraIds);
+    if (benchmark?.trial_count !== null) {
+      setAssignmentDuration({
+        type: "minimum_number_of_collections",
+        minimumNumberOfCollections: benchmark?.trial_count ?? 1,
+      });
+    } else if (benchmark?.due_date !== null) {
+      setAssignmentDuration({
+        type: "until_date",
+        date: new Date(benchmark.due_date),
+      });
+    } else {
+      setAssignmentDuration({ type: "forever" });
+    }
   }, [benchmark]);
 
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const assignTaskToPara = trpc.iep.assignTaskToParas.useMutation();
-  const updateBenchmark = trpc.iep.updateBenchmark.useMutation();
 
   const handleParaToggle = (paraId: string) => () => {
     setErrorMessage("");
@@ -138,7 +150,7 @@ export const BenchmarkAssignmentModal = (
   return (
     <Dialog
       open={props.isOpen}
-      onClose={handleClose}
+      onClose={() => handleClose()}
       className={$benchmark.assignBenchmarkModal}
       maxWidth="sm"
       fullWidth

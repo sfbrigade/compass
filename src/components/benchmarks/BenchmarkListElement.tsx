@@ -46,7 +46,11 @@ const Info = ({ description, children }: InfoProps) => {
   );
 };
 
-const BenchmarkListElement = ({ benchmark, index, onUpdate }: BenchmarkProps) => {
+const BenchmarkListElement = ({
+  benchmark,
+  index,
+  onUpdate,
+}: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
 
   const closeModal = (benchmark?: Benchmark) => {
@@ -177,11 +181,13 @@ const BenchmarkListElement = ({ benchmark, index, onUpdate }: BenchmarkProps) =>
           </Info>
         </Box>
       </Box>
-      <BenchmarkAssignmentModal
-        isOpen={isAssignmentModalOpen}
-        onClose={closeModal}
-        benchmark_id={benchmark.benchmark_id}
-      />
+      {isAssignmentModalOpen && (
+        <BenchmarkAssignmentModal
+          isOpen={true}
+          onClose={closeModal}
+          benchmark_id={benchmark.benchmark_id}
+        />
+      )}
     </Box>
   );
 };

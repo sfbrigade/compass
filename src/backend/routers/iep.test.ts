@@ -66,8 +66,6 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
   const benchmark2Id = benchmark2!.benchmark_id;
 
@@ -79,9 +77,11 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
   const assignTask = await trpc.iep.assignTaskToParas.mutate({
     benchmark_id: benchmark2Id,
     para_ids: [para_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
   t.is(assignTask?.benchmark_id, benchmark2Id);
-  t.is(assignTask?.assignee_id, para_id);
+  t.is(assignTask?.assignees?.[0]?.assignee_id, para_id);
 
   const gotGoals = await trpc.iep.getGoals.query({ iep_id: iep.iep_id });
   t.is(gotGoals.length, 1);
@@ -202,19 +202,21 @@ test("assignTaskToParas - no duplicate benchmark_id + para_id combo", async (t) 
     metric_name: "words",
     attempts_per_trial: 10,
     number_of_trials: 30,
-    due_date: new Date("2023-12-31"),
-    trial_count: 5,
   });
   const benchmark1Id = benchmark1!.benchmark_id;
 
   await trpc.iep.assignTaskToParas.mutate({
     benchmark_id: benchmark1Id,
     para_ids: [para_1.user_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
 
   await trpc.iep.assignTaskToParas.mutate({
     benchmark_id: benchmark1Id,
     para_ids: [para_1.user_id, para_2.user_id],
+    due_date: new Date("2023-12-31"),
+    trial_count: 5,
   });
 
   const result = await db

@@ -11,6 +11,8 @@ const GoalPage = () => {
   const goal_id = (router.query?.goal_id as string) || "";
   const student_id = (router.query?.student_id as string) || "";
 
+  const utils = trpc.useUtils();
+
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
@@ -37,7 +39,12 @@ const GoalPage = () => {
   const goal_index = goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1;
 
   function onUpdate(benchmark: Benchmark) {
-    console.log('update the cached benchmarks data in react query here', benchmark);
+    const newBenchmarks = [...(benchmarks ?? [])];
+    const index = newBenchmarks.findIndex(
+      (b) => b.benchmark_id === benchmark.benchmark_id
+    );
+    newBenchmarks[index] = benchmark;
+    utils.iep.getBenchmarks.setData({ goal_id: goal_id }, newBenchmarks);
   }
 
   return (

@@ -234,8 +234,8 @@ export const iep = router({
       z.object({
         benchmark_id: z.string().uuid(),
         para_ids: z.string().uuid().array(),
-        due_date: z.date().nullable().optional(),
-        trial_count: z.number().nullable().optional(),
+        due_date: z.date().nullable(),
+        trial_count: z.number().nullable(),
       })
     )
     .mutation(async (req) => {
@@ -259,7 +259,7 @@ export const iep = router({
       const newAssigneeIds = para_ids.filter(
         (para_id) => !existingTasks.find((task) => task.assignee_id === para_id)
       );
-      
+
       return await req.ctx.db.transaction().execute(async (trx) => {
         // delete tasks whose assignees that are not in para_ids
         if (deleteTaskIds.length > 0) {
@@ -289,16 +289,34 @@ export const iep = router({
             trial_count,
           })
           .where("benchmark.benchmark_id", "=", benchmark_id)
-          .returningAll()
+          .returning((eb) => [
+            "benchmark.benchmark_id",
+            "benchmark.status",
+            "benchmark.description",
+            "benchmark.instructions",
+            "benchmark.materials",
+            "benchmark.metric_name",
+            "benchmark.setup",
+            "benchmark.frequency",
+            "benchmark.number_of_trials",
+            "benchmark.attempts_per_trial",
+            "benchmark.trial_count",
+            "benchmark.baseline_level",
+            "benchmark.current_level",
+            "benchmark.target_level",
+            "benchmark.created_at",
+            "benchmark.due_date",
+            "benchmark.goal_id",
+            jsonArrayFrom(
+              eb
+                .selectFrom("user")
+                .innerJoin("task", "task.assignee_id", "user.user_id")
+                .whereRef("task.benchmark_id", "=", "benchmark.benchmark_id")
+                .orderBy("user.first_name")
+                .selectAll()
+            ).as("assignees"),
+          ])
           .executeTakeFirstOrThrow();
-        // now refetch all the assignees
-        (result as any).assignees = await trx
-          .selectFrom("user")
-          .innerJoin("task", "task.assignee_id", "user.user_id")
-          .where("task.benchmark_id", "=", benchmark_id)
-          .orderBy("user.first_name")
-          .selectAll()
-          .execute();
         return result;
       });
     }),
