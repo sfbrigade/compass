@@ -1,5 +1,6 @@
 src/backend/db/zapatos
 .next
+build
 .nsm
 .terraform
 *.css.d.ts
