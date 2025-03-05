@@ -7,9 +7,10 @@ on:
   pull_request:
     types: [opened, reopened, synchronize]
 
+jobs:
   build:
     name: Build Image
-    needs: test
+    # needs: test
     runs-on: ubuntu-latest
     # if: ${{ github.ref_name == 'dev' }}
     steps:
