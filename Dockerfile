@@ -6,9 +6,6 @@
 # Command to build and run a Docker image for production:
 #  % docker build . -t compass && docker run -p=3000:3000 --name=compass --rm --env-file=.env.production compass
 #
-# If the target platform is Apple M1 or other ARM platform, use this command to build:
-#  % docker build --platform=linux/arm64 .
-#
 # NOTE: If you have the references to `localhost` in the .env file for other
 # services like postgres, replace `localhost` with either `host.docker.internal`
 # or the local IP address (`% ipconfig getifaddr en0`). This is needed as the
@@ -17,7 +14,7 @@
 
 
 # Start with the latest Node.js LTS release
-FROM --platform=linux/amd64 node:22-bullseye-slim
+FROM node:22-bullseye-slim
 
 # Set env variables
 ENV NODE_ENV production
@@ -40,4 +37,4 @@ COPY --chown=node:node . $APP_HOME
 RUN npm run build
 
 # Always the run the database migrations to make prod maintenance easier
-CMD npm run db:reset && npm run start
+CMD npm run db:migrate && npm run start
