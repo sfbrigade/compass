@@ -1,18 +1,14 @@
 name: Build
 on:
   push:
-    # branches:
-    #   - "dev"
-    #   - "main"
-  pull_request:
-    types: [opened, reopened, synchronize]
+    branches:
+      - "main"
 
 jobs:
   build:
     name: Build Image
-    # needs: test
     runs-on: ubuntu-latest
-    # if: ${{ github.ref_name == 'dev' }}
+    if: ${{ github.ref_name == 'main' }}
     steps:
       - name: Cloning repo
         uses: actions/checkout@v4
