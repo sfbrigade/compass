@@ -30,6 +30,7 @@ yarn-error.log*
 *.tsbuildinfo
 
 .next
+build
 next-env.d.ts
 .history
 
