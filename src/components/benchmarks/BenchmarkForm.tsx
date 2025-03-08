@@ -28,12 +28,20 @@ interface BenchmarkFields {
 }
 
 interface BenchmarkFormEntry {
-  [key: string]: {
-    value: string | number;
-    valid: boolean;
-    touched: boolean;
-  };
+  [key: string]: BenchmarkFormField;
 }
+
+interface BenchmarkFormField {
+  value: string | number;
+  valid: boolean;
+  touched: boolean;
+}
+
+const blankFormField = {
+  value: "",
+  valid: false,
+  touched: false,
+};
 
 const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
   const { completed = false } = stepIconProps;
@@ -85,49 +93,31 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const [benchmarkFormState, setBenchmarkFormState] =
     useState<BenchmarkFormEntry>({
       description: {
-        value: benchmark?.description || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       setup: {
-        value: benchmark?.setup || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       materials: {
-        value: benchmark?.materials || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       instructions: {
-        value: benchmark?.instructions || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       frequency: {
-        value: benchmark?.frequency || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       baseline_level: {
-        value: benchmark?.baseline_level || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       target_level: {
-        value: benchmark?.target_level || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       attempts_per_trial: {
-        value: benchmark?.attempts_per_trial || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       number_of_trials: {
-        value: benchmark?.number_of_trials || "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
     });
 
@@ -164,6 +154,19 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
       ].every((field) => field.valid)
     );
   }, [benchmarkFormState]);
+
+  useEffect(() => {
+    if (benchmark) {
+      const newBenchmarkFormState = { ...benchmarkFormState };
+      for (const key in benchmarkFormState) {
+        newBenchmarkFormState[key] = {
+          ...benchmarkFormState[key],
+          value: benchmark[key as keyof Benchmark] as string,
+        };
+      }
+      setBenchmarkFormState(newBenchmarkFormState);
+    }
+  }, [benchmark]); // TODO: Fix this dependency
 
   async function checkFormFields(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
