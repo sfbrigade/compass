@@ -1,7 +1,8 @@
 import { trpc } from "@/client/lib/trpc";
-// import type { Benchmark } from "@/types/global";
+import type { Benchmark } from "@/types/global";
 import $button from "@/components/design_system/button/Button.module.css";
 import { GoalHeader } from "@/components/goal-header/goal-header";
+import useGoalIndex from "@/hooks/useGoalIndex";
 import { ChangeEvent } from "@/types/global";
 import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
 import {
@@ -51,14 +52,25 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     { enabled: Boolean(router.query.goal_id) }
   );
 
+  const goalIndex = useGoalIndex({
+    iepId: goal?.iep_id || "",
+    goalId: goal?.goal_id || "",
+  });
+
   const editOrCreate = benchmark_id ? "Edit" : "Create";
 
-  const { data: benchmark, isError: benchmarkFetchError } =
-    trpc.iep.getBenchmark.useQuery({
-      benchmark_id,
-    });
+  let benchmark: Benchmark | undefined = undefined;
 
-  console.log(benchmarkFetchError);
+  if (benchmark_id) {
+    const { data, isError: benchmarkFetchError } =
+      trpc.iep.getBenchmark.useQuery({
+        benchmark_id,
+      });
+
+    if (data !== undefined && !benchmarkFetchError) {
+      benchmark = data;
+    }
+  }
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
   const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();
@@ -177,7 +189,6 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
   const handleSubmit = async () => {
-    console.log("benchmarkFormState", benchmarkFormState);
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     try {
       if (benchmark_id) {
@@ -320,7 +331,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     <Stack bgcolor="white" borderRadius={2} gap={4} maxWidth="1000px">
       {goal && (
         <GoalHeader
-          name="[placeholder] 1st Goal"
+          name={`Goal #${goalIndex}`}
           description={goal.description}
           createdAt={goal.created_at}
           goalId={goal.goal_id}
@@ -422,7 +433,6 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
                     }
                     onChange={(e: ChangeEvent) => {
                       const numValue = Number(e.target.value);
-                      console.log(numValue);
                       setBenchmarkFormState({
                         ...benchmarkFormState,
                         ["target_level"]: {
