@@ -159,9 +159,11 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     if (benchmark) {
       const newBenchmarkFormState = { ...benchmarkFormState };
       for (const key in benchmarkFormState) {
+        const benchmarkKeyValue = benchmark[key as keyof Benchmark] as string;
         newBenchmarkFormState[key] = {
           ...benchmarkFormState[key],
-          value: benchmark[key as keyof Benchmark] as string,
+          value: benchmarkKeyValue,
+          valid: benchmarkKeyValue.length > 0,
         };
       }
       setBenchmarkFormState(newBenchmarkFormState);
