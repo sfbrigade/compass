@@ -60,23 +60,14 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     { enabled: Boolean(router.query.goal_id) }
   );
 
+  const { data: benchmark, isError: benchmarkFetchError } = benchmark_id
+    ? trpc.iep.getBenchmark.useQuery({ benchmark_id })
+    : { data: undefined, isError: false };
+
   const goalIndex = useGoalIndex({
     iepId: goal?.iep_id || "",
     goalId: goal?.goal_id || "",
   });
-
-  let benchmark: Benchmark | undefined = undefined;
-
-  if (benchmark_id) {
-    const { data, isError: benchmarkFetchError } =
-      trpc.iep.getBenchmark.useQuery({
-        benchmark_id,
-      });
-
-    if (data !== undefined && !benchmarkFetchError) {
-      benchmark = data;
-    }
-  }
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
   const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();
@@ -154,39 +145,31 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   }, [benchmarkFormState]);
 
   useEffect(() => {
-    if (benchmark) {
-      const newBenchmarkFormState = { ...benchmarkFormState };
-      for (const key in benchmarkFormState) {
+    if (!benchmark || benchmarkFetchError) return;
+
+    setBenchmarkFormState((prevState) => {
+      return Object.keys(prevState).reduce((newState, key) => {
         const benchmarkKeyValue = benchmark[key as keyof Benchmark] as string;
         const numValue = Number(benchmarkKeyValue);
-        switch (key) {
-          case "baseline_level":
-          case "target_level":
-            newBenchmarkFormState[key] = {
-              ...benchmarkFormState[key],
-              value: numValue,
-              valid: numValue >= 0 && numValue <= 100 && numValue % 1 === 0,
-            };
-            break;
-          case "attempts_per_trial":
-          case "number_of_trials":
-            newBenchmarkFormState[key] = {
-              ...benchmarkFormState[key],
-              value: numValue,
-              valid: numValue % 1 === 0 && numValue > 0,
-            };
-            break;
-          default:
-            newBenchmarkFormState[key] = {
-              ...benchmarkFormState[key],
-              value: benchmarkKeyValue,
-              valid: benchmarkKeyValue.length > 0,
-            };
+
+        let isValid = false;
+        let value: string | number = benchmarkKeyValue;
+
+        if (["baseline_level", "target_level"].includes(key)) {
+          isValid = numValue >= 0 && numValue <= 100 && numValue % 1 === 0;
+          value = numValue;
+        } else if (["attempts_per_trial", "number_of_trials"].includes(key)) {
+          isValid = numValue % 1 === 0 && numValue > 0;
+          value = numValue;
+        } else {
+          isValid = benchmarkKeyValue.length > 0;
         }
-      }
-      setBenchmarkFormState(newBenchmarkFormState);
-    }
-  }, [benchmark]); // TODO: Fix this dependency
+
+        newState[key] = { ...prevState[key], value, valid: isValid };
+        return newState;
+      }, {} as BenchmarkFormEntry);
+    });
+  }, [benchmark, benchmarkFetchError]);
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
