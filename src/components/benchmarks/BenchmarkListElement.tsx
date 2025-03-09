@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
 import { Benchmark } from "@/types/global";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 interface BenchmarkProps {
   benchmark: Benchmark;
@@ -52,6 +54,8 @@ const BenchmarkListElement = ({
   onUpdate,
 }: BenchmarkProps) => {
   const [isAssignmentModalOpen, setIsAssignmentModalOpen] = useState(false);
+
+  const router = useRouter();
 
   const closeModal = (benchmark?: Benchmark) => {
     setIsAssignmentModalOpen(false);
@@ -99,13 +103,11 @@ const BenchmarkListElement = ({
             </Box>
           </Box>
           <Box sx={{ margin: "1rem" }}>
-            <Button
-              className={$button.tertiary}
-              onClick={() => alert("To be implemented")}
+            <Link
+              href={`${router.asPath}/edit?benchmark_id=${benchmark.benchmark_id}`}
             >
-              {" "}
-              Edit
-            </Button>
+              <Button className={$button.tertiary}> Edit</Button>
+            </Link>
           </Box>
         </Box>
         <Divider sx={{ marginTop: "1rem", marginBottom: "1rem" }} />

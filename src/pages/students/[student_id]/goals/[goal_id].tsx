@@ -5,6 +5,7 @@ import Grid from "@mui/material/Grid";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import { Benchmark } from "@/types/global";
+import useGoalIndex from "@/hooks/useGoalIndex";
 
 const GoalPage = () => {
   const router = useRouter();
@@ -17,14 +18,6 @@ const GoalPage = () => {
     { student_id: student_id },
     { enabled: Boolean(student_id), retry: false }
   );
-  const { data: goals = [] } = trpc.iep.getGoals.useQuery(
-    {
-      iep_id: activeIep?.iep_id || "",
-    },
-    {
-      enabled: Boolean(activeIep),
-    }
-  );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
@@ -36,7 +29,10 @@ const GoalPage = () => {
     { enabled: Boolean(goal_id) }
   );
 
-  const goal_index = goals.findIndex((g) => g.goal_id === goal?.goal_id) + 1;
+  const goal_index = useGoalIndex({
+    iepId: activeIep?.iep_id || "",
+    goalId: goal_id,
+  });
 
   function onUpdate(benchmark: Benchmark) {
     const newBenchmarks = [...(benchmarks ?? [])];
