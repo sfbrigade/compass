@@ -160,11 +160,31 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
       const newBenchmarkFormState = { ...benchmarkFormState };
       for (const key in benchmarkFormState) {
         const benchmarkKeyValue = benchmark[key as keyof Benchmark] as string;
-        newBenchmarkFormState[key] = {
-          ...benchmarkFormState[key],
-          value: benchmarkKeyValue,
-          valid: benchmarkKeyValue.length > 0,
-        };
+        const numValue = Number(benchmarkKeyValue);
+        switch (key) {
+          case "baseline_level":
+          case "target_level":
+            newBenchmarkFormState[key] = {
+              ...benchmarkFormState[key],
+              value: numValue,
+              valid: numValue >= 0 && numValue <= 100 && numValue % 1 === 0,
+            };
+            break;
+          case "attempts_per_trial":
+          case "number_of_trials":
+            newBenchmarkFormState[key] = {
+              ...benchmarkFormState[key],
+              value: numValue,
+              valid: numValue % 1 === 0 && numValue > 0,
+            };
+            break;
+          default:
+            newBenchmarkFormState[key] = {
+              ...benchmarkFormState[key],
+              value: benchmarkKeyValue,
+              valid: benchmarkKeyValue.length > 0,
+            };
+        }
       }
       setBenchmarkFormState(newBenchmarkFormState);
     }
