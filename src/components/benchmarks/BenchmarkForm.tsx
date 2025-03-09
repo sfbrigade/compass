@@ -65,8 +65,6 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     goalId: goal?.goal_id || "",
   });
 
-  const editOrCreate = benchmark_id ? "Edit" : "Create";
-
   let benchmark: Benchmark | undefined = undefined;
 
   if (benchmark_id) {
@@ -190,30 +188,12 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     }
   }, [benchmark]); // TODO: Fix this dependency
 
-  async function checkFormFields(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault();
-    if (!pageOneIsValid || !pageTwoIsValid) {
-      alert(
-        "Please fill out all fields with valid information before proceeding"
-      );
-    } else {
-      await handleSubmit();
-    }
-  }
-
-  function checkPageOneFields(): boolean {
-    const { description, setup, materials, instructions } = benchmarkFormState;
-    return [description, setup, materials, instructions].every((field) => {
-      const castField = field.value as string;
-      return field.value !== "" && castField.replaceAll(" ", "").length > 0;
-    });
-  }
-
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     try {
       if (benchmark_id) {
@@ -365,7 +345,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
 
       <Box bgcolor={"var(--grey-80)"} py={4}>
         <Typography variant="h3" textAlign="left" pb={2}>
-          {editOrCreate} Benchmark
+          {benchmark_id ? "Edit" : "Create"} Benchmark
         </Typography>
         <Stepper activeStep={viewState} alternativeLabel connector={null}>
           {steps.map((label) => (
@@ -543,13 +523,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
             <button
               disabled={!pageOneIsValid}
               onClick={() => {
-                if (checkPageOneFields()) {
-                  setViewState(VIEW_STATES.BENCHMARK_PG_2);
-                } else {
-                  alert(
-                    "Please fill out all fields with valid information before proceeding"
-                  );
-                }
+                setViewState(VIEW_STATES.BENCHMARK_PG_2);
               }}
               className={$button.default}
             >
@@ -570,9 +544,9 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
               <button
                 disabled={!pageTwoIsValid}
                 className={$button.default}
-                onClick={checkFormFields}
+                onClick={handleSubmit}
               >
-                {editOrCreate} Benchmark
+                {benchmark_id ? "Save" : "Create"} Benchmark
               </button>
             </Stack>
           </Stack>
