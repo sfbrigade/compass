@@ -104,7 +104,7 @@ const BenchmarkListElement = ({
           </Box>
           <Box sx={{ margin: "1rem" }}>
             <Link
-              href={`${router.asPath}/edit?benchmark_id=${benchmark.benchmark_id}`}
+              href={`${router.asPath}/benchmarks/${benchmark.benchmark_id}/edit`}
             >
               <Button className={$button.tertiary}> Edit</Button>
             </Link>

@@ -1,10 +1,10 @@
 import BenchmarkForm from "@/components/benchmarks/BenchmarkForm";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 const EditBenchmarkPage = () => {
-  const searchParams = useSearchParams();
+  const router = useRouter();
 
-  const benchmarkId = searchParams.get("benchmark_id");
+  const benchmarkId = router.query?.benchmark_id as string;
 
   return <BenchmarkForm benchmark_id={benchmarkId || ""} />;
 };
