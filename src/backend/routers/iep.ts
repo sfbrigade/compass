@@ -543,6 +543,7 @@ export const iep = router({
           "goal.category",
           "benchmark.description",
           "benchmark.instructions",
+          "benchmark.materials",
           "benchmark.frequency",
           "benchmark.number_of_trials",
           "benchmark.benchmark_id",
