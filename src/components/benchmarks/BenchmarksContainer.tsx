@@ -100,7 +100,7 @@ export default function BenchmarksContainer({
 
         {/* Create benchmark button */}
         <Box>
-          <Link href={`${router.asPath}/create`}>
+          <Link href={`${router.asPath}/benchmarks/create`}>
             <Button className={$button.default}>Create benchmark</Button>
           </Link>
         </Box>

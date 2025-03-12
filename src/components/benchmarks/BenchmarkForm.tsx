@@ -1,6 +1,8 @@
 import { trpc } from "@/client/lib/trpc";
+import type { Benchmark } from "@/types/global";
 import $button from "@/components/design_system/button/Button.module.css";
 import { GoalHeader } from "@/components/goal-header/goal-header";
+import useGoalIndex from "@/hooks/useGoalIndex";
 import { ChangeEvent } from "@/types/global";
 import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
 import {
@@ -26,12 +28,20 @@ interface BenchmarkFields {
 }
 
 interface BenchmarkFormEntry {
-  [key: string]: {
-    value: string | number;
-    valid: boolean;
-    touched: boolean;
-  };
+  [key: string]: BenchmarkFormField;
 }
+
+interface BenchmarkFormField {
+  value: string | number;
+  valid: boolean;
+  touched: boolean;
+}
+
+const blankFormField = {
+  value: "",
+  valid: false,
+  touched: false,
+};
 
 const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
   const { completed = false } = stepIconProps;
@@ -43,14 +53,24 @@ const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
   }
 };
 
-const CreateBenchmarkPage = () => {
+const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const router = useRouter();
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
     { enabled: Boolean(router.query.goal_id) }
   );
 
+  const { data: benchmark, isError: benchmarkFetchError } = benchmark_id
+    ? trpc.iep.getBenchmark.useQuery({ benchmark_id })
+    : { data: undefined, isError: false };
+
+  const goalIndex = useGoalIndex({
+    iepId: goal?.iep_id || "",
+    goalId: goal?.goal_id || "",
+  });
+
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
+  const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();
 
   const VIEW_STATES = {
     BENCHMARK_PG_1: 0,
@@ -62,49 +82,31 @@ const CreateBenchmarkPage = () => {
   const [benchmarkFormState, setBenchmarkFormState] =
     useState<BenchmarkFormEntry>({
       description: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       setup: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       materials: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       instructions: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       frequency: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       baseline_level: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       target_level: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       attempts_per_trial: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
       number_of_trials: {
-        value: "",
-        valid: false,
-        touched: false,
+        ...blankFormField,
       },
     });
 
@@ -142,49 +144,77 @@ const CreateBenchmarkPage = () => {
     );
   }, [benchmarkFormState]);
 
-  async function checkFormFields(
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) {
-    e.preventDefault();
-    if (!pageOneIsValid || !pageTwoIsValid) {
-      alert(
-        "Please fill out all fields with valid information before proceeding"
-      );
-    } else {
-      await handleSubmit();
-    }
-  }
+  useEffect(() => {
+    if (!benchmark || benchmarkFetchError) return;
 
-  function checkPageOneFields(): boolean {
-    const { description, setup, materials, instructions } = benchmarkFormState;
-    return [description, setup, materials, instructions].every((field) => {
-      const castField = field.value as string;
-      return field.value !== "" && castField.replaceAll(" ", "").length > 0;
+    setBenchmarkFormState((prevState) => {
+      return Object.keys(prevState).reduce((newState, key) => {
+        const benchmarkKeyValue = benchmark[key as keyof Benchmark] as string;
+        const numValue = Number(benchmarkKeyValue);
+
+        let isValid = false;
+        let value: string | number = benchmarkKeyValue;
+
+        if (["baseline_level", "target_level"].includes(key)) {
+          isValid = numValue >= 0 && numValue <= 100 && numValue % 1 === 0;
+          value = numValue;
+        } else if (["attempts_per_trial", "number_of_trials"].includes(key)) {
+          isValid = numValue % 1 === 0 && numValue > 0;
+          value = numValue;
+        } else {
+          isValid = benchmarkKeyValue.length > 0;
+        }
+
+        newState[key] = { ...prevState[key], value, valid: isValid };
+        return newState;
+      }, {} as BenchmarkFormEntry);
     });
-  }
+  }, [benchmark, benchmarkFetchError]);
 
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
-  const handleSubmit = async () => {
-    console.log("benchmarkFormState", benchmarkFormState);
+  const handleSubmit = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    e.preventDefault();
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
     try {
-      await addBenchmarkMutation.mutateAsync({
-        goal_id: router.query.goal_id as string,
-        status: "In Progress",
-        description: benchmarkFormState["description"].value as string,
-        setup: benchmarkFormState["setup"].value as string,
-        instructions: benchmarkFormState["instructions"].value as string,
-        materials: benchmarkFormState["materials"].value as string,
-        frequency: benchmarkFormState["frequency"].value as string,
-        target_level: benchmarkFormState["target_level"].value as number,
-        baseline_level: benchmarkFormState["baseline_level"].value as number,
-        metric_name: "" as string,
-        attempts_per_trial: benchmarkFormState["attempts_per_trial"]
-          .value as number,
-        number_of_trials: benchmarkFormState["number_of_trials"]
-          .value as number,
-      });
+      if (benchmark_id) {
+        await updateBenchmarkMutation.mutateAsync({
+          benchmark_id,
+          goal_id: router.query.goal_id as string,
+          status: "In Progress",
+          description: benchmarkFormState["description"].value as string,
+          setup: benchmarkFormState["setup"].value as string,
+          instructions: benchmarkFormState["instructions"].value as string,
+          materials: benchmarkFormState["materials"].value as string,
+          frequency: benchmarkFormState["frequency"].value as string,
+          target_level: benchmarkFormState["target_level"].value as number,
+          baseline_level: benchmarkFormState["baseline_level"].value as number,
+          metric_name: "" as string,
+          attempts_per_trial: benchmarkFormState["attempts_per_trial"]
+            .value as number,
+          number_of_trials: benchmarkFormState["number_of_trials"]
+            .value as number,
+        });
+      } else {
+        await addBenchmarkMutation.mutateAsync({
+          goal_id: router.query.goal_id as string,
+          status: "In Progress",
+          description: benchmarkFormState["description"].value as string,
+          setup: benchmarkFormState["setup"].value as string,
+          instructions: benchmarkFormState["instructions"].value as string,
+          materials: benchmarkFormState["materials"].value as string,
+          frequency: benchmarkFormState["frequency"].value as string,
+          target_level: benchmarkFormState["target_level"].value as number,
+          baseline_level: benchmarkFormState["baseline_level"].value as number,
+          metric_name: "" as string,
+          attempts_per_trial: benchmarkFormState["attempts_per_trial"]
+            .value as number,
+          number_of_trials: benchmarkFormState["number_of_trials"]
+            .value as number,
+        });
+      }
 
       await router.push(
         `/students/${router.query.student_id as string}/goals/${
@@ -192,7 +222,10 @@ const CreateBenchmarkPage = () => {
         }`
       );
     } catch (error) {
-      console.error("Error creating benchmark", error);
+      console.error(
+        `Error ${benchmark_id ? "editing" : "creating"} benchmark`,
+        error
+      );
     }
   };
 
@@ -286,7 +319,7 @@ const CreateBenchmarkPage = () => {
     <Stack bgcolor="white" borderRadius={2} gap={4} maxWidth="1000px">
       {goal && (
         <GoalHeader
-          name="[placeholder] 1st Goal"
+          name={`Goal #${goalIndex}`}
           description={goal.description}
           createdAt={goal.created_at}
           goalId={goal.goal_id}
@@ -295,7 +328,7 @@ const CreateBenchmarkPage = () => {
 
       <Box bgcolor={"var(--grey-80)"} py={4}>
         <Typography variant="h3" textAlign="left" pb={2}>
-          Create Benchmark
+          {benchmark_id ? "Edit" : "Create"} Benchmark
         </Typography>
         <Stepper activeStep={viewState} alternativeLabel connector={null}>
           {steps.map((label) => (
@@ -388,7 +421,6 @@ const CreateBenchmarkPage = () => {
                     }
                     onChange={(e: ChangeEvent) => {
                       const numValue = Number(e.target.value);
-                      console.log(numValue);
                       setBenchmarkFormState({
                         ...benchmarkFormState,
                         ["target_level"]: {
@@ -474,13 +506,7 @@ const CreateBenchmarkPage = () => {
             <button
               disabled={!pageOneIsValid}
               onClick={() => {
-                if (checkPageOneFields()) {
-                  setViewState(VIEW_STATES.BENCHMARK_PG_2);
-                } else {
-                  alert(
-                    "Please fill out all fields with valid information before proceeding"
-                  );
-                }
+                setViewState(VIEW_STATES.BENCHMARK_PG_2);
               }}
               className={$button.default}
             >
@@ -501,9 +527,9 @@ const CreateBenchmarkPage = () => {
               <button
                 disabled={!pageTwoIsValid}
                 className={$button.default}
-                onClick={checkFormFields}
+                onClick={handleSubmit}
               >
-                Create Benchmark
+                {benchmark_id ? "Save" : "Create"} Benchmark
               </button>
             </Stack>
           </Stack>
@@ -513,4 +539,4 @@ const CreateBenchmarkPage = () => {
   );
 };
 
-export default CreateBenchmarkPage;
+export default BenchmarkForm;

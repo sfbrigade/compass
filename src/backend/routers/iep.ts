@@ -388,6 +388,7 @@ export const iep = router({
         .selectFrom("goal")
         .where("iep_id", "=", iep_id)
         .selectAll()
+        .orderBy("goal.created_at asc")
         .execute();
 
       return result;
@@ -450,6 +451,7 @@ export const iep = router({
               .selectAll()
           ).as("assignees"),
         ])
+        .orderBy("benchmark.created_at asc")
         .execute();
 
       return result;
