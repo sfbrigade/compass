@@ -4,6 +4,7 @@ import { differenceInWeeks, format } from "date-fns";
 import Link from "next/link";
 import { useMemo } from "react";
 import $taskCard from "./TaskCard.module.css";
+import { Button } from "@mui/material";
 
 interface ParaTaskCard {
   // this should be based on TaskData, maybe have some Omit's.
@@ -75,12 +76,12 @@ const TaskCard = ({ task, isPara }: TaskCardProps) => {
         <div style={{ display: "flex", gap: "1rem" }}>
           {/* Para smaller screen view can click on card instead */}
           {!isPara ? (
-            <Link
-              href={`/benchmarks/${task.benchmark_id}`}
-              className={`${$button.secondary}`}
+            <Button
+              onClick={() => alert("to be implemented")}
+              className={$button.secondary}
             >
               View benchmark
-            </Link>
+            </Button>
           ) : null}
 
           <Link
