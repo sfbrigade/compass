@@ -151,15 +151,9 @@ const BenchmarkListElement = ({
                   textAlign: "center",
                 }}
               >
-                {/* Placeholder href to replace with actual path */}
-                <Button
-                  onClick={() => {
-                    alert("To be implemented");
-                  }}
-                  className={$button.tertiary}
-                >
-                  Collect Data
-                </Button>
+                <Link href={`/benchmarks/${benchmark.benchmark_id}`}>
+                  <Button className={$button.tertiary}>Collect Data</Button>
+                </Link>
               </Box>
               <Box
                 sx={{
