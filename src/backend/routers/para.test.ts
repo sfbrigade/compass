@@ -95,7 +95,7 @@ test("createPara", async (t) => {
 
   // mail is sent asynchronously in promise, so wait a bit
   await new Promise((resolve) => {
-    setTimeout(resolve, 100);
+    setTimeout(resolve, 150);
   });
 
   t.true(
