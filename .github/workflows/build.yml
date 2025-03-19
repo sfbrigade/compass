@@ -29,3 +29,16 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: sfcivictech/compass:${{ github.sha }}
+
+  deploy:
+    name: Deploy to Dev
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref_name == 'main' }}
+    steps:
+      - name: Push to dokku
+        uses: dokku/github-action@master
+        with:
+          git_remote_url: "ssh://dokku@compassiep.org:22/dev"
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+          deploy_docker_image: sfcivictech/compass:${{ github.sha }}
