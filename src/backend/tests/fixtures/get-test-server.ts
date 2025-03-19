@@ -69,6 +69,9 @@ export const getTestServer = async (
     S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
     S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
     S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
+    SES_ACCESS_KEY_ID: "",
+    SES_SECRET_ACCESS_KEY: "",
+    SES_REGION: "",
     EMAIL_SERVICE: "smtp",
     EMAIL_FROM: "no-reply@compassiep.org",
     EMAIL_AUTH_USER: "", // note that these server settings will not be used, nodemailer is mocked
