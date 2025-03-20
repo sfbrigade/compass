@@ -1,19 +1,29 @@
 .button {
   display: block;
-  border-radius: 0.5rem;
   border-style: solid;
   border-width: 1px;
   cursor: pointer;
-  font-size: var(--base-size);
   font-family: var(--quicksand);
   font-weight: var(--semibold);
   letter-spacing: 0;
-  line-height: 1.5;
   min-width: 0;
-  padding: 0.4375rem 1.4375rem;
   text-decoration: none;
   text-align: center;
   text-transform: none;
+}
+
+.button--small {
+  border-radius: 0.5rem;
+  font-size: var(--base-size);
+  line-height: 1.25;
+  padding: 0.4375rem 0.4375rem;
+}
+
+.button--large {
+  border-radius: 0.5rem;
+  font-size: var(--base-size);
+  line-height: 1.5;
+  padding: 0.4375rem 1.4375rem;
 }
 
 .button--primary {
@@ -57,11 +67,17 @@
   background-color: inherit;
   border-color: transparent;
   color: var(--primary-50);
+  text-decoration: underline;
 }
 
 .button--tertiary:hover {
   background-color: var(--primary-container);
+  text-decoration: none;
 }
+
+
+
+
 
 .about {
   border: none;

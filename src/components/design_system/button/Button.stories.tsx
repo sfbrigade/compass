@@ -13,6 +13,7 @@ type Story = StoryObj<typeof Button>;
 export const Primary: Story = {
   args: {
     children: "Button",
+    size: "large",
     variant: "primary",
   },
 };
@@ -20,6 +21,7 @@ export const Primary: Story = {
 export const Secondary: Story = {
   args: {
     children: "Button",
+    size: "large",
     variant: "secondary",
   },
 };
@@ -27,6 +29,31 @@ export const Secondary: Story = {
 export const Tertiary: Story = {
   args: {
     children: "Button",
+    size: "large",
+    variant: "tertiary",
+  },
+};
+
+export const PrimarySmall: Story = {
+  args: {
+    children: "Button",
+    size: "small",
+    variant: "primary",
+  },
+};
+
+export const SecondarySmall: Story = {
+  args: {
+    children: "Button",
+    size: "small",
+    variant: "secondary",
+  },
+};
+
+export const TertiarySmall: Story = {
+  args: {
+    children: "Button",
+    size: "small",
     variant: "tertiary",
   },
 };

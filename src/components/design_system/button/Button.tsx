@@ -11,6 +11,7 @@ interface ButtonProps {
   disabled?: boolean;
   form?: string;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  size?: "small" | "large";
   sx?: SxProps<Theme>;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary" | "tertiary";
@@ -22,6 +23,7 @@ function Button({
   disabled,
   form,
   onClick,
+  size = "large",
   sx = [],
   type,
   variant = "primary",
@@ -30,6 +32,7 @@ function Button({
     <MuiButton
       className={classNames(
         classes.button,
+        classes[`button--${size}`],
         classes[`button--${variant}`],
         className
       )}
