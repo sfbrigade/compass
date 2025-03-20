@@ -1,4 +1,3 @@
-import ParaNav from "@/components/paraNav/ParaNav";
 import React from "react";
 import $box from "@/styles/Box.module.css";
 import { useRouter } from "next/router";
@@ -19,7 +18,6 @@ const InstructionsPage = () => {
   }
   return (
     <div>
-      <ParaNav />
       <div className={$box.default}>
         <h4>Goal:</h4>
         <p>{benchmark.description}</p>

@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import Counter from "@/components/counter/counter";
-import ParaNav from "@/components/paraNav/ParaNav";
 import Link from "next/link";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
@@ -201,7 +200,6 @@ const BenchmarkPage = () => {
       <Link href="/benchmarks">
         <ArrowBackIcon />
       </Link>
-      <ParaNav />
       <p className={$box.default}>
         <strong>Benchmark:</strong> {benchmark.description}
       </p>
