@@ -84,15 +84,6 @@
   text-decoration: none;
 }
 
-.about {
-  border: none;
-  background-color: transparent;
-}
-
-.about {
-  cursor: pointer;
-}
-
 .pilled {
   border-radius: 20px;
   padding: 5px 10px;
