@@ -10,22 +10,15 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import $button from "../../components/design_system/button/Button.module.css";
 import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
-import SearchIcon from "@mui/icons-material/Search";
 import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
 function Benchmarks() {
-  const [isPara, setIsPara] = useState(false);
-
   const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
   const [displayedTasks, setDisplayedTasks] = useState<TaskData[]>([]);
 
   const { data: tasksData, isLoading } = trpc.para.getMyTasks.useQuery();
-
-  const handleTogglePara = () => {
-    setIsPara(!isPara);
-  };
 
   useEffect(() => {
     if (!tasksData) {
@@ -87,29 +80,6 @@ function Benchmarks() {
           >
             <h3>Assigned Students</h3>
             <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              {/* Temporary Toggle View of CM and Para */}
-              <span>{isPara ? "Para" : "Case Manager"}</span>
-              <button
-                onClick={() => handleTogglePara()}
-                style={{ padding: "0 4px" }}
-              >
-                Toggle View
-              </button>
-
-              {/* Search Pill Placeholder */}
-              <span
-                className={`${$button.button} ${$button["button--secondary"]}`}
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  borderRadius: "30px",
-                  padding: "4px 20px",
-                }}
-              >
-                <SearchIcon /> Search
-              </span>
-
               {/* Filter Pill Placeholder */}
               <span
                 className={`${$button.pilled}`}
