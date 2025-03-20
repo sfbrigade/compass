@@ -39,7 +39,7 @@ const InstructionsPage = () => {
       </div>
       <Link
         href={`/benchmarks/${benchmark_id as string}`}
-        className={`${$button.default} ${$button.fixedToBottom}`}
+        className={`${$button.primary} ${$button.fixedToBottom}`}
       >
         Collect data
       </Link>

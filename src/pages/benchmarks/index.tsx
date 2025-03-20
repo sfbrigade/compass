@@ -98,7 +98,7 @@ function Benchmarks() {
 
               {/* Search Pill Placeholder */}
               <span
-                className={`${$button.secondary}`}
+                className={`${$button.button} ${$button["button--secondary"]}`}
                 style={{
                   display: "flex",
                   maxWidth: "fit-content",
