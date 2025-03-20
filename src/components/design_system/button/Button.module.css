@@ -1,83 +1,65 @@
-.default {
+.button {
   display: block;
-  background-color: var(--primary);
-  border: none;
-  color: var(--on-primary);
-  padding: 10px 12px;
-  border-radius: 8px;
+  border-radius: 0.5rem;
+  border-style: solid;
+  border-width: 1px;
   cursor: pointer;
-  text-decoration: none;
-  text-align: center;
   font-size: var(--base-size);
   font-family: var(--quicksand);
-  font-weight: normal;
-  text-transform: none;
-  line-height: normal;
+  font-weight: var(--semibold);
   letter-spacing: 0;
+  line-height: 1.5;
   min-width: 0;
+  padding: 0.4375rem 1.4375rem;
+  text-decoration: none;
+  text-align: center;
+  text-transform: none;
 }
 
-.default:hover {
+.button--primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.button--primary:hover {
   box-shadow:
     0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   background-color: var(--primary-50);
 }
 
-.default:active {
+.button--primary:active {
   background-color: var(--primary-60);
 }
 
-.default:disabled {
+.button--primary:disabled {
   background-color: var(--grey-70);
   color: var(--grey-50);
   cursor: default;
 }
 
-.default:disabled:hover {
+.button--primary:disabled:hover {
   box-shadow: none;
 }
 
-.secondary {
-  display: block;
-  border: 1px solid var(--primary-50);
-  color: var(--primary-50);
-  padding: 10px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  font-size: var(--base-size);
+.button--secondary {
   background-color: inherit;
-  font-family: var(--quicksand);
-  text-transform: none;
-  line-height: normal;
-  letter-spacing: 0;
-  min-width: 0;
+  border-color: var(--primary-50);
+  color: var(--primary-50);
 }
 
-.secondary:hover {
+.button--secondary:hover {
   background-color: var(--primary-container);
 }
 
-.tertiary {
-  display: block;
-  color: var(--primary-50);
-  padding: 10px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: underline;
-  text-align: center;
-  font-size: var(--base-size);
+.button--tertiary {
   background-color: inherit;
-  font-family: var(--quicksand);
-  text-transform: none;
-  line-height: normal;
-  letter-spacing: 0;
-  min-width: 0;
+  border-color: transparent;
+  color: var(--primary-50);
 }
 
-.tertiary:hover {
+.button--tertiary:hover {
   background-color: var(--primary-container);
 }
 

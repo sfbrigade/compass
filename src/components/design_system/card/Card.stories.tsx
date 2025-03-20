@@ -3,6 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Card from "./Card";
 
 const meta: Meta<typeof Card> = {
+  title: "Components/Design System/Card",
   component: Card,
 };
 export default meta;
@@ -16,4 +17,11 @@ export const Basic: Story = {
     children: "Body",
     button: "Button",
   },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "20rem" }}>
+        <Story />
+      </div>
+    ),
+  ],
 };
