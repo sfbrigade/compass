@@ -44,6 +44,7 @@
 }
 
 .button--primary:disabled {
+  border-color: var(--grey-70);
   background-color: var(--grey-70);
   color: var(--grey-50);
   cursor: default;
@@ -63,6 +64,10 @@
   background-color: var(--primary-container);
 }
 
+.button--secondary:disabled {
+  border-color: var(--grey-50);
+}
+
 .button--tertiary {
   background-color: inherit;
   border-color: transparent;
@@ -75,9 +80,9 @@
   text-decoration: none;
 }
 
-
-
-
+.button--tertiary:disabled {
+  text-decoration: none;
+}
 
 .about {
   border: none;
