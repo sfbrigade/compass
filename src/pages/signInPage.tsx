@@ -2,10 +2,12 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import $home from "../styles/Home.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
+
+import $button from "@/components/design_system/button/Button.module.css";
+import Button from "@/components/design_system/button/Button";
 
 const SignInPage = () => {
   const router = useRouter();
@@ -30,8 +32,7 @@ const SignInPage = () => {
       </button>
       <Typography variant="h3">Welcome to Project Compass</Typography>
       <div>Log in with your Google account to continue</div>
-      <button
-        className={$button.default}
+      <Button
         onClick={() =>
           signIn("google", {
             callbackUrl: "/",
@@ -39,7 +40,7 @@ const SignInPage = () => {
         }
       >
         Sign in with Google
-      </button>
+      </Button>
     </div>
   );
 };

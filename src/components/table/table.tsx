@@ -16,12 +16,13 @@ import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import $table from "./Table.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import { useRouter } from "next/router";
 import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
 import Container from "@mui/material/Container";
 import Image from "next/image";
+
+import Button from "@/components/design_system/button/Button";
 
 export type StudentWithIep = SelectableForTable<"student"> &
   SelectableForTable<"iep">;
@@ -153,9 +154,7 @@ function EnhancedTableToolbar({
             }}
           >
             <h3 className={$table.tableTitle}>{type}</h3>
-            <button onClick={onOpenInput} className={`${$button.default}`}>
-              Add {type}
-            </button>
+            <Button onClick={onOpenInput}>Add {type}</Button>
           </div>
           <div
             style={{
@@ -219,13 +218,9 @@ function EnhancedTableInput<Column extends HeadCell>({
         ) : null;
       })}
       <TableCell>
-        <button
-          type="submit"
-          form="table_input_form"
-          className={$button.default}
-        >
+        <Button type="submit" form="table_input_form">
           Add {type}
-        </button>
+        </Button>
       </TableCell>
       <TableCell padding="checkbox" align="center">
         <button onClick={onCloseInput} className={$table.closeButton}>
@@ -349,12 +344,7 @@ export default function EnhancedTable<
             <p style={{ color: "var(--grey-20)", textAlign: "center" }}>
               Start building your roster by adding a {type.toLocaleLowerCase()}.
             </p>
-            <button
-              onClick={() => setShowInput(true)}
-              className={`${$button.default}`}
-            >
-              Add {type}
-            </button>
+            <Button onClick={() => setShowInput(true)}>Add {type}</Button>
           </Box>
         </Container>
       )}

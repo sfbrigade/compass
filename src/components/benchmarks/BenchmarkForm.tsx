@@ -1,9 +1,3 @@
-import { trpc } from "@/client/lib/trpc";
-import type { Benchmark } from "@/types/global";
-import $button from "@/components/design_system/button/Button.module.css";
-import { GoalHeader } from "@/components/goal-header/goal-header";
-import useGoalIndex from "@/hooks/useGoalIndex";
-import { ChangeEvent } from "@/types/global";
 import { CheckCircle, TripOriginRounded } from "@mui/icons-material";
 import {
   Box,
@@ -18,6 +12,13 @@ import {
 } from "@mui/material";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+
+import { trpc } from "@/client/lib/trpc";
+import Button from "@/components/design_system/button/Button";
+import { GoalHeader } from "@/components/goal-header/goal-header";
+import useGoalIndex from "@/hooks/useGoalIndex";
+import type { Benchmark } from "@/types/global";
+import { ChangeEvent } from "@/types/global";
 
 interface BenchmarkFields {
   title: string;
@@ -496,41 +497,32 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
 
         {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
           <Stack direction="row" spacing={2} p={4} pt={0} justifyContent="end">
-            <button
-              type="reset"
-              onClick={router.back}
-              className={$button.secondary}
-            >
+            <Button type="reset" variant="secondary" onClick={router.back}>
               Cancel
-            </button>
-            <button
+            </Button>
+            <Button
               disabled={!pageOneIsValid}
               onClick={() => {
                 setViewState(VIEW_STATES.BENCHMARK_PG_2);
               }}
-              className={$button.default}
             >
               Next
-            </button>
+            </Button>
           </Stack>
         )}
 
         {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
           <Stack>
             <Stack direction="row" spacing={2} p={4} justifyContent="end">
-              <button
+              <Button
+                variant="secondary"
                 onClick={() => setViewState(VIEW_STATES.BENCHMARK_PG_1)}
-                className={$button.secondary}
               >
                 Back
-              </button>
-              <button
-                disabled={!pageTwoIsValid}
-                className={$button.default}
-                onClick={handleSubmit}
-              >
+              </Button>
+              <Button disabled={!pageTwoIsValid} onClick={handleSubmit}>
                 {benchmark_id ? "Save" : "Create"} Benchmark
-              </button>
+              </Button>
             </Stack>
           </Stack>
         )}

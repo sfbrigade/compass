@@ -6,9 +6,9 @@ import {
   TextareaAutosize,
 } from "@mui/material";
 import { format } from "date-fns";
-import $button from "@/components/design_system/button/Button.module.css";
-import Button from "@mui/material/Button";
 import { useState } from "react";
+
+import Button from "@/components/design_system/button/Button";
 import { trpc } from "@/client/lib/trpc";
 import $GoalPage from "@/styles/GoalPage.module.css";
 type GoalHeaderProps = {
@@ -74,16 +74,16 @@ export const GoalHeader = (props: GoalHeaderProps) => {
           {!editGoal && (
             <>
               <Button
-                className={$button.tertiary}
+                variant="tertiary"
                 onClick={showEditGoal}
-                style={{
+                sx={{
                   margin: "auto",
                 }}
               >
                 Edit Goal
               </Button>
               <Button
-                className={$button.secondary}
+                variant="secondary"
                 onClick={() => alert("to be implemented")}
               >
                 View all goals
@@ -93,17 +93,13 @@ export const GoalHeader = (props: GoalHeaderProps) => {
           {editGoal && (
             <>
               <Button
+                variant="tertiary"
                 form="editGoalForm"
-                className={$button.tertiary}
                 onClick={cancelEditGoal}
               >
                 Cancel
               </Button>
-              <Button
-                form="editGoalForm"
-                className={$button.default}
-                onClick={submitEditGoal}
-              >
+              <Button form="editGoalForm" onClick={submitEditGoal}>
                 Save
               </Button>
             </>

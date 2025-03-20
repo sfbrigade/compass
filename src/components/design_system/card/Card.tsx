@@ -50,11 +50,7 @@ function Card({
           {children}
         </Typography>
         {button && (
-          <Button
-            type="primary"
-            className={classes.card__button}
-            onClick={onClick}
-          >
+          <Button className={classes.card__button} onClick={onClick}>
             {button}
           </Button>
         )}

@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
-import $button from "@/components/design_system/button/Button.module.css";
 import $StaffPage from "../../styles/StaffPage.module.css";
 import $Modal from "../../styles/Modal.module.css";
 
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
+
+import Button from "@/components/design_system/button/Button";
 
 const ViewParaPage = () => {
   const [archiveParaPrompt, setArchiveParaPrompt] = useState(false);
@@ -102,27 +102,17 @@ const ViewParaPage = () => {
 
           {/* Edit button only to be shown when view state is set to MAIN */}
           {viewState === VIEW_STATES.MAIN && (
-            <Button
-              className={`${$button.secondary}`}
-              onClick={handleEditState}
-            >
+            <Button variant="secondary" onClick={handleEditState}>
               Edit
             </Button>
           )}
           {/* Save and Cancel buttons only to be shown when view state is set to EDIT */}
           {viewState === VIEW_STATES.EDIT && (
             <Box className={$StaffPage.displayBoxGap}>
-              <Button
-                onClick={handleMainState}
-                className={`${$button.secondary}`}
-              >
+              <Button variant="secondary" onClick={handleMainState}>
                 Cancel
               </Button>
-              <Button
-                className={`${$button.default}`}
-                type="submit"
-                form="edit"
-              >
+              <Button type="submit" form="edit">
                 Save
               </Button>
             </Box>
@@ -206,10 +196,7 @@ const ViewParaPage = () => {
 
           <Container sx={{ marginTop: "2rem" }}>
             <Box textAlign="center">
-              <Button
-                onClick={() => setArchiveParaPrompt(true)}
-                className={`${$button.default}`}
-              >
+              <Button onClick={() => setArchiveParaPrompt(true)}>
                 Archive {para?.first_name} {para?.last_name}
               </Button>
             </Box>
@@ -234,18 +221,8 @@ const ViewParaPage = () => {
             </b>
           </p>
           <Box className={$StaffPage.archiveOptions}>
-            <button
-              className={`${$button.default}`}
-              onClick={() => handleArchivePara()}
-            >
-              Yes
-            </button>
-            <button
-              className={`${$button.default}`}
-              onClick={() => setArchiveParaPrompt(false)}
-            >
-              No
-            </button>
+            <Button onClick={() => handleArchivePara()}>Yes</Button>
+            <Button onClick={() => setArchiveParaPrompt(false)}>No</Button>
           </Box>
         </Box>
       </Modal>

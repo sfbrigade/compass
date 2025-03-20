@@ -3,22 +3,22 @@ import {
   Box,
   Dialog,
   DialogTitle,
-  Button,
   List,
   ListItem,
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect, MouseEvent } from "react";
 import $benchmark from "./BenchmarkAssignmentModal.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
+
+import Button from "@/components/design_system/button/Button";
+import DS_Checkbox from "@/components/design_system/checkbox/Checkbox";
+import { Benchmark } from "@/types/global";
 
 import {
   AssignmentDuration,
   DurationSelectionStep,
 } from "./Duration-Selection-Step";
-import DS_Checkbox from "../design_system/checkbox/Checkbox";
-import { Benchmark } from "@/types/global";
 
 interface BenchmarkAssignmentModalProps {
   isOpen: boolean;
@@ -45,7 +45,6 @@ export const BenchmarkAssignmentModal = (
   props: BenchmarkAssignmentModalProps
 ) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
-  const nextButtonRef = useRef<HTMLButtonElement>(null);
   const [assignmentDuration, setAssignmentDuration] =
     useState<AssignmentDuration>({ type: "forever" });
   const [currentModalSelection, setCurrentModalSelection] =
@@ -108,10 +107,8 @@ export const BenchmarkAssignmentModal = (
     }
   };
 
-  const handleNext = async () => {
-    if (nextButtonRef.current) {
-      nextButtonRef.current.blur();
-    }
+  const handleNext = async (event: MouseEvent<HTMLButtonElement>) => {
+    event.currentTarget?.blur();
     const currentStepIndex = STEPS.indexOf(currentModalSelection);
     const nextStep = STEPS[currentStepIndex + 1];
     if (nextStep) {
@@ -218,7 +215,7 @@ export const BenchmarkAssignmentModal = (
         <DialogActions>
           {currentModalSelection !== STEPS[0] && (
             <Button
-              className={$button.secondary}
+              variant="secondary"
               onClick={handleBack}
               disabled={assignTaskToPara.isLoading}
             >
@@ -227,9 +224,7 @@ export const BenchmarkAssignmentModal = (
           )}
           {/* we should have reusable variables/classNames for all of this sx:CSS once the global themes are resolved */}
           <Button
-            className={$button.default}
             onClick={handleNext}
-            ref={nextButtonRef}
             disabled={
               assignTaskToPara.isLoading || selectedParaIds.length === 0
             }

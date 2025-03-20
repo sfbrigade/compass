@@ -13,20 +13,20 @@ type Story = StoryObj<typeof Button>;
 export const Primary: Story = {
   args: {
     children: "Button",
-    type: "primary",
+    variant: "primary",
   },
 };
 
 export const Secondary: Story = {
   args: {
     children: "Button",
-    type: "secondary",
+    variant: "secondary",
   },
 };
 
 export const Tertiary: Story = {
   args: {
     children: "Button",
-    type: "tertiary",
+    variant: "tertiary",
   },
 };

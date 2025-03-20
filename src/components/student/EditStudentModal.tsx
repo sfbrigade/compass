@@ -1,8 +1,8 @@
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import { Box, Container, Modal, Stack, TextField } from "@mui/material";
 import * as React from "react";
 import Typography from "@mui/material/Typography";
-import $CompassModal from "../design_system/modal/CompassModal.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
+import $CompassModal from "@/components/design_system/modal/CompassModal.module.css";
+import Button from "@/components/design_system/button/Button";
 
 interface EditStudentModalProps {
   // Modal control
@@ -134,17 +134,10 @@ export const EditStudentModal = ({
 
             <Container className={$CompassModal.editModalContainerButtons}>
               <Box className={$CompassModal.editModalButtonWrap}>
-                <Button
-                  onClick={handleClose}
-                  className={`${$button.secondary}`}
-                >
+                <Button variant="secondary" onClick={handleClose}>
                   Cancel
                 </Button>
-                <Button
-                  className={`${$button.default}`}
-                  type="submit"
-                  form="edit"
-                >
+                <Button type="submit" form="edit">
                   Save
                 </Button>
               </Box>

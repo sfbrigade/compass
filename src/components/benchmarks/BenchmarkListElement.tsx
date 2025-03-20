@@ -1,12 +1,11 @@
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Divider from "@mui/material/Divider";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
-import $button from "@/components/design_system/button/Button.module.css";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
 
+import Button from "@/components/design_system/button/Button";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
 import { Benchmark } from "@/types/global";
@@ -106,7 +105,7 @@ const BenchmarkListElement = ({
             <Link
               href={`${router.asPath}/benchmarks/${benchmark.benchmark_id}/edit`}
             >
-              <Button className={$button.tertiary}> Edit</Button>
+              <Button variant="tertiary">Edit</Button>
             </Link>
           </Box>
         </Box>
@@ -152,7 +151,7 @@ const BenchmarkListElement = ({
                 }}
               >
                 <Link href={`/benchmarks/${benchmark.benchmark_id}`}>
-                  <Button className={$button.tertiary}>Collect Data</Button>
+                  <Button variant="tertiary">Collect Data</Button>
                 </Link>
               </Box>
               <Box
@@ -168,7 +167,7 @@ const BenchmarkListElement = ({
                   onClick={() => {
                     alert("To be implemented");
                   }}
-                  className={$button.tertiary}
+                  variant="tertiary"
                 >
                   View Data
                 </Button>
