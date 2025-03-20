@@ -130,30 +130,3 @@
 .rightPill {
   border-radius: 0 8px 8px 0;
 }
-
-.fixedToBottom {
-  position: absolute;
-  bottom: 1em;
-  left: 1em;
-  right: 1em;
-}
-
-@media only screen and (min-width: 480px) {
-}
-
-/* Small Devices, Tablets */
-@media only screen and (min-width: 768px) {
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
-  .fixedToBottom {
-    bottom: 3em;
-    left: 5em;
-    right: 5em;
-  }
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
-}
