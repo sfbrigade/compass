@@ -5,7 +5,6 @@ import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import { useDebounce } from "react-use";
 import $box from "@/styles/Box.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import $typo from "@/styles/Typography.module.css";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
@@ -16,6 +15,9 @@ import useConfirmBeforeLeave from "@/hooks/useConfirmBeforeLeave";
 import UploadImage from "@/components/uploadPicture/uploadImage";
 import { UploadedFile } from "@/components/uploadedFile/uploadedFile";
 import { Grid } from "@mui/material";
+
+import Button from "@/components/design_system/button/Button";
+import ButtonIcon from "@/components/design_system/button/ButtonIcon";
 
 interface DataUpdate {
   success?: number;
@@ -204,21 +206,21 @@ const BenchmarkPage = () => {
         <strong>Benchmark:</strong> {benchmark.description}
       </p>
       <div className={`${$box.topAndBottomBorder} ${$box.flex}`}>
-        <button
-          className={`${$button["button--primary"]} ${$button.circular}`}
+        <ButtonIcon
           onClick={() => setCurrentTrialIdx(currentTrialIdx - 1)}
           disabled={currentTrialIdx === 0}
+          sx={{ marginRight: "0.5rem" }}
         >
-          <ChevronLeftIcon />
-        </button>
+          <ChevronLeftIcon fontSize="large" />
+        </ButtonIcon>
         <h3>Trial {currentTrialIdx + 1}</h3>
-        <button
-          className={`${$button["button--primary"]} ${$button.circular}`}
+        <ButtonIcon
           onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
           disabled={currentTrialIdx === benchmark.trials.length - 1}
+          sx={{ marginLeft: "0.5rem" }}
         >
-          <ChevronRightIcon />
-        </button>
+          <ChevronRightIcon fontSize="large" />
+        </ButtonIcon>
       </div>
 
       <div className={$box.greyBg}>
@@ -301,16 +303,13 @@ const BenchmarkPage = () => {
         onUpload={handleFileUpload}
       />
 
-      <Link
-        href={`${router.asPath}/review`}
-        className={`${$button["button--primary"]} ${
-          currentTrialIdx !== benchmark.trials.length - 1
-            ? $button.inactive
-            : ""
-        }`}
+      <Button
+        disabled={currentTrialIdx !== benchmark.trials.length - 1}
+        onClick={() => router.push(`${router.asPath}/review`)}
+        sx={{ width: "100%" }}
       >
-        Review
-      </Link>
+        Done
+      </Button>
     </>
   );
 };
