@@ -207,7 +207,7 @@ const BenchmarkPage = () => {
       </p>
       <div className={`${$box.topAndBottomBorder} ${$box.flex}`}>
         <button
-          className={`${$button.primary} ${$button.circular}`}
+          className={`${$button["button--primary"]} ${$button.circular}`}
           onClick={() => setCurrentTrialIdx(currentTrialIdx - 1)}
           disabled={currentTrialIdx === 0}
         >
@@ -215,7 +215,7 @@ const BenchmarkPage = () => {
         </button>
         <h3>Trial {currentTrialIdx + 1}</h3>
         <button
-          className={`${$button.primary} ${$button.circular}`}
+          className={`${$button["button--primary"]} ${$button.circular}`}
           onClick={() => setCurrentTrialIdx(currentTrialIdx + 1)}
           disabled={currentTrialIdx === benchmark.trials.length - 1}
         >
@@ -305,7 +305,7 @@ const BenchmarkPage = () => {
 
       <Link
         href={`${router.asPath}/review`}
-        className={`${$button.primary} ${
+        className={`${$button["button--primary"]} ${
           currentTrialIdx !== benchmark.trials.length - 1
             ? $button.inactive
             : ""
