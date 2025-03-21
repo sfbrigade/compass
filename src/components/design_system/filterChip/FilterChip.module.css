@@ -27,11 +27,12 @@
 
 .filter-chip__icon {
   margin-right: 0.5rem;
+  pointer-events: none;
 }
 
 .filter-chip__label {
   font-size: 1rem;
-  text-transform: none;
+  pointer-events: none;
 }
 
 .filter-chip--selected {
