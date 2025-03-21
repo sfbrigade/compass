@@ -26,7 +26,7 @@
 }
 
 .filter-chip__icon {
-  margin-right: 0.5rem;
+  margin: 0 0.5rem;
   pointer-events: none;
 }
 
@@ -35,10 +35,14 @@
   pointer-events: none;
 }
 
+.filter-chip--dropdown {
+  padding-right: 0;
+}
+
 .filter-chip--selected {
   background-color: var(--primary-container);
   border-color: var(--primary-container);
-  padding-left: 0.5rem;
+  padding-left: 0;
 
   &:focus {
     background-color: var(--primary-90);

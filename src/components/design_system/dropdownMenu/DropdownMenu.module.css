@@ -1,12 +1,18 @@
 .dropdown-menu {
-  padding: 0.875rem 0;
+  padding: 0.875rem 0.5rem;
 }
 
 .dropdown-menu__item {
-  padding: 0.4375rem 1.25rem;
+  padding: 0.4375rem 0.75rem;
 
   &:hover {
     background-color: var(--primary-99);
     color: var(--primary);
   }
+}
+
+.dropdown-menu__item--selected {
+  background-color: var(--primary-99);
+  border-left: 0.25rem solid var(--primary-60);
+  padding-left: 0.5rem;
 }

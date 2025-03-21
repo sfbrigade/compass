@@ -1,9 +1,5 @@
-import {
-  Menu,
-  MenuItem,
-  PopoverVirtualElement,
-  Typography,
-} from "@mui/material";
+import { Menu, MenuItem, Typography } from "@mui/material";
+import type { PopoverVirtualElement } from "@mui/material";
 import classNames from "classnames";
 
 import classes from "./DropdownMenu.module.css";
@@ -24,6 +20,7 @@ interface DropdownMenuProps {
   backdropDisabled?: boolean;
   className?: string;
   minWidth?: number;
+  onClick?: (option: DropdownMenuOption) => void;
   onClose?: ({
     event,
     reason,
@@ -33,6 +30,7 @@ interface DropdownMenuProps {
   }) => void;
   open: boolean;
   options: DropdownMenuOption[];
+  selectedValue?: string;
 }
 
 function DropdownMenu({
@@ -40,9 +38,11 @@ function DropdownMenu({
   backdropDisabled = false,
   className,
   minWidth = 0,
+  onClick,
   onClose,
   open,
   options,
+  selectedValue,
 }: DropdownMenuProps) {
   return (
     <Menu
@@ -61,7 +61,14 @@ function DropdownMenu({
       }}
     >
       {options.map((option) => (
-        <MenuItem className={classes["dropdown-menu__item"]} key={option.value}>
+        <MenuItem
+          onClick={() => onClick?.(option)}
+          className={classNames(classes["dropdown-menu__item"], {
+            [classes["dropdown-menu__item--selected"]]:
+              selectedValue === option.value,
+          })}
+          key={option.value}
+        >
           <Typography variant="button">{option.label}</Typography>
         </MenuItem>
       ))}
