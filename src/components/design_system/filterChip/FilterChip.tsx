@@ -12,6 +12,7 @@ import DropdownMenu, {
 import classes from "./FilterChip.module.css";
 
 interface FilterChipProps {
+  checkHidden?: boolean;
   className?: string;
   disabled?: boolean;
   label?: string;
@@ -23,6 +24,7 @@ interface FilterChipProps {
 }
 
 function FilterChip({
+  checkHidden = false,
   className,
   disabled,
   label,
@@ -62,6 +64,7 @@ function FilterChip({
           classes["filter-chip"],
           {
             [classes["filter-chip--selected"]]: selected || !!selectedOption,
+            [classes["filter-chip--nocheck"]]: checkHidden,
             [classes["filter-chip--dropdown"]]: options,
           },
           className
@@ -72,7 +75,7 @@ function FilterChip({
         ref={buttonRef}
         sx={sx}
       >
-        {(selected || !!selectedOption) && (
+        {!checkHidden && (selected || !!selectedOption) && (
           <CheckIcon className={classes["filter-chip__icon"]} />
         )}
         <Typography className={classes["filter-chip__label"]} variant="button">

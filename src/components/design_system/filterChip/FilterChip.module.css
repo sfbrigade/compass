@@ -44,6 +44,10 @@
   border-color: var(--primary-container);
   padding-left: 0;
 
+  &.filter-chip--nocheck {
+    padding-left: 1rem;
+  }
+
   &:focus {
     background-color: var(--primary-90);
     border-color: var(--primary-90);

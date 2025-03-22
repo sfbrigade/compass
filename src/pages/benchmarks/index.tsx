@@ -76,6 +76,7 @@ function Benchmarks() {
           >
             Sort:
             <FilterChip
+              checkHidden={true}
               label="Sort"
               onClick={(option) => handleSort(option?.value as SortProperty)}
               options={[
