@@ -1,7 +1,9 @@
-import { useRouter } from "next/router";
-import { Box, Grid, Button } from "@mui/material";
-import $button from "@/components/design_system/button/Button.module.css";
 import Link from "next/link";
+import { useRouter } from "next/router";
+import { Box, Grid } from "@mui/material";
+
+import Button from "@/components/design_system/button/Button";
+
 export default function NoBenchmarksGraphic({ blurb }: { blurb?: string }) {
   const router = useRouter();
   return (
@@ -47,7 +49,7 @@ export default function NoBenchmarksGraphic({ blurb }: { blurb?: string }) {
       </span>
       <Box>
         <Link href={`${router.asPath}/create`}>
-          <Button className={$button.default}>Create benchmark</Button>
+          <Button>Create benchmark</Button>
         </Link>
       </Box>
     </Grid>

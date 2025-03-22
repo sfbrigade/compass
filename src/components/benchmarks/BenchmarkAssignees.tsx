@@ -1,7 +1,7 @@
-import { Box, Button, Stack } from "@mui/material";
+import { Box, Stack } from "@mui/material";
 import { format } from "date-fns";
 
-import $button from "@/components/design_system/button/Button.module.css";
+import Button from "@/components/design_system/button/Button";
 import { Benchmark } from "@/types/global";
 
 const BenchmarkAssignees = ({
@@ -17,7 +17,7 @@ const BenchmarkAssignees = ({
     <>
       {assignees.length === 0 && (
         <Button
-          className={$button.secondary}
+          variant="secondary"
           onClick={() => onAssign()}
           sx={{
             paddingTop: ".4rem !important",
@@ -42,7 +42,7 @@ const BenchmarkAssignees = ({
             {!due_date && !trial_count && <Box>Until unassigned</Box>}
           </Stack>
           <Box>
-            <Button className={$button.tertiary} onClick={() => onAssign()}>
+            <Button variant="tertiary" onClick={() => onAssign()}>
               Change
             </Button>
           </Box>

@@ -94,6 +94,7 @@ export const compassTheme = createTheme({
       fontSize: "1em",
       fontFamily: "var(--quicksand), sans-serif",
       lineHeight: "150%",
+      textTransform: "none",
     },
     caption: {
       fontWeight: 400,

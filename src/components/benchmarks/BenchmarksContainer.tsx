@@ -1,12 +1,12 @@
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, MouseEvent } from "react";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
-import Button from "@mui/material/Button";
+
+import Button from "@/components/design_system/button/Button";
 import $GoalPage from "@/styles/GoalPage.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
-import Link from "next/link";
 import { type Benchmark } from "@/types/global";
 import BenchmarkListElement from "./BenchmarkListElement";
 import NoBenchmarksGraphic from "./NoBenchmarksGraphic";
@@ -101,7 +101,7 @@ export default function BenchmarksContainer({
         {/* Create benchmark button */}
         <Box>
           <Link href={`${router.asPath}/benchmarks/create`}>
-            <Button className={$button.default}>Create benchmark</Button>
+            <Button>Create benchmark</Button>
           </Link>
         </Box>
       </Box>

@@ -1,10 +1,8 @@
-import ParaNav from "@/components/paraNav/ParaNav";
 import React from "react";
 import $box from "@/styles/Box.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { trpc } from "@/client/lib/trpc";
+import Button from "@/components/design_system/button/Button";
 
 const InstructionsPage = () => {
   const router = useRouter();
@@ -20,7 +18,6 @@ const InstructionsPage = () => {
   }
   return (
     <div>
-      <ParaNav />
       <div className={$box.default}>
         <h4>Goal:</h4>
         <p>{benchmark.description}</p>
@@ -37,12 +34,12 @@ const InstructionsPage = () => {
         <h4>Set-up:</h4>
         <p>{benchmark.instructions}</p>
       </div>
-      <Link
-        href={`/benchmarks/${benchmark_id as string}`}
-        className={`${$button.default} ${$button.fixedToBottom}`}
+      <Button
+        onClick={() => router.push(`/benchmarks/${benchmark_id as string}`)}
+        sx={{ width: "100%" }}
       >
-        Collect data
-      </Link>
+        Collect Data
+      </Button>
     </div>
   );
 };

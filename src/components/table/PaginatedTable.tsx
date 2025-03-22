@@ -7,7 +7,6 @@ import {
   TableHead,
   TableRow,
   Box,
-  Button,
   TableSortLabel,
   TextField,
 } from "@mui/material";
@@ -17,7 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import { TableProps, UserBase } from "./types";
 import { renderTableInput, renderTableCell } from "./renderers";
 import $table from "./Table.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
+import Button from "@/components/design_system/button/Button";
 
 const StyledTableRow = styled(TableRow)(() => ({
   "&:nth-of-type(odd)": {
@@ -84,12 +83,7 @@ export function PaginatedTable<T extends UserBase>({
           }}
         />
         {showAddRow && !isAddingRow && (
-          <button
-            onClick={() => setIsAddingRow(true)}
-            className={$button.default}
-          >
-            Add {type}
-          </button>
+          <Button onClick={() => setIsAddingRow(true)}>Add {type}</Button>
         )}
       </Box>
 
@@ -140,7 +134,7 @@ export function PaginatedTable<T extends UserBase>({
                         </Box>
                       ))}
                       <Box sx={{ display: "flex", gap: 1 }}>
-                        <Button type="submit" variant="contained" size="small">
+                        <Button type="submit" variant="primary" size="small">
                           Add
                         </Button>
                         <Button

@@ -1,12 +1,12 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack, TextField } from "@mui/material";
+import { Box, Container, Modal, Stack, TextField } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { UserType, ROLE_OPTIONS } from "@/types/auth";
 import $CompassModal from "@/components/design_system/modal/CompassModal.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import { getRoleLabel } from "@/types/auth";
+import Button from "@/components/design_system/button/Button";
 import { Dropdown } from "@/components/design_system/dropdown/Dropdown";
 
 interface UserFormData {
@@ -81,7 +81,7 @@ const ViewUserPage = () => {
           <h1>
             {user.first_name} {user.last_name}
           </h1>
-          <Button onClick={handleOpen} className={`${$button.secondary}`}>
+          <Button variant="secondary" onClick={handleOpen}>
             Edit
           </Button>
         </Box>
@@ -161,17 +161,10 @@ const ViewUserPage = () => {
 
                 <Container className={$CompassModal.editModalContainerButtons}>
                   <Box className={$CompassModal.editModalButtonWrap}>
-                    <Button
-                      onClick={handleClose}
-                      className={`${$button.secondary}`}
-                    >
+                    <Button variant="secondary" onClick={handleClose}>
                       Cancel
                     </Button>
-                    <Button
-                      className={`${$button.default}`}
-                      type="submit"
-                      form="edit"
-                    >
+                    <Button type="submit" form="edit">
                       Save
                     </Button>
                   </Box>

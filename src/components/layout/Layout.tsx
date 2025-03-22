@@ -27,7 +27,6 @@ const Layout = ({ children }: LayoutProps) => {
         ${router.query.student_id ? $layout.mainStudent : ""}
         ${router.query.goal_id ? $layout.mainGoal : ""}
         ${router.query.user_id ? $layout.mainStaff : ""}
-        ${router.pathname.includes("benchmarks") ? $layout.mainPurple : ""}
         ${hasNavBar ? $layout.hasNavBar : ""}`}
       >
         {children}

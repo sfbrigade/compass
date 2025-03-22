@@ -1,0 +1,34 @@
+.button-icon {
+  background-color: inherit;
+  border: none;
+  cursor: pointer;
+  height: 3rem;
+  padding: 0.25rem;
+  width: 3rem;
+}
+
+.button-icon__background {
+  background-color: var(--primary);
+  height: 2.5rem;
+  width: 2.5rem;
+}
+
+.button-icon:focus .button-icon__background {
+  background-color: var(--primary-60);
+}
+
+.button-icon:hover .button-icon__background {
+  background-color: var(--primary-50);
+}
+
+.button-icon:active .button-icon__background {
+  background-color: var(--primary-40);
+}
+
+.button-icon:disabled {
+  cursor: default;
+  .button-icon__background {
+    background-color: var(--grey-50);
+    color: var(--grey-40);
+  }
+}

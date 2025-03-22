@@ -1,5 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack } from "@mui/material";
+import { Box, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useState } from "react";
@@ -7,12 +7,13 @@ import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import $Form from "../../styles/Form.module.css";
 import $input from "@/styles/Input.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
+
+import Button from "@/components/design_system/button/Button";
 
 import * as React from "react";
 
@@ -176,16 +177,10 @@ const ViewStudentPage = () => {
           </p>
 
           <Box className={$StudentPage.displayBoxGap}>
-            <Button
-              onClick={() => setArchivePrompt(true)}
-              className={`${$button.tertiary}`}
-            >
+            <Button variant="tertiary" onClick={() => setArchivePrompt(true)}>
               Archive
             </Button>
-            <Button
-              className={`${$button.secondary}`}
-              onClick={handleEditState}
-            >
+            <Button variant="secondary" onClick={handleEditState}>
               Edit
             </Button>
           </Box>
@@ -228,12 +223,9 @@ const ViewStudentPage = () => {
               <p className={$StudentPage.textSpacing}>
                 This student does not have an active IEP. Please create one.
               </p>
-              <button
-                onClick={() => setCreateIepModal(true)}
-                className={`${$button.default}`}
-              >
+              <Button onClick={() => setCreateIepModal(true)}>
                 Create IEP
-              </button>
+              </Button>
             </Box>
           </Container>
         ) : (
@@ -259,18 +251,8 @@ const ViewStudentPage = () => {
             </b>
           </p>
           <Box className={$StudentPage.archiveOptions}>
-            <button
-              className={`${$button.default}`}
-              onClick={() => handleArchiveStudent()}
-            >
-              Yes
-            </button>
-            <button
-              className={`${$button.default}`}
-              onClick={() => setArchivePrompt(false)}
-            >
-              No
-            </button>
+            <Button onClick={() => handleArchiveStudent()}>Yes</Button>
+            <Button onClick={() => setArchivePrompt(false)}>No</Button>
           </Box>
         </Box>
       </Modal>
@@ -319,15 +301,8 @@ const ViewStudentPage = () => {
               </Box>
 
               <Box className={$StudentPage.displayBox}>
-                <button type="submit" className={$button.default}>
-                  Create IEP
-                </button>
-                <button
-                  onClick={() => setCreateIepModal(false)}
-                  className={$button.default}
-                >
-                  Cancel
-                </button>
+                <Button type="submit">Create IEP</Button>
+                <Button onClick={() => setCreateIepModal(false)}>Cancel</Button>
               </Box>
             </div>
           </form>

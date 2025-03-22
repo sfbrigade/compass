@@ -1,6 +1,5 @@
 import { trpc } from "@/client/lib/trpc";
 import Goals from "@/components/goal/Goal";
-import $button from "@/components/design_system/button/Button.module.css";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import List from "@mui/material/List";
@@ -15,6 +14,8 @@ import $Image from "../../styles/Image.module.css";
 import $Iep from "./Iep.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
+
+import Button from "@/components/design_system/button/Button";
 
 interface IepProps {
   iep_id: string;
@@ -72,9 +73,7 @@ const Iep = ({ iep_id }: IepProps) => {
         <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
         {!showAddGoalForm && (
           <div>
-            <button onClick={revealAddGoalForm} className={$button.default}>
-              Add Goal
-            </button>
+            <Button onClick={revealAddGoalForm}>Add Goal</Button>
           </div>
         )}
       </Grid>
@@ -133,17 +132,12 @@ const Iep = ({ iep_id }: IepProps) => {
                 />
                 <Grid container justifyContent="space-between" marginTop={1}>
                   <Grid item>
-                    <button
-                      className={$button.secondary}
-                      onClick={cancelAddGoal}
-                    >
+                    <Button variant="secondary" onClick={cancelAddGoal}>
                       Cancel
-                    </button>
+                    </Button>
                   </Grid>
                   <Grid item>
-                    <button className={$button.default} type="submit">
-                      Save
-                    </button>
+                    <Button type="submit">Save</Button>
                   </Grid>
                 </Grid>
               </form>
@@ -165,13 +159,12 @@ const Iep = ({ iep_id }: IepProps) => {
             <p className={$Iep.noGoalTextSmall}>
               Start adding goals to set up your student&#39;s profile
             </p>
-            <button onClick={revealAddGoalForm} className={$button.default}>
-              Add Goal
-            </button>
+            <Button onClick={revealAddGoalForm}>Add Goal</Button>
           </Box>
         </Container>
       )}
     </Stack>
   );
 };
+
 export default Iep;
