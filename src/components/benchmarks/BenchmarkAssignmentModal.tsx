@@ -8,7 +8,8 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import { useState, useEffect, MouseEvent } from "react";
+import { useState, useEffect } from "react";
+import type { MouseEvent } from "react";
 import $benchmark from "./BenchmarkAssignmentModal.module.css";
 
 import Button from "@/components/design_system/button/Button";

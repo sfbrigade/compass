@@ -17,8 +17,7 @@ import { trpc } from "@/client/lib/trpc";
 import Button from "@/components/design_system/button/Button";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import useGoalIndex from "@/hooks/useGoalIndex";
-import type { Benchmark } from "@/types/global";
-import { ChangeEvent } from "@/types/global";
+import type { Benchmark, ChangeEvent } from "@/types/global";
 
 interface BenchmarkFields {
   title: string;
