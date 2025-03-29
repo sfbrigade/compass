@@ -162,15 +162,11 @@ const BenchmarkListElement = ({
                   textAlign: "center",
                 }}
               >
-                {/* Placeholder href to replace with actual path */}
-                <Button
-                  onClick={() => {
-                    alert("To be implemented");
-                  }}
-                  variant="tertiary"
+                <Link
+                  href={`${router.asPath}/benchmarks/${benchmark.benchmark_id}/view`}
                 >
-                  View Data
-                </Button>
+                  <Button variant="tertiary">View Data</Button>
+                </Link>
               </Box>
             </Box>
           </Info>
