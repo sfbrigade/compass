@@ -10,8 +10,6 @@ import { ColumnDefinition, UserBase } from "@/components/table/types";
 import { ROLE_OPTIONS, Roles } from "@/types/auth";
 import { getRoleLabel } from "@/types/auth";
 
-import { NextPageWithLayout } from "../_app";
-
 interface User extends UserBase {
   user_id: string;
   first_name: string;
@@ -121,10 +119,4 @@ const AdminHome = () => {
   );
 };
 
-const wrappedAdminHome = requiresAdminAuth(AdminHome) as NextPageWithLayout;
-
-wrappedAdminHome.getBreadcrumbs = function getBreadcrumbs() {
-  return undefined;
-};
-
-export default wrappedAdminHome;
+export default requiresAdminAuth(AdminHome);

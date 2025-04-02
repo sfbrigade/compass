@@ -8,9 +8,8 @@ import FilterChip from "@/components/design_system/filterChip/FilterChip";
 import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
 import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
-import type { NextPageWithLayout } from "../_app";
 
-const Benchmarks: NextPageWithLayout = () => {
+const Benchmarks = () => {
   const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
@@ -101,10 +100,6 @@ const Benchmarks: NextPageWithLayout = () => {
       )}
     </>
   );
-};
-
-Benchmarks.getBreadcrumbs = function getBreadcrumbs() {
-  return undefined;
 };
 
 export default Benchmarks;

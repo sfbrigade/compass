@@ -8,9 +8,8 @@ import { useSession } from "next-auth/react";
 import { Typography } from "@mui/material";
 
 import Button from "@/components/design_system/button/Button";
-import type { NextPageWithLayout } from "./_app";
 
-const SignInPage: NextPageWithLayout = () => {
+const SignInPage = () => {
   const router = useRouter();
   const { status } = useSession();
 
@@ -44,10 +43,6 @@ const SignInPage: NextPageWithLayout = () => {
       </Button>
     </div>
   );
-};
-
-SignInPage.getBreadcrumbs = function getBreadcrumbs() {
-  return undefined;
 };
 
 export default SignInPage;

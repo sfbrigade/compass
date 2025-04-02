@@ -1,4 +1,3 @@
-import type { ReactNode } from "react";
 import { useState } from "react";
 import type { NextPage } from "next";
 import type { AppProps } from "next/app";
@@ -16,7 +15,8 @@ import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 
 import { AppRouter } from "@/backend/routers/_app";
 import { trpc } from "@/client/lib/trpc";
-import BreadcrumbsNav from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { BreadcrumbsContextProvider } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
 import CustomToast from "@/components/CustomToast";
 import { FontProvider } from "@/components/font-provider";
 import Layout from "@/components/layout/Layout";
@@ -29,7 +29,7 @@ import "../styles/globals.css";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
-  getBreadcrumbs?: () => ReactNode;
+  getBreadcrumbs?: () => Breadcrumb[];
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,10 +56,6 @@ export default function App({
   pageProps,
 }: AppPropsWithLayout<CustomPageProps>) {
   const [errorMessage, setErrorMessage] = useState<string>("");
-
-  const breadcrumbs = (
-    Component.getBreadcrumbs ?? (() => <BreadcrumbsNav />)
-  )();
 
   const [queryClient] = useState(
     () =>
@@ -136,9 +132,14 @@ export default function App({
                         onClose={() => setErrorMessage("")}
                       />
                     )}
-                    <Layout breadcrumbs={breadcrumbs}>
-                      <Component {...pageProps} showErrorToast={toast.error} />
-                    </Layout>
+                    <BreadcrumbsContextProvider>
+                      <Layout initialBreadcrumbs={Component.getBreadcrumbs?.()}>
+                        <Component
+                          {...pageProps}
+                          showErrorToast={toast.error}
+                        />
+                      </Layout>
+                    </BreadcrumbsContextProvider>
                   </SessionProvider>
                 </QueryClientProvider>
               </trpc.Provider>

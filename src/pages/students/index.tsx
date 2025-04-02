@@ -6,9 +6,7 @@ import PersonTable, {
   StudentWithIepHeadcell,
 } from "@/components/table/table";
 
-import type { NextPageWithLayout } from "../_app";
-
-const Students: NextPageWithLayout = () => {
+const Students = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
@@ -104,10 +102,6 @@ const Students: NextPageWithLayout = () => {
       type="Students"
     />
   );
-};
-
-Students.getBreadcrumbs = function getBreadcrumbs() {
-  return undefined;
 };
 
 export default Students;
