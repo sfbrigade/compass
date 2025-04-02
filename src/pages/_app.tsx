@@ -4,7 +4,6 @@ import type { AppProps } from "next/app";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
 import Head from "next/head";
-import toast from "react-hot-toast";
 import superjson from "superjson";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
@@ -28,18 +27,18 @@ import "../styles/globals.css";
 // https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+export type NextPageWithBreadcrumbs<P = {}, IP = P> = NextPage<P, IP> & {
   getBreadcrumbs?: () => Breadcrumb[];
-};
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type AppPropsWithLayout<P = any> = AppProps<P> & {
-  Component: NextPageWithLayout;
 };
 
 interface CustomPageProps {
   session: Session;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CustomAppProps = AppProps<CustomPageProps> & {
+  Component: NextPageWithBreadcrumbs<CustomPageProps>;
+};
 
 function getBaseUrl() {
   if (typeof window !== "undefined") {
@@ -51,10 +50,7 @@ function getBaseUrl() {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export default function App({
-  Component,
-  pageProps,
-}: AppPropsWithLayout<CustomPageProps>) {
+export default function App({ Component, pageProps }: CustomAppProps) {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [queryClient] = useState(
@@ -134,10 +130,7 @@ export default function App({
                     )}
                     <BreadcrumbsContextProvider>
                       <Layout initialBreadcrumbs={Component.getBreadcrumbs?.()}>
-                        <Component
-                          {...pageProps}
-                          showErrorToast={toast.error}
-                        />
+                        <Component {...pageProps} />
                       </Layout>
                     </BreadcrumbsContextProvider>
                   </SessionProvider>

@@ -13,13 +13,13 @@ import $CompassModal from "../../components/design_system/modal/CompassModal.mod
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
 
-import type { NextPageWithLayout } from "../_app";
+import type { NextPageWithBreadcrumbs } from "../_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 
 import * as React from "react";
 
-const ViewStudentPage: NextPageWithLayout = () => {
+const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
