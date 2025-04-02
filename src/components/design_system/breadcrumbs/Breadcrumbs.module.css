@@ -1,8 +1,5 @@
 .container {
-  position: fixed;
   display: flex;
-  left: 200px;
-  z-index: 1;
   padding: 1rem 0 1rem 2rem;
   width: 100%;
   background-color: var(--grey-100);

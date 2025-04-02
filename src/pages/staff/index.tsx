@@ -1,8 +1,11 @@
-import { trpc } from "@/client/lib/trpc";
 import React from "react";
+
+import { trpc } from "@/client/lib/trpc";
 import PersonTable, { Para, ParaHeadCell } from "@/components/table/table";
 
-const Staff = () => {
+import type { NextPageWithLayout } from "../_app";
+
+const Staff: NextPageWithLayout = () => {
   const utils = trpc.useContext();
   const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
   const { data: me } = trpc.user.getMe.useQuery();
@@ -58,6 +61,10 @@ const Staff = () => {
       type="Staff"
     />
   );
+};
+
+Staff.getBreadcrumbs = function getBreadcrumbs() {
+  return undefined;
 };
 
 export default Staff;

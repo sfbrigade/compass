@@ -1,55 +1,68 @@
-.container {
-  display: flex;
+.layout {
   height: 100vh;
 }
 
-/* TODO: fix flex settings so navbar doesn't get squished */
-.main {
-  flex: 10;
-  position: relative;
+.layout__header {
+  display: none;
+}
+
+.layout__sidebar {
+  position: fixed;
+  width: 200px;
   height: 100%;
-  width: 100%;
-  padding: 5em 3em 3em 3em;
-  margin-left: 0;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
-.mainPurple {
-  composes: main;
-  background-color: var(--primary-container);
+.layout__breadcrumbs {
+  position: fixed;
+  left: 0m;
+  right: 0;
+  height: 3.5rem;
 }
 
-.mainStudent,
-.mainStaff {
-  composes: main;
-  background-color: var(--grey-80);
+.layout__main {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  overflow-y: scroll;
+  padding: 3rem 0;
 }
 
-.mainGoal {
-  composes: main;
-  background-color: var(--grey-80);
+.layout__sidebar ~ .layout__breadcrumbs,
+.layout__sidebar ~ .layout__main {
+  left: 12.5rem;
 }
 
-@media only screen and (min-width: 480px) {
-  .main {
-    padding: 5em 3em 3em 3em;
+.layout__breadcrumbs + .layout__main {
+  top: 3.5rem;
+  background-color: var(--grey-70);
+}
+
+@media only screen and (max-width: 991px) {
+  .layout__header {
+    display: block;
   }
-}
 
-/* Small Devices, Tablets */
-@media only screen and (min-width: 768px) {
-  .main {
-    padding: 5em 3em 3em 3em;
+  .layout__sidebar {
+    display: none;
   }
-}
 
-/* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
-  .main.hasNavBar {
-    margin-left: 200px;
+  .layout__breadcrumbs {
+    display: none;
   }
-}
 
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
+  .layout__main {
+    top: 4.25rem;
+  }
+
+  .layout__breadcrumbs + .layout__main {
+    top: 4.25rem;
+  }
+
+  .layout__sidebar ~ .layout__breadcrumbs,
+  .layout__sidebar ~ .layout__main {
+    left: 0;
+  }
 }

@@ -1,13 +1,16 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+import { z } from "zod";
+
+import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
 import { requiresAdminAuth } from "@/client/lib/protected-page";
 import { trpc } from "@/client/lib/trpc";
 import { PaginatedTable } from "@/components/table/PaginatedTable";
 import { ColumnDefinition, UserBase } from "@/components/table/types";
-import { useRouter } from "next/router";
-import { useState } from "react";
 import { ROLE_OPTIONS, Roles } from "@/types/auth";
 import { getRoleLabel } from "@/types/auth";
-import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
-import { z } from "zod";
+
+import { NextPageWithLayout } from "../_app";
 
 interface User extends UserBase {
   user_id: string;
@@ -20,7 +23,7 @@ interface User extends UserBase {
 type SortBy = z.infer<typeof sortBySchema>;
 type SortOrder = z.infer<typeof sortOrderSchema>;
 
-const AdminHome: React.FC = () => {
+const AdminHome = () => {
   const utils = trpc.useContext();
   const router = useRouter();
   const [page, setPage] = useState(1);
@@ -118,4 +121,10 @@ const AdminHome: React.FC = () => {
   );
 };
 
-export default requiresAdminAuth(AdminHome);
+const wrappedAdminHome = requiresAdminAuth(AdminHome) as NextPageWithLayout;
+
+wrappedAdminHome.getBreadcrumbs = function getBreadcrumbs() {
+  return undefined;
+};
+
+export default wrappedAdminHome;

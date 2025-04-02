@@ -1,35 +1,39 @@
 import React from "react";
-import NavBar from "../navbar/NavBar";
-import $layout from "./Layout.module.css";
-import { useRouter } from "next/router";
-import { requiresLogin } from "@/client/lib/authenticated-page";
 import { useSession } from "next-auth/react";
+import { Container } from "@mui/material";
+
+import { requiresLogin } from "@/client/lib/authenticated-page";
+import Header from "@/components/header/Header";
+import Navigation from "@/components/navigation/Navigation";
+
+import classes from "./Layout.module.css";
 
 interface LayoutProps {
+  breadcrumbs: React.ReactNode;
   children: React.ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps) => {
-  const router = useRouter();
+const Layout = ({ breadcrumbs, children }: LayoutProps) => {
   const { status } = useSession();
-  // TODO?: Are there better ways to achieve this?
-  //Sets purple background for student profile and instructions routes
-  const isPurpleBg =
-    router.asPath.includes("/studentprofile") ||
-    router.asPath.includes("/instructions");
-  const hasNavBar = "authenticated" == status;
+  const isSignedIn = "authenticated" === status;
 
   return (
-    <div className={$layout.container}>
-      <NavBar />
-      <main
-        className={`${isPurpleBg ? $layout.mainPurple : $layout.main}
-        ${router.query.student_id ? $layout.mainStudent : ""}
-        ${router.query.goal_id ? $layout.mainGoal : ""}
-        ${router.query.user_id ? $layout.mainStaff : ""}
-        ${hasNavBar ? $layout.hasNavBar : ""}`}
-      >
-        {children}
+    <div className={classes.layout}>
+      {isSignedIn && (
+        <>
+          <div className={classes.layout__header}>
+            <Header />
+          </div>
+          <div className={classes.layout__sidebar}>
+            <Navigation />
+          </div>
+        </>
+      )}
+      {breadcrumbs && (
+        <div className={classes.layout__breadcrumbs}>{breadcrumbs}</div>
+      )}
+      <main className={classes.layout__main}>
+        <Container>{children}</Container>
       </main>
     </div>
   );

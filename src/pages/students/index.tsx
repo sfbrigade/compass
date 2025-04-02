@@ -1,11 +1,14 @@
 import React from "react";
+
 import { trpc } from "@/client/lib/trpc";
 import PersonTable, {
   StudentWithIep,
   StudentWithIepHeadcell,
 } from "@/components/table/table";
 
-const Students = () => {
+import type { NextPageWithLayout } from "../_app";
+
+const Students: NextPageWithLayout = () => {
   const utils = trpc.useContext();
   const { data: students, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
@@ -101,6 +104,10 @@ const Students = () => {
       type="Students"
     />
   );
+};
+
+Students.getBreadcrumbs = function getBreadcrumbs() {
+  return undefined;
 };
 
 export default Students;
