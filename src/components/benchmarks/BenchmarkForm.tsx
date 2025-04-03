@@ -372,7 +372,8 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
-                Benchmark #1 - Instructional Guidelines
+                {benchmark ? `Benchmark #${benchmark.number}` : "New Benchmark"}{" "}
+                - Instructional Guidelines
               </Typography>
 
               {renderTextFields(textFieldDescriptionsPage1)}
@@ -382,7 +383,8 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
           {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
-                Benchmark #1 - Data Collection Guidelines
+                {benchmark ? `Benchmark #${benchmark.number}` : "New Benchmark"}{" "}
+                - Data Collection Guidelines
               </Typography>
 
               {renderTextFields(textFieldDescriptionsPage2)}
