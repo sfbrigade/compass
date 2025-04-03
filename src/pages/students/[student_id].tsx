@@ -19,7 +19,7 @@ import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/Br
 import Button from "@/components/design_system/button/Button";
 
 import * as React from "react";
-import { Student } from "@/types/global";
+import type { Student } from "@/types/global";
 
 const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();

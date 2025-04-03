@@ -5,7 +5,7 @@ import { Grid, Stack } from "@mui/material";
 import { trpc } from "@/client/lib/trpc";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import { Benchmark, Goal, Student } from "@/types/global";
+import type { Benchmark, Goal, Student } from "@/types/global";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
