@@ -211,6 +211,7 @@ test("getMyTasks", async (t) => {
       iep_id: iep_id,
       description: "Goal Description",
       category: CATEGORY,
+      number: 1,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -232,6 +233,7 @@ test("getMyTasks", async (t) => {
       trial_count: TRIAL_COUNT,
       attempts_per_trial: ATTEMPTS_PER_TRIAL,
       number_of_trials: NUMBER_OF_TRIALS,
+      number: 1,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
