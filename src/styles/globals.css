@@ -68,10 +68,6 @@
   --regular: 300;
   --semibold: 600;
   --bold: 700;
-
-  --shadows-0: none;
-  --shadows-1: 0px 1px 3px 1px rgba(0, 0, 0, 0.15),
-    0px 1px 2px 0px rgba(0, 0, 0, 0.3);
 }
 
 html {
