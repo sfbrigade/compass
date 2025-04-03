@@ -5,10 +5,11 @@ import { Grid, Stack } from "@mui/material";
 import { trpc } from "@/client/lib/trpc";
 import BenchmarksContainer from "@/components/benchmarks/BenchmarksContainer";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import { Benchmark } from "@/types/global";
+import { Benchmark, Goal, Student } from "@/types/global";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import ViewStudentPage from "../../[student_id]";
 
 const GoalPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -30,16 +31,8 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
   );
 
   useEffect(() => {
-    const breadcrumbs = GoalPage.getBreadcrumbs?.() ?? [];
-    if (student) {
-      breadcrumbs.push({
-        href: `/students/${student.student_id}`,
-        children: `${student.first_name} ${student.last_name}`,
-      });
-      if (goal) {
-        breadcrumbs.push({ children: `Goal #${goal.number}` });
-      }
-      setBreadcrumbs(breadcrumbs);
+    if (student && goal) {
+      setBreadcrumbs(GoalPage.getBreadcrumbs?.({ student, goal }));
     }
   }, [student, goal, setBreadcrumbs]);
 
@@ -90,8 +83,28 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
   );
 };
 
-GoalPage.getBreadcrumbs = function getBreadcrumbs() {
-  return [{ href: "/students", children: "Students" }];
+interface GetBreadcrumbsProps {
+  student?: Student;
+  goal?: Goal;
+  isLinked?: boolean;
+}
+
+GoalPage.getBreadcrumbs = function getBreadcrumbs({
+  student,
+  goal,
+  isLinked,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs =
+    ViewStudentPage.getBreadcrumbs?.({ student, isLinked: true }) ?? [];
+  if (student && goal) {
+    breadcrumbs.push({
+      href: isLinked
+        ? `/students/${student.student_id}/goals/${goal.goal_id}`
+        : undefined,
+      children: `Goal #${goal.number}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default GoalPage;

@@ -3,6 +3,7 @@ import { SelectableForTable } from "zapatos/schema";
 
 export type Goal = SelectableForTable<"goal">;
 export type Benchmark = RouterOutputs["iep"]["getBenchmark"];
+export type Student = RouterOutputs["student"]["getStudentById"];
 export type User = SelectableForTable<"user">;
 export type ChangeEvent = React.ChangeEvent<HTMLInputElement>;
 export type FormEvent = React.FormEvent<HTMLFormElement>;

@@ -17,8 +17,8 @@ import { trpc } from "@/client/lib/trpc";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import ViewStudentPage from "@/pages/students/[student_id]";
 import type { Benchmark, ChangeEvent } from "@/types/global";
+import GoalPage from "@/pages/students/[student_id]/goals/[goal_id]";
 
 interface BenchmarkFields {
   title: string;
@@ -74,25 +74,16 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     : { data: undefined, isError: false };
 
   useEffect(() => {
-    const breadcrumbs = ViewStudentPage.getBreadcrumbs?.() ?? [];
-    if (student) {
-      breadcrumbs.push({
-        href: `/students/${student.student_id}`,
-        children: `${student.first_name} ${student.last_name}`,
-      });
-      if (goal) {
-        breadcrumbs.push({
-          href: `/students/${student.student_id}/goals/${goal.goal_id}`,
-          children: `Goal #${goal.number}`,
-        });
-        if (benchmark) {
-          breadcrumbs.push({ children: `Edit Benchmark #${benchmark.number}` });
-        } else {
-          breadcrumbs.push({ children: "Create Benchmark" });
-        }
+    if (student && goal) {
+      const breadcrumbs =
+        GoalPage.getBreadcrumbs?.({ student, goal, isLinked: true }) ?? [];
+      if (benchmark) {
+        breadcrumbs.push({ children: `Edit Benchmark #${benchmark.number}` });
+      } else {
+        breadcrumbs.push({ children: "Create Benchmark" });
       }
+      setBreadcrumbs(breadcrumbs);
     }
-    setBreadcrumbs(breadcrumbs);
   }, [student, goal, benchmark, setBreadcrumbs]);
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();

@@ -28,7 +28,8 @@ import "../styles/globals.css";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export type NextPageWithBreadcrumbs<P = {}, IP = P> = NextPage<P, IP> & {
-  getBreadcrumbs?: () => Breadcrumb[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getBreadcrumbs?: (data?: any) => Breadcrumb[];
 };
 
 interface CustomPageProps {

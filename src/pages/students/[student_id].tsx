@@ -14,10 +14,12 @@ import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 
 import * as React from "react";
+import { Student } from "@/types/global";
 
 const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -59,10 +61,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
 
   useEffect(() => {
     if (student) {
-      const breadcrumbs = ViewStudentPage.getBreadcrumbs?.() ?? [];
-      breadcrumbs.push({
-        children: `${student.first_name} ${student.last_name}`,
-      });
+      const breadcrumbs = ViewStudentPage.getBreadcrumbs?.({ student });
       setBreadcrumbs(breadcrumbs);
     }
   }, [student, setBreadcrumbs]);
@@ -325,8 +324,25 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   );
 };
 
-ViewStudentPage.getBreadcrumbs = function getBreadcrumbs() {
-  return [{ href: "/students", children: "Students" }];
+interface GetBreadcrumbsProps {
+  student?: Student;
+  isLinked?: boolean;
+}
+
+ViewStudentPage.getBreadcrumbs = function getBreadcrumbs({
+  student,
+  isLinked,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs: Breadcrumb[] = [
+    { href: "/students", children: "Students" },
+  ];
+  if (student) {
+    breadcrumbs.push({
+      href: isLinked ? `/students/${student.student_id}` : undefined,
+      children: `${student.first_name} ${student.last_name}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewStudentPage;
