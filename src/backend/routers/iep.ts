@@ -305,6 +305,7 @@ export const iep = router({
           .where("benchmark.benchmark_id", "=", benchmark_id)
           .returning((eb) => [
             "benchmark.benchmark_id",
+            "benchmark.number",
             "benchmark.status",
             "benchmark.description",
             "benchmark.instructions",
@@ -440,6 +441,7 @@ export const iep = router({
         .where("goal_id", "=", goal_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "benchmark.status",
           "benchmark.description",
           "benchmark.instructions",
@@ -485,6 +487,7 @@ export const iep = router({
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "benchmark.status",
           "benchmark.description",
           "benchmark.instructions",
@@ -552,6 +555,7 @@ export const iep = router({
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "student.first_name",
           "student.last_name",
           "goal.category",
@@ -560,7 +564,6 @@ export const iep = router({
           "benchmark.materials",
           "benchmark.frequency",
           "benchmark.number_of_trials",
-          "benchmark.benchmark_id",
           "benchmark.due_date",
           "benchmark.trial_count",
           jsonArrayFrom(

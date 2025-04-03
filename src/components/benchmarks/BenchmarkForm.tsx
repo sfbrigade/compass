@@ -14,8 +14,10 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import { trpc } from "@/client/lib/trpc";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 import { GoalHeader } from "@/components/goal-header/goal-header";
+import ViewStudentPage from "@/pages/students/[student_id]";
 import type { Benchmark, ChangeEvent } from "@/types/global";
 
 interface BenchmarkFields {
@@ -53,7 +55,15 @@ const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
 };
 
 const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
+
   const router = useRouter();
+
+  const { data: student } = trpc.student.getStudentById.useQuery(
+    { student_id: router.query.student_id as string },
+    { enabled: Boolean(router.query.student_id) }
+  );
+
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
     { enabled: Boolean(router.query.goal_id) }
@@ -62,6 +72,28 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const { data: benchmark, isError: benchmarkFetchError } = benchmark_id
     ? trpc.iep.getBenchmark.useQuery({ benchmark_id })
     : { data: undefined, isError: false };
+
+  useEffect(() => {
+    const breadcrumbs = ViewStudentPage.getBreadcrumbs?.() ?? [];
+    if (student) {
+      breadcrumbs.push({
+        href: `/students/${student.student_id}`,
+        children: `${student.first_name} ${student.last_name}`,
+      });
+      if (goal) {
+        breadcrumbs.push({
+          href: `/students/${student.student_id}/goals/${goal.goal_id}`,
+          children: `Goal #${goal.number}`,
+        });
+        if (benchmark) {
+          breadcrumbs.push({ children: `Edit Benchmark #${benchmark.number}` });
+        } else {
+          breadcrumbs.push({ children: "Create Benchmark" });
+        }
+      }
+    }
+    setBreadcrumbs(breadcrumbs);
+  }, [student, goal, benchmark, setBreadcrumbs]);
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
   const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();

@@ -13,7 +13,7 @@ import $CompassModal from "../../components/design_system/modal/CompassModal.mod
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
 
-import type { NextPageWithBreadcrumbs } from "../_app";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 
