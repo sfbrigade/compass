@@ -16,7 +16,6 @@ import { useState, useEffect } from "react";
 import { trpc } from "@/client/lib/trpc";
 import Button from "@/components/design_system/button/Button";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import useGoalIndex from "@/hooks/useGoalIndex";
 import type { Benchmark, ChangeEvent } from "@/types/global";
 
 interface BenchmarkFields {
@@ -63,11 +62,6 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const { data: benchmark, isError: benchmarkFetchError } = benchmark_id
     ? trpc.iep.getBenchmark.useQuery({ benchmark_id })
     : { data: undefined, isError: false };
-
-  const goalIndex = useGoalIndex({
-    iepId: goal?.iep_id || "",
-    goalId: goal?.goal_id || "",
-  });
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
   const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();
@@ -319,7 +313,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     <Stack bgcolor="white" borderRadius={2} gap={4} maxWidth="1000px">
       {goal && (
         <GoalHeader
-          name={`Goal #${goalIndex}`}
+          name={`Goal #${goal.number}`}
           description={goal.description}
           createdAt={goal.created_at}
           goalId={goal.goal_id}
