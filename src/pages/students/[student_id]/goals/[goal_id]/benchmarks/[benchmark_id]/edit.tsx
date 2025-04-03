@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 
 import BenchmarkForm from "@/components/benchmarks/BenchmarkForm";
-import { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import GoalPage from "@/pages/students/[student_id]/goals/[goal_id]";
 
 const EditBenchmarkPage: NextPageWithBreadcrumbs = () => {

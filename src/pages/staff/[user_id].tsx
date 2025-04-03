@@ -10,7 +10,7 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 
 import Button from "@/components/design_system/button/Button";
-import { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import type { Para } from "@/types/global";
 import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
