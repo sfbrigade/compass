@@ -2,7 +2,7 @@ import { trpc } from "@/client/lib/trpc";
 import { Box, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
@@ -13,11 +13,16 @@ import $CompassModal from "../../components/design_system/modal/CompassModal.mod
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
 
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 
 import * as React from "react";
+import type { Student } from "@/types/global";
 
-const ViewStudentPage = () => {
+const ViewStudentPage: NextPageWithBreadcrumbs = () => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -53,6 +58,13 @@ const ViewStudentPage = () => {
       onError: () => returnToStudentList(),
     }
   );
+
+  useEffect(() => {
+    if (student) {
+      const breadcrumbs = ViewStudentPage.getBreadcrumbs?.({ student });
+      setBreadcrumbs(breadcrumbs);
+    }
+  }, [student, setBreadcrumbs]);
 
   const returnToStudentList = async () => {
     await router.push(`/students`);
@@ -310,6 +322,27 @@ const ViewStudentPage = () => {
       </Modal>
     </Stack>
   );
+};
+
+interface GetBreadcrumbsProps {
+  student?: Student;
+  isLinked?: boolean;
+}
+
+ViewStudentPage.getBreadcrumbs = function getBreadcrumbs({
+  student,
+  isLinked,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs: Breadcrumb[] = [
+    { href: "/students", children: "Students" },
+  ];
+  if (student) {
+    breadcrumbs.push({
+      href: isLinked ? `/students/${student.student_id}` : undefined,
+      children: `${student.first_name} ${student.last_name}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewStudentPage;

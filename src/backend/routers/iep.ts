@@ -18,17 +18,24 @@ export const iep = router({
     .mutation(async (req) => {
       const { iep_id, description, category } = req.input;
 
-      const result = await req.ctx.db
-        .insertInto("goal")
-        .values({
-          iep_id,
-          description,
-          category,
-        })
-        .returningAll()
-        .executeTakeFirst();
+      return req.ctx.db.transaction().execute(async (trx) => {
+        const { count } = await trx
+          .selectFrom("goal")
+          .select(trx.fn.countAll().as("count"))
+          .where("iep_id", "=", iep_id)
+          .executeTakeFirstOrThrow();
 
-      return result;
+        return trx
+          .insertInto("goal")
+          .values({
+            iep_id,
+            description,
+            category,
+            number: Number(count) + 1,
+          })
+          .returningAll()
+          .executeTakeFirst();
+      });
     }),
 
   editGoal: hasCaseManager
@@ -108,28 +115,35 @@ export const iep = router({
         trial_count,
       } = req.input;
 
-      const result = await req.ctx.db
-        .insertInto("benchmark")
-        .values({
-          goal_id,
-          status,
-          description,
-          setup,
-          instructions,
-          materials,
-          frequency,
-          target_level,
-          baseline_level,
-          metric_name,
-          attempts_per_trial,
-          number_of_trials,
-          due_date,
-          trial_count,
-        })
-        .returningAll()
-        .executeTakeFirst();
+      return req.ctx.db.transaction().execute(async (trx) => {
+        const { count } = await trx
+          .selectFrom("benchmark")
+          .select(trx.fn.countAll().as("count"))
+          .where("goal_id", "=", goal_id)
+          .executeTakeFirstOrThrow();
 
-      return result;
+        return trx
+          .insertInto("benchmark")
+          .values({
+            goal_id,
+            number: Number(count) + 1,
+            status,
+            description,
+            setup,
+            instructions,
+            materials,
+            frequency,
+            target_level,
+            baseline_level,
+            metric_name,
+            attempts_per_trial,
+            number_of_trials,
+            due_date,
+            trial_count,
+          })
+          .returningAll()
+          .executeTakeFirst();
+      });
     }),
 
   updateBenchmark: hasPara
@@ -291,6 +305,7 @@ export const iep = router({
           .where("benchmark.benchmark_id", "=", benchmark_id)
           .returning((eb) => [
             "benchmark.benchmark_id",
+            "benchmark.number",
             "benchmark.status",
             "benchmark.description",
             "benchmark.instructions",
@@ -426,6 +441,7 @@ export const iep = router({
         .where("goal_id", "=", goal_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "benchmark.status",
           "benchmark.description",
           "benchmark.instructions",
@@ -471,6 +487,7 @@ export const iep = router({
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "benchmark.status",
           "benchmark.description",
           "benchmark.instructions",
@@ -538,6 +555,7 @@ export const iep = router({
         .where("benchmark.benchmark_id", "=", benchmark_id)
         .select((eb) => [
           "benchmark.benchmark_id",
+          "benchmark.number",
           "student.first_name",
           "student.last_name",
           "goal.category",
@@ -546,7 +564,6 @@ export const iep = router({
           "benchmark.materials",
           "benchmark.frequency",
           "benchmark.number_of_trials",
-          "benchmark.benchmark_id",
           "benchmark.due_date",
           "benchmark.trial_count",
           jsonArrayFrom(

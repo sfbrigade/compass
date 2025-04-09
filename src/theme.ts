@@ -3,6 +3,7 @@ import { createTheme, Shadows } from "@mui/material";
 const { breakpoints } = createTheme();
 
 export const compassTheme = createTheme({
+  cssVariables: true,
   palette: {
     primary: {
       main: "#3023b8", // --primary-50
@@ -104,8 +105,9 @@ export const compassTheme = createTheme({
     },
     overline: {
       fontWeight: 600,
-      fontSize: "0.75em",
+      fontSize: "0.75rem",
       fontFamily: "var(--inter), sans-serif",
+      textTransform: "uppercase",
     },
   },
   components: {

@@ -433,9 +433,9 @@ declare module 'zapatos/schema' {
       /**
       * **benchmark.goal_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      goal_id: string | null;
+      goal_id: string;
       /**
       * **benchmark.instructions**
       * - `text` in database
@@ -454,6 +454,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       metric_name: string;
+      /**
+      * **benchmark.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number;
       /**
       * **benchmark.number_of_trials**
       * - `int2` in database
@@ -537,9 +543,9 @@ declare module 'zapatos/schema' {
       /**
       * **benchmark.goal_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      goal_id: string | null;
+      goal_id: string;
       /**
       * **benchmark.instructions**
       * - `text` in database
@@ -558,6 +564,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       metric_name: string;
+      /**
+      * **benchmark.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number;
       /**
       * **benchmark.number_of_trials**
       * - `int2` in database
@@ -641,7 +653,7 @@ declare module 'zapatos/schema' {
       /**
       * **benchmark.goal_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       goal_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
@@ -662,6 +674,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       metric_name?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **benchmark.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
       /**
       * **benchmark.number_of_trials**
       * - `int2` in database
@@ -745,9 +763,9 @@ declare module 'zapatos/schema' {
       /**
       * **benchmark.goal_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      goal_id: string | db.Parameter<string> | db.SQLFragment;
       /**
       * **benchmark.instructions**
       * - `text` in database
@@ -766,6 +784,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       metric_name: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **benchmark.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number | db.Parameter<number> | db.SQLFragment;
       /**
       * **benchmark.number_of_trials**
       * - `int2` in database
@@ -849,9 +873,9 @@ declare module 'zapatos/schema' {
       /**
       * **benchmark.goal_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      goal_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      goal_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
       /**
       * **benchmark.instructions**
       * - `text` in database
@@ -870,6 +894,12 @@ declare module 'zapatos/schema' {
       * - `NOT NULL`, no default
       */
       metric_name?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **benchmark.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
       /**
       * **benchmark.number_of_trials**
       * - `int2` in database
@@ -901,7 +931,7 @@ declare module 'zapatos/schema' {
       */
       trial_count?: number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | null | db.DefaultType | db.SQLFragment>;
     }
-    export type UniqueIndex = 'benchmark_pkey';
+    export type UniqueIndex = 'benchmark_goal_id_number_idx' | 'benchmark_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;
@@ -1145,9 +1175,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.iep_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      iep_id: string | null;
+      iep_id: string;
+      /**
+      * **goal.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number;
     }
     export interface JSONSelectable {
       /**
@@ -1177,9 +1213,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.iep_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      iep_id: string | null;
+      iep_id: string;
+      /**
+      * **goal.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number;
     }
     export interface Whereable {
       /**
@@ -1209,9 +1251,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.iep_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
       iep_id?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
+      /**
+      * **goal.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number?: number | db.Parameter<number> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment | db.ParentColumn>;
     }
     export interface Insertable {
       /**
@@ -1241,9 +1289,15 @@ declare module 'zapatos/schema' {
       /**
       * **goal.iep_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      iep_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
+      iep_id: string | db.Parameter<string> | db.SQLFragment;
+      /**
+      * **goal.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number: number | db.Parameter<number> | db.SQLFragment;
     }
     export interface Updatable {
       /**
@@ -1273,11 +1327,17 @@ declare module 'zapatos/schema' {
       /**
       * **goal.iep_id**
       * - `uuid` in database
-      * - Nullable, no default
+      * - `NOT NULL`, no default
       */
-      iep_id?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
+      iep_id?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      /**
+      * **goal.number**
+      * - `int4` in database
+      * - `NOT NULL`, no default
+      */
+      number?: number | db.Parameter<number> | db.SQLFragment | db.SQLFragment<any, number | db.Parameter<number> | db.SQLFragment>;
     }
-    export type UniqueIndex = 'goal_pkey';
+    export type UniqueIndex = 'goal_iep_id_number_idx' | 'goal_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = Table | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Whereable | Column | db.ParentColumn | db.GenericSQLExpression;

@@ -94,6 +94,7 @@ export const seedfile = async (databaseUrl: string) => {
       iep_id: student_1_iep_id,
       description: "Improve Spanish grade",
       category: "other",
+      number: 1,
     })
     .returning("goal_id")
     .executeTakeFirstOrThrow();
@@ -104,6 +105,7 @@ export const seedfile = async (databaseUrl: string) => {
       iep_id: student_1_iep_id,
       description: "Come to class more punctually",
       category: "other",
+      number: 2,
     })
     .returning("goal_id")
     .executeTakeFirstOrThrow();
@@ -114,6 +116,7 @@ export const seedfile = async (databaseUrl: string) => {
       iep_id: student_2_iep_id,
       description: "Organize notebook",
       category: "other",
+      number: 1,
     })
     .returning("goal_id")
     .executeTakeFirstOrThrow();
@@ -134,6 +137,7 @@ export const seedfile = async (databaseUrl: string) => {
       attempts_per_trial: 1,
       number_of_trials: 16,
       metric_name: "",
+      number: 1,
     })
     .returning("benchmark_id")
     .executeTakeFirstOrThrow();
@@ -162,6 +166,7 @@ export const seedfile = async (databaseUrl: string) => {
       attempts_per_trial: 1,
       number_of_trials: 16,
       metric_name: "",
+      number: 1,
     })
     .returning("benchmark_id")
     .executeTakeFirstOrThrow();
@@ -190,6 +195,7 @@ export const seedfile = async (databaseUrl: string) => {
       attempts_per_trial: 4,
       number_of_trials: 16,
       metric_name: "",
+      number: 1,
     })
     .returning("benchmark_id")
     .executeTakeFirstOrThrow();
@@ -218,6 +224,7 @@ export const seedfile = async (databaseUrl: string) => {
       attempts_per_trial: 4,
       number_of_trials: 16,
       metric_name: "",
+      number: 2,
     })
     .returning("benchmark_id")
     .executeTakeFirstOrThrow();

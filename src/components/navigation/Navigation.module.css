@@ -2,25 +2,9 @@
   padding: 1rem;
 }
 
-.toolbar {
-  background-color: var(--primary-40);
-  display: flex;
-  justify-content: space-between;
-  box-shadow: 0;
-  padding: 0;
-}
-
-.navbarDropdown {
-  background-color: var(--primary-40);
-}
-
 .sidebar {
   background-color: var(--primary-40);
-  display: block;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  height: 100vh;
+  min-height: 100%;
 }
 
 .link {
@@ -43,10 +27,6 @@
 
 .linkSelected {
   background-color: var(--primary-60);
-}
-
-.burger {
-  color: var(--primary-99);
 }
 
 @media (min-width: 992px) {

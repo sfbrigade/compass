@@ -14,10 +14,11 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 import { trpc } from "@/client/lib/trpc";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
 import { GoalHeader } from "@/components/goal-header/goal-header";
-import useGoalIndex from "@/hooks/useGoalIndex";
 import type { Benchmark, ChangeEvent } from "@/types/global";
+import GoalPage from "@/pages/students/[student_id]/goals/[goal_id]";
 
 interface BenchmarkFields {
   title: string;
@@ -54,7 +55,15 @@ const BenchmarkStepperIcon = (stepIconProps: StepIconProps) => {
 };
 
 const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
+
   const router = useRouter();
+
+  const { data: student } = trpc.student.getStudentById.useQuery(
+    { student_id: router.query.student_id as string },
+    { enabled: Boolean(router.query.student_id) }
+  );
+
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
     { enabled: Boolean(router.query.goal_id) }
@@ -64,10 +73,18 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     ? trpc.iep.getBenchmark.useQuery({ benchmark_id })
     : { data: undefined, isError: false };
 
-  const goalIndex = useGoalIndex({
-    iepId: goal?.iep_id || "",
-    goalId: goal?.goal_id || "",
-  });
+  useEffect(() => {
+    if (student && goal) {
+      const breadcrumbs =
+        GoalPage.getBreadcrumbs?.({ student, goal, isLinked: true }) ?? [];
+      if (benchmark) {
+        breadcrumbs.push({ children: `Edit Benchmark #${benchmark.number}` });
+      } else {
+        breadcrumbs.push({ children: "Create Benchmark" });
+      }
+      setBreadcrumbs(breadcrumbs);
+    }
+  }, [student, goal, benchmark, setBreadcrumbs]);
 
   const addBenchmarkMutation = trpc.iep.addBenchmark.useMutation();
   const updateBenchmarkMutation = trpc.iep.updateBenchmark.useMutation();
@@ -319,7 +336,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     <Stack bgcolor="white" borderRadius={2} gap={4} maxWidth="1000px">
       {goal && (
         <GoalHeader
-          name={`Goal #${goalIndex}`}
+          name={`Goal #${goal.number}`}
           description={goal.description}
           createdAt={goal.created_at}
           goalId={goal.goal_id}
@@ -346,7 +363,8 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
           {viewState === VIEW_STATES.BENCHMARK_PG_1 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
-                Benchmark #1 - Instructional Guidelines
+                {benchmark ? `Benchmark #${benchmark.number}` : "New Benchmark"}{" "}
+                - Instructional Guidelines
               </Typography>
 
               {renderTextFields(textFieldDescriptionsPage1)}
@@ -356,7 +374,8 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
           {viewState === VIEW_STATES.BENCHMARK_PG_2 && (
             <Stack spacing={4} px={3} pb={3} width={"100%"}>
               <Typography variant="h3">
-                Benchmark #1 - Data Collection Guidelines
+                {benchmark ? `Benchmark #${benchmark.number}` : "New Benchmark"}{" "}
+                - Data Collection Guidelines
               </Typography>
 
               {renderTextFields(textFieldDescriptionsPage2)}

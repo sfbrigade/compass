@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { trpc } from "@/client/lib/trpc";
 import { useRouter } from "next/router";
 import $StaffPage from "../../styles/StaffPage.module.css";
@@ -10,8 +10,13 @@ import Container from "@mui/material/Container";
 import Modal from "@mui/material/Modal";
 
 import Button from "@/components/design_system/button/Button";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { Para } from "@/types/global";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 
-const ViewParaPage = () => {
+const ViewParaPage: NextPageWithBreadcrumbs = () => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
   const [archiveParaPrompt, setArchiveParaPrompt] = useState(false);
   const [viewState, setViewState] = useState(0);
 
@@ -38,6 +43,12 @@ const ViewParaPage = () => {
       onError: () => returnToStaffList(),
     }
   );
+
+  useEffect(() => {
+    if (para) {
+      setBreadcrumbs(ViewParaPage.getBreadcrumbs?.({ para }));
+    }
+  }, [para, setBreadcrumbs]);
 
   const editMutation = trpc.case_manager.editPara.useMutation({
     onSuccess: () => utils.para.getParaById.invalidate(),
@@ -228,6 +239,27 @@ const ViewParaPage = () => {
       </Modal>
     </Stack>
   );
+};
+
+interface GetBreadcrumbsProps {
+  para?: Para;
+}
+
+ViewParaPage.getBreadcrumbs = function getBreadcrumbs({
+  para,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs: Breadcrumb[] = [
+    {
+      href: "/staff",
+      children: "Staff",
+    },
+  ];
+  if (para) {
+    breadcrumbs.push({
+      children: `${para.first_name} ${para.last_name}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewParaPage;

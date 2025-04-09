@@ -5,10 +5,11 @@ import Image from "next/image";
 import { trpc } from "@/client/lib/trpc";
 import TaskCard from "@/components/taskCard/TaskCard";
 import FilterChip from "@/components/design_system/filterChip/FilterChip";
-import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
 import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
-function Benchmarks() {
+import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
+
+const Benchmarks = () => {
   const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
   const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
 
@@ -99,6 +100,6 @@ function Benchmarks() {
       )}
     </>
   );
-}
+};
 
 export default Benchmarks;

@@ -1,27 +1,45 @@
+import { useState } from "react";
+import type { NextPage } from "next";
+import type { AppProps } from "next/app";
 import { Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
-import type { AppProps } from "next/app";
-import { trpc } from "@/client/lib/trpc";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
-import { useState } from "react";
-import "../styles/globals.css";
-import { QueryCache, MutationCache } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import Head from "next/head";
 import superjson from "superjson";
-import CustomToast from "@/components/CustomToast";
-import Layout from "@/components/layout/Layout";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
-import { compassTheme as theme } from "@/theme";
-import { FontProvider } from "@/components/font-provider";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { QueryCache, MutationCache } from "@tanstack/react-query";
+import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
+
 import { AppRouter } from "@/backend/routers/_app";
+import { trpc } from "@/client/lib/trpc";
+import { BreadcrumbsContextProvider } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import CustomToast from "@/components/CustomToast";
+import { FontProvider } from "@/components/font-provider";
+import Layout from "@/components/layout/Layout";
+import { compassTheme as theme } from "@/theme";
+
+import "../styles/globals.css";
+
+// custom page type from Next.js documentation:
+// https://nextjs.org/docs/pages/building-your-application/routing/pages-and-layouts#with-typescript
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type NextPageWithBreadcrumbs<P = {}, IP = P> = NextPage<P, IP> & {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getBreadcrumbs?: (data?: any) => Breadcrumb[];
+};
 
 interface CustomPageProps {
   session: Session;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type CustomAppProps = AppProps<CustomPageProps> & {
+  Component: NextPageWithBreadcrumbs<CustomPageProps>;
+};
 
 function getBaseUrl() {
   if (typeof window !== "undefined") {
@@ -33,10 +51,7 @@ function getBaseUrl() {
   return `http://localhost:${process.env.PORT ?? 3000}`;
 }
 
-export default function App({
-  Component,
-  pageProps,
-}: AppProps<CustomPageProps>) {
+export default function App({ Component, pageProps }: CustomAppProps) {
   const [errorMessage, setErrorMessage] = useState<string>("");
 
   const [queryClient] = useState(
@@ -114,9 +129,11 @@ export default function App({
                         onClose={() => setErrorMessage("")}
                       />
                     )}
-                    <Layout>
-                      <Component {...pageProps} showErrorToast={toast.error} />
-                    </Layout>
+                    <BreadcrumbsContextProvider>
+                      <Layout initialBreadcrumbs={Component.getBreadcrumbs?.()}>
+                        <Component {...pageProps} />
+                      </Layout>
+                    </BreadcrumbsContextProvider>
                   </SessionProvider>
                 </QueryClientProvider>
               </trpc.Provider>

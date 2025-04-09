@@ -9,6 +9,11 @@ import { getRoleLabel } from "@/types/auth";
 import Button from "@/components/design_system/button/Button";
 import { Dropdown } from "@/components/design_system/dropdown/Dropdown";
 
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { User } from "@/types/global";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+
 interface UserFormData {
   first_name: string;
   last_name: string;
@@ -16,7 +21,8 @@ interface UserFormData {
   role: UserType;
 }
 
-const ViewUserPage = () => {
+const ViewUserPage: NextPageWithBreadcrumbs = () => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,6 +39,12 @@ const ViewUserPage = () => {
       onError: () => returnToUserList(),
     }
   );
+
+  useEffect(() => {
+    if (user) {
+      setBreadcrumbs(ViewUserPage.getBreadcrumbs?.({ user }));
+    }
+  }, [user, setBreadcrumbs]);
 
   const returnToUserList = async () => {
     await router.push(`/admin`);
@@ -176,6 +188,27 @@ const ViewUserPage = () => {
       </Container>
     </Stack>
   );
+};
+
+interface GetBreadcrumbsProps {
+  user?: User;
+}
+
+ViewUserPage.getBreadcrumbs = function getBreadcrumbs({
+  user,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs: Breadcrumb[] = [
+    {
+      href: "/admin",
+      children: "Admin",
+    },
+  ];
+  if (user) {
+    breadcrumbs.push({
+      children: `${user.first_name} ${user.last_name}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewUserPage;

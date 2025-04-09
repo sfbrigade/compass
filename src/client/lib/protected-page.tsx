@@ -1,6 +1,7 @@
 import { trpc } from "./trpc";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
+
 import { UserType } from "@/types/auth";
 
 export const requiresAdminAuth =

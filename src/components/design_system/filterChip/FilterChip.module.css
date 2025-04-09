@@ -57,7 +57,7 @@
   &:hover {
     background-color: var(--primary-90);
     border-color: var(--primary-90);
-    box-shadow: var(--shadows-1);
+    box-shadow: var(--mui-shadows-1);
   }
 
   &:active {
