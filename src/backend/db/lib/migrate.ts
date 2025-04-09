@@ -1,9 +1,10 @@
-import { parse } from "pg-connection-string";
+import pgConnectionString from "pg-connection-string";
 import * as postgresMigrations from "postgres-migrations";
 import * as zg from "zapatos/generate";
 import path from "node:path";
 import { logger } from "@/backend/lib";
 
+const { parse } = pgConnectionString;
 interface MigrateOptions {
   silent?: boolean;
   shouldGenerateTypes?: boolean;
@@ -11,11 +12,11 @@ interface MigrateOptions {
 
 export const migrate = async (
   databaseUrl: string,
-  { silent = false, shouldGenerateTypes = true }: MigrateOptions = {}
+  { silent = false, shouldGenerateTypes = true }: MigrateOptions = {},
 ) => {
   const migrationsDirectory = path.join(
     process.cwd(),
-    "src/backend/db/migrations"
+    "src/backend/db/migrations",
   );
   const zapatosDirectory = path.join(process.cwd(), "src/backend/db");
 

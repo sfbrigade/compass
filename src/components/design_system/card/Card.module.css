@@ -1,0 +1,29 @@
+.card {
+  background-color: var(--grey-90);
+  box-shadow: none;
+  border-radius: 0.5rem;
+  border: 1px solid var(--grey-70);
+}
+
+.card__header {
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.card__title {
+  color: var(--grey-10);
+}
+
+.card__eyebrow {
+  color: var(--grey-30);
+}
+
+.card__body {
+  color: var(--grey-20);
+}
+
+.card__button {
+  margin-top: 0.75rem;
+  width: 100%;
+}

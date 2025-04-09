@@ -1,5 +1,6 @@
-import { trpc } from "@/client/lib/trpc";
 import React from "react";
+
+import { trpc } from "@/client/lib/trpc";
 import PersonTable, { Para, ParaHeadCell } from "@/components/table/table";
 
 const Staff = () => {

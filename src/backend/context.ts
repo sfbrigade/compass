@@ -4,8 +4,9 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { Session, getServerSession } from "next-auth";
 import { Env } from "./lib/types";
 import { getNextAuthOptions } from "./auth/options";
+import { UserType } from "@/types/auth";
 
-type Auth =
+export type Auth =
   | {
       type: "none";
     }
@@ -13,7 +14,7 @@ type Auth =
       type: "session";
       session: Session;
       userId: string;
-      role: string;
+      role: UserType;
     };
 
 export type tRPCContext = ReturnType<typeof getDb> & {
@@ -23,7 +24,7 @@ export type tRPCContext = ReturnType<typeof getDb> & {
 };
 
 export const createContext = async (
-  options: CreateNextContextOptions
+  options: CreateNextContextOptions,
 ): Promise<tRPCContext> => {
   const env = (options.req.env as unknown as Env) ?? process.env;
   const {
@@ -40,7 +41,7 @@ export const createContext = async (
   const session = await getServerSession(
     options.req,
     options.res,
-    getNextAuthOptions(db)
+    getNextAuthOptions(db),
   );
   if (session && session.user?.email) {
     const user = await db
@@ -52,7 +53,7 @@ export const createContext = async (
       type: "session",
       session,
       userId: user.user_id,
-      role: user.role,
+      role: user.role as UserType,
     };
   }
 

@@ -1,23 +1,45 @@
-import { trpc } from "@/client/lib/trpc";
-import TaskCard from "@/components/taskCard/taskCard";
-import $typo from "@/styles/Typography.module.css";
-import FilterAlt from "@mui/icons-material/FilterAlt";
-import KeyboardArrowDown from "@mui/icons-material/KeyboardArrowDown";
-import Sort from "@mui/icons-material/Sort";
+import { useEffect, useState } from "react";
 import { Box, Container } from "@mui/material";
 import Image from "next/image";
-import Link from "next/link";
-import { useState } from "react";
-import $button from "../../components/design_system/button/Button.module.css";
-import noBenchmarks from "../../public/img/no-benchmarks.png";
-import SearchIcon from "@mui/icons-material/Search";
 
-function Benchmarks() {
-  const [isPara, setIsPara] = useState(false);
-  const { data: tasks, isLoading } = trpc.para.getMyTasks.useQuery();
+import { trpc } from "@/client/lib/trpc";
+import TaskCard from "@/components/taskCard/TaskCard";
+import FilterChip from "@/components/design_system/filterChip/FilterChip";
+import { SortDirection, SortProperty, TaskData } from "@/types/global";
 
-  const handleTogglePara = () => {
-    setIsPara(!isPara);
+import noBenchmarks from "../../public/img/no-benchmarks-transparent.svg";
+
+const Benchmarks = () => {
+  const [sortProperty, setSortProperty] = useState<SortProperty>("first_name");
+  const [sortDirection, setSortDirection] = useState<SortDirection>("asc");
+
+  const [displayedTasks, setDisplayedTasks] = useState<TaskData[]>([]);
+
+  const { data: tasksData, isLoading } = trpc.para.getMyTasks.useQuery();
+
+  useEffect(() => {
+    if (!tasksData) {
+      setDisplayedTasks([]);
+    } else {
+      setDisplayedTasks(
+        [...tasksData].sort((a, b) => {
+          if (a[sortProperty] < b[sortProperty])
+            return sortDirection === "asc" ? -1 : 1;
+          if (a[sortProperty] > b[sortProperty])
+            return sortDirection === "asc" ? 1 : -1;
+          return 0;
+        }),
+      );
+    }
+  }, [sortDirection, sortProperty, tasksData]);
+
+  const handleSort = (property: SortProperty) => {
+    if (property === sortProperty) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else {
+      setSortProperty(property);
+      setSortDirection("asc");
+    }
   };
 
   if (isLoading) {
@@ -26,7 +48,7 @@ function Benchmarks() {
 
   return (
     <>
-      {tasks?.length === 0 ? (
+      {displayedTasks?.length === 0 ? (
         <Container sx={{ marginTop: "4rem" }}>
           <Box
             sx={{
@@ -44,93 +66,40 @@ function Benchmarks() {
           </Box>
         </Container>
       ) : (
-        <Container sx={{ marginTop: "2rem" }}>
+        <Box>
           <Box
             sx={{
               display: "flex",
-              justifyContent: "space-between",
               alignItems: "center",
+              gap: "0.5rem",
+              mb: "2rem",
             }}
           >
-            <h3>Assigned Students</h3>
-            <div style={{ display: "flex", gap: "1rem", alignItems: "center" }}>
-              {/* Temporary Toggle View of CM and Para */}
-              <span>{isPara ? "Para" : "Case Manager"}</span>
-              <button
-                onClick={() => handleTogglePara()}
-                style={{ padding: "0 4px" }}
-              >
-                Toggle View
-              </button>
-
-              {/* Search Pill Placeholder */}
-              <span
-                className={`${$button.secondary}`}
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  borderRadius: "30px",
-                  padding: "4px 20px",
-                }}
-              >
-                <SearchIcon /> Search
-              </span>
-
-              {/* Filter Pill Placeholder */}
-              <span
-                className={`${$button.pilled}`}
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <FilterAlt /> Filter <KeyboardArrowDown />
-              </span>
-
-              {/* Sort Pill Placeholder*/}
-              <span
-                className={`${$button.pilled}`}
-                style={{
-                  display: "flex",
-                  maxWidth: "fit-content",
-                  alignItems: "center",
-                  gap: "4px",
-                }}
-              >
-                <Sort /> Sort <KeyboardArrowDown />
-              </span>
-            </div>
+            Sort:
+            <FilterChip
+              checkHidden={true}
+              label="Sort"
+              onClick={(option) => handleSort(option?.value as SortProperty)}
+              options={[
+                { label: "Date assigned", value: "created_at" },
+                { label: "Student", value: "first_name" },
+              ]}
+              selectedValue={sortProperty}
+            />
           </Box>
-
-          <Box sx={{ height: "75vh", overflowY: "scroll" }}>
-            {tasks?.map((task) => {
-              const completed = Math.floor(
-                Number(task.completed_trials) / Number(task.number_of_trials)
-              );
+          <Box>
+            {displayedTasks?.map((task) => {
               return (
-                <div key={task.task_id} className={$typo.noDecoration}>
-                  {/* Temporary CM & Para View */}
-                  {isPara && !completed ? (
-                    <Link
-                      href={`/benchmarks/${task.task_id}`}
-                      style={{ color: "black", textDecoration: "none" }}
-                    >
-                      <TaskCard task={task} isPara={isPara} />
-                    </Link>
-                  ) : (
-                    <TaskCard task={task} isPara={isPara} />
-                  )}
+                <div key={task.task_id}>
+                  <TaskCard task={task} />
                 </div>
               );
             })}
           </Box>
-        </Container>
+        </Box>
       )}
     </>
   );
-}
+};
 
 export default Benchmarks;

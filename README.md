@@ -58,9 +58,12 @@ There are two ways to run Compass locally:
    NOTE: If you get into a login loop, double check that the Docker services are running
 
 4. Seed database (Optional)
+
+   This runs the seed script with test data. You will first need to log in to Compass with Google OAuth
+   to create the first user (see **Authentication** section below). Then, run the following:
+
    ```sh
    npm run db:seed           # Seed the database with test data
-                             # Must be done after login to Compass app
    ```
 
 **Option 2: Run both server and supporting services locally**
@@ -98,7 +101,7 @@ There are two ways to run Compass locally:
 
 ### Authentication
 
-.env.local file will need to be updated for sign in with Google
+Your `.env.local` file will need to be updated with valid values for `GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. This will allow you to log in with Google OAuth into Compass.
 
 To update GOOGLE_CLIENT_ID:
 
@@ -113,13 +116,40 @@ To update GOOGLE_CLIENT_SECRET:
 
 - Copy the google client secret after creation of the client id
 
+### Email
+
+**Option 1: Use Mailcatcher in Docker**
+
+If you're following _Option 1_ above to run supporting services in Docker, the `.env.example` file is already configured to send email to the Mailcatcher server running on port 1025 for SMTP. The Mailcatcher server will "catch" all email sent and save it in memory to be viewed in its web-based interface running on port 1080. Open it in your web browser at: http://localhost:1080
+
+**Option 2: Configure a live mail server**
+
+If you're not running supporting services in Docker, or wish to test email sending to some test accounts (please take care not to send test emails to real people!), you can configure the following variables in your `.env` file:
+
+1. For an SMTP server
+   ```
+   EMAIL_SERVICE=smtp
+   EMAIL_AUTH_USER=[username for your SMTP server]
+   EMAIL_AUTH_PASS=[password for your SMTP server]
+   EMAIL_FROM=no-reply@compassiep.org
+   EMAIL_HOST=[host name for your SMTP server]
+   EMAIL_PORT=[port for your SMTP server- typically 587 or 465 for secure connections]
+   ```
+2. For a Gmail account
+   ```
+   EMAIL_SERVICE=gmail
+   EMAIL_AUTH_USER=[your Gmail address]
+   EMAIL_AUTH_PASS=[your Gmail password]
+   EMAIL_FROM=[your Gmail address]
+   EMAIL_HOST=
+   EMAIL_PORT=
+   ```
+
 ### Running tests
 
 The database container does not need to be started to run tests, but Docker Desktop must be running in the background.
 
 Run all tests with `npm run test`. An individual test file can be run with `npm run test <path/to/file>` (e.x. `npm run test src/routes/students.test.ts`).
-
-To run tests in watch mode, use `npm run test:watch`. This will run tests whenever a file is changed, but will not take database schema changes into account.
 
 ### Database
 
@@ -133,11 +163,24 @@ Run `npm run db:migrate` to migrate the database. However, until Compass is depl
 
 ### Troubleshooting
 
-Compass app is not running:
+#### Compass app is not running:
 
 Make sure that Docker is running in the background
 
-Client id is required:
+#### Login screen flashes like it is stuck in a loop
+
+Make sure that Docker is running in the background
+
+#### Seeding script does not work
+
+Log in with your Google credentials first, and rerun to generate the first user.
+
+### Postgres refuses to start
+
+Ensure you have port forwarding for port 5432 from Docker to your local machine set up,
+and that you are not already running Postgres in the background for another servie.
+
+#### Client id is required:
 
 Fill out the Google Client ID and Google Client Secret in .env.local
 

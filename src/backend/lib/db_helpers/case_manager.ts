@@ -2,6 +2,7 @@ import { Env } from "@/backend/lib/types";
 import { KyselyDatabaseInstance } from "@/backend/lib";
 import { getTransporter } from "@/backend/lib/nodemailer";
 import { user } from "zapatos/schema";
+import { UserType } from "@/types/auth";
 
 interface paraInputProps {
   first_name: string;
@@ -11,17 +12,17 @@ interface paraInputProps {
 
 /**
  * Checks for the existence of a user with the given email, if
- * they do not exist, create the user with the role of "staff",
+ * they do not exist, create the user with the role of "para",
  * initiate email sending without awaiting result
  */
 export async function createPara(
   para: paraInputProps,
   db: KyselyDatabaseInstance,
-  case_manager_id: string,
+  case_manager_name: string,
   from_email: string,
   to_email: string,
-  env: Env
-): Promise<user.Selectable | undefined> {
+  env: Env,
+): Promise<user.Selectable> {
   const { first_name, last_name, email } = para;
 
   let paraData = await db
@@ -37,18 +38,18 @@ export async function createPara(
         first_name,
         last_name,
         email: email.toLowerCase(),
-        role: "staff",
+        role: UserType.Para,
       })
       .returningAll()
-      .executeTakeFirst();
+      .executeTakeFirstOrThrow();
 
     // promise, will not interfere with returning paraData
     void sendInviteEmail(
       from_email,
       to_email,
       first_name,
-      case_manager_id,
-      env
+      case_manager_name,
+      env,
     );
   }
 
@@ -62,15 +63,19 @@ export async function sendInviteEmail(
   fromEmail: string,
   toEmail: string,
   first_name: string,
-  caseManagerName: string,
-  env: Env
+  case_manager_name: string,
+  env: Env,
 ): Promise<void> {
-  await getTransporter(env).sendMail({
-    from: fromEmail,
-    to: toEmail,
-    subject: "Para-professional email confirmation",
-    text: "Email confirmation",
-    html: `<p>Dear ${first_name},</p><p>Welcome to the data collection team for SFUSD.EDU!</p><p>I am writing to invite you to join our data collection efforts for our students. We are using an online platform called <strong>Project Compass</strong> to track and monitor student progress, and your participation is crucial to the success of this initiative.</p><p>To access Project Compass and begin collecting data, please follow these steps:</p><ul><li>Go to the website: (<a href="https://staging.compassiep.com/">https://staging.compassiep.com/</a>)</li> <li>Login using your provided username and password</li><li>Once logged in, navigate to the dashboard where you would see the student goals page</li></ul><p>By clicking on the <strong>data collection</strong> button, you will be directed to the instructions outlining the necessary steps for data collection. Simply follow the provided instructions and enter the required data points accurately.</p><p>If you encounter any difficulties or have any questions, please feel free to reach out to me. I am here to assist you throughout the process and ensure a smooth data collection experience. Your dedication and contribution will make a meaningful impact on our students' educational journeys.</p><p>Thank you,</p><p>${caseManagerName}<br>Case Manager</p>`,
+  await getTransporter(env).send({
+    message: {
+      from: fromEmail,
+      to: toEmail,
+    },
+    template: "invite_para",
+    locals: {
+      case_manager_name,
+      first_name,
+    },
   });
   return;
 }
@@ -83,7 +88,7 @@ export async function sendInviteEmail(
 export async function assignParaToCaseManager(
   para_id: string,
   case_manager_id: string,
-  db: KyselyDatabaseInstance
+  db: KyselyDatabaseInstance,
 ): Promise<void> {
   await db
     .insertInto("paras_assigned_to_case_manager")
@@ -103,10 +108,10 @@ type createStudentProps = {
 };
 
 export const STUDENT_ASSIGNED_TO_YOU_ERR = new Error(
-  "This student is already assigned to you"
+  "This student is already assigned to you",
 );
 export const STUDENT_ALREADY_ASSIGNED_ERR = new Error(
-  "This student is already assigned to another case manager."
+  "This student is already assigned to another case manager.",
 );
 
 /**
@@ -155,7 +160,7 @@ export async function createAndAssignStudent({
       oc
         .column("email")
         .doUpdateSet({ assigned_case_manager_id: userId })
-        .where("student.assigned_case_manager_id", "is", null)
+        .where("student.assigned_case_manager_id", "is", null),
     )
     .returningAll()
     .executeTakeFirstOrThrow();

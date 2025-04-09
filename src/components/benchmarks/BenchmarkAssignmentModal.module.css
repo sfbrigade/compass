@@ -1,0 +1,30 @@
+/* Styles for Assign Benchmark Modal Component */
+.assignBenchmarkModal {
+  margin: auto;
+  font-size: 16px;
+  text-align: left;
+}
+
+.assignBenchmarkModalTitle {
+  font-size: 24px;
+}
+
+.benchmarkDescriptionBox {
+  border-radius: 8px;
+  background-color: var(--primary-container);
+  padding: 8px 16px;
+}
+
+.benchmarkTitle {
+  font-size: 20px;
+}
+
+.benchmarkDescription,
+.staffListItemText {
+  font-size: 16px;
+}
+
+/* We may have to set up a theme to override the MUI styles so we can achieve our design systems setups since this does not work, or build our own global buttons and use those */
+.button {
+  background-color: var(--primary-40);
+}

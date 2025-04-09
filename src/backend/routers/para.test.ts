@@ -1,9 +1,10 @@
 import test from "ava";
 import { getTestServer } from "@/backend/tests";
+import { UserType } from "@/types/auth";
 
 test("getParaById", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { user_id } = await db
@@ -12,7 +13,7 @@ test("getParaById", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -21,9 +22,25 @@ test("getParaById", async (t) => {
   t.is(para?.user_id, user_id);
 });
 
+test("getParaById - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getParaById.query({
+      user_id: "user_id",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message",
+  );
+});
+
 test("getParaByEmail", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const { email } = await db
@@ -32,7 +49,7 @@ test("getParaByEmail", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "foo.bar@email.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -41,9 +58,25 @@ test("getParaByEmail", async (t) => {
   t.is(para?.email, email);
 });
 
+test("getParaByEmail - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getParaByEmail.query({
+      email: "foo@bar.com",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message",
+  );
+});
+
 test("createPara", async (t) => {
   const { trpc, db, nodemailerMock } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await trpc.para.createPara.mutate({
@@ -57,19 +90,42 @@ test("createPara", async (t) => {
       .selectFrom("user")
       .where("first_name", "=", "Foo")
       .selectAll()
-      .executeTakeFirst()
+      .executeTakeFirst(),
   );
+
+  // mail is sent asynchronously in promise, so wait a bit
+  await new Promise((resolve) => {
+    setTimeout(resolve, 150);
+  });
 
   t.true(
     nodemailerMock.mock
       .getSentMail()
-      .some((mail) => mail.subject?.includes("confirmation"))
+      .some((mail) => mail.subject?.includes("classroom")),
+  );
+});
+
+test("createPara - paras do not have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.createPara.mutate({
+      first_name: "Foo",
+      last_name: "Bar",
+      email: "foo.bar@email.com",
+    });
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message",
   );
 });
 
 test("paras are deduped by email", async (t) => {
   const { trpc, db } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   t.falsy(await trpc.para.getParaByEmail.query({ email: "foo.bar@email.com" }));
@@ -97,7 +153,7 @@ test("paras are deduped by email", async (t) => {
 
 test("createPara - invalid email", async (t) => {
   const { trpc } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   await t.throwsAsync(
@@ -105,21 +161,21 @@ test("createPara - invalid email", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "invalid-email",
-    })
+    }),
   );
 });
 
 test("getMyTasks", async (t) => {
   const { trpc, db, seed } = await getTestServer(t, {
-    authenticateAs: "case_manager",
+    authenticateAs: UserType.CaseManager,
   });
 
   const FIRST_NAME = "Foo";
   const LAST_NAME = "Bar";
   const STATUS = "In Progress";
-  const DESCRIPTION = "Subgoal description";
+  const DESCRIPTION = "Benchmark description";
   const SETUP = "Setup";
-  const INSTRUCTIONS = "subgoal instructions foobar";
+  const INSTRUCTIONS = "benchmark instructions foobar";
   const CATEGORY = "writing";
   const DUE_DATE = new Date();
   const ATTEMPTS_PER_TRIAL = 15;
@@ -155,12 +211,13 @@ test("getMyTasks", async (t) => {
       iep_id: iep_id,
       description: "Goal Description",
       category: CATEGORY,
+      number: 1,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
 
-  const { subgoal_id } = await db
-    .insertInto("subgoal")
+  const { benchmark_id } = await db
+    .insertInto("benchmark")
     .values({
       goal_id: goal_id,
       status: STATUS,
@@ -168,11 +225,15 @@ test("getMyTasks", async (t) => {
       setup: SETUP,
       instructions: INSTRUCTIONS,
       materials: "materials",
+      frequency: "FREQUENCY",
       target_level: 100,
       baseline_level: 20,
       metric_name: "words",
+      due_date: DUE_DATE,
+      trial_count: TRIAL_COUNT,
       attempts_per_trial: ATTEMPTS_PER_TRIAL,
       number_of_trials: NUMBER_OF_TRIALS,
+      number: 1,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -180,10 +241,8 @@ test("getMyTasks", async (t) => {
   const { task_id } = await db
     .insertInto("task")
     .values({
-      subgoal_id: subgoal_id,
+      benchmark_id: benchmark_id,
       assignee_id: seed.case_manager.user_id,
-      due_date: DUE_DATE,
-      trial_count: TRIAL_COUNT,
     })
     .returningAll()
     .executeTakeFirstOrThrow();
@@ -198,4 +257,26 @@ test("getMyTasks", async (t) => {
   t.deepEqual(task[0].due_date, DUE_DATE);
   t.is(task[0].instructions, INSTRUCTIONS);
   t.is(task[0].trial_count, TRIAL_COUNT);
+});
+
+test("getMyTasks - paras do have access", async (t) => {
+  const { trpc } = await getTestServer(t, { authenticateAs: UserType.Para });
+
+  await t.notThrowsAsync(async () => {
+    await trpc.para.getMyTasks.query();
+  });
+});
+
+test("getMyTasks - regular users don't have access", async (t) => {
+  const { trpc } = await getTestServer(t, {});
+
+  const error = await t.throwsAsync(async () => {
+    await trpc.para.getMyTasks.query();
+  });
+
+  t.is(
+    error?.message,
+    "UNAUTHORIZED",
+    "Expected an 'unauthorized' error message",
+  );
 });

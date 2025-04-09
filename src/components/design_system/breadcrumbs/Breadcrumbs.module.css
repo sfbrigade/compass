@@ -1,18 +1,21 @@
-.container {
-  position: fixed;
-  display: flex;
-  left: 200px;
-  z-index: 1;
-  padding: 1rem 0 1rem 2rem;
-  width: 100%;
-  background-color: var(--grey-100);
+.breadcrumbs {
+  color: var(--primary);
+  font: var(--mui-font-overline);
+  text-transform: uppercase;
 }
 
-.link {
+.breadcrumbs__link {
   text-decoration: none;
   color: var(--grey-10);
 }
 
-.link:hover {
+.breadcrumbs__link:hover {
   text-decoration: underline;
+}
+
+.breadcrumbs__separator {
+  font-weight: normal;
+  color: var(--grey-10);
+  position: relative;
+  top: -1px;
 }

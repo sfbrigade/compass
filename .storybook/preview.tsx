@@ -8,14 +8,17 @@ import "../src/styles/globals.css";
 
 const preview: Preview = {
   parameters: {
-    actions: { argTypesRegex: "^on[A-Z].*" },
     controls: {
       matchers: {
         color: /(background|color)$/i,
         date: /Date$/i,
       },
     },
+    options: {
+      storySort: (a, b) => a.title.localeCompare(b.title),
+    },
   },
+
   decorators: [
     (Story) => (
       <FontProvider>
@@ -27,6 +30,8 @@ const preview: Preview = {
       </FontProvider>
     ),
   ],
+
+  tags: ["autodocs"],
 };
 
 export default preview;

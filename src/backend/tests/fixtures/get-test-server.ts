@@ -8,55 +8,82 @@ import { AppRouter } from "@/backend/routers/_app";
 import { ExecutionContext } from "ava";
 import { randomUUID } from "crypto";
 import ms from "ms";
-import builtNextJsFixture from "../../../../.nsm";
 import { getTestMinio } from "./get-test-minio";
 import superjson from "superjson";
+import { UserType } from "@/types/auth";
+
+import { createServer, Server } from "http";
+import { parse } from "url";
+import next from "next";
+
+const getTestServerFixture = async ({
+  port,
+  env,
+}: {
+  port: number;
+  env: Env;
+}) => {
+  const app = next({ dev: false });
+  const handle = app.getRequestHandler();
+  let server: Server;
+  await app.prepare().then(() => {
+    server = createServer((req, res) => {
+      const parsedUrl = parse(req.url!, true);
+      (req as unknown as { env: Env }).env = env;
+      void handle(req, res, parsedUrl);
+    }).listen(port);
+  });
+  return {
+    close: async () => {
+      await app.close();
+      server.closeAllConnections();
+      server.close();
+    },
+  };
+};
 
 export interface GetTestServerOptions {
-  authenticateAs?: "case_manager" | "para" | "admin";
+  authenticateAs?: UserType.CaseManager | UserType.Para | UserType.Admin;
 }
 
 export const getTestServer = async (
   t: ExecutionContext,
-  { authenticateAs }: GetTestServerOptions = {}
+  { authenticateAs }: GetTestServerOptions = {},
 ) => {
   const [
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     { connectionString: databaseConnectionString, beforeTemplateIsBakedResult },
     appPort,
     minio,
-  ] = await Promise.all([getTestDatabase(), getPort(), getTestMinio()]);
+  ] = await Promise.all([getTestDatabase(t), getPort(), getTestMinio()]);
 
   const seed = beforeTemplateIsBakedResult as SeedResult;
 
   const { db, pool } = getDb(databaseConnectionString);
 
   const env: Env = {
+    BASE_URL: "http://localhost:3000",
     DATABASE_URL: databaseConnectionString,
     S3_USER_UPLOADS_ENDPOINT: minio.endpoint,
     S3_USER_UPLOADS_REGION: minio.region,
     S3_USER_UPLOADS_ACCESS_KEY_ID: minio.accessKey,
     S3_USER_UPLOADS_SECRET_ACCESS_KEY: minio.secretKey,
     S3_USER_UPLOADS_BUCKET_NAME: minio.bucket,
-    EMAIL: "example string",
-    EMAIL_PASS: "example string",
+    SES_ACCESS_KEY_ID: "",
+    SES_SECRET_ACCESS_KEY: "",
+    SES_REGION: "",
+    EMAIL_SERVICE: "smtp",
+    EMAIL_FROM: "no-reply@compassiep.org",
+    EMAIL_AUTH_USER: "", // note that these server settings will not be used, nodemailer is mocked
+    EMAIL_AUTH_PASS: "",
+    EMAIL_HOST: "localhost",
+    EMAIL_PORT: "1025",
   };
 
-  // Use statically-built Next.js fixture (if multiple instances of the built-in next() dev server are running, they try to concurrently mutate the same files).
-  const server = await builtNextJsFixture({
-    port: appPort,
-    middlewares: [
-      (next) => (req, res) => {
-        // Application code should always pull from req.env rather than process.env.
-        // This allows us to run multiple tests concurrently in the same process.
-        (req as unknown as { env: Env }).env = env;
-        return next(req, res);
-      },
-    ],
-  });
+  const server = await getTestServerFixture({ port: appPort, env });
 
-  t.teardown(() => {
-    server.close();
+  t.teardown(async () => {
+    await server.close();
   });
 
   let trpcRequestHeaders = {};

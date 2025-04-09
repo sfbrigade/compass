@@ -1,21 +1,26 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Button, Container, Modal, Stack } from "@mui/material";
+import { Box, Container, Modal, Stack } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
-import * as React from "react";
-import Typography from "@mui/material/Typography";
-import { TextInput } from "@/components/design_system/input/Input";
-import "@/styles/Form.module.css";
+import { EditStudentModal } from "@/components/student/EditStudentModal";
 
-const ViewStudentPage = () => {
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import Button from "@/components/design_system/button/Button";
+
+import * as React from "react";
+import type { Student } from "@/types/global";
+
+const ViewStudentPage: NextPageWithBreadcrumbs = () => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -49,8 +54,15 @@ const ViewStudentPage = () => {
       enabled: Boolean(student_id),
       retry: false,
       onError: () => returnToStudentList(),
-    }
+    },
   );
+
+  useEffect(() => {
+    if (student) {
+      const breadcrumbs = ViewStudentPage.getBreadcrumbs?.({ student });
+      setBreadcrumbs(breadcrumbs);
+    }
+  }, [student, setBreadcrumbs]);
 
   const returnToStudentList = async () => {
     await router.push(`/students`);
@@ -58,7 +70,7 @@ const ViewStudentPage = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id), retry: false }
+    { enabled: Boolean(student_id), retry: false },
   );
 
   const editMutation = trpc.case_manager.editStudent.useMutation({
@@ -69,9 +81,9 @@ const ViewStudentPage = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
-  const handleEditStudent = (e: React.ChangeEvent<HTMLFormElement>) => {
+  const handleEditStudent = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const data = new FormData(e.currentTarget);
+    const data = new FormData(e.currentTarget as HTMLFormElement);
 
     if (!student) {
       return; // TODO: improve error handling
@@ -85,11 +97,13 @@ const ViewStudentPage = () => {
       grade: Number(data.get("grade")) || 0,
     });
 
-    editIepMutation.mutate({
-      student_id: student.student_id,
-      start_date: new Date(parseISO(data.get("start_date") as string)),
-      end_date: new Date(parseISO(data.get("end_date") as string)),
-    });
+    if (activeIep) {
+      editIepMutation.mutate({
+        student_id: student.student_id,
+        start_date: new Date(parseISO(data.get("start_date") as string)),
+        end_date: new Date(parseISO(data.get("end_date") as string)),
+      });
+    }
 
     handleMainState();
   };
@@ -152,114 +166,16 @@ const ViewStudentPage = () => {
       }}
     >
       <div>
-        <Modal
+        <EditStudentModal
           open={open}
-          onClose={handleClose}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box className={$CompassModal.editModalContent}>
-            <p id="modal-modal-title" className={$CompassModal.editModalHeader}>
-              Editing {student?.first_name || "Student"}&apos;s Profile
-            </p>
-            <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              <Stack gap={0.5} sx={{ width: "100%" }}>
-                <form
-                  className={$CompassModal.editForm}
-                  id="edit"
-                  onSubmit={handleEditStudent}
-                >
-                  <Stack gap={0.5}>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextInput
-                        className={$CompassModal.editModalTextfield}
-                        label="First Name"
-                        type="text"
-                        name="firstName"
-                        defaultValue={student?.first_name || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextInput
-                        className={$CompassModal.editModalTextfield}
-                        label="Last Name"
-                        type="text"
-                        name="lastName"
-                        defaultValue={student?.last_name || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextInput
-                        className={$CompassModal.editModalTextfield}
-                        label="Email"
-                        type="text"
-                        name="email"
-                        defaultValue={student?.email || ""}
-                        required
-                      />
-                    </Container>
-                    <Container className={$CompassModal.editModalContainer}>
-                      <TextInput
-                        className={$CompassModal.editModalTextfield}
-                        label="Grade"
-                        type="number"
-                        name="grade"
-                        defaultValue={(student?.grade || 0).toString()}
-                        required
-                      />
-                    </Container>
-                    {activeIep != null && (
-                      <div>
-                        <Container className={$CompassModal.editModalContainer}>
-                          <TextInput
-                            className={$CompassModal.editModalTextfield}
-                            label="IEP Start Date"
-                            type="date"
-                            name="start_date"
-                            defaultValue={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            required
-                          />
-                        </Container>
-                        <Container className={$CompassModal.editModalContainer}>
-                          <TextInput
-                            className={$CompassModal.editModalTextfield}
-                            label="IEP End Date"
-                            type="date"
-                            name="end_date"
-                            defaultValue={endDate}
-                            inputProps={{ min: startDate }}
-                            required
-                          />
-                        </Container>
-                      </div>
-                    )}
-                  </Stack>
-                </form>
-
-                <Container className={$CompassModal.editModalContainerButtons}>
-                  <Box className={$CompassModal.editModalButtonWrap}>
-                    <Button
-                      onClick={handleMainState}
-                      className={`${$button.secondary}`}
-                    >
-                      Cancel
-                    </Button>
-                    <Button
-                      className={`${$button.default}`}
-                      type="submit"
-                      form="edit"
-                    >
-                      Save
-                    </Button>
-                  </Box>
-                </Container>
-              </Stack>
-            </Typography>
-          </Box>
-        </Modal>
+          handleClose={handleClose}
+          student={student}
+          activeIep={activeIep}
+          startDate={startDate}
+          endDate={endDate}
+          setStartDate={setStartDate}
+          onSubmit={handleEditStudent}
+        />
       </div>
       <Container
         className={$StudentPage.studentInfoContainer}
@@ -271,16 +187,10 @@ const ViewStudentPage = () => {
           </p>
 
           <Box className={$StudentPage.displayBoxGap}>
-            <Button
-              onClick={() => setArchivePrompt(true)}
-              className={`${$button.tertiary}`}
-            >
+            <Button variant="tertiary" onClick={() => setArchivePrompt(true)}>
               Archive
             </Button>
-            <Button
-              className={`${$button.secondary}`}
-              onClick={handleEditState}
-            >
+            <Button variant="secondary" onClick={handleEditState}>
               Edit
             </Button>
           </Box>
@@ -318,16 +228,14 @@ const ViewStudentPage = () => {
                 src={noGoals}
                 alt="no IEP image"
                 className={$Image.fitContent}
+                priority={true}
               />
               <p className={$StudentPage.textSpacing}>
                 This student does not have an active IEP. Please create one.
               </p>
-              <button
-                onClick={() => setCreateIepModal(true)}
-                className={`${$button.default}`}
-              >
+              <Button onClick={() => setCreateIepModal(true)}>
                 Create IEP
-              </button>
+              </Button>
             </Box>
           </Container>
         ) : (
@@ -353,18 +261,8 @@ const ViewStudentPage = () => {
             </b>
           </p>
           <Box className={$StudentPage.archiveOptions}>
-            <button
-              className={`${$button.default}`}
-              onClick={() => handleArchiveStudent()}
-            >
-              Yes
-            </button>
-            <button
-              className={`${$button.default}`}
-              onClick={() => setArchivePrompt(false)}
-            >
-              No
-            </button>
+            <Button onClick={() => handleArchiveStudent()}>Yes</Button>
+            <Button onClick={() => setArchivePrompt(false)}>No</Button>
           </Box>
         </Box>
       </Modal>
@@ -410,15 +308,8 @@ const ViewStudentPage = () => {
               </Box>
 
               <Box className={$StudentPage.displayBox}>
-                <button type="submit" className={$button.default}>
-                  Create IEP
-                </button>
-                <button
-                  onClick={() => setCreateIepModal(false)}
-                  className={$button.default}
-                >
-                  Cancel
-                </button>
+                <Button type="submit">Create IEP</Button>
+                <Button onClick={() => setCreateIepModal(false)}>Cancel</Button>
               </Box>
             </div>
           </form>
@@ -426,6 +317,27 @@ const ViewStudentPage = () => {
       </Modal>
     </Stack>
   );
+};
+
+interface GetBreadcrumbsProps {
+  student?: Student;
+  isLinked?: boolean;
+}
+
+ViewStudentPage.getBreadcrumbs = function getBreadcrumbs({
+  student,
+  isLinked,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs: Breadcrumb[] = [
+    { href: "/students", children: "Students" },
+  ];
+  if (student) {
+    breadcrumbs.push({
+      href: isLinked ? `/students/${student.student_id}` : undefined,
+      children: `${student.first_name} ${student.last_name}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewStudentPage;

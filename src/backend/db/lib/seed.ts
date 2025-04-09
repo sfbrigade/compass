@@ -1,5 +1,6 @@
 import { logger } from "@/backend/lib";
 import { getDb } from "@/backend/db/lib/get-db";
+import { UserType } from "@/types/auth";
 
 export const seedfile = async (databaseUrl: string) => {
   const { db } = getDb(databaseUrl);
@@ -10,7 +11,7 @@ export const seedfile = async (databaseUrl: string) => {
     .select("user_id")
     .executeTakeFirstOrThrow();
 
-  await db
+  const { student_id: student_1_id } = await db
     .insertInto("student")
     .values({
       first_name: "Edna",
@@ -19,9 +20,10 @@ export const seedfile = async (databaseUrl: string) => {
       grade: 1,
       assigned_case_manager_id: firstuser.user_id,
     })
-    .execute();
+    .returning("student_id")
+    .executeTakeFirstOrThrow();
 
-  await db
+  const { student_id: student_2_id } = await db
     .insertInto("student")
     .values({
       first_name: "Colette",
@@ -30,7 +32,8 @@ export const seedfile = async (databaseUrl: string) => {
       grade: 2,
       assigned_case_manager_id: firstuser.user_id,
     })
-    .execute();
+    .returning("student_id")
+    .executeTakeFirstOrThrow();
 
   await db
     .insertInto("student")
@@ -49,7 +52,7 @@ export const seedfile = async (databaseUrl: string) => {
       first_name: "Helen",
       last_name: "Parr",
       email: "elastic@example.com",
-      role: "staff",
+      role: UserType.Para,
     })
     .returning("user_id")
     .executeTakeFirstOrThrow();
@@ -60,6 +63,177 @@ export const seedfile = async (databaseUrl: string) => {
     .values({
       case_manager_id: firstuser.user_id,
       para_id: user_id,
+    })
+    .execute();
+
+  const { iep_id: student_1_iep_id } = await db
+    .insertInto("iep")
+    .values({
+      case_manager_id: firstuser.user_id,
+      student_id: student_1_id,
+      start_date: new Date("2024-11-05"),
+      end_date: new Date("2028-12-31"),
+    })
+    .returning("iep_id")
+    .executeTakeFirstOrThrow();
+
+  const { iep_id: student_2_iep_id } = await db
+    .insertInto("iep")
+    .values({
+      case_manager_id: firstuser.user_id,
+      student_id: student_2_id,
+      start_date: new Date("2024-11-04"),
+      end_date: new Date("2028-12-30"),
+    })
+    .returning("iep_id")
+    .executeTakeFirstOrThrow();
+
+  const { goal_id: student_1_goal_1_id } = await db
+    .insertInto("goal")
+    .values({
+      iep_id: student_1_iep_id,
+      description: "Improve Spanish grade",
+      category: "other",
+      number: 1,
+    })
+    .returning("goal_id")
+    .executeTakeFirstOrThrow();
+
+  const { goal_id: student_1_goal_2_id } = await db
+    .insertInto("goal")
+    .values({
+      iep_id: student_1_iep_id,
+      description: "Come to class more punctually",
+      category: "other",
+      number: 2,
+    })
+    .returning("goal_id")
+    .executeTakeFirstOrThrow();
+
+  const { goal_id: student_2_goal_id } = await db
+    .insertInto("goal")
+    .values({
+      iep_id: student_2_iep_id,
+      description: "Organize notebook",
+      category: "other",
+      number: 1,
+    })
+    .returning("goal_id")
+    .executeTakeFirstOrThrow();
+
+  const { benchmark_id: benchmark_student_1_goal_1_id } = await db
+    .insertInto("benchmark")
+    .values({
+      goal_id: student_1_goal_1_id,
+      status: "In Progress",
+      description: "Create example sentences from vocab",
+      setup: "Make Google Sheets from vocab list",
+      instructions:
+        "Have student create example sentences for each vocab word in Google Sheets",
+      materials: "N/A",
+      frequency: "Once per week",
+      target_level: 60,
+      baseline_level: 0,
+      attempts_per_trial: 1,
+      number_of_trials: 16,
+      metric_name: "",
+      number: 1,
+    })
+    .returning("benchmark_id")
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("task")
+    .values({
+      benchmark_id: benchmark_student_1_goal_1_id,
+      assignee_id: firstuser.user_id,
+    })
+    .execute();
+
+  const { benchmark_id: benchmark_student_1_goal_2_id } = await db
+    .insertInto("benchmark")
+    .values({
+      goal_id: student_1_goal_2_id,
+      status: "In Progress",
+      description: "Create morning schedule",
+      setup: "Make Google Sheet of empty schedule",
+      instructions:
+        "Have student fill out schedule on Google Sheets and print it",
+      materials: "N/A",
+      frequency: "Once per week",
+      target_level: 60,
+      baseline_level: 0,
+      attempts_per_trial: 1,
+      number_of_trials: 16,
+      metric_name: "",
+      number: 1,
+    })
+    .returning("benchmark_id")
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("task")
+    .values({
+      benchmark_id: benchmark_student_1_goal_2_id,
+      assignee_id: firstuser.user_id,
+    })
+    .execute();
+
+  const { benchmark_id: benchmark_1_student_2_goal_id } = await db
+    .insertInto("benchmark")
+    .values({
+      goal_id: student_2_goal_id,
+      status: "In Progress",
+      description: "Consolidate new class handouts",
+      setup: "N/A",
+      instructions:
+        "Have student write dates and sort handouts by date and class",
+      materials: "Pen, folders for each class",
+      frequency: "Tuesdays and Fridays",
+      target_level: 80,
+      baseline_level: 0,
+      attempts_per_trial: 4,
+      number_of_trials: 16,
+      metric_name: "",
+      number: 1,
+    })
+    .returning("benchmark_id")
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("task")
+    .values({
+      benchmark_id: benchmark_1_student_2_goal_id,
+      assignee_id: firstuser.user_id,
+    })
+    .execute();
+
+  const { benchmark_id: benchmark_2_student_2_goal_id } = await db
+    .insertInto("benchmark")
+    .values({
+      goal_id: student_2_goal_id,
+      status: "In Progress",
+      description: "Insert handouts into notebooks in appropriate place",
+      setup: "N/A",
+      instructions:
+        "Have student insert sorted notes into notebooks in appropriate position by dates",
+      materials: "Pen, folders for each class",
+      frequency: "Tuesdays and Fridays",
+      target_level: 80,
+      baseline_level: 0,
+      attempts_per_trial: 4,
+      number_of_trials: 16,
+      metric_name: "",
+      number: 2,
+    })
+    .returning("benchmark_id")
+    .executeTakeFirstOrThrow();
+
+  await db
+    .insertInto("task")
+    .values({
+      benchmark_id: benchmark_2_student_2_goal_id,
+      assignee_id: firstuser.user_id,
     })
     .execute();
 

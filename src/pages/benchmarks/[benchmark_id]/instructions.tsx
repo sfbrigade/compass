@@ -1,52 +1,45 @@
-import ParaNav from "@/components/paraNav/ParaNav";
 import React from "react";
 import $box from "@/styles/Box.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
-import $typo from "@/styles/Typography.module.css";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { trpc } from "@/client/lib/trpc";
+import Button from "@/components/design_system/button/Button";
 
 const InstructionsPage = () => {
   const router = useRouter();
   const { benchmark_id } = router.query;
-  const { data: subgoal, isLoading } = trpc.iep.getSubgoalAndTrialData.useQuery(
-    { task_id: benchmark_id as string },
-    { enabled: Boolean(benchmark_id) }
-  );
+  const { data: benchmark, isLoading } =
+    trpc.iep.getBenchmarkAndTrialData.useQuery(
+      { benchmark_id: benchmark_id as string },
+      { enabled: Boolean(benchmark_id) },
+    );
 
-  if (isLoading || !subgoal) {
+  if (isLoading || !benchmark) {
     return <div>Loading...</div>;
   }
   return (
     <div>
-      <ParaNav />
       <div className={$box.default}>
         <h4>Goal:</h4>
-        <p>{subgoal.description}</p>
+        <p>{benchmark.description}</p>
       </div>
       <div className={$box.default}>
         <h4>Frequency:</h4>
-        <p>*insert frequency here*</p>
+        <p>{benchmark.frequency}</p>
       </div>
       <div className={$box.default}>
         <h4>Materials:</h4>
-        <ol className={$typo.orderList}>
-          <li>insert</li>
-          <li>materials</li>
-          <li>here</li>
-        </ol>
+        <p>{benchmark.materials}</p>
       </div>
       <div className={$box.default}>
         <h4>Set-up:</h4>
-        <p>{subgoal.instructions}</p>
+        <p>{benchmark.instructions}</p>
       </div>
-      <Link
-        href={`/benchmarks/${benchmark_id as string}`}
-        className={`${$button.default} ${$button.fixedToBottom}`}
+      <Button
+        onClick={() => router.push(`/benchmarks/${benchmark_id as string}`)}
+        sx={{ width: "100%" }}
       >
-        Collect data
-      </Link>
+        Collect Data
+      </Button>
     </div>
   );
 };

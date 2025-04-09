@@ -1,32 +1,50 @@
-import React from "react";
-import NavBar from "../navbar/NavBar";
-import $layout from "./Layout.module.css";
-import { useRouter } from "next/router";
+import { useEffect, ReactNode } from "react";
+import { useSession } from "next-auth/react";
+import { Container } from "@mui/material";
+
 import { requiresLogin } from "@/client/lib/authenticated-page";
+import Breadcrumbs, {
+  Breadcrumb,
+} from "@/components/design_system/breadcrumbs/Breadcrumbs";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import Header from "@/components/header/Header";
+import Navigation from "@/components/navigation/Navigation";
+
+import classes from "./Layout.module.css";
 
 interface LayoutProps {
-  children: React.ReactNode;
+  initialBreadcrumbs?: Breadcrumb[];
+  children: ReactNode;
 }
 
-const Layout = ({ children }: LayoutProps) => {
-  const router = useRouter();
-  // TODO?: Are there better ways to achieve this?
-  //Sets purple background for student profile and instructions routes
-  const isPurpleBg =
-    router.asPath.includes("/studentprofile") ||
-    router.asPath.includes("/instructions");
+const Layout = ({ initialBreadcrumbs, children }: LayoutProps) => {
+  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbsContext();
+  const { status } = useSession();
+  const isSignedIn = "authenticated" === status;
+
+  useEffect(() => {
+    setBreadcrumbs(initialBreadcrumbs);
+  }, [initialBreadcrumbs, setBreadcrumbs]);
 
   return (
-    <div className={$layout.container}>
-      <NavBar />
-      <main
-        className={`${isPurpleBg ? $layout.mainPurple : $layout.main}
-        ${router.query.student_id ? $layout.mainStudent : ""}
-        ${router.query.goal_id ? $layout.mainGoal : ""}
-        ${router.query.user_id ? $layout.mainStaff : ""}
-        ${router.pathname.includes("benchmarks") ? $layout.mainPurple : ""}`}
-      >
-        {children}
+    <div className={classes.layout}>
+      {isSignedIn && (
+        <>
+          <div className={classes.layout__header}>
+            <Header />
+          </div>
+          <div className={classes.layout__sidebar}>
+            <Navigation />
+          </div>
+        </>
+      )}
+      {breadcrumbs && (
+        <div className={classes.layout__breadcrumbs}>
+          <Breadcrumbs data={breadcrumbs} />
+        </div>
+      )}
+      <main className={classes.layout__main}>
+        <Container>{children}</Container>
       </main>
     </div>
   );

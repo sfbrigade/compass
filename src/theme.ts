@@ -1,9 +1,9 @@
-import { BorderAllRounded, BorderColor } from "@mui/icons-material";
-import { createTheme } from "@mui/material";
+import { createTheme, Shadows } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
 export const compassTheme = createTheme({
+  cssVariables: true,
   palette: {
     primary: {
       main: "#3023b8", // --primary-50
@@ -33,9 +33,9 @@ export const compassTheme = createTheme({
     "0px 1px 3px 0px rgba(0, 0, 0, 0.30), 0px 4px 8px 3px rgba(0, 0, 0, 0.15)",
     "0px 2px 3px 0px rgba(0, 0, 0, 0.30), 0px 6px 10px 4px rgba(0, 0, 0, 0.15)",
     "0px 4px 4px 0px rgba(0, 0, 0, 0.30), 0px 8px 12px 6px rgba(0, 0, 0, 0.15)",
-    ...new Array(20).map(() => "none"),
+    ...new Array(19).map(() => "none"),
     // type requires 20+ elements
-  ] as any,
+  ] as Shadows,
   typography: {
     allVariants: {
       letterSpacing: "normal",
@@ -95,6 +95,7 @@ export const compassTheme = createTheme({
       fontSize: "1em",
       fontFamily: "var(--quicksand), sans-serif",
       lineHeight: "150%",
+      textTransform: "none",
     },
     caption: {
       fontWeight: 400,
@@ -104,14 +105,135 @@ export const compassTheme = createTheme({
     },
     overline: {
       fontWeight: 600,
-      fontSize: "0.75em",
+      fontSize: "0.75rem",
       fontFamily: "var(--inter), sans-serif",
+      textTransform: "uppercase",
     },
   },
   components: {
     MuiCheckbox: {
       defaultProps: {
         disableRipple: true,
+      },
+    },
+    MuiTextField: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputLabel-outlined": {
+            color: "var(--grey-10)",
+            "&.Mui-focused": {
+              color: "var(--primary)",
+            },
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "var(--grey-10)",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "1px",
+            },
+            "&.Mui-focused": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primary)",
+                borderWidth: "2px",
+              },
+            },
+            "&:hover:not(.Mui-focused)": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--grey-10)",
+              },
+            },
+          },
+        },
+      },
+    },
+    MuiStep: {
+      defaultProps: {},
+      styleOverrides: {
+        root: ({ ownerState }) => ({
+          padding: 0,
+          marginRight: !ownerState.last ? "16px" : 0,
+          "&.Mui-disabled": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-active": {
+            //TODO: broken b/c MUI does not add this className as described in MUI docs
+          },
+          "&.Mui-completed": {
+            //TODO: this works, but the others are broken b/c MUI does not add their classNames as described in MUI docs; once fixed, we can move the purple border-top styling here instead
+          },
+        }),
+      },
+    },
+    MuiStepLabel: {
+      styleOverrides: {
+        iconContainer: ({ theme }) => ({
+          position: "absolute",
+          left: 0,
+          height: "100%",
+          display: "flex",
+          alignItems: "center",
+          "&.Mui-disabled": {
+            color: "#a2acb3",
+          },
+          "&.Mui-active": {
+            color: theme.palette.primary.light,
+          },
+          "&.Mui-completed": {
+            color: theme.palette.primary.main,
+          },
+        }),
+        label: ({ theme }) => ({
+          padding: "9px",
+          paddingLeft: "32px",
+          textAlign: "left",
+          "&.MuiStepLabel-alternativeLabel": {
+            marginTop: 0,
+            textAlign: "left",
+          },
+          "&.Mui-disabled": {
+            color: "#2A333C",
+            borderTop: `4px solid #a2acb3`,
+          },
+          "&.Mui-active": {
+            color: "#2A333C",
+            borderTop: `4px solid ${theme.palette.primary.light}`,
+          },
+          "&.Mui-completed": {
+            color: theme.palette.primary.main,
+            borderTop: `4px solid ${theme.palette.primary.main}`,
+          },
+        }),
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "var(--primary)",
+            borderWidth: "1px",
+          },
+          "&.Mui-focused": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "2px",
+            },
+          },
+          "&:hover:not(.Mui-focused)": {
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--grey-10)",
+            },
+          },
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-10)",
+          "&.Mui-focused": {
+            color: "var(--primary)",
+          },
+        },
       },
     },
   },

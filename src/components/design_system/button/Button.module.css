@@ -1,164 +1,85 @@
-.default {
+.button {
   display: block;
-  background-color: var(--primary);
-  border: none;
-  color: var(--on-primary);
-  padding: 10px 12px;
-  border-radius: 8px;
+  border-style: solid;
+  border-width: 1px;
   cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  font-size: var(--base-size);
   font-family: var(--quicksand);
-  font-weight: normal;
-  text-transform: none;
-  line-height: normal;
+  font-weight: var(--semibold);
   letter-spacing: 0;
   min-width: 0;
+  text-decoration: none;
+  text-align: center;
+  text-transform: none;
 }
 
-.default:hover {
-  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3),
+.button--small {
+  border-radius: 0.5rem;
+  font-size: var(--base-size);
+  line-height: 1.25;
+  padding: 0.4375rem 0.4375rem;
+}
+
+.button--large {
+  border-radius: 0.5rem;
+  font-size: var(--base-size);
+  line-height: 1.5;
+  padding: 0.4375rem 1.4375rem;
+}
+
+.button--primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+  color: var(--on-primary);
+}
+
+.button--primary:hover {
+  box-shadow:
+    0px 1px 2px 0px rgba(0, 0, 0, 0.3),
     0px 1px 3px 1px rgba(0, 0, 0, 0.15);
   background-color: var(--primary-50);
 }
 
-.default:active {
+.button--primary:active {
   background-color: var(--primary-60);
 }
 
-.default:disabled {
+.button--primary:disabled {
+  border-color: var(--grey-70);
   background-color: var(--grey-70);
   color: var(--grey-50);
   cursor: default;
 }
 
-.default:disabled:hover {
+.button--primary:disabled:hover {
   box-shadow: none;
 }
 
-.secondary {
-  display: block;
-  border: 1px solid var(--primary-50);
-  color: var(--primary-50);
-  padding: 10px 12px;
-  border-radius: 8px;
-  cursor: pointer;
-  text-decoration: none;
-  text-align: center;
-  font-size: var(--base-size);
+.button--secondary {
   background-color: inherit;
-  font-family: var(--quicksand);
-  text-transform: none;
-  line-height: normal;
-  letter-spacing: 0;
-  min-width: 0;
+  border-color: var(--primary-50);
+  color: var(--primary-50);
 }
 
-.secondary:hover {
+.button--secondary:hover {
   background-color: var(--primary-container);
 }
 
-.tertiary {
-  display: block;
+.button--secondary:disabled {
+  border-color: var(--grey-50);
+}
+
+.button--tertiary {
+  background-color: inherit;
+  border-color: transparent;
   color: var(--primary-50);
-  padding: 10px 12px;
-  border-radius: 8px;
-  cursor: pointer;
   text-decoration: underline;
-  text-align: center;
-  font-size: var(--base-size);
-  background-color: inherit;
-  font-family: var(--quicksand);
-  text-transform: none;
-  line-height: normal;
-  letter-spacing: 0;
-  min-width: 0;
 }
 
-.tertiary:hover {
+.button--tertiary:hover {
   background-color: var(--primary-container);
-}
-
-.about {
-  border: none;
-  background-color: transparent;
-}
-
-.about {
-  cursor: pointer;
-}
-
-.pilled {
-  border-radius: 20px;
-  padding: 5px 10px;
-  background-color: var(--primary-90);
-}
-
-.circular {
-  aspect-ratio: 1 / 1;
-  padding: 2px;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 0.5em;
-}
-
-.inactive {
-  background-color: var(--grey-70);
-  color: var(--grey-50);
-  pointer-events: none;
-}
-
-.switch {
-  color: var(--primary);
-  background-color: inherit;
-  border: 1px solid var(--grey-50);
-  padding: 10px;
-  cursor: pointer;
   text-decoration: none;
-  text-align: center;
 }
 
-.switchActive {
-  composes: switch;
-  background-color: var(--primary-90);
-  color: var(--primary-10);
-  border: 1px solid var(--primary-60);
-}
-
-.leftPill {
-  border-radius: 8px 0 0 8px;
-}
-
-.rightPill {
-  border-radius: 0 8px 8px 0;
-}
-
-.fixedToBottom {
-  position: absolute;
-  bottom: 1em;
-  left: 1em;
-  right: 1em;
-}
-
-@media only screen and (min-width: 480px) {
-}
-
-/* Small Devices, Tablets */
-@media only screen and (min-width: 768px) {
-}
-
-/* Medium Devices, Desktops */
-@media only screen and (min-width: 992px) {
-  .fixedToBottom {
-    bottom: 3em;
-    left: 5em;
-    right: 5em;
-  }
-}
-
-/* Large Devices, Wide Screens */
-@media only screen and (min-width: 1200px) {
+.button--tertiary:disabled {
+  text-decoration: none;
 }

@@ -5,12 +5,12 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasPara, router } from "../trpc";
 import { randomUUID } from "crypto";
 import { deleteFile } from "../lib/files";
 
 export const file = router({
-  getMyFiles: authenticatedProcedure.query(async (req) => {
+  getMyFiles: hasPara.query(async (req) => {
     return req.ctx.db
       .selectFrom("file")
       .selectAll()
@@ -18,11 +18,11 @@ export const file = router({
       .execute();
   }),
 
-  getPresignedUrlForFileDownload: authenticatedProcedure
+  getPresignedUrlForFileDownload: hasPara
     .input(
       z.object({
         file_id: z.string().uuid(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const file = await req.ctx.db
@@ -50,11 +50,11 @@ export const file = router({
       };
     }),
 
-  getPresignedUrlForFileUpload: authenticatedProcedure
+  getPresignedUrlForFileUpload: hasPara
     .input(
       z.object({
         type: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const key = randomUUID();
@@ -71,12 +71,12 @@ export const file = router({
       return { url, key };
     }),
 
-  finishFileUpload: authenticatedProcedure
+  finishFileUpload: hasPara
     .input(
       z.object({
         filename: z.string(),
         key: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const command = new HeadObjectCommand({
@@ -99,11 +99,11 @@ export const file = router({
       return file;
     }),
 
-  deleteFile: authenticatedProcedure
+  deleteFile: hasPara
     .input(
       z.object({
         file_id: z.string().uuid(),
-      })
+      }),
     )
     .mutation(async (req) => {
       await deleteFile(req.input.file_id, req.ctx);

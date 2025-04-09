@@ -15,7 +15,6 @@ import { visuallyHidden } from "@mui/utils";
 import SearchIcon from "@mui/icons-material/Search";
 import CloseIcon from "@mui/icons-material/Close";
 import $table from "./Table.module.css";
-import $button from "@/components/design_system/button/Button.module.css";
 import { useRouter } from "next/router";
 import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
@@ -23,6 +22,8 @@ import Container from "@mui/material/Container";
 import Image from "next/image";
 import { SearchBar } from "../design_system/searchBar/SearchBar";
 import { TextInput } from "../design_system/input/Input";
+
+import Button from "@/components/design_system/button/Button";
 
 export type StudentWithIep = SelectableForTable<"student"> &
   SelectableForTable<"iep">;
@@ -43,7 +44,7 @@ export interface ParaHeadCell extends HeadCell {
 }
 
 export function isStudentWithIep(
-  person: StudentWithIep | Para
+  person: StudentWithIep | Para,
 ): person is StudentWithIep {
   return (
     (person as StudentWithIep).student_id !== undefined &&
@@ -65,7 +66,7 @@ type Order = "asc" | "desc";
 
 function getComparator<T>(
   order: Order,
-  orderBy: keyof T
+  orderBy: keyof T,
 ): (a: T, b: T) => number {
   return order === "desc"
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -154,7 +155,6 @@ function EnhancedTableToolbar({
             }}
           >
             <h3 className={$table.tableTitle}>{type}</h3>
-
             <div
               style={{
                 display: "flex",
@@ -176,9 +176,7 @@ function EnhancedTableToolbar({
                 value={searchParam}
                 onChange={onSearch}
               />
-              <button onClick={onOpenInput} className={`${$button.default}`}>
-                Add {type}
-              </button>
+              <Button onClick={onOpenInput}>Add {type}</Button>
             </div>
           </div>
           <div
@@ -229,13 +227,9 @@ function EnhancedTableInput<Column extends HeadCell>({
         ) : null;
       })}
       <TableCell>
-        <button
-          type="submit"
-          form="table_input_form"
-          className={$button.default}
-        >
+        <Button type="submit" form="table_input_form">
           Add {type}
-        </button>
+        </Button>
       </TableCell>
       <TableCell padding="checkbox" align="center">
         <button onClick={onCloseInput} className={$table.closeButton}>
@@ -274,7 +268,7 @@ interface EnhancedTableProps<Person, Column> {
  */
 export default function EnhancedTable<
   Person extends StudentWithIep | Para,
-  Column extends HeadCell
+  Column extends HeadCell,
 >({ people, onSubmit, headCells, type }: EnhancedTableProps<Person, Column>) {
   const router = useRouter();
 
@@ -297,7 +291,7 @@ export default function EnhancedTable<
 
   const handleRequestSort = (
     event: React.MouseEvent<unknown>,
-    property: string
+    property: string,
   ) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -324,7 +318,7 @@ export default function EnhancedTable<
 
       return filteredList;
     },
-    [headCells]
+    [headCells],
   );
 
   const visibleRows = useMemo(() => {
@@ -359,12 +353,7 @@ export default function EnhancedTable<
             <p style={{ color: "var(--grey-20)", textAlign: "center" }}>
               Start building your roster by adding a {type.toLocaleLowerCase()}.
             </p>
-            <button
-              onClick={() => setShowInput(true)}
-              className={`${$button.default}`}
-            >
-              Add {type}
-            </button>
+            <Button onClick={() => setShowInput(true)}>Add {type}</Button>
           </Box>
         </Container>
       )}
@@ -400,7 +389,7 @@ export default function EnhancedTable<
                       handleLinkToPage(
                         isStudentWithIep(row)
                           ? `../students/${row.student_id || ""}`
-                          : `../staff/${row.user_id || ""}`
+                          : `../staff/${row.user_id || ""}`,
                       )
                     }
                   >

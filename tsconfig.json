@@ -17,8 +17,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"]
-    }
+    },
+    "sourceMap": true
   },
-  "include": ["next-env.d.ts", "references.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "src/modules.d.ts",
+    "next-env.d.ts",
+    "references.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ],
   "exclude": ["node_modules"]
 }

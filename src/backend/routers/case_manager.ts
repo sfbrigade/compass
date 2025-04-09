@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { authenticatedProcedure, router } from "../trpc";
+import { hasCaseManager, router } from "../trpc";
 import {
   createPara,
   assignParaToCaseManager,
@@ -10,7 +10,7 @@ export const case_manager = router({
   /**
    * Get all students assigned to the current user
    */
-  getMyStudents: authenticatedProcedure.query(async (req) => {
+  getMyStudents: hasCaseManager.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -22,13 +22,13 @@ export const case_manager = router({
     return result;
   }),
 
-  getMyStudentsAndIepInfo: authenticatedProcedure.query(async (req) => {
+  getMyStudentsAndIepInfo: hasCaseManager.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const studentData = await req.ctx.db
       .selectFrom("iep")
       .fullJoin("student", (join) =>
-        join.onRef("student.student_id", "=", "iep.student_id")
+        join.onRef("student.student_id", "=", "iep.student_id"),
       )
       .where("assigned_case_manager_id", "=", userId)
       .select([
@@ -50,14 +50,14 @@ export const case_manager = router({
    * it doesn't already exist. Throws an error if the student is already
    * assigned to another CM.
    */
-  addStudent: authenticatedProcedure
+  addStudent: hasCaseManager
     .input(
       z.object({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
         grade: z.number(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
@@ -72,7 +72,7 @@ export const case_manager = router({
   /**
    * Edits the given student in the CM's roster. Throws an error if the student was not found in the db.
    */
-  editStudent: authenticatedProcedure
+  editStudent: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
@@ -80,7 +80,7 @@ export const case_manager = router({
         last_name: z.string(),
         email: z.string().email(),
         grade: z.number(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id, first_name, last_name, email, grade } = req.input;
@@ -115,11 +115,11 @@ export const case_manager = router({
   /**
    * Removes the case manager associated with this student.
    */
-  removeStudent: authenticatedProcedure
+  removeStudent: hasCaseManager
     .input(
       z.object({
         student_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { student_id } = req.input;
@@ -131,7 +131,7 @@ export const case_manager = router({
         .execute();
     }),
 
-  getMyParas: authenticatedProcedure.query(async (req) => {
+  getMyParas: hasCaseManager.query(async (req) => {
     const { userId } = req.ctx.auth;
 
     const result = await req.ctx.db
@@ -139,7 +139,7 @@ export const case_manager = router({
       .innerJoin(
         "paras_assigned_to_case_manager",
         "user.user_id",
-        "paras_assigned_to_case_manager.para_id"
+        "paras_assigned_to_case_manager.para_id",
       )
       .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
       .selectAll()
@@ -152,57 +152,57 @@ export const case_manager = router({
    * Handles creation of para and assignment to user, attempts to send
    * email but does not await email success
    */
-  addStaff: authenticatedProcedure
+  addStaff: hasCaseManager
     .input(
       z.object({
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const para = await createPara(
         req.input,
         req.ctx.db,
-        req.ctx.auth.userId,
-        req.ctx.env.EMAIL,
+        req.ctx.auth.session.user?.name ?? "",
+        req.ctx.env.EMAIL_FROM,
         req.input.email,
-        req.ctx.env
+        req.ctx.env,
       );
 
       return await assignParaToCaseManager(
-        para?.user_id || "",
+        para.user_id,
         req.ctx.auth.userId,
-        req.ctx.db
+        req.ctx.db,
       );
     }),
 
   /**
    * Deprecated: use addStaff instead
    */
-  addPara: authenticatedProcedure
+  addPara: hasCaseManager
     .input(
       z.object({
         para_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       await assignParaToCaseManager(
         req.input.para_id,
         req.ctx.auth.userId,
-        req.ctx.db
+        req.ctx.db,
       );
       return;
     }),
 
-  editPara: authenticatedProcedure
+  editPara: hasCaseManager
     .input(
       z.object({
         para_id: z.string(),
         first_name: z.string(),
         last_name: z.string(),
         email: z.string().email(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { para_id, first_name, last_name, email } = req.input;
@@ -214,7 +214,7 @@ export const case_manager = router({
           .innerJoin(
             "paras_assigned_to_case_manager",
             "user.user_id",
-            "paras_assigned_to_case_manager.para_id"
+            "paras_assigned_to_case_manager.para_id",
           )
           .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
           .selectAll();
@@ -236,11 +236,11 @@ export const case_manager = router({
         .executeTakeFirstOrThrow();
     }),
 
-  removePara: authenticatedProcedure
+  removePara: hasCaseManager
     .input(
       z.object({
         para_id: z.string(),
-      })
+      }),
     )
     .mutation(async (req) => {
       const { para_id } = req.input;

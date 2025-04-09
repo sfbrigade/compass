@@ -1,7 +1,11 @@
-module.exports = {
+const avaConfig = {
   timeout: "90s",
   files: ["src/**/*.test.ts"],
   extensions: ["ts"],
-  require: ["@esbuild-kit/cjs-loader"],
-  ignoredByWatcher: ["**/.next/**"],
+  require: ["tsx"],
+  nodeArguments: ["--no-warnings"],
+  watchMode: {
+    ignoreChanges: ["**/.next/**"],
+  },
 };
+export default avaConfig;
