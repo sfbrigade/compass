@@ -34,7 +34,7 @@ function Button({
         classes.button,
         classes[`button--${size}`],
         classes[`button--${variant}`],
-        className,
+        className
       )}
       disabled={disabled}
       form={form}

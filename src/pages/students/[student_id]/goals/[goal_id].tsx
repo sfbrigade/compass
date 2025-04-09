@@ -22,12 +22,12 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
 
   const { data: student } = trpc.student.getStudentById.useQuery(
     { student_id },
-    { enabled: Boolean(student_id), retry: false },
+    { enabled: Boolean(student_id), retry: false }
   );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
-    { enabled: Boolean(goal_id) },
+    { enabled: Boolean(goal_id) }
   );
 
   useEffect(() => {
@@ -38,13 +38,13 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
 
   const { data: benchmarks } = trpc.iep.getBenchmarks.useQuery(
     { goal_id: goal_id },
-    { enabled: Boolean(goal_id) },
+    { enabled: Boolean(goal_id) }
   );
 
   function onUpdate(benchmark: Benchmark) {
     const newBenchmarks = [...(benchmarks ?? [])];
     const index = newBenchmarks.findIndex(
-      (b) => b.benchmark_id === benchmark.benchmark_id,
+      (b) => b.benchmark_id === benchmark.benchmark_id
     );
     newBenchmarks[index] = benchmark;
     utils.iep.getBenchmarks.setData({ goal_id: goal_id }, newBenchmarks);

@@ -67,7 +67,7 @@ export const user = router({
           eb("last_name", "ilike", `%${search}%`),
           eb("email", "ilike", `%${search}%`),
           eb("role", "ilike", `%${search}%`),
-        ]),
+        ])
       );
     }
 
@@ -84,7 +84,7 @@ export const user = router({
           eb("last_name", "ilike", `%${search}%`),
           eb("email", "ilike", `%${search}%`),
           eb("role", "ilike", `%${search}%`),
-        ]),
+        ])
       );
     }
 
@@ -180,7 +180,7 @@ export const user = router({
               return UserType.User;
           }
         }),
-      }),
+      })
     )
     .mutation(async (req) => {
       const { user_id, first_name, last_name, email, role } = req.input;

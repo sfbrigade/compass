@@ -14,7 +14,7 @@ const ReviewPage = () => {
       },
       {
         enabled: Boolean(benchmark_id),
-      },
+      }
     );
 
   const updateTrialMutation = trpc.iep.updateTrialData.useMutation();

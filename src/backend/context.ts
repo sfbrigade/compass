@@ -24,7 +24,7 @@ export type tRPCContext = ReturnType<typeof getDb> & {
 };
 
 export const createContext = async (
-  options: CreateNextContextOptions,
+  options: CreateNextContextOptions
 ): Promise<tRPCContext> => {
   const env = (options.req.env as unknown as Env) ?? process.env;
   const {
@@ -41,7 +41,7 @@ export const createContext = async (
   const session = await getServerSession(
     options.req,
     options.res,
-    getNextAuthOptions(db),
+    getNextAuthOptions(db)
   );
   if (session && session.user?.email) {
     const user = await db

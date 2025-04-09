@@ -4,7 +4,7 @@ import { substituteTransactionOnContext } from "./utils/context";
 
 const deleteFileWithoutTransaction = async (
   fileId: string,
-  ctx: tRPCContext,
+  ctx: tRPCContext
 ) => {
   if (ctx.auth.type === "none") {
     throw new Error("File deletion requires authentication.");
@@ -21,7 +21,7 @@ const deleteFileWithoutTransaction = async (
     new DeleteObjectCommand({
       Bucket: ctx.env.S3_USER_UPLOADS_BUCKET_NAME,
       Key: ext_s3_path,
-    }),
+    })
   );
 };
 
@@ -33,7 +33,7 @@ export const deleteFile = async (fileId: string, ctx: tRPCContext) => {
   await ctx.db.transaction().execute(async (trx) => {
     await deleteFileWithoutTransaction(
       fileId,
-      substituteTransactionOnContext(trx, ctx),
+      substituteTransactionOnContext(trx, ctx)
     );
   });
 };

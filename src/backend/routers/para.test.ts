@@ -34,7 +34,7 @@ test("getParaById - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -70,7 +70,7 @@ test("getParaByEmail - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -90,7 +90,7 @@ test("createPara", async (t) => {
       .selectFrom("user")
       .where("first_name", "=", "Foo")
       .selectAll()
-      .executeTakeFirst(),
+      .executeTakeFirst()
   );
 
   // mail is sent asynchronously in promise, so wait a bit
@@ -101,7 +101,7 @@ test("createPara", async (t) => {
   t.true(
     nodemailerMock.mock
       .getSentMail()
-      .some((mail) => mail.subject?.includes("classroom")),
+      .some((mail) => mail.subject?.includes("classroom"))
   );
 });
 
@@ -119,7 +119,7 @@ test("createPara - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -161,7 +161,7 @@ test("createPara - invalid email", async (t) => {
       first_name: "Foo",
       last_name: "Bar",
       email: "invalid-email",
-    }),
+    })
   );
 });
 
@@ -277,6 +277,6 @@ test("getMyTasks - regular users don't have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });

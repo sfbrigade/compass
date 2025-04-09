@@ -10,7 +10,7 @@ const InstructionsPage = () => {
   const { data: benchmark, isLoading } =
     trpc.iep.getBenchmarkAndTrialData.useQuery(
       { benchmark_id: benchmark_id as string },
-      { enabled: Boolean(benchmark_id) },
+      { enabled: Boolean(benchmark_id) }
     );
 
   if (isLoading || !benchmark) {

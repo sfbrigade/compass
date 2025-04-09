@@ -19,7 +19,7 @@ export interface ExtendedAdapter extends Adapter {
 }
 
 const mapStoredUserToAdapterUser = (
-  user: Selectable<ZapatosTableNameToKyselySchema<"user">>,
+  user: Selectable<ZapatosTableNameToKyselySchema<"user">>
 ): CustomAdapterUser => ({
   id: user.user_id,
   email: user.email,
@@ -30,7 +30,7 @@ const mapStoredUserToAdapterUser = (
 });
 
 const mapStoredSessionToAdapterSession = (
-  session: Selectable<ZapatosTableNameToKyselySchema<"session">>,
+  session: Selectable<ZapatosTableNameToKyselySchema<"session">>
 ): AdapterSession => ({
   sessionToken: session.session_token,
   userId: session.user_id,
@@ -45,7 +45,7 @@ const mapStoredSessionToAdapterSession = (
  * See https://next-auth.js.org/tutorials/creating-a-database-adapter
  */
 export const createPersistedAuthAdapter = (
-  db: KyselyDatabaseInstance,
+  db: KyselyDatabaseInstance
 ): ExtendedAdapter => ({
   async createUser(user: Omit<AdapterUser, "id">) {
     const numOfUsers = await db
@@ -164,7 +164,7 @@ export const createPersistedAuthAdapter = (
       .insertInto("account")
       .values(data)
       .onConflict((b) =>
-        b.columns(["provider_name", "provider_account_id"]).doUpdateSet(data),
+        b.columns(["provider_name", "provider_account_id"]).doUpdateSet(data)
       )
       .execute();
   },

@@ -12,11 +12,11 @@ interface MigrateOptions {
 
 export const migrate = async (
   databaseUrl: string,
-  { silent = false, shouldGenerateTypes = true }: MigrateOptions = {},
+  { silent = false, shouldGenerateTypes = true }: MigrateOptions = {}
 ) => {
   const migrationsDirectory = path.join(
     process.cwd(),
-    "src/backend/db/migrations",
+    "src/backend/db/migrations"
   );
   const zapatosDirectory = path.join(process.cwd(), "src/backend/db");
 

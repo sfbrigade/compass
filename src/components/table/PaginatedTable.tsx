@@ -129,7 +129,7 @@ export function PaginatedTable<T extends UserBase>({
                               setNewRowData((prev) => ({
                                 ...prev,
                                 [column.id]: value,
-                              })),
+                              }))
                           )}
                         </Box>
                       ))}

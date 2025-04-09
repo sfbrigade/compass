@@ -5,7 +5,7 @@ import { ColumnDefinition, UserBase, SelectOption } from "./types";
 export function renderTableInput<T extends UserBase>(
   column: ColumnDefinition<T>,
   value: T[keyof T] | undefined,
-  onChange: (value: T[keyof T]) => void,
+  onChange: (value: T[keyof T]) => void
 ): React.ReactNode {
   switch (column.type) {
     case "text":
@@ -43,7 +43,7 @@ export function renderTableInput<T extends UserBase>(
 
 export function renderTableCell<T extends UserBase>(
   column: ColumnDefinition<T>,
-  value: T[keyof T],
+  value: T[keyof T]
 ): React.ReactNode {
   if (column.customRender) {
     return column.customRender(value);

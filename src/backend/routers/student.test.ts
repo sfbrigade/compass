@@ -34,7 +34,7 @@ test("getStudentById - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -111,7 +111,7 @@ test("addIep - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -127,7 +127,7 @@ test("getIeps - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -197,7 +197,7 @@ test("editIep - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -237,7 +237,7 @@ test("getActiveStudentIep - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 

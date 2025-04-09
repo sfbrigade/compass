@@ -73,7 +73,7 @@ export default function App({ Component, pageProps }: CustomAppProps) {
             refetchOnWindowFocus: false,
           },
         },
-      }),
+      })
   );
 
   const [trpcClient] = useState(() =>
@@ -91,7 +91,7 @@ export default function App({ Component, pageProps }: CustomAppProps) {
           url: `${getBaseUrl()}/api/trpc`,
         }),
       ],
-    }),
+    })
   );
 
   const handleTRPCError = (error: unknown) => {

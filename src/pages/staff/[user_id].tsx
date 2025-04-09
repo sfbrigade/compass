@@ -41,7 +41,7 @@ const ViewParaPage: NextPageWithBreadcrumbs = () => {
       enabled: Boolean(user_id),
       retry: false,
       onError: () => returnToStaffList(),
-    },
+    }
   );
 
   useEffect(() => {

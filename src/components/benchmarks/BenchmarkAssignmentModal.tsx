@@ -43,7 +43,7 @@ const STEPS = ["PARA_SELECTION", "DURATION_SELECTION"];
 type Step = (typeof STEPS)[number];
 
 export const BenchmarkAssignmentModal = (
-  props: BenchmarkAssignmentModalProps,
+  props: BenchmarkAssignmentModalProps
 ) => {
   const [selectedParaIds, setSelectedParaIds] = useState<string[]>([]);
   const [assignmentDuration, setAssignmentDuration] =

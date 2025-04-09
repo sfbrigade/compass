@@ -54,7 +54,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       enabled: Boolean(student_id),
       retry: false,
       onError: () => returnToStudentList(),
-    },
+    }
   );
 
   useEffect(() => {
@@ -70,7 +70,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
 
   const { data: activeIep } = trpc.student.getActiveStudentIep.useQuery(
     { student_id: student_id as string },
-    { enabled: Boolean(student_id), retry: false },
+    { enabled: Boolean(student_id), retry: false }
   );
 
   const editMutation = trpc.case_manager.editStudent.useMutation({

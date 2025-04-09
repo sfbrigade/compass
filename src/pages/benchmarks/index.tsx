@@ -28,7 +28,7 @@ const Benchmarks = () => {
           if (a[sortProperty] > b[sortProperty])
             return sortDirection === "asc" ? 1 : -1;
           return 0;
-        }),
+        })
       );
     }
   }, [sortDirection, sortProperty, tasksData]);

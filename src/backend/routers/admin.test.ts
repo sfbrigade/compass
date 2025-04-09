@@ -19,6 +19,6 @@ test("getPostgresInfo (throws if not admin)", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });

@@ -67,7 +67,7 @@ function FilterChip({
             [classes["filter-chip--nocheck"]]: checkHidden,
             [classes["filter-chip--dropdown"]]: options,
           },
-          className,
+          className
         )}
         disabled={disabled}
         disableRipple={true}

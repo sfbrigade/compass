@@ -105,7 +105,7 @@ test("basic flow - add/get goals, benchmarks, tasks", async (t) => {
       .where("benchmark_id", "=", benchmark2Id)
       .where("assignee_id", "=", para_id)
       .selectAll()
-      .executeTakeFirstOrThrow(),
+      .executeTakeFirstOrThrow()
   );
 });
 
@@ -160,7 +160,7 @@ test("addTask - no duplicate benchmark_id + assigned_id combo", async (t) => {
 
   t.is(
     error?.message,
-    "Task already exists: This benchmark has already been assigned to the same para",
+    "Task already exists: This benchmark has already been assigned to the same para"
   );
 });
 
@@ -322,7 +322,7 @@ test("editGoal - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });
 
@@ -338,6 +338,6 @@ test("getGoal - paras do not have access", async (t) => {
   t.is(
     error?.message,
     "UNAUTHORIZED",
-    "Expected an 'unauthorized' error message",
+    "Expected an 'unauthorized' error message"
   );
 });

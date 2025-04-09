@@ -37,7 +37,7 @@ const ViewUserPage: NextPageWithBreadcrumbs = () => {
       enabled: Boolean(user_id),
       retry: false,
       onError: () => returnToUserList(),
-    },
+    }
   );
 
   useEffect(() => {

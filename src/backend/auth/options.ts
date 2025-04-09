@@ -5,7 +5,7 @@ import type { NextAuthOptions } from "next-auth";
 import type { ExtendedAdapter } from "@/backend/auth/adapter";
 
 export const getNextAuthOptions = (
-  db: KyselyDatabaseInstance,
+  db: KyselyDatabaseInstance
 ): NextAuthOptions => {
   const adapter: ExtendedAdapter = createPersistedAuthAdapter(db);
 

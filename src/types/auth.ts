@@ -37,7 +37,7 @@ export type Roles = (typeof ROLE_OPTIONS)[number]["value"];
 
 export function getRoleLabel(role: string): string {
   const option = ROLE_OPTIONS.find(
-    (opt) => opt.value.toLowerCase() === role.toLowerCase(),
+    (opt) => opt.value.toLowerCase() === role.toLowerCase()
   );
   return option?.label || role;
 }

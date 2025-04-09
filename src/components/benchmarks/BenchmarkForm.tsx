@@ -61,12 +61,12 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
 
   const { data: student } = trpc.student.getStudentById.useQuery(
     { student_id: router.query.student_id as string },
-    { enabled: Boolean(router.query.student_id) },
+    { enabled: Boolean(router.query.student_id) }
   );
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: router.query.goal_id as string },
-    { enabled: Boolean(router.query.goal_id) },
+    { enabled: Boolean(router.query.goal_id) }
   );
 
   const { data: benchmark, isError: benchmarkFetchError } = benchmark_id
@@ -135,8 +135,8 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
     const { description, setup, materials, instructions } = benchmarkFormState;
     setPageOneIsValid(
       [description, setup, materials, instructions].every(
-        (field) => field.valid,
-      ),
+        (field) => field.valid
+      )
     );
   }, [benchmarkFormState]);
 
@@ -157,7 +157,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
         target_level,
         attempts_per_trial,
         number_of_trials,
-      ].every((field) => field.valid),
+      ].every((field) => field.valid)
     );
   }, [benchmarkFormState]);
 
@@ -191,7 +191,7 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
   const steps = ["Instructional Guidelines", "Data Collection Guidelines"];
 
   const handleSubmit = async (
-    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
     e.preventDefault();
     // TO DO: metric_name is not used in the mutation (removed from design) and should be removed from the schema
@@ -236,12 +236,12 @@ const BenchmarkForm = ({ benchmark_id = "" }: { benchmark_id?: string }) => {
       await router.push(
         `/students/${router.query.student_id as string}/goals/${
           router.query.goal_id as string
-        }`,
+        }`
       );
     } catch (error) {
       console.error(
         `Error ${benchmark_id ? "editing" : "creating"} benchmark`,
-        error,
+        error
       );
     }
   };
