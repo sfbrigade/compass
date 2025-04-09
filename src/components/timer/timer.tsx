@@ -16,7 +16,7 @@ const Timer = ({ timeInSec }: TimerProps) => {
       dateTimeObject.setSeconds(dateTimeObject.getSeconds() + inputTime);
       restart(dateTimeObject, false);
     },
-    [restart]
+    [restart],
   );
 
   useEffect(() => {
