@@ -1,9 +1,7 @@
-import React from "react";
 import TextField, { TextFieldProps } from "@mui/material/TextField";
 import { styled } from "@mui/material/styles";
-import { Input, InputBase, InputBaseProps } from "@mui/material";
 
-export const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
+export const SearchBar = styled(TextField)<TextFieldProps>(() => ({
   "& .MuiOutlinedInput-root": {
     color: "var(--grey-30)",
     marginRight: "10px",
@@ -49,3 +47,5 @@ export const SearchBar = styled(TextField)<TextFieldProps>(({ theme }) => ({
     },
   },
 }));
+
+export default SearchBar;
