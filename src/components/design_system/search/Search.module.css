@@ -1,0 +1,25 @@
+.search {
+  background-color: var(--primary-container);
+  border: 1px solid var(--primary-90);
+  border-radius: 1.25rem;
+  outline: 1px solid transparent;
+  padding: 0 1rem;
+
+  &:global(.Mui-focused) {
+    border-color: var(--primary-70);
+    outline-color: var(--primary-70);
+  }
+}
+
+.search__input {
+  font: var(--mui-font-button);
+  inline-size: fit-content;
+  &::placeholder {
+    color: var(--gray-40);
+  }
+}
+
+.search__icon {
+  color: var(--gray-20);
+  margin-right: 0.5rem;
+}
