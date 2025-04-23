@@ -1,14 +1,17 @@
 import React, { useCallback, useMemo, useState } from "react";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
+import {
+  Box,
+  Toolbar,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  Typography,
+  TextField,
+} from "@mui/material";
 
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
@@ -22,7 +25,6 @@ import Container from "@mui/material/Container";
 import Image from "next/image";
 
 import Search from "../design_system/search/Search";
-import { TextInput } from "../design_system/input/Input";
 
 import Button from "@/components/design_system/button/Button";
 
@@ -211,14 +213,16 @@ function EnhancedTableInput<Column extends HeadCell>({
       {inputCells.map((inputCell, idx) => {
         return inputCell.hasInput ? (
           <TableCell key={inputCell.id} align={"left"}>
-            <TextInput
+            <TextField
               label={inputCell.label}
               autoFocus={idx === 0}
               required
               size="small"
-              inputProps={{
-                form: "table_input_form",
-                name: inputCell.id,
+              slotProps={{
+                htmlInput: {
+                  form: "table_input_form",
+                  name: inputCell.id,
+                },
               }}
               type={inputCell.id === "grade" ? "number" : "string"}
             />
