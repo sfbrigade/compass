@@ -9,10 +9,10 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import InputAdornment from "@mui/material/InputAdornment";
+
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
-import SearchIcon from "@mui/icons-material/Search";
+
 import CloseIcon from "@mui/icons-material/Close";
 import $table from "./Table.module.css";
 import { useRouter } from "next/router";
@@ -20,7 +20,8 @@ import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
 import Container from "@mui/material/Container";
 import Image from "next/image";
-import { SearchBar } from "../design_system/searchBar/SearchBar";
+
+import Search from "../design_system/search/Search";
 import { TextInput } from "../design_system/input/Input";
 
 import Button from "@/components/design_system/button/Button";
@@ -162,19 +163,11 @@ function EnhancedTableToolbar({
                 alignItems: "center",
               }}
             >
-              <SearchBar
+              <Search
                 id="search-input"
-                placeholder="Search"
-                type="search"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start" color="var(--primary)">
-                      <SearchIcon />
-                    </InputAdornment>
-                  ),
-                }}
                 value={searchParam}
                 onChange={onSearch}
+                sx={{ mr: "2rem" }}
               />
               <Button onClick={onOpenInput}>Add {type}</Button>
             </div>

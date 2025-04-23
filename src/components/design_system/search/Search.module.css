@@ -1,8 +1,8 @@
 .search {
   background-color: var(--primary-container);
-  border: 1px solid var(--primary-90);
+  border: 1px solid transparent;
   border-radius: 1.25rem;
-  outline: 1px solid transparent;
+  outline: 1px solid var(--primary-90);
   padding: 0 1rem;
 
   &:global(.Mui-focused) {
