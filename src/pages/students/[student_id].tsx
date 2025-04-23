@@ -281,7 +281,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
               {student?.first_name} {student?.last_name}
             </b>
           </p>
-          <form onSubmit={handleIepSubmit} className="formDefault formPadding">
+          <form onSubmit={handleIepSubmit}>
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>
