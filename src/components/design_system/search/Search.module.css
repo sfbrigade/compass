@@ -15,12 +15,12 @@
   font: var(--mui-font-button);
   inline-size: fit-content;
   &::placeholder {
-    color: var(--gray-40);
+    color: var(--grey-40);
   }
 }
 
 .search__icon {
-  color: var(--gray-20);
+  color: var(--grey-20);
   &:first-child {
     margin-right: 0.5rem;
   }

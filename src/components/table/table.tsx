@@ -145,6 +145,7 @@ function EnhancedTableToolbar({
           sx={{
             pl: { xs: 0 },
             pr: { xs: 0 },
+            mb: "0.625rem",
             flexDirection: "column",
           }}
         >
@@ -153,6 +154,7 @@ function EnhancedTableToolbar({
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
+              marginBottom: "4rem",
             }}
           >
             <h3 className={$table.tableTitle}>{type}</h3>
@@ -179,8 +181,12 @@ function EnhancedTableToolbar({
               width: "100%",
             }}
           >
-            <Typography color="inherit" variant="subtitle1" component="div">
-              {`Total: ${totalRows}`}
+            <Typography
+              color="var(--grey-30)"
+              variant="subtitle1"
+              component="div"
+            >
+              {`Added ${type}: ${totalRows}`}
             </Typography>
           </div>
         </Toolbar>
