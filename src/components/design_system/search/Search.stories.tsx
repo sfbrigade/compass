@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 
 import Search from "./Search";
@@ -11,6 +12,15 @@ export default meta;
 type Story = StoryObj<typeof Search>;
 
 export const Primary: Story = {
-  args: {
+  args: {},
+  render: (args) => {
+    const [value, setValue] = useState<string>("");
+    return (
+      <Search
+        {...args}
+        value={value}
+        onChange={(e) => setValue(e.target.value)}
+      />
+    );
   },
 };

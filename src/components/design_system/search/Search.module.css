@@ -21,5 +21,11 @@
 
 .search__icon {
   color: var(--gray-20);
-  margin-right: 0.5rem;
+  &:first-child {
+    margin-right: 0.5rem;
+  }
+  &:last-child {
+    margin-left: 0.5rem;
+    cursor: pointer;
+  }
 }
