@@ -29,3 +29,9 @@ export interface TaskData {
   created_at: Date;
   benchmark_id: string;
 }
+
+export type DatePoint = {
+  x: number;
+  y: number;
+  id: string;
+};
