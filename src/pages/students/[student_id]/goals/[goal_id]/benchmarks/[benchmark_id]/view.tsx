@@ -94,6 +94,7 @@ const ViewBenchmarkPage = () => {
       ))}
       <ChartContainer
         xAxis={[{ data: createdAtDates, scaleType: "time", id: "x-axis-id" }]}
+        yAxis={[{ min: 0, max: 1 }]}
         series={[
           {
             label: "Trend line",
