@@ -11,6 +11,7 @@ import {
   ScatterValueType,
 } from "@mui/x-charts";
 import { DatePoint } from "@/types/global";
+import { useState } from "react";
 
 const ViewBenchmarkPage = () => {
   const router = useRouter();
@@ -23,6 +24,8 @@ const ViewBenchmarkPage = () => {
     { goal_id: goal_id },
     { enabled: Boolean(goal_id) }
   );
+
+  const [explodedPoints, setExplodedPoints] = useState<ScatterValueType[]>([]);
 
   const {
     data: benchmark,
@@ -41,9 +44,9 @@ const ViewBenchmarkPage = () => {
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
 
-  const datePoints: Record<string, (number | null)[]> = {};
+  const datePoints: Record<string, number[]> = {};
 
-  const avgRate: (number | null)[] = [];
+  const avgRate: number[] = [];
   const soloPoints: DatePoint[] = [];
   const bulkPoints: DatePoint[] = [];
 
@@ -51,6 +54,10 @@ const ViewBenchmarkPage = () => {
     const createdAtDateString = new Date(created_at).toDateString();
 
     const successRate = calculateSuccessRate({ success, unsuccess });
+
+    if (successRate === null) {
+      return;
+    }
 
     if (datePoints[createdAtDateString]) {
       datePoints[createdAtDateString].push(successRate);
@@ -61,12 +68,16 @@ const ViewBenchmarkPage = () => {
     // successRate.push(calculateSuccessRate({ success, unsuccess }));
   });
 
+  const getDateFromPtNumber = (
+    pointNumber: number,
+    pointArray: DatePoint[]
+  ) => {
+    return new Date(pointArray[pointNumber].x).toDateString();
+  };
+
   for (const createdAtDate in datePoints) {
     const successRate = calcAverage(datePoints[createdAtDate]);
-    if (
-      datePoints[createdAtDate].length === 1 &&
-      datePoints[createdAtDate][0] !== null
-    ) {
+    if (datePoints[createdAtDate].length === 1) {
       soloPoints.push({
         x: new Date(createdAtDate).getTime(),
         y: successRate,
@@ -85,7 +96,12 @@ const ViewBenchmarkPage = () => {
   const createdAtDates = Object.keys(datePoints).map((d) => new Date(d));
 
   console.log("soloPoints: ", soloPoints);
+
   console.log("bulkPoints: ", bulkPoints);
+
+  console.log("avgRate", avgRate);
+
+  console.log("createdAtDates", createdAtDates);
 
   return (
     <div>
@@ -93,7 +109,14 @@ const ViewBenchmarkPage = () => {
         <div key={trial.trial_data_id}>{trial.notes}</div>
       ))}
       <ChartContainer
-        xAxis={[{ data: createdAtDates, scaleType: "time", id: "x-axis-id" }]}
+        xAxis={[
+          { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
+          {
+            data: [createdAtDates[2], createdAtDates[3]],
+            scaleType: "time",
+            id: "2nd-x-axis",
+          },
+        ]}
         yAxis={[{ min: 0, max: 1 }]}
         series={[
           {
@@ -105,11 +128,19 @@ const ViewBenchmarkPage = () => {
             label: "Solo points",
             data: soloPoints as ScatterValueType[],
             type: "scatter",
+            id: "solo-points",
           },
           {
             label: "Multi points",
             data: bulkPoints as ScatterValueType[],
             type: "scatter",
+            id: "multi-points",
+          },
+          {
+            label: "Single Date points",
+            data: explodedPoints,
+            type: "scatter",
+            id: "exploded-points",
           },
         ]}
         width={500}
@@ -118,7 +149,22 @@ const ViewBenchmarkPage = () => {
         <LinePlot />
         <ChartsXAxis label="Trial date" axisId="x-axis-id" />
         <ChartsYAxis label="Success rate" />
-        <ScatterPlot />
+        <ScatterPlot
+          onItemClick={(_, d) => {
+            if (d.seriesId === "multi-points") {
+              const dateKey = getDateFromPtNumber(d.dataIndex, bulkPoints);
+              const explodedDatePoints = datePoints[dateKey].map(
+                (successRate, idx) => ({
+                  x: new Date(dateKey).getTime(),
+                  y: successRate,
+                  id: `${dateKey} ${idx}`,
+                })
+              );
+
+              setExplodedPoints([...explodedDatePoints]);
+            }
+          }}
+        />
       </ChartContainer>
       {goal && (
         <GoalHeader
