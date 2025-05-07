@@ -1,19 +1,21 @@
 import React, { useCallback, useMemo, useState } from "react";
-import Table from "@mui/material/Table";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableBody from "@mui/material/TableBody";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableSortLabel from "@mui/material/TableSortLabel";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
-import InputAdornment from "@mui/material/InputAdornment";
+import {
+  Box,
+  Toolbar,
+  Table,
+  TableContainer,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableSortLabel,
+  Typography,
+  TextField,
+} from "@mui/material";
+
 import { styled } from "@mui/material/styles";
 import { visuallyHidden } from "@mui/utils";
-import SearchIcon from "@mui/icons-material/Search";
+
 import CloseIcon from "@mui/icons-material/Close";
 import $table from "./Table.module.css";
 import { useRouter } from "next/router";
@@ -21,6 +23,8 @@ import { SelectableForTable } from "zapatos/schema";
 import emptyState from "../../public/img/empty-state.png";
 import Container from "@mui/material/Container";
 import Image from "next/image";
+
+import Search from "../design_system/search/Search";
 
 import Button from "@/components/design_system/button/Button";
 
@@ -143,6 +147,7 @@ function EnhancedTableToolbar({
           sx={{
             pl: { xs: 0 },
             pr: { xs: 0 },
+            mb: "0.625rem",
             flexDirection: "column",
           }}
         >
@@ -151,10 +156,25 @@ function EnhancedTableToolbar({
               display: "flex",
               justifyContent: "space-between",
               width: "100%",
+              marginBottom: "4rem",
             }}
           >
             <h3 className={$table.tableTitle}>{type}</h3>
-            <Button onClick={onOpenInput}>Add {type}</Button>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+              }}
+            >
+              <Search
+                id="search-input"
+                value={searchParam}
+                onChange={onSearch}
+                sx={{ mr: "2rem" }}
+              />
+              <Button onClick={onOpenInput}>Add {type}</Button>
+            </div>
           </div>
           <div
             style={{
@@ -163,23 +183,13 @@ function EnhancedTableToolbar({
               width: "100%",
             }}
           >
-            <Typography color="inherit" variant="subtitle1" component="div">
-              {`Total: ${totalRows}`}
+            <Typography
+              color="var(--grey-30)"
+              variant="subtitle1"
+              component="div"
+            >
+              {`Added ${type}: ${totalRows}`}
             </Typography>
-            <TextField
-              id="search-input"
-              placeholder="Search"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-              variant="standard"
-              value={searchParam}
-              onChange={onSearch}
-            />
           </div>
         </Toolbar>
       )}
@@ -208,9 +218,11 @@ function EnhancedTableInput<Column extends HeadCell>({
               autoFocus={idx === 0}
               required
               size="small"
-              inputProps={{
-                form: "table_input_form",
-                name: inputCell.id,
+              slotProps={{
+                htmlInput: {
+                  form: "table_input_form",
+                  name: inputCell.id,
+                },
               }}
               type={inputCell.id === "grade" ? "number" : "string"}
             />

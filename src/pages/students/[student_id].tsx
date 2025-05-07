@@ -7,8 +7,6 @@ import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
-import $Form from "../../styles/Form.module.css";
-import $input from "@/styles/Input.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
@@ -283,10 +281,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
               {student?.first_name} {student?.last_name}
             </b>
           </p>
-          <form
-            onSubmit={handleIepSubmit}
-            className={`${$input.default} ${$Form.formPadding}`}
-          >
+          <form onSubmit={handleIepSubmit}>
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>
