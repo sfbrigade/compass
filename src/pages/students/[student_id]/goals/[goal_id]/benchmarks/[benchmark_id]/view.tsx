@@ -152,16 +152,19 @@ const ViewBenchmarkPage = () => {
         <ScatterPlot
           onItemClick={(_, d) => {
             if (d.seriesId === "multi-points") {
-              const dateKey = getDateFromPtNumber(d.dataIndex, bulkPoints);
-              const explodedDatePoints = datePoints[dateKey].map(
-                (successRate, idx) => ({
-                  x: new Date(dateKey).getTime(),
-                  y: successRate,
-                  id: `${dateKey} ${idx}`,
-                })
-              );
-
-              setExplodedPoints([...explodedDatePoints]);
+              if (explodedPoints.length === 0) {
+                const dateKey = getDateFromPtNumber(d.dataIndex, bulkPoints);
+                const explodedDatePoints = datePoints[dateKey].map(
+                  (successRate, idx) => ({
+                    x: new Date(dateKey).getTime(),
+                    y: successRate,
+                    id: `${dateKey} ${idx}`,
+                  })
+                );
+                setExplodedPoints([...explodedDatePoints]);
+              } else {
+                setExplodedPoints([]);
+              }
             }
           }}
         />
