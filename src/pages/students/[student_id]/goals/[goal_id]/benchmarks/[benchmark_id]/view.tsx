@@ -4,6 +4,7 @@ import { calculateSuccessRate, calcAverage } from "@/utils";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import {
   ChartContainer,
+  ChartsReferenceLine,
   ChartsXAxis,
   ChartsYAxis,
   LinePlot,
@@ -40,6 +41,10 @@ const ViewBenchmarkPage = () => {
       enabled: Boolean(benchmark_id),
     }
   );
+
+  const targetLevel = benchmark?.target_level
+    ? benchmark.target_level / 100
+    : null;
 
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
@@ -168,6 +173,15 @@ const ViewBenchmarkPage = () => {
             }
           }}
         />
+        {targetLevel && (
+          <ChartsReferenceLine
+            y={targetLevel}
+            label={`Target Level: ${targetLevel}`}
+            lineStyle={{ strokeDasharray: "10 5" }}
+            labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
+            labelAlign="end"
+          />
+        )}
       </ChartContainer>
       {goal && (
         <GoalHeader

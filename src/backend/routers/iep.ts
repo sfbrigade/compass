@@ -566,6 +566,7 @@ export const iep = router({
           "benchmark.number_of_trials",
           "benchmark.due_date",
           "benchmark.trial_count",
+          "benchmark.target_level",
           jsonArrayFrom(
             eb
               .selectFrom("trial_data")
