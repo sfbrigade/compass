@@ -10,7 +10,7 @@ export const calculateSuccessRate = ({
   if (success === 0 && unsuccess === 0) {
     return null;
   }
-  return success / (success + unsuccess);
+  return (success / (success + unsuccess)) * 100;
 };
 
 export const calcAverage = (successRates: number[]) => {

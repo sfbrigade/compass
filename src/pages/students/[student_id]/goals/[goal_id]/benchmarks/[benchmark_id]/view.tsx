@@ -42,9 +42,7 @@ const ViewBenchmarkPage = () => {
     }
   );
 
-  const targetLevel = benchmark?.target_level
-    ? benchmark.target_level / 100
-    : null;
+  const targetLevel = benchmark?.target_level ? benchmark.target_level : null;
 
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
@@ -122,7 +120,7 @@ const ViewBenchmarkPage = () => {
             id: "2nd-x-axis",
           },
         ]}
-        yAxis={[{ min: 0, max: 1 }]}
+        yAxis={[{ min: 0, max: 100, valueFormatter: (value) => `${value}%` }]}
         series={[
           {
             label: "Trend line",
@@ -176,7 +174,7 @@ const ViewBenchmarkPage = () => {
         {targetLevel && (
           <ChartsReferenceLine
             y={targetLevel}
-            label={`Target Level: ${targetLevel}`}
+            label={`Target Level: ${targetLevel}%`}
             lineStyle={{ strokeDasharray: "10 5" }}
             labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
             labelAlign="end"
