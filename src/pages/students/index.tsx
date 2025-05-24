@@ -1,107 +1,202 @@
-import React from "react";
+import { useRef, useState, FormEvent } from "react";
+import { format } from "date-fns";
+import {
+  CircularProgress,
+  Stack,
+  TableRow,
+  TableCell,
+  TextField,
+} from "@mui/material";
+import Image from "next/image";
+
+import DataTableHeader from "@/components/design_system/dataTable/DataTableHeader";
+import DataTable, {
+  DataTableColumn,
+} from "@/components/design_system/dataTable/DataTable";
+import Button from "@/components/design_system/button/Button";
+
+import emptyState from "../../public/img/empty-state.png";
 
 import { trpc } from "@/client/lib/trpc";
-import PersonTable, {
-  StudentWithIep,
-  StudentWithIepHeadcell,
-} from "@/components/table/table";
 
-const Students = () => {
-  const utils = trpc.useContext();
-  const { data: students, isLoading } =
+const COLUMNS: DataTableColumn[] = [
+  {
+    id: "first_name",
+    label: "First Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "last_name",
+    label: "Last Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "grade",
+    label: "Grade",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "end_date",
+    label: "IEP End Date",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "actions",
+    label: "",
+    isSortable: false,
+  },
+];
+
+interface NewStudent {
+  first_name: string;
+  last_name: string;
+  grade: string;
+  end_date: string;
+}
+
+function Students() {
+  const { data: records, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
+  const [search, setSearch] = useState("");
 
-  const createStudent = trpc.case_manager.addStudent.useMutation({
-    onSuccess: () => utils.case_manager.getMyStudentsAndIepInfo.invalidate(),
-    // TODO(tessa): In a future PR, we could change this to notification instead of browser alert
-    onError: (err) => {
-      // err allows one to access validation, code, message, and path
-      // JSON.parse is utilized because err.message is a string
-      try {
-        const formattedErr = JSON.parse(err.message) as {
-          validation: string;
-          code: string;
-          message: string;
-          path: string[];
-        }[];
+  const [record, setRecord] = useState<NewStudent>();
+  const focusRef = useRef<HTMLInputElement>();
+  function onAddStudent() {
+    setRecord({
+      first_name: "",
+      last_name: "",
+      grade: "",
+      end_date: "",
+    });
+    setTimeout(() => focusRef.current?.focus(), 0);
+  }
 
-        if (formattedErr[0].message == "Invalid email") {
-          alert("The provided email is in the incorrect format- please edit.");
-        }
-        //  can later insert other error messages here, as needed
-        else {
-          alert("An error has occurred.");
-        }
-      } catch {
-        alert(
-          `This student is already assigned to a case manager. Please check your roster if the student is already there. Otherwise, this student is with another case manager.`
-        );
-      }
-    },
-  });
-
-  // create editStudent
-
-  // make a separate handleEdit??
-
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const utils = trpc.useUtils();
+  const addStudent = trpc.case_manager.addStudent.useMutation();
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+    if (!record) return;
     try {
-      await createStudent.mutateAsync({
-        first_name: data.get("first_name") as string,
-        last_name: data.get("last_name") as string,
-        email: data.get("email") as string,
-        grade: Number(data.get("grade")),
+      await addStudent.mutateAsync({
+        ...record,
+        grade: Number(record.grade),
       });
-      // resetting the form this way is only necessary if the form remains visible upon adding a person. due to Materials UI, the reset form(s) will show as "touched" (TT).
-      (event.target as HTMLFormElement).reset();
+      await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
+      setRecord(undefined);
     } catch (err) {
       console.error(err);
     }
-  };
-
-  const headCells: StudentWithIepHeadcell[] = [
-    {
-      id: "first_name",
-      label: "First Name",
-      hasInput: true,
-    },
-    {
-      id: "last_name",
-      label: "Last Name",
-      hasInput: true,
-    },
-    {
-      id: "email",
-      label: "Email",
-      hasInput: true,
-    },
-    {
-      id: "grade",
-      label: "Grade",
-      hasInput: true,
-    },
-    {
-      id: "end_date",
-      label: "IEP End Date",
-      hasInput: false,
-    },
-  ];
-
-  if (isLoading) {
-    return <div>Loading...</div>;
   }
 
   return (
-    <PersonTable
-      people={students as StudentWithIep[]}
-      onSubmit={handleSubmit}
-      headCells={headCells}
-      type="Students"
-    />
+    <>
+      <DataTableHeader
+        title="Students"
+        search={search}
+        setSearch={(records?.length ?? 0) > 0 ? setSearch : undefined}
+      >
+        {(records?.length ?? 0) > 0 && (
+          <Button sx={{ ml: "2rem" }} onClick={onAddStudent}>
+            Add Student
+          </Button>
+        )}
+      </DataTableHeader>
+      {isLoading && (
+        <div
+          style={{ display: "flex", justifyContent: "center", padding: "2rem" }}
+        >
+          <CircularProgress />
+        </div>
+      )}
+      {!isLoading && records?.length === 0 && (
+        <Stack spacing="1rem" sx={{ alignItems: "center", paddingTop: "4rem" }}>
+          <Image src={emptyState} alt="No students image" width={250} />
+          <h3>No students yet!</h3>
+          <Button onClick={onAddStudent}>Add Student</Button>
+        </Stack>
+      )}
+      {!isLoading && (records?.length ?? 0) > 0 && (
+        <form onSubmit={onSubmit}>
+          <DataTable columns={COLUMNS}>
+            {record && (
+              <TableRow>
+                <TableCell>
+                  <TextField
+                    inputRef={focusRef}
+                    label="First Name"
+                    value={record.first_name}
+                    onChange={(e) =>
+                      setRecord({ ...record, first_name: e.target.value })
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    label="Last Name"
+                    value={record.last_name}
+                    onChange={(e) =>
+                      setRecord({ ...record, last_name: e.target.value })
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    label="Grade"
+                    type="number"
+                    value={record.grade}
+                    onChange={(e) =>
+                      setRecord({ ...record, grade: e.target.value })
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    label="IEP End Date"
+                    type="date"
+                    value={record.end_date}
+                    onChange={(e) =>
+                      setRecord({ ...record, end_date: e.target.value })
+                    }
+                  />
+                </TableCell>
+                <TableCell>
+                  <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{ justifyContent: "flex-end" }}
+                  >
+                    <Button type="submit">Save</Button>
+                    <Button
+                      variant="secondary"
+                      onClick={() => setRecord(undefined)}
+                    >
+                      Cancel
+                    </Button>
+                  </Stack>
+                </TableCell>
+              </TableRow>
+            )}
+            {records?.map((record) => (
+              <TableRow key={record.student_id}>
+                <TableCell>{record.first_name}</TableCell>
+                <TableCell>{record.last_name}</TableCell>
+                <TableCell>{record.grade}</TableCell>
+                <TableCell>
+                  {record.end_date &&
+                    format(new Date(record.end_date), "MM/dd/yyyy")}
+                </TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            ))}
+          </DataTable>
+        </form>
+      )}
+    </>
   );
-};
+}
 
 export default Students;

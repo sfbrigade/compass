@@ -16,7 +16,6 @@ export const seedfile = async (databaseUrl: string) => {
     .values({
       first_name: "Edna",
       last_name: "Mode",
-      email: "fashion@example.com",
       grade: 1,
       assigned_case_manager_id: firstuser.user_id,
     })
@@ -28,7 +27,6 @@ export const seedfile = async (databaseUrl: string) => {
     .values({
       first_name: "Colette",
       last_name: "Tatou",
-      email: "chef@example.com",
       grade: 2,
       assigned_case_manager_id: firstuser.user_id,
     })
@@ -40,7 +38,6 @@ export const seedfile = async (databaseUrl: string) => {
     .values({
       first_name: "Carl",
       last_name: "Fredricksen",
-      email: "zoo@example.com",
       grade: 5,
       assigned_case_manager_id: firstuser.user_id,
     })

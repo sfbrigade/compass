@@ -35,10 +35,9 @@ export const case_manager = router({
         "student.student_id as student_id",
         "first_name",
         "last_name",
-        "student.email",
+        "student.grade as grade",
         "iep.iep_id as iep_id",
         "iep.end_date as end_date",
-        "student.grade as grade",
       ])
       .execute();
 
@@ -55,7 +54,6 @@ export const case_manager = router({
       z.object({
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string().email(),
         grade: z.number(),
       })
     )
@@ -78,12 +76,11 @@ export const case_manager = router({
         student_id: z.string(),
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string().email(),
         grade: z.number(),
       })
     )
     .mutation(async (req) => {
-      const { student_id, first_name, last_name, email, grade } = req.input;
+      const { student_id, first_name, last_name, grade } = req.input;
       const { userId } = req.ctx.auth; // case manager id
 
       // Check if the student exists and if the case manager is assigned to the student
@@ -104,7 +101,6 @@ export const case_manager = router({
         .set({
           first_name,
           last_name,
-          email: email.toLowerCase(),
           grade,
         })
         .where("student_id", "=", student_id)

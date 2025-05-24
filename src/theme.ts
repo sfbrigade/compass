@@ -116,7 +116,40 @@ export const compassTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-10)",
+          "&.Mui-focused": {
+            color: "var(--primary)",
+          },
+        },
+      },
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          "> tr:nth-of-type(even)": {
+            backgroundColor: "var(--grey-90)",
+          },
+          "> tr:hover": {
+            backgroundColor: "var(--grey-70)",
+            cursor: "pointer",
+          },
+          td: {
+            border: "none",
+          },
+        },
+      },
+    },
     MuiTextField: {
+      defaultProps: {
+        slotProps: {
+          inputLabel: {
+            shrink: true,
+          },
+        },
+      },
       styleOverrides: {
         root: {
           "& .MuiInputLabel-outlined": {
@@ -124,6 +157,10 @@ export const compassTheme = createTheme({
             "&.Mui-focused": {
               color: "var(--primary)",
             },
+          },
+          "& .MuiOutlinedInput-input": {
+            paddingTop: "0.625rem",
+            paddingBottom: "0.625rem",
           },
           "& .MuiOutlinedInput-root": {
             color: "var(--grey-10)",
@@ -222,16 +259,6 @@ export const compassTheme = createTheme({
             "& .MuiOutlinedInput-notchedOutline": {
               borderColor: "var(--grey-10)",
             },
-          },
-        },
-      },
-    },
-    MuiInputLabel: {
-      styleOverrides: {
-        root: {
-          color: "var(--grey-10)",
-          "&.Mui-focused": {
-            color: "var(--primary)",
           },
         },
       },

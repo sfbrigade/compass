@@ -379,14 +379,14 @@ export default function EnhancedTable<
                 />
               )}
               {visibleRows.map((row) => {
-                const labelId = row.email;
+                const labelId = "";
 
                 return (
                   <StyledTableRow
                     hover
                     role="link"
                     tabIndex={-1}
-                    key={row.email}
+                    key={row.last_name}
                     sx={{ cursor: "pointer" }}
                     onClick={() =>
                       handleLinkToPage(
@@ -406,7 +406,7 @@ export default function EnhancedTable<
                         " (me)"}
                     </TableCell>
                     <TableCell align={"left"}>{row.last_name}</TableCell>
-                    <TableCell align={"left"}>{row.email}</TableCell>
+                    <TableCell align={"left"}>{row.last_name}</TableCell>
 
                     {isStudentWithIep(row) && (
                       <>
