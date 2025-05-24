@@ -35,7 +35,7 @@ export const case_manager = router({
     )
     .query(async (req) => {
       const { userId } = req.ctx.auth;
-      const { search, sort = "first_name", sortAsc = true } = req.input ?? {};
+      const { search, sort, sortAsc = true } = req.input ?? {};
 
       let query = req.ctx.db
         .selectFrom("iep")
@@ -65,8 +65,6 @@ export const case_manager = router({
         .orderBy(
           (eb) => {
             switch (sort) {
-              case "first_name":
-                return eb.ref("student.first_name");
               case "last_name":
                 return eb.ref("student.last_name");
               case "grade":
@@ -196,22 +194,58 @@ export const case_manager = router({
         .execute();
     }),
 
-  getMyParas: hasCaseManager.query(async (req) => {
-    const { userId } = req.ctx.auth;
+  getMyParas: hasCaseManager
+    .input(
+      z
+        .object({
+          search: z.string().optional(),
+          sort: z.string().optional(),
+          sortAsc: z.coerce.boolean().optional(),
+        })
+        .optional()
+    )
+    .query(async (req) => {
+      const { userId } = req.ctx.auth;
+      const { search, sort, sortAsc = true } = req.input ?? {};
 
-    const result = await req.ctx.db
-      .selectFrom("user")
-      .innerJoin(
-        "paras_assigned_to_case_manager",
-        "user.user_id",
-        "paras_assigned_to_case_manager.para_id"
-      )
-      .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
-      .selectAll()
-      .execute();
+      let query = req.ctx.db
+        .selectFrom("user")
+        .innerJoin(
+          "paras_assigned_to_case_manager",
+          "user.user_id",
+          "paras_assigned_to_case_manager.para_id"
+        )
+        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId);
 
-    return result;
-  }),
+      if (search) {
+        query = query.where((eb) =>
+          eb.or([
+            eb("user.first_name", "ilike", `%${search}%`),
+            eb("user.last_name", "ilike", `%${search}%`),
+            eb("user.email", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const result = await query
+        .selectAll()
+        .orderBy(
+          (eb) => {
+            switch (sort) {
+              case "last_name":
+                return eb.ref("user.last_name");
+              case "email":
+                return eb.ref("user.email");
+              default:
+                return eb.ref("user.first_name");
+            }
+          },
+          sortAsc ? "asc" : "desc"
+        )
+        .execute();
+
+      return result;
+    }),
 
   /**
    * Handles creation of para and assignment to user, attempts to send
