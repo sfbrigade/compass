@@ -147,7 +147,11 @@ function Students() {
         }
       >
         {(records?.length ?? 0) > 0 && (
-          <Button sx={{ ml: "2rem" }} onClick={onAddStudent}>
+          <Button
+            sx={{ ml: "2rem" }}
+            onClick={onAddStudent}
+            disabled={!!record}
+          >
             Add Student
           </Button>
         )}
@@ -159,14 +163,14 @@ function Students() {
           <CircularProgress />
         </div>
       )}
-      {!isLoading && records?.length === 0 && (
+      {!isLoading && records?.length === 0 && !record && (
         <Stack spacing="1rem" sx={{ alignItems: "center", paddingTop: "4rem" }}>
           <Image src={emptyState} alt="No students image" width={250} />
           <h3>No students yet!</h3>
           <Button onClick={onAddStudent}>Add Student</Button>
         </Stack>
       )}
-      {!isLoading && (records?.length ?? 0) > 0 && (
+      {!isLoading && ((records?.length ?? 0) > 0 || record) && (
         <form onSubmit={onSubmit}>
           <DataTable
             columns={COLUMNS}
