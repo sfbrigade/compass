@@ -1,1 +1,0 @@
-ALTER TABLE student DROP COLUMN email;
