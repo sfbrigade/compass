@@ -97,33 +97,3 @@ export async function assignParaToCaseManager(
 
   return;
 }
-
-type createStudentProps = {
-  first_name: string;
-  last_name: string;
-  grade: number;
-  email?: string;
-  db: KyselyDatabaseInstance;
-  userId: string;
-};
-
-export async function createAndAssignStudent({
-  first_name,
-  last_name,
-  grade,
-  email,
-  db,
-  userId,
-}: createStudentProps) {
-  return db
-    .insertInto("student")
-    .values({
-      first_name,
-      last_name,
-      grade,
-      email,
-      assigned_case_manager_id: userId,
-    })
-    .returningAll()
-    .executeTakeFirstOrThrow();
-}

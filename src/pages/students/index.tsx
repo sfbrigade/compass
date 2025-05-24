@@ -75,6 +75,7 @@ function Students() {
     });
 
   const [record, setRecord] = useState<NewStudent>();
+  const [error, setError] = useState<{ path: string[] }[]>();
   const focusRef = useRef<HTMLInputElement>();
   function onAddStudent() {
     setRecord({
@@ -87,7 +88,9 @@ function Students() {
   }
 
   const utils = trpc.useUtils();
-  const addStudent = trpc.case_manager.addStudent.useMutation();
+  const addStudent = trpc.case_manager.addStudent.useMutation({
+    meta: { disableGlobalOnError: true },
+  });
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (!record) return;
@@ -99,7 +102,7 @@ function Students() {
       await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
       setRecord(undefined);
     } catch (err) {
-      console.error(err);
+      setError(JSON.parse((err as Error).message) as { path: string[] }[]);
     }
   }
 
@@ -124,6 +127,14 @@ function Students() {
     return router.push(
       `${router.pathname}${queryString ? "?" : ""}${queryString}`
     );
+  }
+
+  function hasError(path: string[]): boolean {
+    if (error) {
+      const pathStr = JSON.stringify(path);
+      return error.findIndex((e) => JSON.stringify(e.path) === pathStr) >= 0;
+    }
+    return false;
   }
 
   return (
@@ -173,6 +184,7 @@ function Students() {
                     onChange={(e) =>
                       setRecord({ ...record, first_name: e.target.value })
                     }
+                    error={hasError(["first_name"])}
                   />
                 </TableCell>
                 <TableCell>
@@ -182,6 +194,7 @@ function Students() {
                     onChange={(e) =>
                       setRecord({ ...record, last_name: e.target.value })
                     }
+                    error={hasError(["last_name"])}
                   />
                 </TableCell>
                 <TableCell>
@@ -192,6 +205,7 @@ function Students() {
                     onChange={(e) =>
                       setRecord({ ...record, grade: e.target.value })
                     }
+                    error={hasError(["grade"])}
                   />
                 </TableCell>
                 <TableCell>
@@ -202,6 +216,7 @@ function Students() {
                     onChange={(e) =>
                       setRecord({ ...record, end_date: e.target.value })
                     }
+                    error={hasError(["end_date"])}
                   />
                 </TableCell>
                 <TableCell>
