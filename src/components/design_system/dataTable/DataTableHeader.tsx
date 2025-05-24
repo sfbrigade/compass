@@ -1,21 +1,36 @@
-import { ReactNode } from "react";
+import { useEffect, useRef, useState, ChangeEvent, ReactNode } from "react";
 import { Grid2 as Grid } from "@mui/material";
 
 import Search from "@/components/design_system/search/Search";
 
 interface DataTableHeaderProps {
   title: string;
-  search: string;
-  setSearch?: (value: string) => void;
+  searchValue: string;
+  onChangeSearchValue?: (value: string) => void;
   children?: ReactNode;
 }
 
 function DataTableHeader({
   title,
-  search,
-  setSearch,
+  searchValue,
+  onChangeSearchValue,
   children,
 }: DataTableHeaderProps) {
+  const [search, setSearch] = useState<string>();
+  const timeoutRef = useRef<number>();
+
+  useEffect(() => {
+    setSearch(searchValue);
+  }, [searchValue]);
+
+  function onChangeSearch(event: ChangeEvent<HTMLInputElement>) {
+    setSearch(event.target.value);
+    window.clearTimeout(timeoutRef.current);
+    timeoutRef.current = window.setTimeout(() => {
+      onChangeSearchValue?.(event.target.value);
+    }, 500);
+  }
+
   return (
     <Grid
       container
@@ -33,12 +48,8 @@ function DataTableHeader({
           flexWrap: "nowrap",
         }}
       >
-        {setSearch && (
-          <Search
-            id="search"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
+        {onChangeSearchValue && (
+          <Search id="search" value={search} onChange={onChangeSearch} />
         )}
         {children}
       </Grid>

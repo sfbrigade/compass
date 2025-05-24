@@ -59,9 +59,9 @@ interface NewStudent {
 }
 
 function Students() {
-  const { data: records, isLoading } =
-    trpc.case_manager.getMyStudentsAndIepInfo.useQuery();
   const [search, setSearch] = useState("");
+  const { data: records, isLoading } =
+    trpc.case_manager.getMyStudentsAndIepInfo.useQuery({ search });
 
   const [record, setRecord] = useState<NewStudent>();
   const focusRef = useRef<HTMLInputElement>();
@@ -92,12 +92,19 @@ function Students() {
     }
   }
 
+  function onChangeSearchValue(value: string) {
+    console.log("onChangeSearchValue", value);
+    setSearch(value);
+  }
+
   return (
     <>
       <DataTableHeader
         title="Students"
-        search={search}
-        setSearch={(records?.length ?? 0) > 0 ? setSearch : undefined}
+        searchValue={search}
+        onChangeSearchValue={
+          (records?.length ?? 0) > 0 ? onChangeSearchValue : undefined
+        }
       >
         {(records?.length ?? 0) > 0 && (
           <Button sx={{ ml: "2rem" }} onClick={onAddStudent}>

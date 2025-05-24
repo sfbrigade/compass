@@ -22,27 +22,47 @@ export const case_manager = router({
     return result;
   }),
 
-  getMyStudentsAndIepInfo: hasCaseManager.query(async (req) => {
-    const { userId } = req.ctx.auth;
+  getMyStudentsAndIepInfo: hasCaseManager
+    .input(
+      z
+        .object({
+          search: z.string().optional(),
+        })
+        .optional()
+    )
+    .query(async (req) => {
+      const { userId } = req.ctx.auth;
+      const { search } = req.input ?? {};
 
-    const studentData = await req.ctx.db
-      .selectFrom("iep")
-      .fullJoin("student", (join) =>
-        join.onRef("student.student_id", "=", "iep.student_id")
-      )
-      .where("assigned_case_manager_id", "=", userId)
-      .select([
-        "student.student_id as student_id",
-        "first_name",
-        "last_name",
-        "student.grade as grade",
-        "iep.iep_id as iep_id",
-        "iep.end_date as end_date",
-      ])
-      .execute();
+      let query = req.ctx.db
+        .selectFrom("iep")
+        .fullJoin("student", (join) =>
+          join.onRef("student.student_id", "=", "iep.student_id")
+        )
+        .where("assigned_case_manager_id", "=", userId);
 
-    return studentData;
-  }),
+      if (search) {
+        query = query.where((eb) =>
+          eb.or([
+            eb("student.first_name", "ilike", `%${search}%`),
+            eb("student.last_name", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const result = await query
+        .select([
+          "student.student_id as student_id",
+          "first_name",
+          "last_name",
+          "student.grade as grade",
+          "iep.iep_id as iep_id",
+          "iep.end_date as end_date",
+        ])
+        .execute();
+
+      return result;
+    }),
 
   /**
    * Adds the given student to the CM's roster. The student row is created if
