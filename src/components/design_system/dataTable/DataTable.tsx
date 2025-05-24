@@ -19,9 +19,18 @@ export interface DataTableColumn {
 interface DataTableProps {
   children?: ReactNode;
   columns: DataTableColumn[];
+  onChangeSort?: (newSort: string, newSortAsc: boolean) => void;
+  sort?: string;
+  sortAsc?: boolean;
 }
 
-function DataTable({ children, columns }: DataTableProps) {
+function DataTable({
+  children,
+  columns,
+  onChangeSort,
+  sort,
+  sortAsc = true,
+}: DataTableProps) {
   return (
     <TableContainer>
       <Table>
@@ -30,7 +39,18 @@ function DataTable({ children, columns }: DataTableProps) {
             {columns.map((column) => (
               <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
                 {column.isSortable && (
-                  <TableSortLabel>{column.label}</TableSortLabel>
+                  <TableSortLabel
+                    active={sort === column.id}
+                    direction={sortAsc ? "asc" : "desc"}
+                    onClick={() =>
+                      onChangeSort?.(
+                        column.id,
+                        sort === column.id ? !sortAsc : sortAsc
+                      )
+                    }
+                  >
+                    {column.label}
+                  </TableSortLabel>
                 )}
                 {!column.isSortable && column.label}
               </TableCell>

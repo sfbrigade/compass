@@ -27,12 +27,14 @@ export const case_manager = router({
       z
         .object({
           search: z.string().optional(),
+          sort: z.string().optional(),
+          sortAsc: z.coerce.boolean().optional(),
         })
         .optional()
     )
     .query(async (req) => {
       const { userId } = req.ctx.auth;
-      const { search } = req.input ?? {};
+      const { search, sort = "first_name", sortAsc = true } = req.input ?? {};
 
       let query = req.ctx.db
         .selectFrom("iep")
@@ -59,6 +61,23 @@ export const case_manager = router({
           "iep.iep_id as iep_id",
           "iep.end_date as end_date",
         ])
+        .orderBy(
+          (eb) => {
+            switch (sort) {
+              case "first_name":
+                return eb.ref("student.first_name");
+              case "last_name":
+                return eb.ref("student.last_name");
+              case "grade":
+                return eb.ref("student.grade");
+              case "end_date":
+                return eb.ref("iep.end_date");
+              default:
+                return eb.ref("student.first_name");
+            }
+          },
+          sortAsc ? "asc" : "desc"
+        )
         .execute();
 
       return result;

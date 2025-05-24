@@ -8,6 +8,8 @@ import {
   TextField,
 } from "@mui/material";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/router";
 
 import DataTableHeader from "@/components/design_system/dataTable/DataTableHeader";
 import DataTable, {
@@ -59,9 +61,18 @@ interface NewStudent {
 }
 
 function Students() {
-  const [search, setSearch] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const search = searchParams.get("search") ?? "";
+  const sort = searchParams.get("sort") ?? "first_name";
+  const sortAsc = (searchParams.get("sortAsc") ?? "true") === "true";
+
   const { data: records, isLoading } =
-    trpc.case_manager.getMyStudentsAndIepInfo.useQuery({ search });
+    trpc.case_manager.getMyStudentsAndIepInfo.useQuery({
+      search,
+      sort,
+      sortAsc,
+    });
 
   const [record, setRecord] = useState<NewStudent>();
   const focusRef = useRef<HTMLInputElement>();
@@ -92,9 +103,27 @@ function Students() {
     }
   }
 
-  function onChangeSearchValue(value: string) {
-    console.log("onChangeSearchValue", value);
-    setSearch(value);
+  async function onChangeSearchValue(value: string) {
+    const params = new URLSearchParams(searchParams.toString());
+    if (value) {
+      params.set("search", value);
+    } else {
+      params.delete("search");
+    }
+    const queryString = params.toString();
+    return router.push(
+      `${router.pathname}${queryString ? "?" : ""}${queryString}`
+    );
+  }
+
+  async function onChangeSort(newSort: string, newSortAsc: boolean) {
+    const params = new URLSearchParams(searchParams.toString());
+    params.set("sort", newSort);
+    params.set("sortAsc", newSortAsc.toString());
+    const queryString = params.toString();
+    return router.push(
+      `${router.pathname}${queryString ? "?" : ""}${queryString}`
+    );
   }
 
   return (
@@ -128,7 +157,12 @@ function Students() {
       )}
       {!isLoading && (records?.length ?? 0) > 0 && (
         <form onSubmit={onSubmit}>
-          <DataTable columns={COLUMNS}>
+          <DataTable
+            columns={COLUMNS}
+            sort={sort}
+            sortAsc={sortAsc}
+            onChangeSort={onChangeSort}
+          >
             {record && (
               <TableRow>
                 <TableCell>
