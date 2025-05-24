@@ -222,7 +222,10 @@ function Students() {
               </TableRow>
             )}
             {records?.map((record) => (
-              <TableRow key={record.student_id}>
+              <TableRow
+                key={record.student_id}
+                onClick={() => router.push(`/students/${record.student_id}`)}
+              >
                 <TableCell>{record.first_name}</TableCell>
                 <TableCell>{record.last_name}</TableCell>
                 <TableCell>{record.grade}</TableCell>
