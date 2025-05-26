@@ -5,13 +5,14 @@ import { GoalHeader } from "@/components/goal-header/goal-header";
 import {
   ChartContainer,
   ChartsReferenceLine,
+  ChartsTooltip,
   ChartsXAxis,
   ChartsYAxis,
   LinePlot,
   ScatterPlot,
   ScatterValueType,
 } from "@mui/x-charts";
-import { DatePoint } from "@/types/global";
+import { BulkPoint, DatePoint, SoloPoint, TrialData } from "@/types/global";
 import { useState } from "react";
 
 const ViewBenchmarkPage = () => {
@@ -47,29 +48,38 @@ const ViewBenchmarkPage = () => {
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
 
-  const datePoints: Record<string, number[]> = {};
+  const datePoints: Record<string, TrialData[]> = {};
 
   const avgRate: number[] = [];
-  const soloPoints: DatePoint[] = [];
-  const bulkPoints: DatePoint[] = [];
+  const soloPoints: SoloPoint[] = [];
+  const bulkPoints: BulkPoint[] = [];
 
-  benchmark?.trials.forEach(({ created_at, success, unsuccess }) => {
-    const createdAtDateString = new Date(created_at).toDateString();
+  benchmark?.trials.forEach(
+    ({ created_at, success, unsuccess, first_name, last_name }) => {
+      const createdAtDateString = new Date(created_at).toDateString();
 
-    const successRate = calculateSuccessRate({ success, unsuccess });
+      const successRate = calculateSuccessRate({ success, unsuccess });
 
-    if (successRate === null) {
-      return;
+      if (successRate === null) {
+        return;
+      }
+
+      const trialData = {
+        successRate,
+        success,
+        staffName: `${first_name} ${last_name}`,
+        numberOfAttempts: success + unsuccess,
+      };
+
+      if (datePoints[createdAtDateString]) {
+        datePoints[createdAtDateString].push(trialData);
+      } else {
+        datePoints[createdAtDateString] = [trialData];
+      }
+      // createdAt.push(new Date(createdAtDateString));
+      // successRate.push(calculateSuccessRate({ success, unsuccess }));
     }
-
-    if (datePoints[createdAtDateString]) {
-      datePoints[createdAtDateString].push(successRate);
-    } else {
-      datePoints[createdAtDateString] = [successRate];
-    }
-    // createdAt.push(new Date(createdAtDateString));
-    // successRate.push(calculateSuccessRate({ success, unsuccess }));
-  });
+  );
 
   const getDateFromPtNumber = (
     pointNumber: number,
@@ -80,17 +90,30 @@ const ViewBenchmarkPage = () => {
 
   for (const createdAtDate in datePoints) {
     const successRate = calcAverage(datePoints[createdAtDate]);
+    const staffNames = new Set(
+      datePoints[createdAtDate].map(({ staffName }) => staffName)
+    );
+
     if (datePoints[createdAtDate].length === 1) {
+      const staffName = Array.from(staffNames)[0];
+
+      const { success, numberOfAttempts } = datePoints[createdAtDate][0];
+
       soloPoints.push({
         x: new Date(createdAtDate).getTime(),
         y: successRate,
         id: createdAtDate,
+        staffName,
+        success,
+        numberOfAttempts,
       });
     } else {
       bulkPoints.push({
         x: new Date(createdAtDate).getTime(),
         y: successRate,
         id: createdAtDate,
+        staffNames: Array.from(staffNames),
+        numberOfTrials: datePoints[createdAtDate].length,
       });
     }
     avgRate.push(successRate);
@@ -158,10 +181,13 @@ const ViewBenchmarkPage = () => {
               if (explodedPoints.length === 0) {
                 const dateKey = getDateFromPtNumber(d.dataIndex, bulkPoints);
                 const explodedDatePoints = datePoints[dateKey].map(
-                  (successRate, idx) => ({
+                  (trialData, idx) => ({
                     x: new Date(dateKey).getTime(),
-                    y: successRate,
+                    y: trialData.successRate,
                     id: `${dateKey} ${idx}`,
+                    staffName: trialData.staffName,
+                    success: trialData.success,
+                    numberOfAttempts: trialData.numberOfAttempts,
                   })
                 );
                 setExplodedPoints([...explodedDatePoints]);
@@ -180,6 +206,7 @@ const ViewBenchmarkPage = () => {
             labelAlign="end"
           />
         )}
+        <ChartsTooltip trigger="item" />
       </ChartContainer>
       {goal && (
         <GoalHeader

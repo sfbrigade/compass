@@ -30,8 +30,26 @@ export interface TaskData {
   benchmark_id: string;
 }
 
-export type DatePoint = {
+export interface DatePoint {
   x: number;
   y: number;
   id: string;
+}
+
+export interface SoloPoint extends DatePoint {
+  staffName: string;
+  success: number;
+  numberOfAttempts: number;
+}
+
+export interface BulkPoint extends DatePoint {
+  staffNames: string[];
+  numberOfTrials: number;
+}
+
+export type TrialData = {
+  successRate: number;
+  success: number;
+  numberOfAttempts: number;
+  staffName: string;
 };

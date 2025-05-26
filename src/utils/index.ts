@@ -1,3 +1,4 @@
+import { TrialData } from "@/types/global";
 import { ScatterValueType } from "@mui/x-charts";
 
 export const calculateSuccessRate = ({
@@ -13,7 +14,9 @@ export const calculateSuccessRate = ({
   return (success / (success + unsuccess)) * 100;
 };
 
-export const calcAverage = (successRates: number[]) => {
+export const calcAverage = (trialData: TrialData[]) => {
+  const successRates = trialData.map(({ successRate }) => successRate);
+
   let sum = 0;
   let nonZeros = 0;
   for (const successRate of successRates) {

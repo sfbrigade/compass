@@ -570,6 +570,11 @@ export const iep = router({
           jsonArrayFrom(
             eb
               .selectFrom("trial_data")
+              .innerJoin(
+                "user",
+                "user.user_id",
+                "trial_data.created_by_user_id"
+              )
               .select((eb) => [
                 "trial_data.trial_data_id",
                 "trial_data.success",
@@ -577,6 +582,8 @@ export const iep = router({
                 "trial_data.submitted",
                 "trial_data.notes",
                 "trial_data.created_at",
+                "user.first_name",
+                "user.last_name",
                 jsonArrayFrom(
                   eb
                     .selectFrom("trial_data_file")
