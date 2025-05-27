@@ -126,6 +126,40 @@ export const compassTheme = createTheme({
         },
       },
     },
+    MuiInputBase: {
+      styleOverrides: {
+        root: {
+          "& .MuiInputLabel-outlined": {
+            color: "var(--grey-10)",
+            "&.Mui-focused": {
+              color: "var(--primary)",
+            },
+          },
+          "& .MuiOutlinedInput-input": {
+            paddingTop: "0.625rem",
+            paddingBottom: "0.625rem",
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "var(--grey-10)",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "1px",
+            },
+            "&.Mui-focused": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primary)",
+                borderWidth: "2px",
+              },
+            },
+            "&:hover:not(.Mui-focused)": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--grey-10)",
+              },
+            },
+          },
+        },
+      },
+    },
     MuiTableBody: {
       styleOverrides: {
         root: {
