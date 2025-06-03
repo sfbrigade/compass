@@ -53,3 +53,11 @@ export type TrialData = {
   numberOfAttempts: number;
   staffName: string;
 };
+
+export const valueFormatter = (point: SoloPoint | BulkPoint): string => {
+  if ("numberOfTrials" in point) {
+    return `${point.y.toFixed(1)}% (${point.numberOfTrials} trials) [${point.staffNames.join(" ")}]`;
+  } else {
+    return `${point.y.toFixed(1)}% (${point.success} / ${point.numberOfAttempts}) [${point.staffName}]`;
+  }
+};

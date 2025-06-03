@@ -5,15 +5,22 @@ import { GoalHeader } from "@/components/goal-header/goal-header";
 import {
   ChartContainer,
   ChartsReferenceLine,
-  ChartsTooltip,
   ChartsXAxis,
   ChartsYAxis,
   LinePlot,
   ScatterPlot,
   ScatterValueType,
 } from "@mui/x-charts";
-import { BulkPoint, DatePoint, SoloPoint, TrialData } from "@/types/global";
+
+import {
+  BulkPoint,
+  DatePoint,
+  SoloPoint,
+  TrialData,
+  valueFormatter,
+} from "@/types/global";
 import { useState } from "react";
+import { CustomItemTooltip } from "@/components/benchmarks/CustomItemTooltip";
 
 const ViewBenchmarkPage = () => {
   const router = useRouter();
@@ -143,7 +150,9 @@ const ViewBenchmarkPage = () => {
             id: "2nd-x-axis",
           },
         ]}
-        yAxis={[{ min: 0, max: 100, valueFormatter: (value) => `${value}%` }]}
+        yAxis={[
+          { min: 0, max: 100, valueFormatter: (value: number) => `${value}%` },
+        ]}
         series={[
           {
             label: "Trend line",
@@ -155,18 +164,21 @@ const ViewBenchmarkPage = () => {
             data: soloPoints as ScatterValueType[],
             type: "scatter",
             id: "solo-points",
+            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
           },
           {
             label: "Multi points",
             data: bulkPoints as ScatterValueType[],
             type: "scatter",
             id: "multi-points",
+            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
           },
           {
             label: "Single Date points",
             data: explodedPoints,
             type: "scatter",
             id: "exploded-points",
+            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
           },
         ]}
         width={500}
@@ -206,7 +218,7 @@ const ViewBenchmarkPage = () => {
             labelAlign="end"
           />
         )}
-        <ChartsTooltip trigger="item" />
+        <CustomItemTooltip />
       </ChartContainer>
       {goal && (
         <GoalHeader
