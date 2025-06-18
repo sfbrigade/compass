@@ -1,10 +1,9 @@
 import { z } from "zod";
-import { parseISO, sub } from "date-fns";
-
 import { hasCaseManager, router } from "../trpc";
 import {
   createPara,
   assignParaToCaseManager,
+  createAndAssignStudent,
 } from "../lib/db_helpers/case_manager";
 
 export const case_manager = router({
@@ -90,45 +89,19 @@ export const case_manager = router({
   addStudent: hasCaseManager
     .input(
       z.object({
-        first_name: z.string().min(1),
-        last_name: z.string().min(1),
-        grade: z.number().min(1).max(12),
-        email: z.string().optional(),
-        end_date: z.string().date().optional(),
+        first_name: z.string(),
+        last_name: z.string(),
+        email: z.string().email().nullable().optional(),
+        grade: z.number(),
       })
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
-      const { first_name, last_name, grade, email, end_date } = req.input;
 
-      return req.ctx.db.transaction().execute(async (trx) => {
-        const result = await trx
-          .insertInto("student")
-          .values({
-            first_name,
-            last_name,
-            grade,
-            email,
-            assigned_case_manager_id: userId,
-          })
-          .returningAll()
-          .executeTakeFirstOrThrow();
-
-        if (end_date) {
-          const start_date = sub(parseISO(end_date), { years: 1 });
-          await trx
-            .insertInto("iep")
-            .values({
-              student_id: result.student_id,
-              case_manager_id: userId,
-              start_date,
-              end_date: parseISO(end_date),
-            })
-            .returningAll()
-            .executeTakeFirstOrThrow();
-        }
-
-        return result;
+      await createAndAssignStudent({
+        ...req.input,
+        userId,
+        db: req.ctx.db,
       });
     }),
 
@@ -141,12 +114,12 @@ export const case_manager = router({
         student_id: z.string(),
         first_name: z.string(),
         last_name: z.string(),
+        email: z.string().email().nullable().optional(),
         grade: z.number(),
-        email: z.string().optional(),
       })
     )
     .mutation(async (req) => {
-      const { student_id, first_name, last_name, grade, email } = req.input;
+      const { student_id, first_name, last_name, email, grade } = req.input;
       const { userId } = req.ctx.auth; // case manager id
 
       // Check if the student exists and if the case manager is assigned to the student
@@ -167,8 +140,8 @@ export const case_manager = router({
         .set({
           first_name,
           last_name,
+          email: email?.toLowerCase(),
           grade,
-          email,
         })
         .where("student_id", "=", student_id)
         .returningAll()

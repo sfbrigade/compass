@@ -49,6 +49,7 @@ test("doNotAddDuplicateEmails", async (t) => {
     .values({
       first_name: "Foo",
       last_name: "Bar",
+      email: "foo.bar@email.com",
       grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
@@ -60,6 +61,7 @@ test("doNotAddDuplicateEmails", async (t) => {
       .values({
         first_name: "Foos",
         last_name: "Bar",
+        email: "foo.bar@email.com",
         grade: 6,
         assigned_case_manager_id: seed.para.user_id,
       })
