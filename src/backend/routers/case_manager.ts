@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { parseISO, sub } from "date-fns";
+
 import { hasCaseManager, router } from "../trpc";
 import {
   createPara,
@@ -93,15 +95,35 @@ export const case_manager = router({
         last_name: z.string(),
         email: z.string().email().nullable().optional(),
         grade: z.number(),
+        end_date: z.string().date().optional(),
       })
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
 
-      await createAndAssignStudent({
-        ...req.input,
-        userId,
-        db: req.ctx.db,
+      return req.ctx.db.transaction().execute(async (trx) => {
+        const result = await createAndAssignStudent({
+          ...req.input,
+          userId,
+          db: trx,
+        });
+
+        const { end_date } = req.input;
+        if (end_date) {
+          const start_date = sub(parseISO(end_date), { years: 1 });
+          await trx
+            .insertInto("iep")
+            .values({
+              student_id: result.student_id,
+              case_manager_id: userId,
+              start_date,
+              end_date: parseISO(end_date),
+            })
+            .returningAll()
+            .executeTakeFirstOrThrow();
+        }
+
+        return result;
       });
     }),
 

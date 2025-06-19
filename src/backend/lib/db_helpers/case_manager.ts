@@ -149,7 +149,7 @@ export async function createAndAssignStudent({
   }
 
   // else, safe to create or re-assign student
-  await db
+  return db
     .insertInto("student")
     .values({
       first_name,
