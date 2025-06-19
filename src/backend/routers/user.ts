@@ -11,8 +11,8 @@ export const sortBySchema = z
 const paginationInput = z.object({
   page: z.number().min(1).default(1),
   pageSize: z.number().min(1).default(10),
-  sortBy: sortBySchema,
-  sortOrder: sortOrderSchema,
+  sort: sortBySchema,
+  sortAsc: z.coerce.boolean().default(true),
   search: z.string().optional(),
 });
 
@@ -46,7 +46,7 @@ export const user = router({
   }),
 
   getUsers: hasAdmin.input(paginationInput).query(async (req) => {
-    const { page, pageSize, sortBy, sortOrder, search } = req.input;
+    const { page, pageSize, sort, sortAsc, search } = req.input;
     const offset = (page - 1) * pageSize;
 
     let baseQuery = req.ctx.db
@@ -88,9 +88,9 @@ export const user = router({
       );
     }
 
-    const [users, totalCount] = await Promise.all([
+    const [records, totalCount] = await Promise.all([
       baseQuery
-        .orderBy(sortBy, sortOrder)
+        .orderBy(sort, sortAsc ? "asc" : "desc")
         .limit(pageSize)
         .offset(offset)
         .execute(),
@@ -98,7 +98,7 @@ export const user = router({
     ]);
 
     return {
-      users,
+      records,
       totalCount: Number(totalCount?.count ?? 0),
       totalPages: Math.ceil(Number(totalCount?.count ?? 0) / pageSize),
     };

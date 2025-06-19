@@ -1,122 +1,188 @@
-import { useState } from "react";
-import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import Image from "next/image";
 import { z } from "zod";
 
-import { sortBySchema, sortOrderSchema } from "@/backend/routers/user";
-import { requiresAdminAuth } from "@/client/lib/protected-page";
-import { trpc } from "@/client/lib/trpc";
-import { PaginatedTable } from "@/components/table/PaginatedTable";
-import { ColumnDefinition, UserBase } from "@/components/table/types";
-import { ROLE_OPTIONS, Roles } from "@/types/auth";
-import { getRoleLabel } from "@/types/auth";
+import Button from "@/components/design_system/button/Button";
+import { DataTableColumn } from "@/components/design_system/dataTable/DataTable";
+import {
+  withDataTablePage,
+  DataTablePageProps,
+} from "@/components/design_system/dataTable/DataTablePage";
+import Dropdown from "@/components/design_system/dropdown/Dropdown";
 
-interface User extends UserBase {
-  user_id: string;
+import { sortBySchema } from "@/backend/routers/user";
+import { trpc, RouterOutputs } from "@/client/lib/trpc";
+import { ROLE_OPTIONS } from "@/types/auth";
+
+import emptyState from "../../public/img/empty-state.png";
+
+const COLUMNS: DataTableColumn[] = [
+  {
+    id: "first_name",
+    label: "First Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "last_name",
+    label: "Last Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "email",
+    label: "Email",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "role",
+    label: "Role",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "actions",
+    label: "",
+    isSortable: false,
+  },
+];
+
+interface NewRecordType {
   first_name: string;
   last_name: string;
   email: string;
-  role: Roles;
+  role: string;
 }
 
-type SortBy = z.infer<typeof sortBySchema>;
-type SortOrder = z.infer<typeof sortOrderSchema>;
+type Unpacked<T> = T extends (infer U)[] ? U : T;
+type RecordType = Unpacked<RouterOutputs["user"]["getUsers"]["records"]>;
 
-const AdminHome = () => {
-  const utils = trpc.useContext();
-  const router = useRouter();
-  const [page, setPage] = useState(1);
-  const [sortBy, setSortBy] =
-    useState<Omit<keyof User, "user_id">>("first_name");
-  const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  const [searchTerm, setSearchTerm] = useState("");
-  const pageSize = 10;
+type Sort = z.infer<typeof sortBySchema>;
 
+function Staff({
+  search,
+  sort,
+  sortAsc,
+  render,
+}: DataTablePageProps<RecordType, NewRecordType>) {
   const { data, isLoading } = trpc.user.getUsers.useQuery({
-    page,
-    pageSize,
-    sortBy: sortBy as SortBy,
-    sortOrder,
-    search: searchTerm,
+    search,
+    sort: sort as Sort,
+    sortAsc,
   });
 
-  const createUserMutation = trpc.user.createUser.useMutation({
-    onSuccess: async () => {
-      await utils.user.getUsers.invalidate();
-    },
+  const [record, setRecord] = useState<NewRecordType>();
+  const focusRef = useRef<HTMLInputElement>();
+
+  function onAddRecord() {
+    setRecord({
+      first_name: "",
+      last_name: "",
+      email: "",
+      role: "user",
+    });
+    setTimeout(() => focusRef.current?.focus(), 0);
+  }
+
+  const utils = trpc.useUtils();
+  const addRecord = trpc.user.createUser.useMutation({
+    meta: { disableGlobalOnError: true },
   });
 
-  const handleAddUser = async (userData: Omit<User, "id">) => {
-    try {
-      await createUserMutation.mutateAsync({
-        ...userData,
-        role: userData.role || "para",
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  async function onSubmit() {
+    if (!record) return;
+    await addRecord.mutateAsync(record);
+    await utils.user.getUsers.invalidate();
+    setRecord(undefined);
+  }
 
-  const handleSort = (newSortBy: keyof User, newSortOrder: SortOrder) => {
-    setSortBy(newSortBy);
-    setSortOrder(newSortOrder);
-  };
+  return render({
+    title: "Users",
+    addLabel: "Add User",
+    isLoading,
+    record,
+    records: data?.records,
+    onAddRecord,
+    onSubmit,
+    columns: COLUMNS,
+    emptyElement: (
+      <>
+        <Image src={emptyState} alt="No users image" width={250} />
+        <h3>No users yet!</h3>
+        <Button onClick={onAddRecord}>Add User</Button>
+      </>
+    ),
+    renderFormRow: (record, hasError) => (
+      <TableRow>
+        <TableCell>
+          <TextField
+            inputRef={focusRef}
+            label="First Name"
+            value={record.first_name}
+            onChange={(e) =>
+              setRecord({ ...record, first_name: e.target.value })
+            }
+            error={hasError(["first_name"])}
+          />
+        </TableCell>
+        <TableCell>
+          <TextField
+            label="Last Name"
+            value={record.last_name}
+            onChange={(e) =>
+              setRecord({ ...record, last_name: e.target.value })
+            }
+            error={hasError(["last_name"])}
+          />
+        </TableCell>
+        <TableCell>
+          <TextField
+            type="email"
+            label="Email"
+            value={record.email}
+            onChange={(e) => setRecord({ ...record, email: e.target.value })}
+            error={hasError(["email"])}
+          />
+        </TableCell>
+        <TableCell>
+          <Dropdown
+            itemList={[...ROLE_OPTIONS]}
+            selectedOption={record.role}
+            setSelectedOption={(role) =>
+              setRecord({ ...record, role: role as string })
+            }
+            label="Role"
+          />
+        </TableCell>
+        <TableCell>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ justifyContent: "flex-end" }}
+          >
+            <Button type="submit">Save</Button>
+            <Button variant="secondary" onClick={() => setRecord(undefined)}>
+              Cancel
+            </Button>
+          </Stack>
+        </TableCell>
+      </TableRow>
+    ),
+    renderRow: (record, router) => (
+      <TableRow
+        key={record.user_id}
+        onClick={() => router.push(`/admin/${record.user_id}`)}
+      >
+        <TableCell>{record.first_name}</TableCell>
+        <TableCell>{record.last_name}</TableCell>
+        <TableCell>{record.email}</TableCell>
+        <TableCell>{record.role}</TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+    ),
+  });
+}
 
-  const handleSearch = (search: string) => {
-    setSearchTerm(search);
-    setPage(1);
-  };
-
-  const handleRowClick = async (user: User) => {
-    await router.push(`/admin/${user.user_id}`);
-  };
-
-  const columns: ColumnDefinition<User>[] = [
-    {
-      id: "first_name",
-      label: "First Name",
-      type: "text",
-    },
-    {
-      id: "last_name",
-      label: "Last Name",
-      type: "text",
-    },
-    {
-      id: "email",
-      label: "Email",
-      type: "text",
-    },
-    {
-      id: "role",
-      label: "Role",
-      type: "select",
-      options: [...ROLE_OPTIONS],
-      customRender: (value) => (value ? getRoleLabel(value as string) : ""),
-    },
-  ];
-
-  if (isLoading) return <div>Loading...</div>;
-
-  return (
-    <div>
-      <PaginatedTable<User>
-        data={(data?.users as User[]) ?? []}
-        columns={columns}
-        type="Users"
-        onRowClick={handleRowClick}
-        page={page}
-        totalPages={data?.totalPages ?? 1}
-        onPageChange={setPage}
-        sortBy={sortBy as SortBy}
-        sortOrder={sortOrder}
-        onSort={handleSort}
-        onSearch={handleSearch}
-        searchTerm={searchTerm}
-        onAdd={handleAddUser}
-        showAddRow={true}
-      />
-    </div>
-  );
-};
-
-export default requiresAdminAuth(AdminHome);
+export default withDataTablePage(Staff);

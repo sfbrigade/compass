@@ -1,4 +1,6 @@
 import { z } from "zod";
+import { parseISO, sub } from "date-fns";
+
 import { hasCaseManager, router } from "../trpc";
 import {
   createPara,
@@ -22,28 +24,64 @@ export const case_manager = router({
     return result;
   }),
 
-  getMyStudentsAndIepInfo: hasCaseManager.query(async (req) => {
-    const { userId } = req.ctx.auth;
+  getMyStudentsAndIepInfo: hasCaseManager
+    .input(
+      z
+        .object({
+          search: z.string().optional(),
+          sort: z.string().optional(),
+          sortAsc: z.coerce.boolean().optional(),
+        })
+        .optional()
+    )
+    .query(async (req) => {
+      const { userId } = req.ctx.auth;
+      const { search, sort, sortAsc = true } = req.input ?? {};
 
-    const studentData = await req.ctx.db
-      .selectFrom("iep")
-      .fullJoin("student", (join) =>
-        join.onRef("student.student_id", "=", "iep.student_id")
-      )
-      .where("assigned_case_manager_id", "=", userId)
-      .select([
-        "student.student_id as student_id",
-        "first_name",
-        "last_name",
-        "student.email",
-        "iep.iep_id as iep_id",
-        "iep.end_date as end_date",
-        "student.grade as grade",
-      ])
-      .execute();
+      let query = req.ctx.db
+        .selectFrom("iep")
+        .fullJoin("student", (join) =>
+          join.onRef("student.student_id", "=", "iep.student_id")
+        )
+        .where("assigned_case_manager_id", "=", userId);
 
-    return studentData;
-  }),
+      if (search) {
+        query = query.where((eb) =>
+          eb.or([
+            eb("student.first_name", "ilike", `%${search}%`),
+            eb("student.last_name", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const result = await query
+        .select([
+          "student.student_id as student_id",
+          "first_name",
+          "last_name",
+          "student.grade as grade",
+          "iep.iep_id as iep_id",
+          "iep.end_date as end_date",
+        ])
+        .orderBy(
+          (eb) => {
+            switch (sort) {
+              case "last_name":
+                return eb.ref("student.last_name");
+              case "grade":
+                return eb.ref("student.grade");
+              case "end_date":
+                return eb.ref("iep.end_date");
+              default:
+                return eb.ref("student.first_name");
+            }
+          },
+          sortAsc ? "asc" : "desc"
+        )
+        .execute();
+
+      return result;
+    }),
 
   /**
    * Adds the given student to the CM's roster. The student row is created if
@@ -55,17 +93,37 @@ export const case_manager = router({
       z.object({
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string().email(),
+        email: z.string().email().nullable().optional(),
         grade: z.number(),
+        end_date: z.string().date().optional(),
       })
     )
     .mutation(async (req) => {
       const { userId } = req.ctx.auth;
 
-      await createAndAssignStudent({
-        ...req.input,
-        userId,
-        db: req.ctx.db,
+      return req.ctx.db.transaction().execute(async (trx) => {
+        const result = await createAndAssignStudent({
+          ...req.input,
+          userId,
+          db: trx,
+        });
+
+        const { end_date } = req.input;
+        if (end_date) {
+          const start_date = sub(parseISO(end_date), { years: 1 });
+          await trx
+            .insertInto("iep")
+            .values({
+              student_id: result.student_id,
+              case_manager_id: userId,
+              start_date,
+              end_date: parseISO(end_date),
+            })
+            .returningAll()
+            .executeTakeFirstOrThrow();
+        }
+
+        return result;
       });
     }),
 
@@ -78,7 +136,7 @@ export const case_manager = router({
         student_id: z.string(),
         first_name: z.string(),
         last_name: z.string(),
-        email: z.string().email(),
+        email: z.string().email().nullable().optional(),
         grade: z.number(),
       })
     )
@@ -104,7 +162,7 @@ export const case_manager = router({
         .set({
           first_name,
           last_name,
-          email: email.toLowerCase(),
+          email: email?.toLowerCase(),
           grade,
         })
         .where("student_id", "=", student_id)
@@ -131,22 +189,58 @@ export const case_manager = router({
         .execute();
     }),
 
-  getMyParas: hasCaseManager.query(async (req) => {
-    const { userId } = req.ctx.auth;
+  getMyParas: hasCaseManager
+    .input(
+      z
+        .object({
+          search: z.string().optional(),
+          sort: z.string().optional(),
+          sortAsc: z.coerce.boolean().optional(),
+        })
+        .optional()
+    )
+    .query(async (req) => {
+      const { userId } = req.ctx.auth;
+      const { search, sort, sortAsc = true } = req.input ?? {};
 
-    const result = await req.ctx.db
-      .selectFrom("user")
-      .innerJoin(
-        "paras_assigned_to_case_manager",
-        "user.user_id",
-        "paras_assigned_to_case_manager.para_id"
-      )
-      .where("paras_assigned_to_case_manager.case_manager_id", "=", userId)
-      .selectAll()
-      .execute();
+      let query = req.ctx.db
+        .selectFrom("user")
+        .innerJoin(
+          "paras_assigned_to_case_manager",
+          "user.user_id",
+          "paras_assigned_to_case_manager.para_id"
+        )
+        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId);
 
-    return result;
-  }),
+      if (search) {
+        query = query.where((eb) =>
+          eb.or([
+            eb("user.first_name", "ilike", `%${search}%`),
+            eb("user.last_name", "ilike", `%${search}%`),
+            eb("user.email", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const result = await query
+        .selectAll()
+        .orderBy(
+          (eb) => {
+            switch (sort) {
+              case "last_name":
+                return eb.ref("user.last_name");
+              case "email":
+                return eb.ref("user.email");
+              default:
+                return eb.ref("user.first_name");
+            }
+          },
+          sortAsc ? "asc" : "desc"
+        )
+        .execute();
+
+      return result;
+    }),
 
   /**
    * Handles creation of para and assignment to user, attempts to send
