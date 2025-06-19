@@ -93,6 +93,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       student_id: student.student_id,
       first_name: data.get("firstName") as string,
       last_name: data.get("lastName") as string,
+      email: (data.get("email") as string) || null,
       grade: Number(data.get("grade")) || 0,
     });
 

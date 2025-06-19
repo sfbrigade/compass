@@ -90,7 +90,6 @@ export const EditStudentModal = ({
                     type="text"
                     name="email"
                     defaultValue={student?.email || ""}
-                    required
                   />
                 </Container>
                 <Container className={$CompassModal.editModalContainer}>
