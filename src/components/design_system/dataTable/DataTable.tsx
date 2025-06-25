@@ -45,7 +45,7 @@ function DataTable({
                     onClick={() =>
                       onChangeSort?.(
                         column.id,
-                        sort === column.id ? !sortAsc : sortAsc
+                        sort === column.id ? !sortAsc : true
                       )
                     }
                   >
