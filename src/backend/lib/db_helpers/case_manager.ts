@@ -101,7 +101,7 @@ export async function assignParaToCaseManager(
 type createStudentProps = {
   first_name: string;
   last_name: string;
-  email: string;
+  email?: string | null | undefined;
   grade: number;
   db: KyselyDatabaseInstance;
   userId: string;
@@ -127,32 +127,34 @@ export async function createAndAssignStudent({
   db,
   userId,
 }: createStudentProps) {
-  const lookahead = await db
-    .selectFrom("student")
-    .selectAll()
-    .where("email", "=", email)
-    .execute();
+  if (email) {
+    const lookahead = await db
+      .selectFrom("student")
+      .selectAll()
+      .where("email", "=", email)
+      .execute();
 
-  if (lookahead.length > 0) {
-    const student = lookahead[0];
-    if (student.assigned_case_manager_id === userId) {
-      throw STUDENT_ASSIGNED_TO_YOU_ERR;
+    if (lookahead.length > 0) {
+      const student = lookahead[0];
+      if (student.assigned_case_manager_id === userId) {
+        throw STUDENT_ASSIGNED_TO_YOU_ERR;
+      }
+      // not null
+      else if (student.assigned_case_manager_id) {
+        throw STUDENT_ALREADY_ASSIGNED_ERR;
+      }
+      // if student exists in table, but is unassigned,
+      // handle in onConflict during creation
     }
-    // not null
-    else if (student.assigned_case_manager_id) {
-      throw STUDENT_ALREADY_ASSIGNED_ERR;
-    }
-    // if student exists in table, but is unassigned,
-    // handle in onConflict during creation
   }
 
   // else, safe to create or re-assign student
-  await db
+  return db
     .insertInto("student")
     .values({
       first_name,
       last_name,
-      email: email.toLowerCase(),
+      email: email?.toLowerCase(),
       assigned_case_manager_id: userId,
       grade,
     })

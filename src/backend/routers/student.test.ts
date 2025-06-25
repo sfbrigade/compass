@@ -13,7 +13,6 @@ test("getStudentById - can query by student id", async (t) => {
     .values({
       first_name: "Foo",
       last_name: "Bar",
-      email: "foo.bar@email.com",
       grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })
@@ -140,7 +139,6 @@ test("editIep", async (t) => {
   await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
-    email: seed.student.email,
     grade: seed.student.grade,
   });
 
@@ -271,7 +269,6 @@ test("checkEditedIEPEndDates", async (t) => {
   await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
-    email: seed.student.email,
     grade: seed.student.grade,
   });
 
