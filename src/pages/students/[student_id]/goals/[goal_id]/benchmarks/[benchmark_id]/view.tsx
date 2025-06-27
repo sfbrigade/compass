@@ -13,21 +13,30 @@ import {
 } from "@mui/x-charts";
 
 import {
+  Benchmark,
   BulkPoint,
   DatePoint,
+  Goal,
   SoloPoint,
+  Student,
   TrialData,
   valueFormatter,
 } from "@/types/global";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CustomItemTooltip } from "@/components/benchmarks/CustomItemTooltip";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
+import GoalPage from "../../../[goal_id]";
+import { Typography, Card, CardContent, Stack } from "@mui/material";
 
-const ViewBenchmarkPage = () => {
+const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
+  const { setBreadcrumbs } = useBreadcrumbsContext();
   const router = useRouter();
 
   const benchmark_id = router.query?.benchmark_id as string;
 
   const goal_id = router.query?.goal_id as string;
+  const student_id = (router.query?.student_id as string) || "";
 
   const { data: goal } = trpc.iep.getGoal.useQuery(
     { goal_id: goal_id },
@@ -49,6 +58,19 @@ const ViewBenchmarkPage = () => {
       enabled: Boolean(benchmark_id),
     }
   );
+
+  const { data: student } = trpc.student.getStudentById.useQuery(
+    { student_id },
+    { enabled: Boolean(student_id), retry: false }
+  );
+
+  useEffect(() => {
+    if (student && goal && benchmark) {
+      setBreadcrumbs(
+        ViewBenchmarkPage.getBreadcrumbs?.({ student, goal, benchmark })
+      );
+    }
+  }, [student, goal, benchmark, setBreadcrumbs]);
 
   const targetLevel = benchmark?.target_level ? benchmark.target_level : null;
 
@@ -137,100 +159,144 @@ const ViewBenchmarkPage = () => {
   console.log("createdAtDates", createdAtDates);
 
   return (
-    <div>
-      {benchmark?.trials.map((trial) => (
-        <div key={trial.trial_data_id}>{trial.notes}</div>
-      ))}
-      <ChartContainer
-        xAxis={[
-          { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
-          {
-            data: [createdAtDates[2], createdAtDates[3]],
-            scaleType: "time",
-            id: "2nd-x-axis",
-          },
-        ]}
-        yAxis={[
-          { min: 0, max: 100, valueFormatter: (value: number) => `${value}%` },
-        ]}
-        series={[
-          {
-            label: "Trend line",
-            data: avgRate,
-            type: "line",
-          },
-          {
-            label: "Solo points",
-            data: soloPoints as ScatterValueType[],
-            type: "scatter",
-            id: "solo-points",
-            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
-          },
-          {
-            label: "Multi points",
-            data: bulkPoints as ScatterValueType[],
-            type: "scatter",
-            id: "multi-points",
-            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
-          },
-          {
-            label: "Single Date points",
-            data: explodedPoints,
-            type: "scatter",
-            id: "exploded-points",
-            valueFormatter: (v) => valueFormatter(v as BulkPoint | SoloPoint),
-          },
-        ]}
-        width={500}
-        height={300}
-      >
-        <LinePlot />
-        <ChartsXAxis label="Trial date" axisId="x-axis-id" />
-        <ChartsYAxis label="Success rate" />
-        <ScatterPlot
-          onItemClick={(_, d) => {
-            if (d.seriesId === "multi-points") {
-              if (explodedPoints.length === 0) {
-                const dateKey = getDateFromPtNumber(d.dataIndex, bulkPoints);
-                const explodedDatePoints = datePoints[dateKey].map(
-                  (trialData, idx) => ({
-                    x: new Date(dateKey).getTime(),
-                    y: trialData.successRate,
-                    id: `${dateKey} ${idx}`,
-                    staffName: trialData.staffName,
-                    success: trialData.success,
-                    numberOfAttempts: trialData.numberOfAttempts,
-                  })
-                );
-                setExplodedPoints([...explodedDatePoints]);
-              } else {
-                setExplodedPoints([]);
-              }
-            }
-          }}
-        />
-        {targetLevel && (
-          <ChartsReferenceLine
-            y={targetLevel}
-            label={`Target Level: ${targetLevel}%`}
-            lineStyle={{ strokeDasharray: "10 5" }}
-            labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
-            labelAlign="end"
-          />
-        )}
-        <CustomItemTooltip />
-      </ChartContainer>
+    <Stack spacing={4}>
+      <Typography variant="h1">Viewing Data for [Student name]</Typography>
+
+      <Card>
+        <CardContent>
+          {benchmark?.trials.map((trial) => (
+            <div key={trial.trial_data_id}>{trial.notes}</div>
+          ))}
+          <ChartContainer
+            xAxis={[
+              { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
+              {
+                data: [createdAtDates[2], createdAtDates[3]],
+                scaleType: "time",
+                id: "2nd-x-axis",
+              },
+            ]}
+            yAxis={[
+              {
+                min: 0,
+                max: 100,
+                valueFormatter: (value: number) => `${value}%`,
+              },
+            ]}
+            series={[
+              {
+                label: "Trend line",
+                data: avgRate,
+                type: "line",
+              },
+              {
+                label: "Solo points",
+                data: soloPoints as ScatterValueType[],
+                type: "scatter",
+                id: "solo-points",
+                valueFormatter: (v) =>
+                  valueFormatter(v as BulkPoint | SoloPoint),
+              },
+              {
+                label: "Multi points",
+                data: bulkPoints as ScatterValueType[],
+                type: "scatter",
+                id: "multi-points",
+                valueFormatter: (v) =>
+                  valueFormatter(v as BulkPoint | SoloPoint),
+              },
+              {
+                label: "Single Date points",
+                data: explodedPoints,
+                type: "scatter",
+                id: "exploded-points",
+                valueFormatter: (v) =>
+                  valueFormatter(v as BulkPoint | SoloPoint),
+              },
+            ]}
+            width={500}
+            height={300}
+          >
+            <LinePlot />
+            <ChartsXAxis label="Trial date" axisId="x-axis-id" />
+            <ChartsYAxis label="Success rate" />
+            <ScatterPlot
+              onItemClick={(_, d) => {
+                if (d.seriesId === "multi-points") {
+                  if (explodedPoints.length === 0) {
+                    const dateKey = getDateFromPtNumber(
+                      d.dataIndex,
+                      bulkPoints
+                    );
+                    const explodedDatePoints = datePoints[dateKey].map(
+                      (trialData, idx) => ({
+                        x: new Date(dateKey).getTime(),
+                        y: trialData.successRate,
+                        id: `${dateKey} ${idx}`,
+                        staffName: trialData.staffName,
+                        success: trialData.success,
+                        numberOfAttempts: trialData.numberOfAttempts,
+                      })
+                    );
+                    setExplodedPoints([...explodedDatePoints]);
+                  } else {
+                    setExplodedPoints([]);
+                  }
+                }
+              }}
+            />
+            {targetLevel && (
+              <ChartsReferenceLine
+                y={targetLevel}
+                label={`Target Level: ${targetLevel}%`}
+                lineStyle={{ strokeDasharray: "10 5" }}
+                labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
+                labelAlign="end"
+              />
+            )}
+            <CustomItemTooltip />
+          </ChartContainer>
+        </CardContent>
+      </Card>
+
       {goal && (
-        <GoalHeader
-          name={`Goal #${goal.number}`}
-          description={goal.description}
-          createdAt={goal.created_at}
-          goalId={goal.goal_id}
-          editable={false}
-        />
+        <Card>
+          <CardContent>
+            <GoalHeader
+              name={`Goal #${goal.number}`}
+              description={goal.description}
+              createdAt={goal.created_at}
+              goalId={goal.goal_id}
+              editable={false}
+            />
+          </CardContent>
+        </Card>
       )}
-    </div>
+    </Stack>
   );
+};
+
+interface GetBreadcrumbsProps {
+  student?: Student;
+  goal?: Goal;
+  benchmark?: Benchmark;
+}
+
+ViewBenchmarkPage.getBreadcrumbs = function getBreadcrumbs({
+  student,
+  goal,
+  benchmark,
+}: GetBreadcrumbsProps = {}) {
+  const breadcrumbs =
+    GoalPage.getBreadcrumbs?.({ student, goal, isLinked: true }) ?? [];
+
+  if (student && goal && benchmark) {
+    breadcrumbs.push({
+      href: undefined,
+      children: `Collecting Data for Benchmark #${benchmark.number}`,
+    });
+  }
+  return breadcrumbs;
 };
 
 export default ViewBenchmarkPage;
