@@ -9,7 +9,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import { StyledEngineProvider, ThemeProvider } from "@mui/material/styles";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { QueryCache, MutationCache } from "@tanstack/react-query";
+import { QueryCache, MutationCache, Mutation } from "@tanstack/react-query";
 import { httpBatchLink, loggerLink, TRPCClientError } from "@trpc/client";
 
 import { AppRouter } from "@/backend/routers/_app";
@@ -63,8 +63,15 @@ export default function App({ Component, pageProps }: CustomAppProps) {
           },
         }),
         mutationCache: new MutationCache({
-          onError: (error: unknown) => {
-            handleTRPCError(error);
+          onError: (
+            error: unknown,
+            variables: unknown,
+            context: unknown,
+            mutation: Mutation<unknown, unknown, unknown>
+          ) => {
+            if (!mutation.meta?.disableGlobalOnError) {
+              handleTRPCError(error);
+            }
           },
         }),
         defaultOptions: {

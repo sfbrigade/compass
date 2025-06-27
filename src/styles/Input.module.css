@@ -1,7 +1,0 @@
-/* TODO: Might use MUI for all inputs for consistency */
-.default {
-  border-radius: 2px;
-  border: 1px solid var(--outline);
-  margin: 2px 4px;
-  padding: 4px 2px;
-}

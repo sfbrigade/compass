@@ -7,8 +7,6 @@ import Iep from "../../components/iep/Iep";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
-import $Form from "../../styles/Form.module.css";
-import $input from "@/styles/Input.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
@@ -95,7 +93,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       student_id: student.student_id,
       first_name: data.get("firstName") as string,
       last_name: data.get("lastName") as string,
-      email: data.get("email") as string,
+      email: (data.get("email") as string) || null,
       grade: Number(data.get("grade")) || 0,
     });
 
@@ -216,10 +214,6 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
                 {activeIep?.end_date.toLocaleDateString() ?? "None"}
               </p>
             </div>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>Email ID</p>
-              <p className={$StudentPage.centerText}>{student?.email}</p>
-            </div>
           </Box>
         </Box>
 
@@ -283,10 +277,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
               {student?.first_name} {student?.last_name}
             </b>
           </p>
-          <form
-            onSubmit={handleIepSubmit}
-            className={`${$input.default} ${$Form.formPadding}`}
-          >
+          <form onSubmit={handleIepSubmit}>
             <div>
               <Box className={$StudentPage.displayBox}>
                 <p className={$StudentPage.textLarge}>Start Date:</p>

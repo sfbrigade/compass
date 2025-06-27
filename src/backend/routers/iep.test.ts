@@ -285,7 +285,6 @@ test("edit goal", async (t) => {
   await trpc.case_manager.addStudent.mutate({
     first_name: seed.student.first_name,
     last_name: seed.student.last_name,
-    email: seed.student.email,
     grade: seed.student.grade,
   });
 

@@ -1932,9 +1932,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.email**
       * - `text` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      email: string;
+      email: string | null;
       /**
       * **student.first_name**
       * - `text` in database
@@ -1970,9 +1970,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.email**
       * - `text` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      email: string;
+      email: string | null;
       /**
       * **student.first_name**
       * - `text` in database
@@ -2008,7 +2008,7 @@ declare module 'zapatos/schema' {
       /**
       * **student.email**
       * - `text` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
       email?: string | db.Parameter<string> | db.SQLFragment | db.ParentColumn | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment | db.ParentColumn>;
       /**
@@ -2046,9 +2046,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.email**
       * - `text` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      email: string | db.Parameter<string> | db.SQLFragment;
+      email?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment;
       /**
       * **student.first_name**
       * - `text` in database
@@ -2084,9 +2084,9 @@ declare module 'zapatos/schema' {
       /**
       * **student.email**
       * - `text` in database
-      * - `NOT NULL`, no default
+      * - Nullable, no default
       */
-      email?: string | db.Parameter<string> | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | db.SQLFragment>;
+      email?: string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment | db.SQLFragment<any, string | db.Parameter<string> | null | db.DefaultType | db.SQLFragment>;
       /**
       * **student.first_name**
       * - `text` in database

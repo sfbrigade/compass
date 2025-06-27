@@ -1,64 +1,163 @@
-import React from "react";
+import { useRef, useState } from "react";
+import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import Image from "next/image";
 
-import { trpc } from "@/client/lib/trpc";
-import PersonTable, { Para, ParaHeadCell } from "@/components/table/table";
+import Button from "@/components/design_system/button/Button";
+import { DataTableColumn } from "@/components/design_system/dataTable/DataTable";
+import {
+  withDataTablePage,
+  DataTablePageProps,
+} from "@/components/design_system/dataTable/DataTablePage";
 
-const Staff = () => {
-  const utils = trpc.useContext();
-  const { data: paras, isLoading } = trpc.case_manager.getMyParas.useQuery();
-  const { data: me } = trpc.user.getMe.useQuery();
+import emptyState from "../../public/img/empty-state.png";
 
-  const addStaff = trpc.case_manager.addStaff.useMutation({
-    onSuccess: () => utils.case_manager.getMyParas.invalidate(),
+import { trpc, RouterOutputs } from "@/client/lib/trpc";
+
+const COLUMNS: DataTableColumn[] = [
+  {
+    id: "first_name",
+    label: "First Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "last_name",
+    label: "Last Name",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "email",
+    label: "Email",
+    isSortable: true,
+    width: "15%",
+  },
+  {
+    id: "actions",
+    label: "",
+    isSortable: false,
+  },
+];
+
+interface NewRecordType {
+  first_name: string;
+  last_name: string;
+  email: string;
+}
+
+type Unpacked<T> = T extends (infer U)[] ? U : T;
+type RecordType = Unpacked<RouterOutputs["case_manager"]["getMyParas"]>;
+
+function Staff({
+  search,
+  sort,
+  sortAsc,
+  render,
+}: DataTablePageProps<RecordType, NewRecordType>) {
+  const { data: records, isLoading } = trpc.case_manager.getMyParas.useQuery({
+    search,
+    sort,
+    sortAsc,
   });
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
+  const [record, setRecord] = useState<NewRecordType>();
+  const focusRef = useRef<HTMLInputElement>();
 
-    try {
-      await addStaff.mutateAsync({
-        first_name: data.get("first_name") as string,
-        last_name: data.get("last_name") as string,
-        email: data.get("email") as string,
-      });
-      // resetting the form this way is only necessary if the form remains visible upon adding a person. due to Materials UI, the reset form(s) will show as "touched" (TT).
-      (event.target as HTMLFormElement).reset();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  if (isLoading) {
-    return <div>Loading...</div>;
+  function onAddRecord() {
+    setRecord({
+      first_name: "",
+      last_name: "",
+      email: "",
+    });
+    setTimeout(() => focusRef.current?.focus(), 0);
   }
 
-  const headCells: ParaHeadCell[] = [
-    {
-      id: "first_name",
-      label: "First Name",
-      hasInput: true,
-    },
-    {
-      id: "last_name",
-      label: "Last Name",
-      hasInput: true,
-    },
-    {
-      id: "email",
-      label: "Email",
-      hasInput: true,
-    },
-  ];
+  const utils = trpc.useUtils();
+  const addRecord = trpc.case_manager.addStaff.useMutation({
+    meta: { disableGlobalOnError: true },
+  });
 
-  return (
-    <PersonTable
-      people={[...(me ? [me] : []), ...(paras ?? [])] as Para[]}
-      onSubmit={handleSubmit}
-      headCells={headCells}
-      type="Staff"
-    />
-  );
-};
+  async function onSubmit() {
+    if (!record) return;
+    await addRecord.mutateAsync(record);
+    await utils.case_manager.getMyParas.invalidate();
+    setRecord(undefined);
+  }
 
-export default Staff;
+  return render({
+    title: "Staff",
+    addLabel: "Add Staff",
+    isLoading,
+    record,
+    records,
+    onAddRecord,
+    onSubmit,
+    columns: COLUMNS,
+    emptyElement: (
+      <>
+        <Image src={emptyState} alt="No staff image" width={250} />
+        <h3>No staff yet!</h3>
+        <Button onClick={onAddRecord}>Add Staff</Button>
+      </>
+    ),
+    renderFormRow: (record, hasError) => (
+      <TableRow>
+        <TableCell>
+          <TextField
+            inputRef={focusRef}
+            label="First Name"
+            value={record.first_name}
+            onChange={(e) =>
+              setRecord({ ...record, first_name: e.target.value })
+            }
+            error={hasError(["first_name"])}
+          />
+        </TableCell>
+        <TableCell>
+          <TextField
+            label="Last Name"
+            value={record.last_name}
+            onChange={(e) =>
+              setRecord({ ...record, last_name: e.target.value })
+            }
+            error={hasError(["last_name"])}
+          />
+        </TableCell>
+        <TableCell>
+          <TextField
+            type="email"
+            label="Email"
+            value={record.email}
+            onChange={(e) => setRecord({ ...record, email: e.target.value })}
+            error={hasError(["email"])}
+          />
+        </TableCell>
+        <TableCell>
+          <Stack
+            direction="row"
+            spacing={1}
+            sx={{ justifyContent: "flex-end" }}
+          >
+            <Button type="submit">Save</Button>
+            <Button variant="secondary" onClick={() => setRecord(undefined)}>
+              Cancel
+            </Button>
+          </Stack>
+        </TableCell>
+      </TableRow>
+    ),
+    renderRow: (record, router) => (
+      <TableRow
+        key={record.para_id}
+        onClick={() => router.push(`/staff/${record.para_id}`)}
+      >
+        <TableCell>{record.first_name}</TableCell>
+        <TableCell>{record.last_name}</TableCell>
+        <TableCell>{record.email}</TableCell>
+        <TableCell></TableCell>
+      </TableRow>
+    ),
+  });
+}
+
+export default withDataTablePage(Staff);
