@@ -1,5 +1,13 @@
 import { trpc } from "@/client/lib/trpc";
-import { Box, Container, Modal, Stack } from "@mui/material";
+import {
+  Box,
+  Card,
+  CardContent,
+  Container,
+  Modal,
+  Stack,
+  Typography,
+} from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -156,67 +164,74 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   if (!student) return;
 
   return (
-    <Stack
-      spacing={2}
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        width: "100%",
-      }}
-    >
-      <div>
-        <EditStudentModal
-          open={open}
-          handleClose={handleClose}
-          student={student}
-          activeIep={activeIep}
-          startDate={startDate}
-          endDate={endDate}
-          setStartDate={setStartDate}
-          onSubmit={handleEditStudent}
-        />
-      </div>
+    <Stack spacing={4}>
+      <Card>
+        <CardContent>
+          <Stack
+            sx={{ mb: 3 }}
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography variant="h3">
+              {student?.first_name} {student?.last_name}
+            </Typography>
+            <Stack direction="row" spacing={2}>
+              <Button
+                variant="tertiary"
+                size="small"
+                onClick={() => setArchivePrompt(true)}
+              >
+                Archive
+              </Button>
+              <Button
+                variant="secondary"
+                size="small"
+                onClick={handleEditState}
+              >
+                Edit Profile
+              </Button>
+            </Stack>
+          </Stack>
+          <Stack direction="row" spacing={5}>
+            <Stack spacing={0.25}>
+              <Typography variant="body1Bold" color="var(--grey-40)">
+                Grade
+              </Typography>
+              <Typography variant="body1" sx={{ textAlign: "center" }}>
+                {student?.grade}
+              </Typography>
+            </Stack>
+            <Stack spacing={0.25}>
+              <Typography variant="body1Bold" color="var(--grey-40)">
+                IEP Start Date
+              </Typography>
+              <Typography variant="body1">
+                {activeIep?.start_date.toLocaleDateString() ?? "None"}
+              </Typography>
+            </Stack>
+            <Stack spacing={0.25}>
+              <Typography variant="body1Bold" color="var(--grey-40)">
+                IEP End Date
+              </Typography>
+              <Typography variant="body1">
+                {activeIep?.end_date.toLocaleDateString() ?? "None"}
+              </Typography>
+            </Stack>
+            <Stack spacing={0.25}>
+              <Typography variant="body1Bold" color="var(--grey-40)">
+                Email
+              </Typography>
+              <Typography variant="body1">{student?.email ?? ""}</Typography>
+            </Stack>
+          </Stack>
+        </CardContent>
+      </Card>
+
       <Container
         className={$StudentPage.studentInfoContainer}
         sx={{ marginBottom: "1rem" }}
       >
-        <Box className={$StudentPage.displayBox}>
-          <p className={$StudentPage.studentName}>
-            {student?.first_name} {student?.last_name}
-          </p>
-
-          <Box className={$StudentPage.displayBoxGap}>
-            <Button variant="tertiary" onClick={() => setArchivePrompt(true)}>
-              Archive
-            </Button>
-            <Button variant="secondary" onClick={handleEditState}>
-              Edit
-            </Button>
-          </Box>
-        </Box>
-
-        <Box className={$StudentPage.displayBox}>
-          <Box gap={10} className={$StudentPage.infoBox}>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>Grade</p>
-              <p className={$StudentPage.centerText}>{student?.grade}</p>
-            </div>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>IEP Start Date</p>
-              <p className={$StudentPage.centerText}>
-                {activeIep?.start_date.toLocaleDateString() ?? "None"}
-              </p>
-            </div>
-            <div className={$StudentPage.singleInfoArea}>
-              <p>IEP End Date</p>
-              <p className={$StudentPage.centerText}>
-                {activeIep?.end_date.toLocaleDateString() ?? "None"}
-              </p>
-            </div>
-          </Box>
-        </Box>
-
         {!activeIep ? (
           <Container className={$StudentPage.noIepContainer}>
             <Box className={$StudentPage.noIepBox}>
@@ -239,6 +254,17 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
           <Iep iep_id={activeIep.iep_id} />
         )}
       </Container>
+
+      <EditStudentModal
+        open={open}
+        handleClose={handleClose}
+        student={student}
+        activeIep={activeIep}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        onSubmit={handleEditStudent}
+      />
 
       {/* Archiving Student Modal appears when "Archive" button is pressed*/}
       <Modal
