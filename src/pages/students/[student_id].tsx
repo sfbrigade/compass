@@ -165,7 +165,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
 
   return (
     <Stack spacing={4}>
-      <Card>
+      <Card variant="outlined">
         <CardContent>
           <Stack
             sx={{ mb: 3 }}
@@ -228,32 +228,25 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
         </CardContent>
       </Card>
 
-      <Container
-        className={$StudentPage.studentInfoContainer}
-        sx={{ marginBottom: "1rem" }}
-      >
-        {!activeIep ? (
-          <Container className={$StudentPage.noIepContainer}>
-            <Box className={$StudentPage.noIepBox}>
-              <Image
-                src={noGoals}
-                alt="no IEP image"
-                className={$Image.fitContent}
-                priority={true}
-              />
-              <p className={$StudentPage.textSpacing}>
-                This student does not have an active IEP. Please create one.
-              </p>
-              <Button onClick={() => setCreateIepModal(true)}>
-                Create IEP
-              </Button>
-            </Box>
-          </Container>
-        ) : (
-          // Active IEP is in db
-          <Iep iep_id={activeIep.iep_id} />
-        )}
-      </Container>
+      {!activeIep ? (
+        <Container className={$StudentPage.noIepContainer}>
+          <Box className={$StudentPage.noIepBox}>
+            <Image
+              src={noGoals}
+              alt="no IEP image"
+              className={$Image.fitContent}
+              priority={true}
+            />
+            <p className={$StudentPage.textSpacing}>
+              This student does not have an active IEP. Please create one.
+            </p>
+            <Button onClick={() => setCreateIepModal(true)}>Create IEP</Button>
+          </Box>
+        </Container>
+      ) : (
+        // Active IEP is in db
+        <Iep iep_id={activeIep.iep_id} />
+      )}
 
       <EditStudentModal
         open={open}

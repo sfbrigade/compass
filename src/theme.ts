@@ -20,6 +20,12 @@ declare module "@mui/material/Typography" {
   }
 }
 
+declare module "@mui/material/Tabs" {
+  interface TabsPropsIndicatorColorOverrides {
+    transparent: true;
+  }
+}
+
 export const compassTheme = createTheme({
   cssVariables: true,
   palette: {
@@ -140,7 +146,6 @@ export const compassTheme = createTheme({
         root: {
           borderRadius: "0.5rem",
           boxShadow: "none",
-          border: "1px solid var(--grey-70)",
         },
       },
     },
@@ -335,6 +340,28 @@ export const compassTheme = createTheme({
             },
           },
         },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: "var(--primary)",
+          fontWeight: "bold",
+          padding: "1rem",
+          "&.Mui-selected": {
+            backgroundColor: "var(--primary-95)",
+            borderTopLeftRadius: ".25rem",
+            borderTopRightRadius: ".25rem",
+          },
+          "&.Mui-disabled": {
+            color: "var(--primary)",
+          },
+        },
+      },
+    },
+    MuiTabs: {
+      defaultProps: {
+        indicatorColor: "transparent",
       },
     },
   },
