@@ -187,7 +187,6 @@ test("getMyTasks", async (t) => {
     .values({
       first_name: FIRST_NAME,
       last_name: LAST_NAME,
-      email: "jdoe@email.com",
       grade: 6,
       assigned_case_manager_id: seed.case_manager.user_id,
     })

@@ -2,6 +2,30 @@ import { createTheme, Shadows } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    body1Bold: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme()`
+  interface TypographyVariantsOptions {
+    body1Bold?: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    body1Bold: true;
+  }
+}
+
+declare module "@mui/material/Tabs" {
+  interface TabsPropsIndicatorColorOverrides {
+    transparent: true;
+  }
+}
+
 export const compassTheme = createTheme({
   cssVariables: true,
   palette: {
@@ -84,6 +108,12 @@ export const compassTheme = createTheme({
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
+    body1Bold: {
+      fontWeight: 600,
+      fontSize: "1em",
+      fontFamily: "var(--inter), sans-serif",
+      lineHeight: "150%",
+    },
     body2: {
       fontWeight: 500,
       fontSize: "0.875em",
@@ -111,12 +141,37 @@ export const compassTheme = createTheme({
     },
   },
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "0.5rem",
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "1.5rem",
+        },
+      },
+    },
     MuiCheckbox: {
       defaultProps: {
         disableRipple: true,
       },
     },
-    MuiTextField: {
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-10)",
+          "&.Mui-focused": {
+            color: "var(--primary)",
+          },
+        },
+      },
+    },
+    MuiInputBase: {
       styleOverrides: {
         root: {
           "& .MuiInputLabel-outlined": {
@@ -124,6 +179,67 @@ export const compassTheme = createTheme({
             "&.Mui-focused": {
               color: "var(--primary)",
             },
+          },
+          "& .MuiOutlinedInput-input": {
+            paddingTop: "0.625rem",
+            paddingBottom: "0.625rem",
+          },
+          "& .MuiOutlinedInput-root": {
+            color: "var(--grey-10)",
+            "& .MuiOutlinedInput-notchedOutline": {
+              borderColor: "var(--primary)",
+              borderWidth: "1px",
+            },
+            "&.Mui-focused": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--primary)",
+                borderWidth: "2px",
+              },
+            },
+            "&:hover:not(.Mui-focused)": {
+              "& .MuiOutlinedInput-notchedOutline": {
+                borderColor: "var(--grey-10)",
+              },
+            },
+          },
+        },
+      },
+    },
+    MuiTableBody: {
+      styleOverrides: {
+        root: {
+          "> tr:nth-of-type(even)": {
+            backgroundColor: "var(--grey-90)",
+          },
+          "> tr:hover": {
+            backgroundColor: "var(--grey-70)",
+            cursor: "pointer",
+          },
+          td: {
+            border: "none",
+          },
+        },
+      },
+    },
+    MuiTextField: {
+      defaultProps: {
+        slotProps: {
+          inputLabel: {
+            shrink: true,
+          },
+        },
+      },
+      styleOverrides: {
+        root: {
+          "& .MuiInputLabel-outlined": {
+            color: "var(--grey-10)",
+            "&.Mui-focused": {
+              color: "var(--primary)",
+            },
+          },
+          "& .MuiOutlinedInput-input": {
+            paddingTop: "0.625rem",
+            paddingBottom: "0.625rem",
           },
           "& .MuiOutlinedInput-root": {
             color: "var(--grey-10)",
@@ -226,14 +342,26 @@ export const compassTheme = createTheme({
         },
       },
     },
-    MuiInputLabel: {
+    MuiTab: {
       styleOverrides: {
         root: {
-          color: "var(--grey-10)",
-          "&.Mui-focused": {
+          color: "var(--primary)",
+          fontWeight: "bold",
+          padding: "1rem",
+          "&.Mui-selected": {
+            backgroundColor: "var(--primary-95)",
+            borderTopLeftRadius: ".25rem",
+            borderTopRightRadius: ".25rem",
+          },
+          "&.Mui-disabled": {
             color: "var(--primary)",
           },
         },
+      },
+    },
+    MuiTabs: {
+      defaultProps: {
+        indicatorColor: "transparent",
       },
     },
   },

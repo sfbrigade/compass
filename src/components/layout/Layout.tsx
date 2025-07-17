@@ -18,13 +18,13 @@ interface LayoutProps {
 }
 
 const Layout = ({ initialBreadcrumbs, children }: LayoutProps) => {
-  const { breadcrumbs, setBreadcrumbs } = useBreadcrumbsContext();
+  const { breadcrumbs, setInitialBreadcrumbs } = useBreadcrumbsContext();
   const { status } = useSession();
   const isSignedIn = "authenticated" === status;
 
   useEffect(() => {
-    setBreadcrumbs(initialBreadcrumbs);
-  }, [initialBreadcrumbs, setBreadcrumbs]);
+    setInitialBreadcrumbs(initialBreadcrumbs);
+  }, [initialBreadcrumbs, setInitialBreadcrumbs]);
 
   return (
     <div className={classes.layout}>
