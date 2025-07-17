@@ -2,6 +2,30 @@ import { createTheme, Shadows } from "@mui/material";
 
 const { breakpoints } = createTheme();
 
+declare module "@mui/material/styles" {
+  interface TypographyVariants {
+    body1Bold: React.CSSProperties;
+  }
+
+  // allow configuration using `createTheme()`
+  interface TypographyVariantsOptions {
+    body1Bold?: React.CSSProperties;
+  }
+}
+
+// Update the Typography's variant prop options
+declare module "@mui/material/Typography" {
+  interface TypographyPropsVariantOverrides {
+    body1Bold: true;
+  }
+}
+
+declare module "@mui/material/Tabs" {
+  interface TabsPropsIndicatorColorOverrides {
+    transparent: true;
+  }
+}
+
 export const compassTheme = createTheme({
   cssVariables: true,
   palette: {
@@ -84,6 +108,12 @@ export const compassTheme = createTheme({
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
+    body1Bold: {
+      fontWeight: 600,
+      fontSize: "1em",
+      fontFamily: "var(--inter), sans-serif",
+      lineHeight: "150%",
+    },
     body2: {
       fontWeight: 500,
       fontSize: "0.875em",
@@ -111,6 +141,21 @@ export const compassTheme = createTheme({
     },
   },
   components: {
+    MuiCard: {
+      styleOverrides: {
+        root: {
+          borderRadius: "0.5rem",
+          boxShadow: "none",
+        },
+      },
+    },
+    MuiCardContent: {
+      styleOverrides: {
+        root: {
+          padding: "1.5rem",
+        },
+      },
+    },
     MuiCheckbox: {
       defaultProps: {
         disableRipple: true,
@@ -295,6 +340,28 @@ export const compassTheme = createTheme({
             },
           },
         },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          color: "var(--primary)",
+          fontWeight: "bold",
+          padding: "1rem",
+          "&.Mui-selected": {
+            backgroundColor: "var(--primary-95)",
+            borderTopLeftRadius: ".25rem",
+            borderTopRightRadius: ".25rem",
+          },
+          "&.Mui-disabled": {
+            color: "var(--primary)",
+          },
+        },
+      },
+    },
+    MuiTabs: {
+      defaultProps: {
+        indicatorColor: "transparent",
       },
     },
   },

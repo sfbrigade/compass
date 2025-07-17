@@ -1,16 +1,19 @@
 import { trpc } from "@/client/lib/trpc";
 import Goals from "@/components/goal/Goal";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import List from "@mui/material/List";
-import ListItem from "@mui/material/ListItem";
 
-import Grid from "@mui/material/Grid";
+import {
+  Card,
+  CardContent,
+  Container,
+  Grid,
+  List,
+  ListItem,
+  Stack,
+  Typography,
+} from "@mui/material";
 
-import Stack from "@mui/material/Stack";
 import Image from "next/image";
 import noGoals from "../../public/img/no-goals-icon.png";
-import $Image from "../../styles/Image.module.css";
 import $Iep from "./Iep.module.css";
 import { useState } from "react";
 import { useRouter } from "next/router";
@@ -68,101 +71,102 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <Stack sx={{ width: 1 }} style={{ maxWidth: "1200px" }}>
-      <Grid container justifyContent="space-between">
-        <p className={$Iep.goalTab}>Goals &#40;{goals?.length ?? 0}&#41;</p>
+    <Stack spacing={2}>
+      <Stack direction="row" alignItems="center" justifyContent="space-between">
+        <Typography variant="h4">Goals ({goals?.length ?? 0})</Typography>
         {!showAddGoalForm && (
-          <div>
-            <Button onClick={revealAddGoalForm}>Add Goal</Button>
-          </div>
+          <Button onClick={revealAddGoalForm}>Add Goal</Button>
         )}
-      </Grid>
+      </Stack>
 
-      {/* List of goals */}
-      {((goals && goals?.length >= 1) || showAddGoalForm) && (
-        <Grid container className={$Iep.goalsContainer}>
-          <Grid item md={showAddGoalForm ? 5 : 12}>
-            <List>
-              {showAddGoalForm && (
-                <ListItem
-                  key="adding-goal"
-                  style={{ borderBottom: "1px solid var(--outline)" }}
-                >
-                  <div
-                    style={{
-                      padding: "24px",
-                      fontStyle: "italic",
-                      color: "var(--grey-40)",
+      <Card>
+        {/* List of goals */}
+        {((goals && goals?.length >= 1) || showAddGoalForm) && (
+          <Grid container className={$Iep.goalsContainer}>
+            <Grid item md={showAddGoalForm ? 5 : 12}>
+              <List>
+                {showAddGoalForm && (
+                  <ListItem
+                    key="adding-goal"
+                    style={{ borderBottom: "1px solid var(--outline)" }}
+                  >
+                    <div
+                      style={{
+                        padding: "24px",
+                        fontStyle: "italic",
+                        color: "var(--grey-40)",
+                      }}
+                    >
+                      Adding new goal...
+                    </div>
+                  </ListItem>
+                )}
+                {goals?.map((goal) => (
+                  <ListItem
+                    key={goal.goal_id}
+                    style={{ padding: 0 }}
+                    className={$Iep.listGoal}
+                    onClick={async () => {
+                      await router.push(
+                        `${router.asPath}/goals/${goal.goal_id}`
+                      );
                     }}
                   >
-                    Adding new goal...
-                  </div>
-                </ListItem>
-              )}
-              {goals?.map((goal) => (
-                <ListItem
-                  key={goal.goal_id}
-                  style={{ padding: 0 }}
-                  className={$Iep.listGoal}
-                  onClick={async () => {
-                    await router.push(`${router.asPath}/goals/${goal.goal_id}`);
-                  }}
-                >
-                  <Container>
-                    <Goals goal={goal} />
-                  </Container>
-                </ListItem>
-              ))}
-            </List>
-          </Grid>
-          {showAddGoalForm && (
-            <Grid item className={$Iep.addGoalFormContainer} md={7}>
-              <div className={$Iep.addGoalFormHeading}>Add IEP goal</div>
-              <p>Enter the goal as it appears on the student’s IEP</p>
-              <form style={{ marginTop: "1rem" }} onSubmit={handleGoalSubmit}>
-                <label htmlFor="description">Student Goal</label>
-                <textarea
-                  value={addGoalInput}
-                  name="description"
-                  placeholder="Goal description"
-                  onChange={(e) => {
-                    setAddGoalInput(e.target.value);
-                  }}
-                  className={$Iep.addGoalFormTextArea}
-                />
-                <Grid container justifyContent="space-between" marginTop={1}>
-                  <Grid item>
-                    <Button variant="secondary" onClick={cancelAddGoal}>
-                      Cancel
-                    </Button>
-                  </Grid>
-                  <Grid item>
-                    <Button type="submit">Save</Button>
-                  </Grid>
-                </Grid>
-              </form>
+                    <Container>
+                      <Goals goal={goal} />
+                    </Container>
+                  </ListItem>
+                ))}
+              </List>
             </Grid>
-          )}
-        </Grid>
-      )}
-      {/* No Goal in DB yet */}
-      {goals?.length == 0 && !showAddGoalForm && (
-        <Container className={$Iep.goalsContainer}>
-          <Box className={$Iep.noGoalBox}>
-            <Image
-              src={noGoals}
-              alt="no goals image"
-              className={$Image.fitContent}
-              priority={true}
-            />
-            <p className={$Iep.noGoalText}>No goals yet</p>
-            <p className={$Iep.noGoalTextSmall}>
-              Start adding goals to set up your student&#39;s profile
-            </p>
-            <Button onClick={revealAddGoalForm}>Add Goal</Button>
-          </Box>
-        </Container>
-      )}
+            {showAddGoalForm && (
+              <Grid item className={$Iep.addGoalFormContainer} md={7}>
+                <div className={$Iep.addGoalFormHeading}>Add IEP goal</div>
+                <p>Enter the goal as it appears on the student’s IEP</p>
+                <form style={{ marginTop: "1rem" }} onSubmit={handleGoalSubmit}>
+                  <label htmlFor="description">Student Goal</label>
+                  <textarea
+                    value={addGoalInput}
+                    name="description"
+                    placeholder="Goal description"
+                    onChange={(e) => {
+                      setAddGoalInput(e.target.value);
+                    }}
+                    className={$Iep.addGoalFormTextArea}
+                  />
+                  <Grid container justifyContent="space-between" marginTop={1}>
+                    <Grid item>
+                      <Button variant="secondary" onClick={cancelAddGoal}>
+                        Cancel
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button type="submit">Save</Button>
+                    </Grid>
+                  </Grid>
+                </form>
+              </Grid>
+            )}
+          </Grid>
+        )}
+        {/* No Goal in DB yet */}
+        {goals?.length == 0 && !showAddGoalForm && (
+          <CardContent>
+            <Stack spacing={2} alignItems="center">
+              <Image
+                src={noGoals}
+                alt="No goals image"
+                style={{ maxWidth: "260px", height: "auto" }}
+              />
+              <Typography variant="h3">No goals yet</Typography>
+              <Typography variant="body1">
+                Start adding goals to set up your student&#39;s profile
+              </Typography>
+              <Button onClick={revealAddGoalForm}>Add Goal</Button>
+            </Stack>
+          </CardContent>
+        )}
+      </Card>
     </Stack>
   );
 };
