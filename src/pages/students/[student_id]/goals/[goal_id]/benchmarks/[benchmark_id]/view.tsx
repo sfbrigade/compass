@@ -184,6 +184,8 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
             <div key={trial.trial_data_id}>{trial.notes}</div>
           ))}
           <ChartContainer
+            className="benchmark-chart"
+            margin={{ left: 70 }} // adjust margin to always display the label
             xAxis={[
               { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
               {
