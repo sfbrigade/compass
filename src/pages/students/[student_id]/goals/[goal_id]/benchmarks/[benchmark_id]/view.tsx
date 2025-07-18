@@ -185,7 +185,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
           ))}
           <ChartContainer
             className="benchmark-chart"
-            margin={{ left: 70 }} // adjust margin to always display the label
+            sx={{ margin: "auto", display: "block" }}
             xAxis={[
               { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
               {
