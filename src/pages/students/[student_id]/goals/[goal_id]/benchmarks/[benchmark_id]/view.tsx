@@ -22,7 +22,7 @@ import {
   TrialData,
   valueFormatter,
 } from "@/types/global";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CustomItemTooltip } from "@/components/benchmarks/CustomItemTooltip";
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
@@ -32,6 +32,22 @@ import { Typography, Card, CardContent, Stack } from "@mui/material";
 const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
   const router = useRouter();
+  const ref = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+
+  function handleResize() {
+    if (ref.current) {
+      setWidth(ref.current.offsetWidth);
+    }
+  }
+
+  useEffect(() => {
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const benchmark_id = router.query?.benchmark_id as string;
 
@@ -163,7 +179,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
       <Typography variant="h1">Viewing Data for [Student name]</Typography>
 
       <Card>
-        <CardContent>
+        <CardContent ref={ref}>
           {benchmark?.trials.map((trial) => (
             <div key={trial.trial_data_id}>{trial.notes}</div>
           ))}
@@ -214,7 +230,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
                   valueFormatter(v as BulkPoint | SoloPoint),
               },
             ]}
-            width={500}
+            width={Math.min(720, width)}
             height={300}
           >
             <LinePlot />
