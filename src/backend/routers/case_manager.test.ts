@@ -61,10 +61,10 @@ test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
     .executeTakeFirstOrThrow();
 
   const myStudents = await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudents.length, 1);
-  t.is(myStudents[0].student_id, student.student_id);
-  t.is(myStudents[0].iep_id, null);
-  t.is(myStudents[0].end_date, null);
+  t.is(myStudents.records.length, 1);
+  t.is(myStudents.records[0].student_id, student.student_id);
+  t.is(myStudents.records[0].iep_id, null);
+  t.is(myStudents.records[0].end_date, null);
 });
 
 test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
@@ -81,8 +81,8 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
 
   const myStudentsBefore =
     await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudentsBefore[0].iep_id, null);
-  t.is(myStudentsBefore[0].end_date, null);
+  t.is(myStudentsBefore.records[0].iep_id, null);
+  t.is(myStudentsBefore.records[0].end_date, null);
 
   const iep = await trpc.student.addIep.mutate({
     student_id: seed.student.student_id,
@@ -92,8 +92,8 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
 
   const myStudentsAfter =
     await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudentsAfter[0].iep_id, iep.iep_id);
-  t.deepEqual(myStudentsAfter[0].end_date, iep.end_date);
+  t.is(myStudentsAfter.records[0].iep_id, iep.iep_id);
+  t.deepEqual(myStudentsAfter.records[0].end_date, iep.end_date);
 });
 
 test("getMyStudentsAndIepInfo - paras do not have access", async (t) => {

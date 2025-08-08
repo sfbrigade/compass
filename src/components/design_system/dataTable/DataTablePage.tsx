@@ -13,12 +13,13 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   title: string;
   addLabel?: string;
   isLoading: boolean;
-  records?: RecordType[];
   record?: NewRecordType;
+  records?: RecordType[];
   onAddRecord?: () => void;
   onSubmit?: () => Promise<void>;
   columns: DataTableColumn[];
   emptyElement: ReactNode;
+  renderCount?: () => ReactNode;
   renderFormRow: (
     record: NewRecordType,
     hasError: (path: string[]) => boolean,
@@ -28,6 +29,8 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
 }
 
 export interface DataTablePageProps<RecordType, NewRecordType> {
+  page: number;
+  pageSize: number;
   search?: string;
   sort?: string;
   sortAsc?: boolean;
@@ -44,6 +47,8 @@ export function withDataTablePage<
   function DataTablePage(props: Omit<T, keyof DataTablePageProps<any, any>>) {
     const router = useRouter();
     const searchParams = useSearchParams();
+    const page = Number(searchParams.get("page") ?? "1");
+    const pageSize = Number(searchParams.get("pageSize") ?? "25");
     const search = searchParams.get("search") ?? "";
     const sort = searchParams.get("sort") ?? "first_name";
     const sortAsc = (searchParams.get("sortAsc") ?? "true") === "true";
@@ -101,19 +106,22 @@ export function withDataTablePage<
     return (
       <WrappedComponent
         {...(props as T)}
+        page={page}
+        pageSize={pageSize}
         search={search}
         sort={sort}
         sortAsc={sortAsc}
         render={({
           title,
           isLoading,
+          record,
           records,
           addLabel,
           onAddRecord,
-          record,
           emptyElement,
           onSubmit,
           columns: COLUMNS,
+          renderCount,
           renderFormRow,
           renderRow,
         }) => (
@@ -160,6 +168,7 @@ export function withDataTablePage<
               >
                 <DataTable
                   columns={COLUMNS}
+                  countLabel={renderCount?.()}
                   sort={sort}
                   sortAsc={sortAsc}
                   onChangeSort={onChangeSort}

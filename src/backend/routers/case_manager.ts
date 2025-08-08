@@ -28,6 +28,8 @@ export const case_manager = router({
     .input(
       z
         .object({
+          page: z.number().min(1).optional(),
+          pageSize: z.number().min(1).optional(),
           search: z.string().optional(),
           sort: z.string().optional(),
           sortAsc: z.coerce.boolean().optional(),
@@ -36,25 +38,19 @@ export const case_manager = router({
     )
     .query(async (req) => {
       const { userId } = req.ctx.auth;
-      const { search, sort, sortAsc = true } = req.input ?? {};
+      const {
+        search,
+        sort,
+        sortAsc = true,
+        page = 1,
+        pageSize = 25,
+      } = req.input ?? {};
 
       let query = req.ctx.db
-        .selectFrom("iep")
-        .fullJoin("student", (join) =>
+        .selectFrom("student")
+        .leftJoin("iep", (join) =>
           join.onRef("student.student_id", "=", "iep.student_id")
         )
-        .where("assigned_case_manager_id", "=", userId);
-
-      if (search) {
-        query = query.where((eb) =>
-          eb.or([
-            eb("student.first_name", "ilike", `%${search}%`),
-            eb("student.last_name", "ilike", `%${search}%`),
-          ])
-        );
-      }
-
-      const result = await query
         .select([
           "student.student_id as student_id",
           "first_name",
@@ -63,6 +59,18 @@ export const case_manager = router({
           "iep.iep_id as iep_id",
           "iep.end_date as end_date",
         ])
+        .where("assigned_case_manager_id", "=", userId);
+      if (search) {
+        query = query.where((eb) =>
+          eb.or([
+            eb("student.first_name", "ilike", `%${search}%`),
+            eb("student.last_name", "ilike", `%${search}%`),
+          ])
+        );
+      }
+      query = query
+        .limit(pageSize)
+        .offset((page - 1) * pageSize)
         .orderBy(
           (eb) => {
             switch (sort) {
@@ -77,10 +85,31 @@ export const case_manager = router({
             }
           },
           sortAsc ? "asc" : "desc"
-        )
-        .execute();
+        );
 
-      return result;
+      let countQuery = req.ctx.db
+        .selectFrom("student")
+        .select(req.ctx.db.fn.countAll().as("count"))
+        .where("assigned_case_manager_id", "=", userId);
+      if (search) {
+        countQuery = countQuery.where((eb) =>
+          eb.or([
+            eb("student.first_name", "ilike", `%${search}%`),
+            eb("student.last_name", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const [records, totalCount] = await Promise.all([
+        query.execute(),
+        countQuery.executeTakeFirst(),
+      ]);
+
+      return {
+        records,
+        totalCount: Number(totalCount?.count ?? 0),
+        totalPages: Math.ceil(Number(totalCount?.count ?? 0) / pageSize),
+      };
     }),
 
   /**

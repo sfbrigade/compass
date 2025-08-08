@@ -55,16 +55,18 @@ interface NewRecordType {
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
 type RecordType = Unpacked<
-  RouterOutputs["case_manager"]["getMyStudentsAndIepInfo"]
+  RouterOutputs["case_manager"]["getMyStudentsAndIepInfo"]["records"]
 >;
 
 function Students({
+  page,
+  pageSize,
   search,
   sort,
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
-  const { data: records, isLoading } =
+  const { data, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery({
       search,
       sort,
@@ -104,7 +106,7 @@ function Students({
     addLabel: "Add Student",
     isLoading,
     record,
-    records,
+    records: data?.records,
     onAddRecord,
     onSubmit,
     columns: COLUMNS,
@@ -115,6 +117,8 @@ function Students({
         <Button onClick={onAddRecord}>Add Student</Button>
       </>
     ),
+    renderCount: () =>
+      `${(page - 1) * pageSize + 1}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
     renderFormRow: (record, hasError) => (
       <TableRow>
         <TableCell>

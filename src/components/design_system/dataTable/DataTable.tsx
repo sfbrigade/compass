@@ -7,6 +7,7 @@ import {
   TableCell,
   TableSortLabel,
   TableBody,
+  Typography,
 } from "@mui/material";
 
 export interface DataTableColumn {
@@ -19,6 +20,7 @@ export interface DataTableColumn {
 interface DataTableProps {
   children?: ReactNode;
   columns: DataTableColumn[];
+  countLabel?: ReactNode;
   onChangeSort?: (newSort: string, newSortAsc: boolean) => void;
   sort?: string;
   sortAsc?: boolean;
@@ -27,6 +29,7 @@ interface DataTableProps {
 function DataTable({
   children,
   columns,
+  countLabel,
   onChangeSort,
   sort,
   sortAsc = true,
@@ -36,7 +39,7 @@ function DataTable({
       <Table>
         <TableHead>
           <TableRow>
-            {columns.map((column) => (
+            {columns.map((column, i) => (
               <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
                 {column.isSortable && (
                   <TableSortLabel
@@ -53,6 +56,11 @@ function DataTable({
                   </TableSortLabel>
                 )}
                 {!column.isSortable && column.label}
+                {i === columns.length - 1 && countLabel && (
+                  <Typography sx={{ textAlign: "right" }}>
+                    {countLabel}
+                  </Typography>
+                )}
               </TableCell>
             ))}
           </TableRow>
