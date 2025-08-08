@@ -118,7 +118,7 @@ function Students({
       </>
     ),
     renderCount: () =>
-      `${(page - 1) * pageSize + 1}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
+      `${Math.min((page - 1) * pageSize + 1, data?.totalCount ?? 0)}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
     renderFormRow: (record, hasError) => (
       <TableRow>
         <TableCell>

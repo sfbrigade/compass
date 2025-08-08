@@ -130,10 +130,12 @@ export function withDataTablePage<
               title={title}
               searchValue={search}
               onChangeSearchValue={
-                (records?.length ?? 0) > 0 ? onChangeSearchValue : undefined
+                (records?.length ?? 0) > 0 || search
+                  ? onChangeSearchValue
+                  : undefined
               }
             >
-              {(records?.length ?? 0) > 0 && (
+              {((records?.length ?? 0) > 0 || search) && (
                 <Button
                   sx={{ ml: "2rem" }}
                   onClick={onAddRecord}
@@ -154,7 +156,7 @@ export function withDataTablePage<
                 <CircularProgress />
               </div>
             )}
-            {!isLoading && records?.length === 0 && !record && (
+            {!isLoading && records?.length === 0 && !record && !search && (
               <Stack
                 spacing="1rem"
                 sx={{ alignItems: "center", paddingTop: "4rem" }}
@@ -162,7 +164,7 @@ export function withDataTablePage<
                 {emptyElement}
               </Stack>
             )}
-            {!isLoading && ((records?.length ?? 0) > 0 || record) && (
+            {!isLoading && ((records?.length ?? 0) > 0 || record || search) && (
               <form
                 onSubmit={(event) => onSubmitInternal(event, record, onSubmit)}
               >
