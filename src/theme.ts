@@ -221,6 +221,17 @@ export const compassTheme = createTheme({
         },
       },
     },
+    MuiTableSortLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-40)",
+          fontWeight: "400",
+          "&.Mui-active": {
+            color: "var(--grey-40)",
+          },
+        },
+      },
+    },
     MuiTextField: {
       defaultProps: {
         slotProps: {
