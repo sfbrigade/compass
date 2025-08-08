@@ -12,7 +12,6 @@ const Search = ({ className, ...inputBaseProps }: InputBaseProps) => {
     input: {
       ...inputBaseProps.slotProps?.input,
       className: classes.search__input,
-      size: 8,
     },
   };
   inputBaseProps.startAdornment = inputBaseProps.startAdornment || (

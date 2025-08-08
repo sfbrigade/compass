@@ -3,6 +3,8 @@ import { Grid2 as Grid } from "@mui/material";
 
 import Search from "@/components/design_system/search/Search";
 
+import classes from "./DataTableHeader.module.css";
+
 interface DataTableHeaderProps {
   title: string;
   searchValue: string;
@@ -49,7 +51,11 @@ function DataTableHeader({
         }}
       >
         {onChangeSearchValue && (
-          <Search id="search" value={search} onChange={onChangeSearch} />
+          <Search
+            className={classes.search}
+            value={search}
+            onChange={onChangeSearch}
+          />
         )}
         {children}
       </Grid>
