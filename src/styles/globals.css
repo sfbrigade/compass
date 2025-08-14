@@ -52,7 +52,7 @@
   --grey-100: #ffffff;
 
   /* Easy Text Size Scaling */
-  --base-size: 0.875rem; /* 14px */
+  --base-size: 1rem; /* 16px */
   --scale: 1.2;
   --h1: calc(var(--h2) * var(--scale));
   --h2: calc(var(--h3) * var(--scale));
@@ -88,7 +88,6 @@ body,
 #__next {
   height: 100%;
   overflow-x: auto;
-  padding-top: 0.5rem;
   font-size: var(--base-size);
 }
 
@@ -197,30 +196,4 @@ p {
   font-size: var(--xs);
   font-weight: var(--semibold);
   text-transform: uppercase;
-}
-
-/* Breakpoints recommended by Bootstrap */
-/* Screens smaller than [480px] uses css above */
-
-/* Phones [wide screen] - Tablet [long screen] */
-@media only screen and (min-width: 480px) {
-  :root {
-    --base-size: 0.9375rem; /* 15px */
-  }
-}
-
-/* Tablets [wide screen]*/
-@media only screen and (min-width: 768px) {
-  :root {
-    --base-size: 1rem;
-  }
-}
-
-/* Desktops */
-@media only screen and (min-width: 992px) {
-  html,
-  body,
-  #__next {
-    padding-top: 0;
-  }
 }

@@ -1,9 +1,7 @@
 import { useEffect, useRef, useState, ChangeEvent, ReactNode } from "react";
-import { Grid2 as Grid } from "@mui/material";
+import { Grid2 as Grid, Stack } from "@mui/material";
 
 import Search from "@/components/design_system/search/Search";
-
-import classes from "./DataTableHeader.module.css";
 
 interface DataTableHeaderProps {
   title: string;
@@ -38,27 +36,28 @@ function DataTableHeader({
       container
       sx={{ justifyContent: "space-between", marginBottom: "2rem" }}
     >
-      <Grid size={{ xs: 12, sm: 6 }}>
+      <Grid size={{ xs: 12, sm: 6 }} order={{ xs: 2, sm: 1 }}>
         <h2>{title}</h2>
       </Grid>
-      <Grid
-        size={{ xs: 12, sm: 6 }}
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-          flexWrap: "nowrap",
-        }}
+      <Stack
+        direction={{ xs: "column", sm: "row" }}
+        order={{ xs: 1, sm: 2 }}
+        alignItems={{ xs: "flex-end", sm: "center" }}
+        width={{ xs: "100%", sm: "auto" }}
       >
         {onChangeSearchValue && (
           <Search
-            className={classes.search}
+            sx={{
+              marginBottom: { xs: "1rem", sm: "0" },
+              minWidth: "20rem",
+              width: { xs: "100%", sm: "auto" },
+            }}
             value={search}
             onChange={onChangeSearch}
           />
         )}
         {children}
-      </Grid>
+      </Stack>
     </Grid>
   );
 }
