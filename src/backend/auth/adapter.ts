@@ -24,6 +24,7 @@ const mapStoredUserToAdapterUser = (
   id: user.user_id,
   email: user.email,
   emailVerified: user.email_verified_at,
+  //Ensure name always has placeholder for last_name
   name: `${user.first_name} ${user.last_name}`,
   image: user.image_url,
   profile: { role: user.role as UserType }, // Add the role to the profile
@@ -59,10 +60,10 @@ export const createPersistedAuthAdapter = (
     const role =
       Number(numOfUsers.count) === 0 ? UserType.Admin : UserType.User;
 
-    const [first_name, last_name] = user.name?.split(" ") ?? [
-      user.email?.split("@")[0],
-      "",
-    ];
+    //fallback for last_name if not provided
+    let first_name = user.name?.split(" ")[0] ?? user.email?.split("@")[0] ?? "User";
+    let last_name = user.name?.split(" ")[1] ?? "."; // placeholder
+
     const createdUser = await db
       .insertInto("user")
       .values({
@@ -79,6 +80,7 @@ export const createPersistedAuthAdapter = (
 
     return mapStoredUserToAdapterUser(createdUser);
   },
+
   async getUser(id) {
     const user = await db
       .selectFrom("user")
@@ -87,6 +89,7 @@ export const createPersistedAuthAdapter = (
       .executeTakeFirstOrThrow();
     return mapStoredUserToAdapterUser(user);
   },
+
   async getUserByEmail(email) {
     const user = await db
       .selectFrom("user")
@@ -95,6 +98,7 @@ export const createPersistedAuthAdapter = (
       .executeTakeFirst();
     return user ? mapStoredUserToAdapterUser(user) : null;
   },
+
   async getUserByAccount({ providerAccountId, provider }) {
     const user = await db
       .selectFrom("user")
@@ -105,13 +109,14 @@ export const createPersistedAuthAdapter = (
       .executeTakeFirst();
     return user ? mapStoredUserToAdapterUser(user) : null;
   },
+
   async updateUser(user) {
-    const [first_name, last_name] = user.name?.split(" ") ?? [
-      user.email?.split("@")[0],
-      "",
-    ];
+    //FIXED: fallback for last_name if not provided
+    let first_name = user.name?.split(" ")[0] ?? user.email?.split("@")[0] ?? "User";
+    let last_name = user.name?.split(" ")[1] ?? "."; // placeholder
 
     let updatedUser: Selectable<ZapatosTableNameToKyselySchema<"user">>;
+
     if (user.id) {
       updatedUser = await db
         .updateTable("user")
@@ -143,9 +148,11 @@ export const createPersistedAuthAdapter = (
 
     return mapStoredUserToAdapterUser(updatedUser);
   },
+
   async deleteUser(userId) {
     await db.deleteFrom("user").where("user_id", "=", userId).execute();
   },
+
   async linkAccount(account) {
     const data: InsertObject<KyselySchema, "account"> = {
       user_id: account.userId,
@@ -168,6 +175,7 @@ export const createPersistedAuthAdapter = (
       )
       .execute();
   },
+
   async unlinkAccount({
     providerAccountId,
     provider,
@@ -178,6 +186,7 @@ export const createPersistedAuthAdapter = (
       .where("provider_name", "=", provider)
       .execute();
   },
+
   async createSession({ sessionToken, userId, expires }) {
     const session = await db
       .insertInto("session")
@@ -191,6 +200,7 @@ export const createPersistedAuthAdapter = (
 
     return mapStoredSessionToAdapterSession(session);
   },
+
   async getSessionAndUser(sessionToken) {
     const sessionAndUser = await db
       .selectFrom("session")
@@ -208,6 +218,7 @@ export const createPersistedAuthAdapter = (
 
     return null;
   },
+
   async updateSession(session) {
     const updatedSession = await db
       .updateTable("session")
@@ -220,6 +231,7 @@ export const createPersistedAuthAdapter = (
 
     return mapStoredSessionToAdapterSession(updatedSession);
   },
+
   async deleteSession(sessionToken) {
     await db
       .deleteFrom("session")
