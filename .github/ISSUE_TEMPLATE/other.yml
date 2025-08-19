@@ -1,0 +1,27 @@
+# NOTE: This is based off of the example template here: https://docs.github.com/en/communities/using-templates-to-encourage-useful-issues-and-pull-requests/configuring-issue-templates-for-your-repository#creating-issue-forms
+name: Other Issue
+description: File another type of issue.
+title: "[Other issue]: "
+labels: [""]
+projects: ["sfbrigade/6"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this issue form!
+  - type: textarea
+    id: what-issue
+    attributes:
+      label: What is the issue you are reporting?
+      description: Also tell us more details about the issue you are experiencing. (feel free to also add screenshots or other media)
+      placeholder: There's an issue!
+    validations:
+      required: true
+  - type: input
+    id: contact
+    attributes:
+      label: Contact Details
+      description: How can we get in touch with you if we need more info?
+      placeholder: ex. email@example.com
+    validations:
+      required: false
