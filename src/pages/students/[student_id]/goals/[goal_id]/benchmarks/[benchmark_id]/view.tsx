@@ -28,6 +28,8 @@ import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import GoalPage from "../../../[goal_id]";
 import { Typography, Card, CardContent, Stack } from "@mui/material";
+import { Download } from "@mui/icons-material";
+import Button from "@/components/design_system/button/Button";
 
 const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -174,9 +176,63 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
   console.log("createdAtDates", createdAtDates);
 
+  const exportReportMutation = trpc.iep.exportReport.useMutation();
+
+  const handleExportReport = async () => {
+    if (!benchmark_id || !goal_id || !student_id) return;
+
+    try {
+      const result = await exportReportMutation.mutateAsync({
+        benchmark_id,
+        goal_id,
+        student_id,
+      });
+
+      const byteCharacters = atob(result.pdfBuffer);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      const blob = new Blob([byteArray], { type: "application/pdf" });
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting report:", error);
+
+      // TODO: show a toast notification here
+    }
+  };
+
   return (
     <Stack spacing={4}>
-      <Typography variant="h1">Viewing Data for [Student name]</Typography>
+      <Stack direction="row" justifyContent="space-between" alignItems="center">
+        <Typography variant="h1">
+          Viewing Data for {student?.first_name} {student?.last_name}
+        </Typography>
+        <Button
+          onClick={handleExportReport}
+          disabled={
+            exportReportMutation.isLoading || !student || !goal || !benchmark
+          }
+        >
+          {exportReportMutation.isLoading ? "Generating..." : "Data Report"}
+          <Download
+            style={{
+              display: "inline-flex",
+              verticalAlign: "middle",
+              marginLeft: "8px",
+            }}
+          />
+        </Button>
+      </Stack>
 
       <Card>
         <CardContent ref={ref}>
