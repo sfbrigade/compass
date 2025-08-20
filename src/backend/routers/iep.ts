@@ -4,6 +4,7 @@ import { jsonArrayFrom } from "kysely/helpers/postgres";
 import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
 import { TRPCError } from "@trpc/server";
+import { generateBenchmarkReport } from "../lib/pdf-generator";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
@@ -679,5 +680,107 @@ export const iep = router({
 
         await deleteFile(file_id, substituteTransactionOnContext(trx, req.ctx));
       });
+    }),
+
+  exportReport: hasCaseManager
+    .input(
+      z.object({
+        benchmark_id: z.string(),
+        goal_id: z.string(),
+        student_id: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const { benchmark_id, goal_id, student_id } = input;
+
+      // Get all the required data
+      const [benchmark, goal, student] = await Promise.all([
+        ctx.db
+          .selectFrom("benchmark")
+          .selectAll()
+          .where("benchmark_id", "=", benchmark_id)
+          .executeTakeFirst(),
+        ctx.db
+          .selectFrom("goal")
+          .selectAll()
+          .where("goal_id", "=", goal_id)
+          .executeTakeFirst(),
+        ctx.db
+          .selectFrom("student")
+          .selectAll()
+          .where("student_id", "=", student_id)
+          .executeTakeFirst(),
+      ]);
+
+      if (!benchmark || !goal || !student) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Benchmark, goal, or student not found",
+        });
+      }
+
+      // Get trial data
+      const trials = await ctx.db
+        .selectFrom("trial_data")
+        .innerJoin("user", "user.user_id", "trial_data.created_by_user_id")
+        .select([
+          "trial_data.trial_data_id",
+          "trial_data.created_at",
+          "trial_data.success",
+          "trial_data.unsuccess",
+          "trial_data.notes",
+          "user.first_name",
+          "user.last_name",
+        ])
+        .where("trial_data.benchmark_id", "=", benchmark_id)
+        .orderBy("trial_data.created_at", "asc")
+        .execute();
+
+      // Calculate success rates by date (similar to the frontend logic)
+      const datePoints: { [date: string]: typeof trials } = {};
+
+      trials.forEach((trial) => {
+        const createdAtDateString = new Date(trial.created_at).toDateString();
+
+        if (datePoints[createdAtDateString]) {
+          datePoints[createdAtDateString].push(trial);
+        } else {
+          datePoints[createdAtDateString] = [trial];
+        }
+      });
+
+      const successRates = Object.entries(datePoints).map(([date, trials]) => {
+        const totalSuccess = trials.reduce((sum, t) => sum + t.success, 0);
+        const totalUnsuccess = trials.reduce((sum, t) => sum + t.unsuccess, 0);
+        const successRate =
+          totalSuccess + totalUnsuccess > 0
+            ? (totalSuccess / (totalSuccess + totalUnsuccess)) * 100
+            : 0;
+
+        const staffNames = Array.from(
+          new Set(trials.map((t) => `${t.first_name} ${t.last_name}`))
+        );
+
+        return {
+          date: new Date(date).toLocaleDateString(),
+          rate: successRate,
+          staffNames,
+          numberOfTrials: trials.length,
+        };
+      });
+
+      // Generate PDF
+      const pdfBuffer = await generateBenchmarkReport({
+        student,
+        goal,
+        benchmark,
+        trialData: trials,
+        successRates,
+      });
+
+      return {
+        pdfBuffer: pdfBuffer.toString("base64"),
+        filename: `benchmark-report-${student.first_name}-${student.last_name}-${new Date().toISOString().split("T")[0]}.pdf`,
+      };
     }),
 });
