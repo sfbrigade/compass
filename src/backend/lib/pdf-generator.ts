@@ -35,338 +35,682 @@ interface BenchmarkReportData {
   }>;
 }
 
+// HTML escaping function to prevent XSS
+function escapeHtmlServer(text: string | null | undefined): string {
+  if (!text) return "";
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
+// Get performance color based on success rate and target
+function getPerformanceColor(rate: number, target?: number | null): string {
+  if (!target) {
+    return rate >= 80 ? "#10b981" : rate >= 60 ? "#f59e0b" : "#ef4444";
+  }
+
+  if (rate >= target) return "#10b981"; // Green - meets target
+  if (rate >= target * 0.8) return "#f59e0b"; // Amber - close to target
+  return "#ef4444"; // Red - below target
+}
+
+// Calculate trend indicator
+function getTrendIndicator(rates: number[]): string {
+  if (rates.length < 2) return "";
+
+  const recent = rates.slice(-3); // Last 3 data points
+  const older = rates.slice(-6, -3); // Previous 3 data points
+
+  if (recent.length === 0 || older.length === 0) return "";
+
+  const recentAvg = recent.reduce((a, b) => a + b, 0) / recent.length;
+  const olderAvg = older.reduce((a, b) => a + b, 0) / older.length;
+
+  const difference = recentAvg - olderAvg;
+
+  if (difference > 5) return "↗"; // Improving
+  if (difference < -5) return "↘"; // Declining
+  return "→"; // Stable
+}
+
 export async function generateBenchmarkReport(
   data: BenchmarkReportData
 ): Promise<Buffer> {
+  if (!data || !data.student || !data.goal || !data.benchmark) {
+    throw new Error("Invalid report data: missing required fields");
+  }
+
   const browser = await puppeteer.launch({
     headless: true,
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    args: [
+      "--no-sandbox",
+      "--disable-setuid-sandbox",
+      "--disable-dev-shm-usage",
+      "--disable-gpu",
+    ],
   });
 
   try {
     const page = await browser.newPage();
+    await page.setViewport({ width: 1200, height: 800 });
 
-    // Generate HTML content for the report
     const htmlContent = generateReportHTML(data);
 
-    await page.setContent(htmlContent, { waitUntil: "networkidle0" });
+    await page.setContent(htmlContent, {
+      waitUntil: ["networkidle0", "domcontentloaded"],
+      timeout: 30000,
+    });
 
-    // Generate PDF
+    await page.setExtraHTTPHeaders({
+      "Content-Security-Policy":
+        "default-src 'self'; script-src 'none'; object-src 'none';",
+    });
+
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
+      preferCSSPageSize: true,
       margin: {
-        top: "20mm",
-        right: "20mm",
-        bottom: "20mm",
-        left: "20mm",
+        top: "15mm",
+        right: "15mm",
+        bottom: "15mm",
+        left: "15mm",
       },
+      displayHeaderFooter: true,
+      headerTemplate: "<div></div>",
+      footerTemplate: `
+        <div style="font-size: 10px; width: 100%; text-align: center; color: #666;">
+          Page <span class="pageNumber"></span> of <span class="totalPages"></span>
+        </div>
+      `,
     });
 
     return Buffer.from(pdfBuffer);
+  } catch (error) {
+    console.error("Error generating PDF:", error);
+    throw new Error(
+      `Failed to generate benchmark report: ${error instanceof Error ? error.message : "Unknown error"}`
+    );
   } finally {
     await browser.close();
   }
 }
 
 function generateReportHTML(data: BenchmarkReportData): string {
-  const { student, goal, benchmark, trialData, successRates } = data;
+  const { student, goal, benchmark, trialData = [], successRates = [] } = data;
 
-  // Calculate summary statistics
+  // Safe data processing with fallbacks
   const totalTrials = trialData.length;
-  const totalSuccess = trialData.reduce((sum, trial) => sum + trial.success, 0);
-  const totalUnsuccess = trialData.reduce(
-    (sum, trial) => sum + trial.unsuccess,
+  const totalSuccess = trialData.reduce(
+    (sum, trial) => sum + (trial.success || 0),
     0
   );
+  const totalUnsuccess = trialData.reduce(
+    (sum, trial) => sum + (trial.unsuccess || 0),
+    0
+  );
+  const totalAttempts = totalSuccess + totalUnsuccess;
   const overallSuccessRate =
-    totalTrials > 0
-      ? ((totalSuccess / (totalSuccess + totalUnsuccess)) * 100).toFixed(1)
-      : "0.0";
+    totalAttempts > 0 ? (totalSuccess / totalAttempts) * 100 : 0;
 
   // Get unique staff members
   const staffMembers = new Set<string>();
   trialData.forEach((trial) => {
-    staffMembers.add(`${trial.first_name} ${trial.last_name}`);
+    if (trial.first_name && trial.last_name) {
+      staffMembers.add(`${trial.first_name} ${trial.last_name}`);
+    }
   });
+
+  // Calculate trend
+  const rates = successRates.map((r) => r.rate);
+  const trendIndicator = getTrendIndicator(rates);
+
+  // Get performance color
+  const performanceColor = getPerformanceColor(
+    overallSuccessRate,
+    benchmark?.target_level
+  );
 
   return `
     <!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
       <meta charset="UTF-8">
-      <title>Benchmark Report - ${student?.first_name || ""} ${student?.last_name || ""}</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Benchmark Report - ${escapeHtmlServer(student?.first_name)} ${escapeHtmlServer(student?.last_name)}</title>
       <style>
+        * {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+        }
+        
         body {
-          font-family: 'Arial', sans-serif;
+          font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
           line-height: 1.6;
-          color: #333;
-          margin: 0;
-          padding: 20px;
+          color: #1e293b;
+          background: #f1f5f9;
+          font-size: 14px;
         }
+        
+        .page {
+          max-width: 210mm;
+          margin: 0 auto;
+          background: white;
+          min-height: 297mm;
+          box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
         .header {
-          text-align: center;
-          border-bottom: 3px solid #1976d2;
-          padding-bottom: 20px;
-          margin-bottom: 30px;
+          display: flex;
+          min-height: 120px;
+          flex: 1;
+          padding: 16px;
+          flex-direction: column;
+          justify-content: center;
         }
+        
         .header h1 {
-          color: #1976d2;
-          margin: 0;
           font-size: 28px;
+          font-weight: 700;
+          color: #1e293b;
+          margin-bottom: 4px;
         }
-        .header h2 {
-          color: #666;
-          margin: 10px 0 0 0;
-          font-size: 18px;
-          font-weight: normal;
+        
+        .header .subtitle {
+          color: #64748b;
+          font-size: 14px;
+          margin-bottom: 8px;
         }
-        .section {
-          margin-bottom: 30px;
+        
+        .header-meta {
+          display: flex;
+          flex-direction: column;
+          gap: 6px;
+          font-size: 11px;
+          color: #64748b; 
+          align-items: baseline;
         }
-        .section h3 {
-          color: #1976d2;
-          border-bottom: 2px solid #e0e0e0;
-          padding-bottom: 8px;
-          margin-bottom: 15px;
+        
+        .meta-item {
+          display: flex;
+          align-items: center;
+          gap: 8px;
         }
-        .info-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-          margin-bottom: 20px;
+        
+        .meta-label {
+          min-width: 70px;
+          font-weight: 500;
+          color: #64748b;
         }
-        .info-item {
-          background: #f8f9fa;
-          padding: 15px;
+
+        .meta-value {
+          color: #1e293b;
+        }
+        
+        /* Content area */
+        .content {
+          padding: 16px;
+        }
+        
+        /* Overview banner */
+        .overview {
+          background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+          border-left: 4px solid #4f46e5;
+          border-radius: 0 8px 8px 0;
+          padding: 20px 24px;
+          margin-bottom: 32px;
+          display: flex;
+          flex-direction: row;
+          gap: 24px;
+          align-items: stretch;
+          justify-content: space-between;
+          flex-wrap: wrap;
+        }
+        
+        .overview-stat {
+          flex: 0 0 150px;
+          background: #ffffff;
+          border: 1px solid #cbd5e1;
           border-radius: 8px;
-          border-left: 4px solid #1976d2;
+          padding: 16px;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
         }
-        .info-label {
-          font-weight: bold;
-          color: #555;
-          margin-bottom: 5px;
+        
+        .overview-stat-number {
+          font-size: 24px;
+          font-weight: 700;
+          color: #4f46e5;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 4px;
         }
-        .info-value {
+        
+        .overview-stat-label {
+          font-size: 11px;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-top: 2px;
+        }
+        
+        /* Performance badge */
+        .performance-badge {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+          padding: 4px 12px;
+          border-radius: 20px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          color: white;
+          margin-left: 8px;
+        }
+        
+        /* Sections */
+        .section {
+          margin-bottom: 24px;
+        }
+        
+        .section-header {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 16px;
+          padding-bottom: 8px;
+          border-bottom: 2px solid #e2e8f0;
+        }
+        
+        .section-title {
+          font-size: 18px;
+          font-weight: 600;
+          color: #1e293b;
+        }
+        
+        .section-meta {
+          font-size: 12px;
+          color: #64748b;
+        }
+        
+        /* Benchmark info cards */
+        .info-cards {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+          gap: 16px;
+          margin-bottom: 24px;
+        }
+        
+        .info-card {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          padding: 16px;
+          transition: all 0.2s ease;
+        }
+        
+        .info-card:hover {
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+          transform: translateY(-2px);
+        }
+        
+        .info-card-label {
+          font-size: 11px;
+          font-weight: 500;
+          color: #64748b;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          margin-bottom: 4px;
+        }
+        
+        .info-card-value {
           font-size: 16px;
+          font-weight: 600;
+          color: #1e293b;
         }
-        .table-container {
-          margin-top: 20px;
+        
+        /* Tables */
+        .table-wrapper {
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 8px;
+          overflow: hidden;
         }
+        
         table {
           width: 100%;
           border-collapse: collapse;
-          margin-top: 10px;
         }
-        th, td {
-          border: 1px solid #ddd;
-          padding: 12px;
-          text-align: left;
-        }
+        
         th {
-          background-color: #1976d2;
+          background: #f8fafc;
+          padding: 12px 16px;
+          text-align: left;
+          font-size: 11px;
+          font-weight: 600;
+          color: #475569;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          border-bottom: 1px solid #e2e8f0;
+        }
+        
+        td {
+          padding: 12px 16px;
+          border-bottom: 1px solid #f1f5f9;
+          font-size: 13px;
+        }
+        
+        tr:hover {
+          background: #f8fafc;
+        }
+        
+        .success-rate-cell {
+          font-weight: 600;
           color: white;
-          font-weight: bold;
-        }
-        tr:nth-child(even) {
-          background-color: #f2f2f2;
-        }
-        .success-rate {
-          font-weight: bold;
-          color: #2e7d32;
-        }
-        .target-level {
-          background-color: #fff3e0;
-          border-left-color: #ff9800;
-        }
-        .summary-stats {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 20px;
-          margin: 20px 0;
-        }
-        .stat-card {
-          background: #e3f2fd;
-          padding: 20px;
-          border-radius: 8px;
           text-align: center;
-          border: 2px solid #1976d2;
+          padding: 4px 8px;
+          border-radius: 4px;
+          font-size: 12px;
         }
-        .stat-number {
-          font-size: 24px;
-          font-weight: bold;
-          color: #1976d2;
-          margin-bottom: 5px;
+        
+        /* Target indicator */
+        .target-indicator {
+          background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+          border: 1px solid #f59e0b;
+          border-radius: 8px;
+          padding: 12px 16px;
+          margin: 16px 0;
+          font-size: 13px;
+          color: #92400e;
         }
-        .stat-label {
-          color: #555;
-          font-size: 14px;
+        
+        .target-indicator strong {
+          color: #92400e;
         }
+
+        .target-meta {
+          margin-top: 6px;
+          font-size: 12px;
+          color: #78350f;
+        }
+        
+        /* Empty states */
+        .empty-state {
+          text-align: center;
+          padding: 48px 24px;
+          color: #64748b;
+          background: #f8fafc;
+          border: 2px dashed #cbd5e1;
+          border-radius: 8px;
+        }
+        
+        .empty-icon {
+          font-size: 32px;
+          margin-bottom: 8px;
+          opacity: 0.5;
+        }
+        
+        /* Footer */
         .footer {
           margin-top: 40px;
+          padding-top: 24px;
+          border-top: 1px solid #e2e8f0;
           text-align: center;
-          color: #666;
-          font-size: 12px;
-          border-top: 1px solid #e0e0e0;
-          padding-top: 20px;
+          font-size: 11px;
+          color: #64748b;
+        }
+        
+        /* Print styles */
+        @media print {
+          body {
+            background: white;
+          }
+          
+          .page {
+            box-shadow: none;
+          }
+          
+          .section {
+            break-inside: avoid;
+          }
         }
       </style>
     </head>
     <body>
-      <div class="header">
-        <h1>Benchmark Progress Report</h1>
-        <h2>${student?.first_name || ""} ${student?.last_name || ""}</h2>
-        <h2>Generated on ${new Date().toLocaleDateString()}</h2>
-      </div>
+      <div class="page">
+        <!-- Header -->
+        <div class="header">
+            <h1>${escapeHtmlServer(student?.first_name)} ${escapeHtmlServer(student?.last_name)}</h1>
+            <div class="subtitle">Progress Assessment Report - ${new Date().toLocaleDateString(
+              "en-US",
+              {
+                year: "numeric",
+                month: "short",
+                day: "numeric",
+                timeZone: "America/Los_Angeles",
+              }
+            )}</div>
+            <div class="header-meta">
+              <div class="meta-item">
+                <span class="meta-label">Goal #${escapeHtmlServer(goal?.number?.toString()) || "N/A"}:</span>
+                <span class="meta-value">${escapeHtmlServer(goal?.description) || "N/A"}</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-label">Benchmark #${escapeHtmlServer(benchmark?.number?.toString()) || "N/A"}:</span>
+                <span class="meta-value">${escapeHtmlServer(benchmark?.description) || "N/A"}</span>
+              </div>
+            </div>
+        </div>
 
-      <div class="section">
-        <h3>Student Information</h3>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Student Name</div>
-            <div class="info-value">${student?.first_name || ""} ${student?.last_name || ""}</div>
+        <div class="content">
+          <!-- Overview Banner -->
+          <div class="overview">
+            <div class="overview-stat">
+              <div class="overview-stat-number">${totalTrials}</div>
+              <div class="overview-stat-label">Total Trials</div>
+            </div>
+            <div class="overview-stat">
+              <div class="overview-stat-number" style="color: ${performanceColor}">
+                ${overallSuccessRate.toFixed(1)}% <span style="font-size: 16px;">${trendIndicator}</span>
+              </div>
+              <div class="overview-stat-label">Success Rate</div>
+              <div class="performance-status" style="color: ${performanceColor}; margin-top: 4px; font-weight: 600;">
+               ${
+                 benchmark?.target_level
+                   ? `${
+                       overallSuccessRate >= benchmark.target_level
+                         ? "MEETS TARGET"
+                         : overallSuccessRate >= benchmark.target_level * 0.8
+                           ? "APPROACHING TARGET"
+                           : "BELOW TARGET"
+                     }`
+                   : ""
+               }
+              </div>
+            </div>
+            <div class="overview-stat">
+              <div class="overview-stat-number">${staffMembers.size}</div>
+              <div class="overview-stat-label">Staff Members</div>
+            </div>
           </div>
-          <div class="info-item">
-            <div class="info-label">Student ID</div>
-            <div class="info-value">${student?.student_id || ""}</div>
-          </div>
-        </div>
-      </div>
 
-      <div class="section">
-        <h3>Goal Information</h3>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Goal Number</div>
-            <div class="info-value">Goal #${goal?.number || ""}</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Created Date</div>
-            <div class="info-value">${goal?.created_at ? new Date(goal.created_at).toLocaleDateString() : ""}</div>
-          </div>
-        </div>
-        <div class="info-item" style="grid-column: 1 / -1;">
-          <div class="info-label">Goal Description</div>
-          <div class="info-value">${goal?.description || ""}</div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Benchmark Information</h3>
-        <div class="info-grid">
-          <div class="info-item">
-            <div class="info-label">Benchmark Number</div>
-            <div class="info-value">Benchmark #${benchmark?.number || ""}</div>
-          </div>
-          <div class="info-item">
-            <div class="info-label">Target Level</div>
-            <div class="info-value">${benchmark?.target_level ? benchmark.target_level + "%" : "Not set"}</div>
-          </div>
-        </div>
-        ${
-          benchmark?.target_level
-            ? `
-        <div class="info-item target-level" style="grid-column: 1 / -1;">
-          <div class="info-label">Target Achievement</div>
-          <div class="info-value">Students should achieve ${benchmark.target_level}% success rate consistently</div>
-        </div>
-        `
-            : ""
-        }
-      </div>
-
-      <div class="section">
-        <h3>Summary Statistics</h3>
-        <div class="summary-stats">
-          <div class="stat-card">
-            <div class="stat-number">${totalTrials}</div>
-            <div class="stat-label">Total Trials</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${overallSuccessRate}%</div>
-            <div class="stat-label">Overall Success Rate</div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-number">${staffMembers.size}</div>
-            <div class="stat-label">Staff Members</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="section">
-        <h3>Success Rate Progress</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Success Rate</th>
-                <th>Staff Members</th>
-                <th>Number of Trials</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${successRates
-                .map(
-                  (rate) => `
-                <tr>
-                  <td>${rate.date}</td>
-                  <td class="success-rate">${rate.rate.toFixed(1)}%</td>
-                  <td>${rate.staffNames.join(", ")}</td>
-                  <td>${rate.numberOfTrials}</td>
-                </tr>
+          <!-- Benchmark Details -->
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Benchmark Information</div>
+              <div class="section-meta">Created on ${
+                benchmark?.created_at
+                  ? new Date(benchmark.created_at).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })
+                  : "N/A"
+              }</div>
+            </div>
+            
+            <div class="info-cards">
+              <div class="info-card">
+                <div class="info-card-label">Target Level</div>
+                <div class="info-card-value">${benchmark?.target_level ? benchmark.target_level + "%" : "Not set"}</div>
+              </div>
+              ${
+                benchmark?.due_date
+                  ? `
+              <div class="info-card">
+                <div class="info-card-label">Due Date</div>
+                <div class="info-card-value">${new Date(
+                  benchmark.due_date
+                ).toLocaleDateString("en-US", {
+                  month: "short",
+                  day: "numeric",
+                  year: "numeric",
+                })}</div>
+              </div>
               `
-                )
-                .join("")}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                  : ""
+              }
+            </div>
+          </div>
 
-      <div class="section">
-        <h3>Detailed Trial Data</h3>
-        <div class="table-container">
-          <table>
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Staff Member</th>
-                <th>Success</th>
-                <th>Unsuccess</th>
-                <th>Success Rate</th>
-                <th>Notes</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${trialData
-                .map((trial) => {
-                  const successRate =
-                    trial.success + trial.unsuccess > 0
-                      ? (
-                          (trial.success / (trial.success + trial.unsuccess)) *
-                          100
-                        ).toFixed(1)
-                      : "0.0";
-                  return `
+          <!-- Progress Data -->
+          ${
+            successRates.length > 0
+              ? `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Success Rate Progress</div>
+              <div class="section-meta">${successRates.length} data points</div>
+            </div>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
                   <tr>
-                    <td>${new Date(trial.created_at).toLocaleDateString()}</td>
-                    <td>${trial.first_name} ${trial.last_name}</td>
-                    <td>${trial.success}</td>
-                    <td>${trial.unsuccess}</td>
-                    <td class="success-rate">${successRate}%</td>
-                    <td>${trial.notes || "-"}</td>
+                    <th>Date</th>
+                    <th>Success Rate</th>
+                    <th>Staff Members</th>
+                    <th>Trials</th>
                   </tr>
-                `;
-                })
-                .join("")}
-            </tbody>
-          </table>
-        </div>
-      </div>
+                </thead>
+                <tbody>
+                  ${successRates
+                    .map(
+                      (rate) => `
+                    <tr>
+                      <td>${escapeHtmlServer(rate.date)}</td>
+                      <td>
+                        <span class="success-rate-cell" style="background-color: ${getPerformanceColor(rate.rate, benchmark?.target_level)}">
+                          ${rate.rate.toFixed(1)}%
+                        </span>
+                      </td>
+                      <td>${escapeHtmlServer(rate.staffNames.join(", "))}</td>
+                      <td>${rate.numberOfTrials}</td>
+                    </tr>
+                  `
+                    )
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          `
+              : `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Success Rate Progress</div>
+            </div>
+            <div class="empty-state">
+              <div class="empty-icon">📈</div>
+              <div>No progress data available yet</div>
+            </div>
+          </div>
+          `
+          }
 
-      <div class="footer">
-        <p>This report was automatically generated by the Compass system.</p>
-        <p>For questions or concerns, please contact your educational team.</p>
+          <!-- Trial Details -->
+          ${
+            trialData.length > 0
+              ? `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Detailed Trial Data</div>
+              <div class="section-meta">${trialData.length} trials recorded</div>
+            </div>
+            
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Staff Member</th>
+                    <th>Success</th>
+                    <th>Unsuccessful</th>
+                    <th>Success Rate</th>
+                    <th>Notes</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${trialData
+                    .map((trial) => {
+                      const total =
+                        (trial.success || 0) + (trial.unsuccess || 0);
+                      const successRate =
+                        total > 0 ? ((trial.success || 0) / total) * 100 : 0;
+                      return `
+                      <tr>
+                        <td>${new Date(trial.created_at).toLocaleDateString(
+                          "en-US",
+                          {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          }
+                        )}</td>
+                        <td>${escapeHtmlServer(trial.first_name)} ${escapeHtmlServer(trial.last_name)}</td>
+                        <td>${trial.success || 0}</td>
+                        <td>${trial.unsuccess || 0}</td>
+                        <td>
+                          <span class="success-rate-cell" style="background-color: ${getPerformanceColor(successRate, benchmark?.target_level)}">
+                            ${successRate.toFixed(1)}%
+                          </span>
+                        </td>
+                        <td>${escapeHtmlServer(trial.notes) || "—"}</td>
+                      </tr>
+                    `;
+                    })
+                    .join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+          `
+              : `
+          <div class="section">
+            <div class="section-header">
+              <div class="section-title">Detailed Trial Data</div>
+            </div>
+            <div class="empty-state">
+              <div class="empty-icon">📋</div>
+              <div>No trial data recorded yet</div>
+            </div>
+          </div>
+          `
+          }
+
+          <div class="footer">
+            <p>This report was automatically generated by the Compass system on ${new Date().toLocaleString("en-US")}.</p>
+            <p>For questions or concerns, please contact your educational team.</p>
+          </div>
+        </div>
       </div>
     </body>
     </html>
