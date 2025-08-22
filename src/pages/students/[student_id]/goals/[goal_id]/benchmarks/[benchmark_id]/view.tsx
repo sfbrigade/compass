@@ -213,29 +213,40 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
   return (
     <Stack spacing={4}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h1">
-          Viewing Data for {student?.first_name} {student?.last_name}
-        </Typography>
-        <Button
-          onClick={handleExportReport}
-          disabled={
-            exportReportMutation.isLoading || !student || !goal || !benchmark
-          }
-        >
-          {exportReportMutation.isLoading ? "Generating..." : "Data Report"}
-          <Download
-            style={{
-              display: "inline-flex",
-              verticalAlign: "middle",
-              marginLeft: "8px",
-            }}
-          />
-        </Button>
-      </Stack>
-
+      <Typography variant="h1">
+        Viewing Data for {student?.first_name} {student?.last_name}
+      </Typography>
       <Card>
         <CardContent ref={ref}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Typography variant="h6" color="text.secondary">
+              [Legend Labels]
+              {/* TODO: Change to include legend labels. */}
+            </Typography>
+            <Button
+              onClick={handleExportReport}
+              disabled={
+                exportReportMutation.isLoading ||
+                !student ||
+                !goal ||
+                !benchmark
+              }
+            >
+              {exportReportMutation.isLoading ? "Generating..." : "Data Report"}
+              <Download
+                style={{
+                  display: "inline-flex",
+                  verticalAlign: "middle",
+                  marginLeft: "8px",
+                }}
+              />
+            </Button>
+          </Stack>
           {benchmark?.trials.map((trial) => (
             <div key={trial.trial_data_id}>{trial.notes}</div>
           ))}
