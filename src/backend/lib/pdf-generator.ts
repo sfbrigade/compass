@@ -588,7 +588,6 @@ function generateReportHTML(data: BenchmarkReportData): string {
           <div class="section">
             <div class="section-header">
               <div class="section-title">Success Rate Progress</div>
-              <div class="section-meta">${successRates.length} data points</div>
             </div>
             
             <div class="table-wrapper">
