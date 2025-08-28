@@ -67,44 +67,39 @@ export const compassTheme = createTheme({
     },
     h1: {
       fontWeight: 600,
-      fontSize: "2.5em",
+      fontSize: "2.5rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
-        fontSize: "2em",
+        fontSize: "2rem",
       },
     },
     h2: {
       fontWeight: 600,
-      fontSize: "2em",
+      fontSize: "2rem",
       fontFamily: "var(--quicksand), sans-serif",
-      [breakpoints.down("md")]: {
-        fontSize: "1.5em",
+      [breakpoints.down("sm")]: {
+        fontSize: "1.5rem",
       },
     },
     h3: {
       fontWeight: 600,
-      fontSize: "1.5em",
+      fontSize: "1.5rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
-        fontSize: "1.25em",
+        fontSize: "1.25rem",
       },
     },
     h4: {
       fontWeight: 600,
-      fontSize: "1.25em",
+      fontSize: "1.25rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontWeight: 500,
       },
     },
-    h5: {
-      fontWeight: 700,
-      fontSize: "1em",
-      fontFamily: "var(--inter), sans-serif",
-    },
     body1: {
       fontWeight: 400,
-      fontSize: "1em",
+      fontSize: "1rem",
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
@@ -221,11 +216,27 @@ export const compassTheme = createTheme({
         },
       },
     },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: ".875rem",
+          [breakpoints.down("sm")]: {
+            fontSize: ".75rem",
+          },
+        },
+      },
+    },
     MuiTableSortLabel: {
       styleOverrides: {
         root: {
           color: "var(--grey-40)",
-          fontWeight: "400",
+          fontWeight: "600",
+          fontSize: ".875rem",
+          [breakpoints.down("sm")]: {
+            fontSize: ".75rem",
+            fontWeight: "normal",
+            whiteSpace: "nowrap",
+          },
           "&.Mui-active": {
             color: "var(--grey-40)",
           },

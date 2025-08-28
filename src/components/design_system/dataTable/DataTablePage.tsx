@@ -1,5 +1,6 @@
 import { useState, FormEvent, ReactNode, ComponentType } from "react";
-import { CircularProgress, Stack } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { CircularProgress, Stack, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { NextRouter, useRouter } from "next/router";
 
@@ -45,6 +46,8 @@ export function withDataTablePage<
 >(WrappedComponent: ComponentType<T>) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function DataTablePage(props: Omit<T, keyof DataTablePageProps<any, any>>) {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const router = useRouter();
     const searchParams = useSearchParams();
     const page = Number(searchParams.get("page") ?? "1");
@@ -137,6 +140,7 @@ export function withDataTablePage<
             >
               {((records?.length ?? 0) > 0 || search) && (
                 <Button
+                  size={isMobile ? "small" : "large"}
                   sx={{ ml: "2rem" }}
                   onClick={onAddRecord}
                   disabled={!!record}
@@ -171,6 +175,7 @@ export function withDataTablePage<
                 <DataTable
                   columns={COLUMNS}
                   countLabel={renderCount?.()}
+                  isMobile={isMobile}
                   sort={sort}
                   sortAsc={sortAsc}
                   onChangeSort={onChangeSort}

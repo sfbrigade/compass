@@ -14,13 +14,14 @@ export interface DataTableColumn {
   id: string;
   label: string;
   isSortable: boolean;
-  width?: string;
+  width?: string | { xs: string; sm: string };
 }
 
 interface DataTableProps {
   children?: ReactNode;
   columns: DataTableColumn[];
   countLabel?: ReactNode;
+  isMobile?: boolean;
   onChangeSort?: (newSort: string, newSortAsc: boolean) => void;
   sort?: string;
   sortAsc?: boolean;
@@ -30,16 +31,24 @@ function DataTable({
   children,
   columns,
   countLabel,
+  isMobile = false,
   onChangeSort,
   sort,
   sortAsc = true,
 }: DataTableProps) {
-  return (
-    <TableContainer>
-      <Table>
-        <TableHead>
-          <TableRow>
-            {columns.map((column, i) => (
+  const table = (
+    <Table
+      sx={{
+        marginLeft: { xs: "calc(-2 * var(--mui-spacing))", sm: "auto" },
+        marginRight: { xs: "calc(-2 * var(--mui-spacing))", sm: "auto" },
+        tableLayout: { xs: "fixed", sm: "auto" },
+        width: { xs: "calc(100% + 4 * var(--mui-spacing))", sm: "auto" },
+      }}
+    >
+      <TableHead>
+        <TableRow>
+          {columns.map((column, i) =>
+            !isMobile || i < columns.length - 1 ? (
               <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
                 {column.isSortable && (
                   <TableSortLabel
@@ -62,12 +71,23 @@ function DataTable({
                   </Typography>
                 )}
               </TableCell>
-            ))}
-          </TableRow>
-        </TableHead>
-        <TableBody>{children}</TableBody>
-      </Table>
-    </TableContainer>
+            ) : (
+              <></>
+            )
+          )}
+        </TableRow>
+      </TableHead>
+      <TableBody>{children}</TableBody>
+    </Table>
+  );
+
+  return isMobile ? (
+    <>
+      <Typography variant="body2">{countLabel}</Typography>
+      {table}
+    </>
+  ) : (
+    <TableContainer>{table}</TableContainer>
   );
 }
 

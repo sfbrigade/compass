@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, ChangeEvent, ReactNode } from "react";
-import { Grid2 as Grid, Stack } from "@mui/material";
+import { Grid2 as Grid, Stack, Typography } from "@mui/material";
 
 import Search from "@/components/design_system/search/Search";
 
@@ -34,10 +34,13 @@ function DataTableHeader({
   return (
     <Grid
       container
-      sx={{ justifyContent: "space-between", marginBottom: "2rem" }}
+      sx={{
+        justifyContent: "space-between",
+        marginBottom: { xs: "1rem", sm: "2rem" },
+      }}
     >
-      <Grid size={{ xs: 12, sm: 6 }} order={{ xs: 2, sm: 1 }}>
-        <h2>{title}</h2>
+      <Grid width={{ xs: "100%", sm: "auto" }} order={{ xs: 2, sm: 1 }}>
+        <Typography variant="h2">{title}</Typography>
       </Grid>
       <Stack
         direction={{ xs: "column", sm: "row" }}
