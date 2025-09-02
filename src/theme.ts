@@ -408,5 +408,16 @@ export const compassTheme = createTheme({
         indicatorColor: "transparent",
       },
     },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "var(--primary-40)",
+          boxShadow: "0",
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "0",
+        },
+      },
+    },
   },
 });
