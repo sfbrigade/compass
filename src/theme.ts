@@ -156,6 +156,28 @@ export const compassTheme = createTheme({
         disableRipple: true,
       },
     },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: ".5rem 1.5rem 1.5rem 1.5rem",
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          paddingTop: "1.5rem",
+          paddingBottom: "2rem",
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: "0 1.5rem 1.5rem 1.5rem",
+        },
+      },
+    },
     MuiInputLabel: {
       styleOverrides: {
         root: {
