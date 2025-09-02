@@ -1,4 +1,4 @@
-import { MouseEventHandler, ReactNode } from "react";
+import { FormEvent, ReactNode } from "react";
 import {
   AppBar,
   Dialog as MuiDialog,
@@ -18,8 +18,8 @@ interface DialogProps {
   children: ReactNode;
   confirmLabel?: string;
   fullScreenOnMobile: boolean;
-  onCancel?: MouseEventHandler<HTMLButtonElement>;
-  onConfirm?: MouseEventHandler<HTMLButtonElement>;
+  onCancel?: () => void;
+  onConfirm?: () => void;
   open: boolean;
   size: "xs" | "sm" | "md" | "lg" | "xl";
   title: ReactNode;
@@ -39,6 +39,11 @@ function Dialog({
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  function onFormSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    onConfirm?.();
+  }
+
   return (
     <MuiDialog
       open={open}
@@ -50,7 +55,7 @@ function Dialog({
         <AppBar position="fixed">
           <Toolbar>
             <IconButton
-              onClick={(event) => onCancel?.(event)}
+              onClick={() => onCancel?.()}
               color="inherit"
               sx={{ padding: "1.25rem" }}
             >
@@ -59,30 +64,28 @@ function Dialog({
           </Toolbar>
         </AppBar>
       )}
-      <DialogTitle
-        align="center"
-        variant="h3"
-        sx={{ paddingTop: { xs: "5.5rem", sm: "1.5rem" } }}
-      >
-        {title}
-      </DialogTitle>
-      <DialogContent>{children}</DialogContent>
-      <DialogActions>
-        {cancelLabel && (
-          <Button variant="secondary" onClick={(event) => onCancel?.(event)}>
-            {cancelLabel}
-          </Button>
-        )}
-        {confirmLabel && (
-          <Button
-            type="submit"
-            variant="primary"
-            onClick={(event) => onConfirm?.(event)}
-          >
-            {confirmLabel}
-          </Button>
-        )}
-      </DialogActions>
+      <form onSubmit={onFormSubmit}>
+        <DialogTitle
+          align="center"
+          variant="h3"
+          sx={{ paddingTop: { xs: "5.5rem", sm: "1.5rem" } }}
+        >
+          {title}
+        </DialogTitle>
+        <DialogContent>{children}</DialogContent>
+        <DialogActions>
+          {cancelLabel && (
+            <Button variant="secondary" onClick={() => onCancel?.()}>
+              {cancelLabel}
+            </Button>
+          )}
+          {confirmLabel && (
+            <Button type="submit" variant="primary">
+              {confirmLabel}
+            </Button>
+          )}
+        </DialogActions>
+      </form>
     </MuiDialog>
   );
 }

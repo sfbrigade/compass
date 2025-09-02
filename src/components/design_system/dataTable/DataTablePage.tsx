@@ -1,4 +1,4 @@
-import { useState, FormEvent, ReactNode, ComponentType } from "react";
+import { useState, ReactNode, ComponentType } from "react";
 import { useTheme } from "@mui/material/styles";
 import { CircularProgress, Stack, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "next/navigation";
@@ -84,12 +84,10 @@ export function withDataTablePage<
     }
 
     async function onSubmitInternal(
-      event?: FormEvent<HTMLFormElement>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       record?: any,
       onSubmit?: () => Promise<void>
     ) {
-      event?.preventDefault();
       if (!record) return;
       try {
         if (onSubmit) {
@@ -189,20 +187,14 @@ export function withDataTablePage<
                 confirmLabel="Save"
                 cancelLabel="Cancel"
                 open={!!record}
-                onConfirm={() => onSubmitInternal(undefined, record, onSubmit)}
+                onConfirm={() => onSubmitInternal(record, onSubmit)}
                 onCancel={() => onCancel?.()}
                 fullScreenOnMobile
                 size="xs"
               >
-                <form
-                  onSubmit={(event) =>
-                    onSubmitInternal(event, record, onSubmit)
-                  }
-                >
-                  <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
-                    {renderForm(record, hasError, errors)}
-                  </Stack>
-                </form>
+                <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
+                  {renderForm(record, hasError, errors)}
+                </Stack>
               </Dialog>
             )}
           </>
