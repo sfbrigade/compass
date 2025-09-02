@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { MouseEventHandler, ReactNode } from "react";
 import {
   AppBar,
   Dialog as MuiDialog,
@@ -18,8 +18,8 @@ interface DialogProps {
   children: ReactNode;
   confirmLabel?: string;
   fullScreenOnMobile: boolean;
-  onCancel?: () => void;
-  onConfirm?: () => void;
+  onCancel?: MouseEventHandler<HTMLButtonElement>;
+  onConfirm?: MouseEventHandler<HTMLButtonElement>;
   open: boolean;
   size: "xs" | "sm" | "md" | "lg" | "xl";
   title: ReactNode;
@@ -50,7 +50,7 @@ function Dialog({
         <AppBar position="fixed">
           <Toolbar>
             <IconButton
-              onClick={() => onCancel?.()}
+              onClick={(event) => onCancel?.(event)}
               color="inherit"
               sx={{ padding: "1.25rem" }}
             >
@@ -69,13 +69,17 @@ function Dialog({
       <DialogContent>{children}</DialogContent>
       <DialogActions>
         {cancelLabel && (
-          <Button variant="secondary" onClick={() => onCancel?.()}>
-            Cancel
+          <Button variant="secondary" onClick={(event) => onCancel?.(event)}>
+            {cancelLabel}
           </Button>
         )}
         {confirmLabel && (
-          <Button variant="primary" onClick={() => onConfirm?.()}>
-            Confirm
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={(event) => onConfirm?.(event)}
+          >
+            {confirmLabel}
           </Button>
         )}
       </DialogActions>

@@ -86,6 +86,10 @@ function Students({
     setTimeout(() => focusRef.current?.focus(), 0);
   }
 
+  function onCancel() {
+    setRecord(undefined);
+  }
+
   const utils = trpc.useUtils();
   const addRecord = trpc.case_manager.addStudent.useMutation({
     meta: { disableGlobalOnError: true },
@@ -108,6 +112,7 @@ function Students({
     record,
     records: data?.records,
     onAddRecord,
+    onCancel,
     onSubmit,
     columns: COLUMNS,
     emptyElement: (
@@ -120,59 +125,35 @@ function Students({
     renderCount: () =>
       `${Math.min((page - 1) * pageSize + 1, data?.totalCount ?? 0)}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
     renderFormRow: (record, hasError) => (
-      <TableRow>
-        <TableCell>
-          <TextField
-            inputRef={focusRef}
-            label="First Name"
-            value={record.first_name}
-            onChange={(e) =>
-              setRecord({ ...record, first_name: e.target.value })
-            }
-            error={hasError(["first_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="Last Name"
-            value={record.last_name}
-            onChange={(e) =>
-              setRecord({ ...record, last_name: e.target.value })
-            }
-            error={hasError(["last_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="Grade"
-            type="number"
-            value={record.grade}
-            onChange={(e) => setRecord({ ...record, grade: e.target.value })}
-            error={hasError(["grade"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="IEP End Date"
-            type="date"
-            value={record.end_date}
-            onChange={(e) => setRecord({ ...record, end_date: e.target.value })}
-            error={hasError(["end_date"])}
-          />
-        </TableCell>
-        <TableCell>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ justifyContent: "flex-end" }}
-          >
-            <Button type="submit">Save</Button>
-            <Button variant="secondary" onClick={() => setRecord(undefined)}>
-              Cancel
-            </Button>
-          </Stack>
-        </TableCell>
-      </TableRow>
+      <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
+        <TextField
+          inputRef={focusRef}
+          label="First Name"
+          value={record.first_name}
+          onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
+          error={hasError(["first_name"])}
+        />
+        <TextField
+          label="Last Name"
+          value={record.last_name}
+          onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
+          error={hasError(["last_name"])}
+        />
+        <TextField
+          label="Grade"
+          type="number"
+          value={record.grade}
+          onChange={(e) => setRecord({ ...record, grade: e.target.value })}
+          error={hasError(["grade"])}
+        />
+        <TextField
+          label="IEP End Date"
+          type="date"
+          value={record.end_date}
+          onChange={(e) => setRecord({ ...record, end_date: e.target.value })}
+          error={hasError(["end_date"])}
+        />
+      </Stack>
     ),
     renderRow: (record, router) => (
       <TableRow

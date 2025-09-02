@@ -9,6 +9,7 @@ import DataTable, {
   DataTableColumn,
 } from "@/components/design_system/dataTable/DataTable";
 import Button from "@/components/design_system/button/Button";
+import Dialog from "@/components/design_system/dialog/Dialog";
 
 export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   title: string;
@@ -17,6 +18,7 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   record?: NewRecordType;
   records?: RecordType[];
   onAddRecord?: () => void;
+  onCancel?: () => void;
   onSubmit?: () => Promise<void>;
   columns: DataTableColumn[];
   emptyElement: ReactNode;
@@ -82,12 +84,12 @@ export function withDataTablePage<
     }
 
     async function onSubmitInternal(
-      event: FormEvent<HTMLFormElement>,
+      event?: FormEvent<HTMLFormElement>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       record?: any,
       onSubmit?: () => Promise<void>
     ) {
-      event.preventDefault();
+      event?.preventDefault();
       if (!record) return;
       try {
         if (onSubmit) {
@@ -121,6 +123,7 @@ export function withDataTablePage<
           records,
           addLabel,
           onAddRecord,
+          onCancel,
           emptyElement,
           onSubmit,
           columns: COLUMNS,
@@ -160,7 +163,7 @@ export function withDataTablePage<
                 <CircularProgress />
               </div>
             )}
-            {!isLoading && records?.length === 0 && !record && !search && (
+            {!isLoading && records?.length === 0 && !search && (
               <Stack
                 spacing="1rem"
                 sx={{ alignItems: "center", paddingTop: "4rem" }}
@@ -168,22 +171,37 @@ export function withDataTablePage<
                 {emptyElement}
               </Stack>
             )}
-            {!isLoading && ((records?.length ?? 0) > 0 || record || search) && (
-              <form
-                onSubmit={(event) => onSubmitInternal(event, record, onSubmit)}
+            {!isLoading && ((records?.length ?? 0) > 0 || search) && (
+              <DataTable
+                columns={COLUMNS}
+                countLabel={renderCount?.()}
+                isMobile={isMobile}
+                sort={sort}
+                sortAsc={sortAsc}
+                onChangeSort={onChangeSort}
               >
-                <DataTable
-                  columns={COLUMNS}
-                  countLabel={renderCount?.()}
-                  isMobile={isMobile}
-                  sort={sort}
-                  sortAsc={sortAsc}
-                  onChangeSort={onChangeSort}
+                {records?.map((record) => renderRow(record, router))}
+              </DataTable>
+            )}
+            {record && (
+              <Dialog
+                title={addLabel}
+                confirmLabel="Save"
+                cancelLabel="Cancel"
+                open={!!record}
+                onConfirm={() => onSubmitInternal(undefined, record, onSubmit)}
+                onCancel={() => onCancel?.()}
+                fullScreenOnMobile
+                size="xs"
+              >
+                <form
+                  onSubmit={(event) =>
+                    onSubmitInternal(event, record, onSubmit)
+                  }
                 >
-                  {record && renderFormRow(record, hasError, errors)}
-                  {records?.map((record) => renderRow(record, router))}
-                </DataTable>
-              </form>
+                  {renderFormRow(record, hasError, errors)}
+                </form>
+              </Dialog>
             )}
           </>
         )}

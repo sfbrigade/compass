@@ -66,8 +66,8 @@ function DataTable({
                 )}
                 {!column.isSortable && column.label}
                 {i === columns.length - 1 && countLabel && (
-                  <Typography sx={{ textAlign: "right" }}>
-                    {countLabel}
+                  <Typography variant="body2" sx={{ textAlign: "right" }}>
+                    <b>{countLabel}</b>
                   </Typography>
                 )}
               </TableCell>
