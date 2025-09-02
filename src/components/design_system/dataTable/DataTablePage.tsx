@@ -23,7 +23,7 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   columns: DataTableColumn[];
   emptyElement: ReactNode;
   renderCount?: () => ReactNode;
-  renderFormRow: (
+  renderForm: (
     record: NewRecordType,
     hasError: (path: string[]) => boolean,
     errors?: { path: string[] }[]
@@ -128,7 +128,7 @@ export function withDataTablePage<
           onSubmit,
           columns: COLUMNS,
           renderCount,
-          renderFormRow,
+          renderForm,
           renderRow,
         }) => (
           <>
@@ -199,7 +199,9 @@ export function withDataTablePage<
                     onSubmitInternal(event, record, onSubmit)
                   }
                 >
-                  {renderFormRow(record, hasError, errors)}
+                  <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
+                    {renderForm(record, hasError, errors)}
+                  </Stack>
                 </form>
               </Dialog>
             )}

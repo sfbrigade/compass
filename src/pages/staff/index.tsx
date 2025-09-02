@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import { TableRow, TableCell, TextField } from "@mui/material";
 import Image from "next/image";
 
 import Button from "@/components/design_system/button/Button";
@@ -72,6 +72,10 @@ function Staff({
     setTimeout(() => focusRef.current?.focus(), 0);
   }
 
+  function onCancel() {
+    setRecord(undefined);
+  }
+
   const utils = trpc.useUtils();
   const addRecord = trpc.case_manager.addStaff.useMutation({
     meta: { disableGlobalOnError: true },
@@ -91,6 +95,7 @@ function Staff({
     record,
     records,
     onAddRecord,
+    onCancel,
     onSubmit,
     columns: COLUMNS,
     emptyElement: (
@@ -100,51 +105,29 @@ function Staff({
         <Button onClick={onAddRecord}>Add Staff</Button>
       </>
     ),
-    renderFormRow: (record, hasError) => (
-      <TableRow>
-        <TableCell>
-          <TextField
-            inputRef={focusRef}
-            label="First Name"
-            value={record.first_name}
-            onChange={(e) =>
-              setRecord({ ...record, first_name: e.target.value })
-            }
-            error={hasError(["first_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="Last Name"
-            value={record.last_name}
-            onChange={(e) =>
-              setRecord({ ...record, last_name: e.target.value })
-            }
-            error={hasError(["last_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            type="email"
-            label="Email"
-            value={record.email}
-            onChange={(e) => setRecord({ ...record, email: e.target.value })}
-            error={hasError(["email"])}
-          />
-        </TableCell>
-        <TableCell>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ justifyContent: "flex-end" }}
-          >
-            <Button type="submit">Save</Button>
-            <Button variant="secondary" onClick={() => setRecord(undefined)}>
-              Cancel
-            </Button>
-          </Stack>
-        </TableCell>
-      </TableRow>
+    renderForm: (record, hasError) => (
+      <>
+        <TextField
+          inputRef={focusRef}
+          label="First Name"
+          value={record.first_name}
+          onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
+          error={hasError(["first_name"])}
+        />
+        <TextField
+          label="Last Name"
+          value={record.last_name}
+          onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
+          error={hasError(["last_name"])}
+        />
+        <TextField
+          type="email"
+          label="Email"
+          value={record.email}
+          onChange={(e) => setRecord({ ...record, email: e.target.value })}
+          error={hasError(["email"])}
+        />
+      </>
     ),
     renderRow: (record, router) => (
       <TableRow

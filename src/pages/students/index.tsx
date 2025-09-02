@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { format } from "date-fns";
-import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import { TableRow, TableCell, TextField } from "@mui/material";
 import Image from "next/image";
 
 import Button from "@/components/design_system/button/Button";
@@ -124,8 +124,8 @@ function Students({
     ),
     renderCount: () =>
       `${Math.min((page - 1) * pageSize + 1, data?.totalCount ?? 0)}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
-    renderFormRow: (record, hasError) => (
-      <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
+    renderForm: (record, hasError) => (
+      <>
         <TextField
           inputRef={focusRef}
           label="First Name"
@@ -153,7 +153,7 @@ function Students({
           onChange={(e) => setRecord({ ...record, end_date: e.target.value })}
           error={hasError(["end_date"])}
         />
-      </Stack>
+      </>
     ),
     renderRow: (record, router) => (
       <TableRow
