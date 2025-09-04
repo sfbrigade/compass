@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
 import {
+  Stack,
   TableContainer,
   Table,
   TableHead,
@@ -8,6 +9,8 @@ import {
   TableSortLabel,
   TableBody,
   Typography,
+  TableFooter,
+  TablePagination,
 } from "@mui/material";
 
 export interface DataTableColumn {
@@ -20,22 +23,34 @@ export interface DataTableColumn {
 interface DataTableProps {
   children?: ReactNode;
   columns: DataTableColumn[];
-  countLabel?: ReactNode;
+  page: number;
+  pageSize: number;
+  totalCount?: number;
   isMobile?: boolean;
+  onChangePage?: (newPage: number) => void;
+  onChangePageSize?: (newPageSize: number) => void;
   onChangeSort?: (newSort: string, newSortAsc: boolean) => void;
   sort?: string;
   sortAsc?: boolean;
+  title?: string;
 }
 
 function DataTable({
   children,
   columns,
-  countLabel,
+  page,
+  pageSize,
+  totalCount,
   isMobile = false,
+  onChangePage,
+  onChangePageSize,
   onChangeSort,
   sort,
   sortAsc = true,
+  title,
 }: DataTableProps) {
+  const countLabel = `${Math.min((page - 1) * pageSize + 1, totalCount ?? 0)}-${Math.min(page * pageSize, totalCount ?? 0)} of ${totalCount ?? 0} ${title}`;
+
   const table = (
     <Table
       sx={{
@@ -47,9 +62,13 @@ function DataTable({
     >
       <TableHead>
         <TableRow>
-          {columns.map((column, i) =>
-            !isMobile || i < columns.length - 1 ? (
-              <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
+          {columns.map((column, i) => (
+            <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
+              <Stack
+                direction="row"
+                alignItems="center"
+                justifyContent="space-between"
+              >
                 {column.isSortable && (
                   <TableSortLabel
                     active={sort === column.id}
@@ -65,19 +84,34 @@ function DataTable({
                   </TableSortLabel>
                 )}
                 {!column.isSortable && column.label}
-                {i === columns.length - 1 && countLabel && (
+                {i === columns.length - 1 && !isMobile && (
                   <Typography variant="body2" sx={{ textAlign: "right" }}>
                     <b>{countLabel}</b>
                   </Typography>
                 )}
-              </TableCell>
-            ) : (
-              <></>
-            )
-          )}
+              </Stack>
+            </TableCell>
+          ))}
         </TableRow>
       </TableHead>
       <TableBody>{children}</TableBody>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            colSpan={columns.length}
+            count={totalCount ?? 0}
+            page={page - 1}
+            rowsPerPage={pageSize}
+            rowsPerPageOptions={[25, 50, 100]}
+            onPageChange={(event, newPage) => {
+              onChangePage?.(newPage + 1);
+            }}
+            onRowsPerPageChange={(event) => {
+              onChangePageSize?.(Number(event.target.value));
+            }}
+          />
+        </TableRow>
+      </TableFooter>
     </Table>
   );
 

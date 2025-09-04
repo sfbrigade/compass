@@ -167,14 +167,14 @@ export const compassTheme = createTheme({
       styleOverrides: {
         root: {
           paddingTop: "1.5rem",
-          paddingBottom: "2rem",
+          paddingBottom: "1.5rem",
         },
       },
     },
     MuiDialogContent: {
       styleOverrides: {
         root: {
-          padding: "0 1.5rem 1.5rem 1.5rem",
+          padding: ".5rem 1.5rem 1.5rem 1.5rem !important",
         },
       },
     },
@@ -244,6 +244,15 @@ export const compassTheme = createTheme({
           fontSize: ".875rem",
           [breakpoints.down("sm")]: {
             fontSize: ".75rem",
+          },
+        },
+      },
+    },
+    MuiTablePagination: {
+      styleOverrides: {
+        root: {
+          "& .MuiToolbar-root": {
+            backgroundColor: "transparent",
           },
         },
       },

@@ -22,7 +22,7 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   onSubmit?: () => Promise<void>;
   columns: DataTableColumn[];
   emptyElement: ReactNode;
-  renderCount?: () => ReactNode;
+  totalCount?: number;
   renderForm: (
     record: NewRecordType,
     hasError: (path: string[]) => boolean,
@@ -60,27 +60,41 @@ export function withDataTablePage<
 
     const [errors, setErrors] = useState<{ path: string[] }[]>();
 
-    async function onChangeSearchValue(value: string) {
+    function onChangePage(newPage: number) {
       const params = new URLSearchParams(searchParams.toString());
-      if (value) {
-        params.set("search", value);
-      } else {
-        params.delete("search");
-      }
+      params.set("page", newPage.toString());
+      return onChangeParams(params);
+    }
+
+    function onChangePageSize(newPageSize: number) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("page");
+      params.set("pageSize", newPageSize.toString());
+      return onChangeParams(params);
+    }
+
+    function onChangeParams(params: URLSearchParams) {
       const queryString = params.toString();
       return router.push(
         `${router.pathname}${queryString ? "?" : ""}${queryString}`
       );
     }
 
-    async function onChangeSort(newSort: string, newSortAsc: boolean) {
+    function onChangeSearchValue(value: string) {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value) {
+        params.set("search", value);
+      } else {
+        params.delete("search");
+      }
+      return onChangeParams(params);
+    }
+
+    function onChangeSort(newSort: string, newSortAsc: boolean) {
       const params = new URLSearchParams(searchParams.toString());
       params.set("sort", newSort);
       params.set("sortAsc", newSortAsc.toString());
-      const queryString = params.toString();
-      return router.push(
-        `${router.pathname}${queryString ? "?" : ""}${queryString}`
-      );
+      return onChangeParams(params);
     }
 
     async function onSubmitInternal(
@@ -125,7 +139,7 @@ export function withDataTablePage<
           emptyElement,
           onSubmit,
           columns: COLUMNS,
-          renderCount,
+          totalCount,
           renderForm,
           renderRow,
         }) => (
@@ -172,11 +186,16 @@ export function withDataTablePage<
             {!isLoading && ((records?.length ?? 0) > 0 || search) && (
               <DataTable
                 columns={COLUMNS}
-                countLabel={renderCount?.()}
+                page={page}
+                pageSize={pageSize}
+                totalCount={totalCount}
                 isMobile={isMobile}
                 sort={sort}
                 sortAsc={sortAsc}
+                title={title}
                 onChangeSort={onChangeSort}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
               >
                 {records?.map((record) => renderRow(record, router))}
               </DataTable>
@@ -192,7 +211,7 @@ export function withDataTablePage<
                 fullScreenOnMobile
                 size="xs"
               >
-                <Stack spacing={3} sx={{ paddingTop: ".25rem" }}>
+                <Stack spacing={3}>
                   {renderForm(record, hasError, errors)}
                 </Stack>
               </Dialog>

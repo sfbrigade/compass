@@ -37,12 +37,6 @@ const COLUMNS: DataTableColumn[] = [
     id: "end_date",
     label: "IEP End Date",
     isSortable: true,
-    width: { xs: "30%", sm: "20%" },
-  },
-  {
-    id: "actions",
-    label: "",
-    isSortable: false,
   },
 ];
 
@@ -68,6 +62,8 @@ function Students({
 }: DataTablePageProps<RecordType, NewRecordType>) {
   const { data, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery({
+      page,
+      pageSize,
       search,
       sort,
       sortAsc,
@@ -122,8 +118,7 @@ function Students({
         <Button onClick={onAddRecord}>Add Student</Button>
       </>
     ),
-    renderCount: () =>
-      `${Math.min((page - 1) * pageSize + 1, data?.totalCount ?? 0)}-${Math.min(page * pageSize, data?.totalCount ?? 0)} of ${data?.totalCount ?? 0} students`,
+    totalCount: data?.totalCount,
     renderForm: (record, hasError) => (
       <>
         <TextField
@@ -166,7 +161,6 @@ function Students({
         <TableCell>
           {record.end_date && format(new Date(record.end_date), "MM/dd/yyyy")}
         </TableCell>
-        <TableCell></TableCell>
       </TableRow>
     ),
   });
