@@ -22,30 +22,24 @@ const COLUMNS: DataTableColumn[] = [
     id: "first_name",
     label: "First Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "last_name",
     label: "Last Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "email",
     label: "Email",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "role",
     label: "Role",
     isSortable: true,
-    width: "15%",
-  },
-  {
-    id: "actions",
-    label: "",
-    isSortable: false,
   },
 ];
 
@@ -160,7 +154,6 @@ function Staff({
         <TableCell>{record.last_name}</TableCell>
         <TableCell>{record.email}</TableCell>
         <TableCell>{record.role}</TableCell>
-        <TableCell></TableCell>
       </TableRow>
     ),
   });

@@ -57,12 +57,12 @@ function DataTable({
         marginLeft: { xs: "calc(-2 * var(--mui-spacing))", sm: "auto" },
         marginRight: { xs: "calc(-2 * var(--mui-spacing))", sm: "auto" },
         tableLayout: { xs: "fixed", sm: "auto" },
-        width: { xs: "calc(100% + 4 * var(--mui-spacing))", sm: "auto" },
+        width: { xs: "calc(100% + 4 * var(--mui-spacing))", sm: "100%" },
       }}
     >
       <TableHead>
         <TableRow>
-          {columns.map((column, i) => (
+          {columns.map((column) => (
             <TableCell key={column.id} sx={{ width: column.width ?? "auto" }}>
               <Stack
                 direction="row"
@@ -84,11 +84,6 @@ function DataTable({
                   </TableSortLabel>
                 )}
                 {!column.isSortable && column.label}
-                {i === columns.length - 1 && !isMobile && (
-                  <Typography variant="body2" sx={{ textAlign: "right" }}>
-                    <b>{countLabel}</b>
-                  </Typography>
-                )}
               </Stack>
             </TableCell>
           ))}
