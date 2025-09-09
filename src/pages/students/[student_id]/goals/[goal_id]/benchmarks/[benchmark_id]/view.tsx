@@ -181,11 +181,13 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const handleExportReport = async () => {
     if (!benchmark_id || !goal_id || !student_id) return;
 
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     try {
       const result = await exportReportMutation.mutateAsync({
         benchmark_id,
         goal_id,
         student_id,
+        clientTimeZone: timeZone,
       });
 
       const byteCharacters = atob(result.pdfBuffer);

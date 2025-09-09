@@ -688,6 +688,7 @@ export const iep = router({
         benchmark_id: z.string(),
         goal_id: z.string(),
         student_id: z.string(),
+        clientTimeZone: z.string().optional(),
       })
     )
     .mutation(async ({ input, ctx }) => {
@@ -770,13 +771,16 @@ export const iep = router({
       });
 
       // Generate PDF
-      const pdfBuffer = await generateBenchmarkReport({
-        student,
-        goal,
-        benchmark,
-        trialData: trials,
-        successRates,
-      });
+      const pdfBuffer = await generateBenchmarkReport(
+        {
+          student,
+          goal,
+          benchmark,
+          trialData: trials,
+          successRates,
+        },
+        input.clientTimeZone
+      );
 
       return {
         pdfBuffer: pdfBuffer.toString("base64"),
