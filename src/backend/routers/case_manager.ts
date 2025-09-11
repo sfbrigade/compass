@@ -222,6 +222,8 @@ export const case_manager = router({
     .input(
       z
         .object({
+          page: z.number().min(1).optional(),
+          pageSize: z.number().min(1).optional(),
           search: z.string().optional(),
           sort: z.string().optional(),
           sortAsc: z.coerce.boolean().optional(),
@@ -230,10 +232,17 @@ export const case_manager = router({
     )
     .query(async (req) => {
       const { userId } = req.ctx.auth;
-      const { search, sort, sortAsc = true } = req.input ?? {};
+      const {
+        page = 1,
+        pageSize = 25,
+        search,
+        sort,
+        sortAsc = true,
+      } = req.input ?? {};
 
       let query = req.ctx.db
         .selectFrom("user")
+        .selectAll()
         .innerJoin(
           "paras_assigned_to_case_manager",
           "user.user_id",
@@ -250,9 +259,7 @@ export const case_manager = router({
           ])
         );
       }
-
-      const result = await query
-        .selectAll()
+      query = query
         .orderBy(
           (eb) => {
             switch (sort) {
@@ -266,9 +273,38 @@ export const case_manager = router({
           },
           sortAsc ? "asc" : "desc"
         )
-        .execute();
+        .limit(pageSize)
+        .offset((page - 1) * pageSize);
 
-      return result;
+      let countQuery = req.ctx.db
+        .selectFrom("user")
+        .select(req.ctx.db.fn.countAll().as("count"))
+        .innerJoin(
+          "paras_assigned_to_case_manager",
+          "user.user_id",
+          "paras_assigned_to_case_manager.para_id"
+        )
+        .where("paras_assigned_to_case_manager.case_manager_id", "=", userId);
+      if (search) {
+        countQuery = countQuery.where((eb) =>
+          eb.or([
+            eb("user.first_name", "ilike", `%${search}%`),
+            eb("user.last_name", "ilike", `%${search}%`),
+            eb("user.email", "ilike", `%${search}%`),
+          ])
+        );
+      }
+
+      const [records, totalCount] = await Promise.all([
+        query.execute(),
+        countQuery.executeTakeFirst(),
+      ]);
+
+      return {
+        records,
+        totalCount: Number(totalCount?.count ?? 0),
+        totalPages: Math.ceil(Number(totalCount?.count ?? 0) / pageSize),
+      };
     }),
 
   /**

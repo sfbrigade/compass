@@ -40,7 +40,9 @@ interface NewRecordType {
 }
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
-type RecordType = Unpacked<RouterOutputs["case_manager"]["getMyParas"]>;
+type RecordType = Unpacked<
+  RouterOutputs["case_manager"]["getMyParas"]["records"]
+>;
 
 function Staff({
   search,
@@ -48,7 +50,7 @@ function Staff({
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
-  const { data: records, isLoading } = trpc.case_manager.getMyParas.useQuery({
+  const { data, isLoading } = trpc.case_manager.getMyParas.useQuery({
     search,
     sort,
     sortAsc,
@@ -87,11 +89,12 @@ function Staff({
     addLabel: "Add Staff",
     isLoading,
     record,
-    records,
+    records: data?.records ?? [],
     onAddRecord,
     onCancel,
     onSubmit,
     columns: COLUMNS,
+    totalCount: data?.totalCount ?? 0,
     emptyElement: (
       <>
         <Image src={emptyState} alt="No staff image" width={250} />
@@ -125,8 +128,8 @@ function Staff({
     ),
     renderRow: (record, router) => (
       <TableRow
-        key={record.para_id}
-        onClick={() => router.push(`/staff/${record.para_id}`)}
+        key={record.user_id}
+        onClick={() => router.push(`/staff/${record.user_id}`)}
       >
         <TableCell>{record.first_name}</TableCell>
         <TableCell>{record.last_name}</TableCell>
