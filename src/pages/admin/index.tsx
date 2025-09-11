@@ -102,6 +102,7 @@ function Staff({
     isLoading,
     record,
     records: data?.records,
+    totalCount: data?.totalCount,
     onAddRecord,
     onCancel,
     onSubmit,
