@@ -61,10 +61,10 @@ test("getMyStudentsAndIepInfo - student does not have IEP", async (t) => {
     .executeTakeFirstOrThrow();
 
   const myStudents = await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudents.length, 1);
-  t.is(myStudents[0].student_id, student.student_id);
-  t.is(myStudents[0].iep_id, null);
-  t.is(myStudents[0].end_date, null);
+  t.is(myStudents.records.length, 1);
+  t.is(myStudents.records[0].student_id, student.student_id);
+  t.is(myStudents.records[0].iep_id, null);
+  t.is(myStudents.records[0].end_date, null);
 });
 
 test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
@@ -81,8 +81,8 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
 
   const myStudentsBefore =
     await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudentsBefore[0].iep_id, null);
-  t.is(myStudentsBefore[0].end_date, null);
+  t.is(myStudentsBefore.records[0].iep_id, null);
+  t.is(myStudentsBefore.records[0].end_date, null);
 
   const iep = await trpc.student.addIep.mutate({
     student_id: seed.student.student_id,
@@ -92,8 +92,8 @@ test("getMyStudentsAndIepInfo - student has IEP", async (t) => {
 
   const myStudentsAfter =
     await trpc.case_manager.getMyStudentsAndIepInfo.query();
-  t.is(myStudentsAfter[0].iep_id, iep.iep_id);
-  t.deepEqual(myStudentsAfter[0].end_date, iep.end_date);
+  t.is(myStudentsAfter.records[0].iep_id, iep.iep_id);
+  t.deepEqual(myStudentsAfter.records[0].end_date, iep.end_date);
 });
 
 test("getMyStudentsAndIepInfo - paras do not have access", async (t) => {
@@ -375,7 +375,7 @@ test("getMyParas", async (t) => {
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.records.length, 0);
 
   await db
     .insertInto("paras_assigned_to_case_manager")
@@ -386,7 +386,7 @@ test("getMyParas", async (t) => {
     .execute();
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.records.length, 1);
 });
 
 test("getMyParas - paras do not have access", async (t) => {
@@ -409,7 +409,7 @@ test("addStaff", async (t) => {
   });
 
   const parasBeforeAdd = await trpc.case_manager.getMyParas.query();
-  t.is(parasBeforeAdd.length, 0);
+  t.is(parasBeforeAdd.records.length, 0);
 
   const newParaData = {
     first_name: "Staffy",
@@ -420,9 +420,9 @@ test("addStaff", async (t) => {
   await trpc.case_manager.addStaff.mutate(newParaData);
 
   const parasAfterAdd = await trpc.case_manager.getMyParas.query();
-  t.is(parasAfterAdd.length, 1);
+  t.is(parasAfterAdd.records.length, 1);
 
-  const createdPara = parasAfterAdd[0];
+  const createdPara = parasAfterAdd.records[0];
   t.is(createdPara.first_name, newParaData.first_name);
   t.is(createdPara.last_name, newParaData.last_name);
   t.is(createdPara.email, newParaData.email);
@@ -452,14 +452,14 @@ test("addPara", async (t) => {
   });
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.records.length, 0);
 
   await trpc.case_manager.addPara.mutate({
     para_id: seed.para.user_id,
   });
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.records.length, 1);
 });
 
 test("addPara - paras do not have access", async (t) => {
@@ -492,14 +492,14 @@ test("removePara", async (t) => {
     .execute();
 
   let myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 1);
+  t.is(myParas.records.length, 1);
 
   await trpc.case_manager.removePara.mutate({
     para_id: seed.para.user_id,
   });
 
   myParas = await trpc.case_manager.getMyParas.query();
-  t.is(myParas.length, 0);
+  t.is(myParas.records.length, 0);
 });
 
 test("removePara - paras do not have access", async (t) => {

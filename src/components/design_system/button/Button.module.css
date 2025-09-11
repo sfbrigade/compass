@@ -14,14 +14,14 @@
 
 .button--small {
   border-radius: 0.5rem;
-  font-size: var(--base-size);
+  font-size: 1rem;
   line-height: 1.25;
   padding: 0.4375rem 0.4375rem;
 }
 
 .button--large {
   border-radius: 0.5rem;
-  font-size: var(--base-size);
+  font-size: 1rem;
   line-height: 1.5;
   padding: 0.4375rem 1.4375rem;
 }

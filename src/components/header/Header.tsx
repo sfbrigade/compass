@@ -23,7 +23,7 @@ export default function Header() {
   return (
     <>
       <AppBar position="fixed" sx={{ display: "block" }}>
-        <Toolbar className={classes.toolbar}>
+        <Toolbar>
           <Link href="/">
             <Image
               src="/img/compass-logo-white.svg"

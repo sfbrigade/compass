@@ -1,5 +1,6 @@
-import { useState, FormEvent, ReactNode, ComponentType } from "react";
-import { CircularProgress, Stack } from "@mui/material";
+import { useState, ReactNode, ComponentType } from "react";
+import { useTheme } from "@mui/material/styles";
+import { CircularProgress, Stack, useMediaQuery } from "@mui/material";
 import { useSearchParams } from "next/navigation";
 import { NextRouter, useRouter } from "next/router";
 
@@ -8,18 +9,21 @@ import DataTable, {
   DataTableColumn,
 } from "@/components/design_system/dataTable/DataTable";
 import Button from "@/components/design_system/button/Button";
+import Dialog from "@/components/design_system/dialog/Dialog";
 
 export interface DataTablePageRenderProps<RecordType, NewRecordType> {
   title: string;
   addLabel?: string;
   isLoading: boolean;
-  records?: RecordType[];
   record?: NewRecordType;
+  records?: RecordType[];
   onAddRecord?: () => void;
+  onCancel?: () => void;
   onSubmit?: () => Promise<void>;
   columns: DataTableColumn[];
   emptyElement: ReactNode;
-  renderFormRow: (
+  totalCount?: number;
+  renderForm: (
     record: NewRecordType,
     hasError: (path: string[]) => boolean,
     errors?: { path: string[] }[]
@@ -28,6 +32,8 @@ export interface DataTablePageRenderProps<RecordType, NewRecordType> {
 }
 
 export interface DataTablePageProps<RecordType, NewRecordType> {
+  page: number;
+  pageSize: number;
   search?: string;
   sort?: string;
   sortAsc?: boolean;
@@ -42,44 +48,60 @@ export function withDataTablePage<
 >(WrappedComponent: ComponentType<T>) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   function DataTablePage(props: Omit<T, keyof DataTablePageProps<any, any>>) {
+    const theme = useTheme();
+    const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
     const router = useRouter();
     const searchParams = useSearchParams();
+    const page = Number(searchParams.get("page") ?? "1");
+    const pageSize = Number(searchParams.get("pageSize") ?? "25");
     const search = searchParams.get("search") ?? "";
     const sort = searchParams.get("sort") ?? "first_name";
     const sortAsc = (searchParams.get("sortAsc") ?? "true") === "true";
 
     const [errors, setErrors] = useState<{ path: string[] }[]>();
 
-    async function onChangeSearchValue(value: string) {
+    function onChangePage(newPage: number) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("page", newPage.toString());
+      return onChangeParams(params);
+    }
+
+    function onChangePageSize(newPageSize: number) {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("page");
+      params.set("pageSize", newPageSize.toString());
+      return onChangeParams(params);
+    }
+
+    function onChangeParams(params: URLSearchParams) {
+      const queryString = params.toString();
+      return router.push(
+        `${router.pathname}${queryString ? "?" : ""}${queryString}`
+      );
+    }
+
+    function onChangeSearchValue(value: string) {
       const params = new URLSearchParams(searchParams.toString());
       if (value) {
         params.set("search", value);
       } else {
         params.delete("search");
       }
-      const queryString = params.toString();
-      return router.push(
-        `${router.pathname}${queryString ? "?" : ""}${queryString}`
-      );
+      return onChangeParams(params);
     }
 
-    async function onChangeSort(newSort: string, newSortAsc: boolean) {
+    function onChangeSort(newSort: string, newSortAsc: boolean) {
       const params = new URLSearchParams(searchParams.toString());
       params.set("sort", newSort);
       params.set("sortAsc", newSortAsc.toString());
-      const queryString = params.toString();
-      return router.push(
-        `${router.pathname}${queryString ? "?" : ""}${queryString}`
-      );
+      return onChangeParams(params);
     }
 
     async function onSubmitInternal(
-      event: FormEvent<HTMLFormElement>,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       record?: any,
       onSubmit?: () => Promise<void>
     ) {
-      event.preventDefault();
       if (!record) return;
       try {
         if (onSubmit) {
@@ -101,20 +123,24 @@ export function withDataTablePage<
     return (
       <WrappedComponent
         {...(props as T)}
+        page={page}
+        pageSize={pageSize}
         search={search}
         sort={sort}
         sortAsc={sortAsc}
         render={({
           title,
           isLoading,
+          record,
           records,
           addLabel,
           onAddRecord,
-          record,
+          onCancel,
           emptyElement,
           onSubmit,
           columns: COLUMNS,
-          renderFormRow,
+          totalCount,
+          renderForm,
           renderRow,
         }) => (
           <>
@@ -122,11 +148,14 @@ export function withDataTablePage<
               title={title}
               searchValue={search}
               onChangeSearchValue={
-                (records?.length ?? 0) > 0 ? onChangeSearchValue : undefined
+                (records?.length ?? 0) > 0 || search
+                  ? onChangeSearchValue
+                  : undefined
               }
             >
-              {(records?.length ?? 0) > 0 && (
+              {((records?.length ?? 0) > 0 || search) && (
                 <Button
+                  size={isMobile ? "small" : "large"}
                   sx={{ ml: "2rem" }}
                   onClick={onAddRecord}
                   disabled={!!record}
@@ -146,7 +175,7 @@ export function withDataTablePage<
                 <CircularProgress />
               </div>
             )}
-            {!isLoading && records?.length === 0 && !record && (
+            {!isLoading && records?.length === 0 && !search && (
               <Stack
                 spacing="1rem"
                 sx={{ alignItems: "center", paddingTop: "4rem" }}
@@ -154,20 +183,38 @@ export function withDataTablePage<
                 {emptyElement}
               </Stack>
             )}
-            {!isLoading && ((records?.length ?? 0) > 0 || record) && (
-              <form
-                onSubmit={(event) => onSubmitInternal(event, record, onSubmit)}
+            {!isLoading && ((records?.length ?? 0) > 0 || search) && (
+              <DataTable
+                columns={COLUMNS}
+                page={page}
+                pageSize={pageSize}
+                totalCount={totalCount}
+                isMobile={isMobile}
+                sort={sort}
+                sortAsc={sortAsc}
+                title={title}
+                onChangeSort={onChangeSort}
+                onChangePage={onChangePage}
+                onChangePageSize={onChangePageSize}
               >
-                <DataTable
-                  columns={COLUMNS}
-                  sort={sort}
-                  sortAsc={sortAsc}
-                  onChangeSort={onChangeSort}
-                >
-                  {record && renderFormRow(record, hasError, errors)}
-                  {records?.map((record) => renderRow(record, router))}
-                </DataTable>
-              </form>
+                {records?.map((record) => renderRow(record, router))}
+              </DataTable>
+            )}
+            {record && (
+              <Dialog
+                title={addLabel}
+                confirmLabel="Save"
+                cancelLabel="Cancel"
+                open={!!record}
+                onConfirm={() => onSubmitInternal(record, onSubmit)}
+                onCancel={() => onCancel?.()}
+                fullScreenOnMobile
+                size="xs"
+              >
+                <Stack spacing={3}>
+                  {renderForm(record, hasError, errors)}
+                </Stack>
+              </Dialog>
             )}
           </>
         )}
