@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import { TableRow, TableCell, TextField } from "@mui/material";
 import Image from "next/image";
 import { z } from "zod";
 
@@ -22,30 +22,24 @@ const COLUMNS: DataTableColumn[] = [
     id: "first_name",
     label: "First Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "last_name",
     label: "Last Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "email",
     label: "Email",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "role",
     label: "Role",
     isSortable: true,
-    width: "15%",
-  },
-  {
-    id: "actions",
-    label: "",
-    isSortable: false,
   },
 ];
 
@@ -86,6 +80,10 @@ function Staff({
     setTimeout(() => focusRef.current?.focus(), 0);
   }
 
+  function onCancel() {
+    setRecord(undefined);
+  }
+
   const utils = trpc.useUtils();
   const addRecord = trpc.user.createUser.useMutation({
     meta: { disableGlobalOnError: true },
@@ -104,7 +102,9 @@ function Staff({
     isLoading,
     record,
     records: data?.records,
+    totalCount: data?.totalCount,
     onAddRecord,
+    onCancel,
     onSubmit,
     columns: COLUMNS,
     emptyElement: (
@@ -114,61 +114,37 @@ function Staff({
         <Button onClick={onAddRecord}>Add User</Button>
       </>
     ),
-    renderFormRow: (record, hasError) => (
-      <TableRow>
-        <TableCell>
-          <TextField
-            inputRef={focusRef}
-            label="First Name"
-            value={record.first_name}
-            onChange={(e) =>
-              setRecord({ ...record, first_name: e.target.value })
-            }
-            error={hasError(["first_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="Last Name"
-            value={record.last_name}
-            onChange={(e) =>
-              setRecord({ ...record, last_name: e.target.value })
-            }
-            error={hasError(["last_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            type="email"
-            label="Email"
-            value={record.email}
-            onChange={(e) => setRecord({ ...record, email: e.target.value })}
-            error={hasError(["email"])}
-          />
-        </TableCell>
-        <TableCell>
-          <Dropdown
-            itemList={[...ROLE_OPTIONS]}
-            selectedOption={record.role}
-            setSelectedOption={(role) =>
-              setRecord({ ...record, role: role as string })
-            }
-            label="Role"
-          />
-        </TableCell>
-        <TableCell>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ justifyContent: "flex-end" }}
-          >
-            <Button type="submit">Save</Button>
-            <Button variant="secondary" onClick={() => setRecord(undefined)}>
-              Cancel
-            </Button>
-          </Stack>
-        </TableCell>
-      </TableRow>
+    renderForm: (record, hasError) => (
+      <>
+        <TextField
+          inputRef={focusRef}
+          label="First Name"
+          value={record.first_name}
+          onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
+          error={hasError(["first_name"])}
+        />
+        <TextField
+          label="Last Name"
+          value={record.last_name}
+          onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
+          error={hasError(["last_name"])}
+        />
+        <TextField
+          type="email"
+          label="Email"
+          value={record.email}
+          onChange={(e) => setRecord({ ...record, email: e.target.value })}
+          error={hasError(["email"])}
+        />
+        <Dropdown
+          itemList={[...ROLE_OPTIONS]}
+          selectedOption={record.role}
+          setSelectedOption={(role) =>
+            setRecord({ ...record, role: role as string })
+          }
+          label="Role"
+        />
+      </>
     ),
     renderRow: (record, router) => (
       <TableRow
@@ -179,7 +155,6 @@ function Staff({
         <TableCell>{record.last_name}</TableCell>
         <TableCell>{record.email}</TableCell>
         <TableCell>{record.role}</TableCell>
-        <TableCell></TableCell>
       </TableRow>
     ),
   });

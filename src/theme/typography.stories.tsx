@@ -19,15 +19,11 @@ export const TextVariants = () => (
     <Typography variant="h2">Heading 2</Typography>
     <Typography variant="h3">Heading 3</Typography>
     <Typography variant="h4">Heading 4</Typography>
-    <Typography variant="h5">Heading 5</Typography>
-
     <Typography variant="body1">Body 1</Typography>
+    <Typography variant="body1Bold">Body 1 Bold</Typography>
     <Typography variant="body2">Body 2</Typography>
-
     <Typography variant="button">Button</Typography>
-
     <Typography variant="caption">Caption</Typography>
-
     <Typography variant="overline">Overline</Typography>
   </Box>
 );
