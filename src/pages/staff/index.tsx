@@ -45,12 +45,16 @@ type RecordType = Unpacked<
 >;
 
 function Staff({
+  page,
+  pageSize,
   search,
   sort,
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
   const { data, isLoading } = trpc.case_manager.getMyParas.useQuery({
+    page,
+    pageSize,
     search,
     sort,
     sortAsc,

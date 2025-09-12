@@ -56,12 +56,16 @@ type RecordType = Unpacked<RouterOutputs["user"]["getUsers"]["records"]>;
 type Sort = z.infer<typeof sortBySchema>;
 
 function Staff({
+  page,
+  pageSize,
   search,
   sort,
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
   const { data, isLoading } = trpc.user.getUsers.useQuery({
+    page,
+    pageSize,
     search,
     sort: sort as Sort,
     sortAsc,
