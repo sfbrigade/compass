@@ -101,7 +101,7 @@ export async function generateBenchmarkReport(
     const htmlContent = generateReportHTML(data, clientTimeZone);
 
     await page.setContent(htmlContent, {
-      waitUntil: ["networkidle0", "domcontentloaded"],
+      waitUntil: ["domcontentloaded"],
       timeout: 30000,
     });
 
