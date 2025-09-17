@@ -165,13 +165,10 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
         clientTimeZone: timeZone,
       });
 
-      const byteCharacters = atob(result.pdfBuffer);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: "application/pdf" });
+      const response = await fetch(
+        `data:application/pdf;base64,${result.pdfBuffer}`
+      );
+      const blob = await response.blob();
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
