@@ -5,6 +5,7 @@ import { deleteFile } from "../lib/files";
 import { substituteTransactionOnContext } from "../lib/utils/context";
 import { TRPCError } from "@trpc/server";
 import { generateBenchmarkReport } from "../lib/pdf-generator";
+import { calculateDailyAggregatedRates, groupTrialsByDate } from "@/utils";
 
 // TODO: define .output() schemas for all procedures
 export const iep = router({
@@ -738,37 +739,14 @@ export const iep = router({
         .execute();
 
       // Calculate success rates by date (similar to the frontend logic)
-      const datePoints: { [date: string]: typeof trials } = {};
-
-      trials.forEach((trial) => {
-        const createdAtDateString = new Date(trial.created_at).toDateString();
-
-        if (datePoints[createdAtDateString]) {
-          datePoints[createdAtDateString].push(trial);
-        } else {
-          datePoints[createdAtDateString] = [trial];
-        }
-      });
-
-      const successRates = Object.entries(datePoints).map(([date, trials]) => {
-        const totalSuccess = trials.reduce((sum, t) => sum + t.success, 0);
-        const totalUnsuccess = trials.reduce((sum, t) => sum + t.unsuccess, 0);
-        const successRate =
-          totalSuccess + totalUnsuccess > 0
-            ? (totalSuccess / (totalSuccess + totalUnsuccess)) * 100
-            : 0;
-
-        const staffNames = Array.from(
-          new Set(trials.map((t) => `${t.first_name} ${t.last_name}`))
-        );
-
-        return {
-          date: new Date(date).toLocaleDateString(),
-          rate: successRate,
-          staffNames,
-          numberOfTrials: trials.length,
-        };
-      });
+      const groupedTrials = groupTrialsByDate(
+        trials,
+        input.clientTimeZone || "UTC"
+      );
+      const dailySuccessRates = calculateDailyAggregatedRates(
+        groupedTrials,
+        input.clientTimeZone || "UTC"
+      );
 
       // Generate PDF
       const pdfBuffer = await generateBenchmarkReport(
@@ -777,7 +755,7 @@ export const iep = router({
           goal,
           benchmark,
           trialData: trials,
-          successRates,
+          successRates: dailySuccessRates,
         },
         input.clientTimeZone
       );

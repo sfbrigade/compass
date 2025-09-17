@@ -77,7 +77,8 @@ function getTrendIndicator(rates: number[]): string {
 }
 
 export async function generateBenchmarkReport(
-  data: BenchmarkReportData
+  data: BenchmarkReportData,
+  clientTimeZone: string = "UTC"
 ): Promise<Buffer> {
   if (!data || !data.student || !data.goal || !data.benchmark) {
     throw new Error("Invalid report data: missing required fields");
@@ -97,7 +98,7 @@ export async function generateBenchmarkReport(
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 800 });
 
-    const htmlContent = generateReportHTML(data);
+    const htmlContent = generateReportHTML(data, clientTimeZone);
 
     await page.setContent(htmlContent, {
       waitUntil: ["networkidle0", "domcontentloaded"],
@@ -167,7 +168,6 @@ function generateReportHTML(
     }
   });
 
-  // Calculate trend
   const rates = successRates.map((r) => r.rate);
   const trendIndicator = getTrendIndicator(rates);
 
@@ -675,6 +675,7 @@ function generateReportHTML(
                             month: "short",
                             day: "numeric",
                             year: "numeric",
+                            timeZone: clientTimeZone,
                           }
                         )}</td>
                         <td>${escapeHtmlServer(trial.first_name)} ${escapeHtmlServer(trial.last_name)}</td>

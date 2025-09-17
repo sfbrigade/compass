@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { trpc } from "@/client/lib/trpc";
-import { calculateSuccessRate, calcAverage } from "@/utils";
+import { calcAverage, groupTrialsByDate } from "@/utils";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import {
   ChartContainer,
@@ -17,9 +17,9 @@ import {
   BulkPoint,
   DatePoint,
   Goal,
+  ProcessedTrialData,
   SoloPoint,
   Student,
-  TrialData,
   valueFormatter,
 } from "@/types/global";
 import { useEffect, useRef, useState } from "react";
@@ -95,38 +95,13 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
 
-  const datePoints: Record<string, TrialData[]> = {};
+  const datePoints: Record<string, ProcessedTrialData[]> = groupTrialsByDate(
+    benchmark?.trials || []
+  );
 
   const avgRate: number[] = [];
   const soloPoints: SoloPoint[] = [];
   const bulkPoints: BulkPoint[] = [];
-
-  benchmark?.trials.forEach(
-    ({ created_at, success, unsuccess, first_name, last_name }) => {
-      const createdAtDateString = new Date(created_at).toDateString();
-
-      const successRate = calculateSuccessRate({ success, unsuccess });
-
-      if (successRate === null) {
-        return;
-      }
-
-      const trialData = {
-        successRate,
-        success,
-        staffName: `${first_name} ${last_name}`,
-        numberOfAttempts: success + unsuccess,
-      };
-
-      if (datePoints[createdAtDateString]) {
-        datePoints[createdAtDateString].push(trialData);
-      } else {
-        datePoints[createdAtDateString] = [trialData];
-      }
-      // createdAt.push(new Date(createdAtDateString));
-      // successRate.push(calculateSuccessRate({ success, unsuccess }));
-    }
-  );
 
   const getDateFromPtNumber = (
     pointNumber: number,
@@ -148,7 +123,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
       soloPoints.push({
         x: new Date(createdAtDate).getTime(),
-        y: successRate,
+        y: successRate ?? 0,
         id: createdAtDate,
         staffName,
         success,
@@ -157,13 +132,13 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
     } else {
       bulkPoints.push({
         x: new Date(createdAtDate).getTime(),
-        y: successRate,
+        y: successRate ?? 0,
         id: createdAtDate,
         staffNames: Array.from(staffNames),
         numberOfTrials: datePoints[createdAtDate].length,
       });
     }
-    avgRate.push(successRate);
+    avgRate.push(successRate ?? 0);
   }
 
   const createdAtDates = Object.keys(datePoints).map((d) => new Date(d));
