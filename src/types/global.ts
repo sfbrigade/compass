@@ -48,11 +48,18 @@ export interface BulkPoint extends DatePoint {
 }
 
 export type TrialData = {
-  successRate: number;
   success: number;
-  numberOfAttempts: number;
-  staffName: string;
+  created_at: Date;
+  unsuccess: number;
+  first_name: string;
+  last_name: string;
 };
+
+export interface ProcessedTrialData extends TrialData {
+  successRate: number;
+  staffName: string;
+  numberOfAttempts: number;
+}
 
 export const valueFormatter = (point: SoloPoint | BulkPoint): string => {
   if ("numberOfTrials" in point) {

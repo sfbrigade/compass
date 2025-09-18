@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import { trpc } from "@/client/lib/trpc";
-import { calculateSuccessRate, calcAverage } from "@/utils";
+import { calcAverage, groupTrialsByDate } from "@/utils";
 import { GoalHeader } from "@/components/goal-header/goal-header";
 import {
   ChartContainer,
@@ -17,9 +17,9 @@ import {
   BulkPoint,
   DatePoint,
   Goal,
+  ProcessedTrialData,
   SoloPoint,
   Student,
-  TrialData,
   valueFormatter,
 } from "@/types/global";
 import { useEffect, useRef, useState } from "react";
@@ -28,6 +28,8 @@ import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import GoalPage from "../../../[goal_id]";
 import { Typography, Card, CardContent, Stack } from "@mui/material";
+import { Download } from "@mui/icons-material";
+import Button from "@/components/design_system/button/Button";
 
 const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -93,38 +95,13 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   // const createdAt: Date[] = [];
   // const successRate: (number | null)[] = [];
 
-  const datePoints: Record<string, TrialData[]> = {};
+  const datePoints: Record<string, ProcessedTrialData[]> = groupTrialsByDate(
+    benchmark?.trials || []
+  );
 
   const avgRate: number[] = [];
   const soloPoints: SoloPoint[] = [];
   const bulkPoints: BulkPoint[] = [];
-
-  benchmark?.trials.forEach(
-    ({ created_at, success, unsuccess, first_name, last_name }) => {
-      const createdAtDateString = new Date(created_at).toDateString();
-
-      const successRate = calculateSuccessRate({ success, unsuccess });
-
-      if (successRate === null) {
-        return;
-      }
-
-      const trialData = {
-        successRate,
-        success,
-        staffName: `${first_name} ${last_name}`,
-        numberOfAttempts: success + unsuccess,
-      };
-
-      if (datePoints[createdAtDateString]) {
-        datePoints[createdAtDateString].push(trialData);
-      } else {
-        datePoints[createdAtDateString] = [trialData];
-      }
-      // createdAt.push(new Date(createdAtDateString));
-      // successRate.push(calculateSuccessRate({ success, unsuccess }));
-    }
-  );
 
   const getDateFromPtNumber = (
     pointNumber: number,
@@ -146,7 +123,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
       soloPoints.push({
         x: new Date(createdAtDate).getTime(),
-        y: successRate,
+        y: successRate ?? 0,
         id: createdAtDate,
         staffName,
         success,
@@ -155,13 +132,13 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
     } else {
       bulkPoints.push({
         x: new Date(createdAtDate).getTime(),
-        y: successRate,
+        y: successRate ?? 0,
         id: createdAtDate,
         staffNames: Array.from(staffNames),
         numberOfTrials: datePoints[createdAtDate].length,
       });
     }
-    avgRate.push(successRate);
+    avgRate.push(successRate ?? 0);
   }
 
   const createdAtDates = Object.keys(datePoints).map((d) => new Date(d));
@@ -174,12 +151,76 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
   console.log("createdAtDates", createdAtDates);
 
+  const exportReportMutation = trpc.iep.exportReport.useMutation();
+
+  const handleExportReport = async () => {
+    if (!benchmark_id || !goal_id || !student_id) return;
+
+    const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    try {
+      const result = await exportReportMutation.mutateAsync({
+        benchmark_id,
+        goal_id,
+        student_id,
+        clientTimeZone: timeZone,
+      });
+
+      const response = await fetch(
+        `data:application/pdf;base64,${result.pdfBuffer}`
+      );
+      const blob = await response.blob();
+
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = result.filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Error exporting report:", error);
+
+      // TODO: show a toast notification here
+    }
+  };
+
   return (
     <Stack spacing={4}>
-      <Typography variant="h1">Viewing Data for [Student name]</Typography>
-
+      <Typography variant="h1">
+        Viewing Data for {student?.first_name} {student?.last_name}
+      </Typography>
       <Card>
         <CardContent ref={ref}>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            sx={{ mb: 2 }}
+          >
+            <Typography variant="h6" color="text.secondary">
+              [Legend Labels]
+              {/* TODO: Change to include legend labels. */}
+            </Typography>
+            <Button
+              onClick={handleExportReport}
+              disabled={
+                exportReportMutation.isLoading ||
+                !student ||
+                !goal ||
+                !benchmark
+              }
+            >
+              {exportReportMutation.isLoading ? "Generating..." : "Data Report"}
+              <Download
+                style={{
+                  display: "inline-flex",
+                  verticalAlign: "middle",
+                  marginLeft: "8px",
+                }}
+              />
+            </Button>
+          </Stack>
           {benchmark?.trials.map((trial) => (
             <div key={trial.trial_data_id}>{trial.notes}</div>
           ))}
