@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Stack, TableRow, TableCell, TextField } from "@mui/material";
+import { TableRow, TableCell, TextField } from "@mui/material";
 import Image from "next/image";
 
 import Button from "@/components/design_system/button/Button";
@@ -18,24 +18,18 @@ const COLUMNS: DataTableColumn[] = [
     id: "first_name",
     label: "First Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "last_name",
     label: "Last Name",
     isSortable: true,
-    width: "15%",
+    width: { xs: "25%", sm: "20%" },
   },
   {
     id: "email",
     label: "Email",
     isSortable: true,
-    width: "15%",
-  },
-  {
-    id: "actions",
-    label: "",
-    isSortable: false,
   },
 ];
 
@@ -46,15 +40,21 @@ interface NewRecordType {
 }
 
 type Unpacked<T> = T extends (infer U)[] ? U : T;
-type RecordType = Unpacked<RouterOutputs["case_manager"]["getMyParas"]>;
+type RecordType = Unpacked<
+  RouterOutputs["case_manager"]["getMyParas"]["records"]
+>;
 
 function Staff({
+  page,
+  pageSize,
   search,
   sort,
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
-  const { data: records, isLoading } = trpc.case_manager.getMyParas.useQuery({
+  const { data, isLoading } = trpc.case_manager.getMyParas.useQuery({
+    page,
+    pageSize,
     search,
     sort,
     sortAsc,
@@ -70,6 +70,10 @@ function Staff({
       email: "",
     });
     setTimeout(() => focusRef.current?.focus(), 0);
+  }
+
+  function onCancel() {
+    setRecord(undefined);
   }
 
   const utils = trpc.useUtils();
@@ -89,10 +93,12 @@ function Staff({
     addLabel: "Add Staff",
     isLoading,
     record,
-    records,
+    records: data?.records ?? [],
     onAddRecord,
+    onCancel,
     onSubmit,
     columns: COLUMNS,
+    totalCount: data?.totalCount ?? 0,
     emptyElement: (
       <>
         <Image src={emptyState} alt="No staff image" width={250} />
@@ -100,61 +106,38 @@ function Staff({
         <Button onClick={onAddRecord}>Add Staff</Button>
       </>
     ),
-    renderFormRow: (record, hasError) => (
-      <TableRow>
-        <TableCell>
-          <TextField
-            inputRef={focusRef}
-            label="First Name"
-            value={record.first_name}
-            onChange={(e) =>
-              setRecord({ ...record, first_name: e.target.value })
-            }
-            error={hasError(["first_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            label="Last Name"
-            value={record.last_name}
-            onChange={(e) =>
-              setRecord({ ...record, last_name: e.target.value })
-            }
-            error={hasError(["last_name"])}
-          />
-        </TableCell>
-        <TableCell>
-          <TextField
-            type="email"
-            label="Email"
-            value={record.email}
-            onChange={(e) => setRecord({ ...record, email: e.target.value })}
-            error={hasError(["email"])}
-          />
-        </TableCell>
-        <TableCell>
-          <Stack
-            direction="row"
-            spacing={1}
-            sx={{ justifyContent: "flex-end" }}
-          >
-            <Button type="submit">Save</Button>
-            <Button variant="secondary" onClick={() => setRecord(undefined)}>
-              Cancel
-            </Button>
-          </Stack>
-        </TableCell>
-      </TableRow>
+    renderForm: (record, hasError) => (
+      <>
+        <TextField
+          inputRef={focusRef}
+          label="First Name"
+          value={record.first_name}
+          onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
+          error={hasError(["first_name"])}
+        />
+        <TextField
+          label="Last Name"
+          value={record.last_name}
+          onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
+          error={hasError(["last_name"])}
+        />
+        <TextField
+          type="email"
+          label="Email"
+          value={record.email}
+          onChange={(e) => setRecord({ ...record, email: e.target.value })}
+          error={hasError(["email"])}
+        />
+      </>
     ),
     renderRow: (record, router) => (
       <TableRow
-        key={record.para_id}
-        onClick={() => router.push(`/staff/${record.para_id}`)}
+        key={record.user_id}
+        onClick={() => router.push(`/staff/${record.user_id}`)}
       >
         <TableCell>{record.first_name}</TableCell>
         <TableCell>{record.last_name}</TableCell>
         <TableCell>{record.email}</TableCell>
-        <TableCell></TableCell>
       </TableRow>
     ),
   });

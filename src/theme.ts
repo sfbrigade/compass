@@ -67,69 +67,64 @@ export const compassTheme = createTheme({
     },
     h1: {
       fontWeight: 600,
-      fontSize: "2.5em",
+      fontSize: "2.5rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
-        fontSize: "2em",
+        fontSize: "2rem",
       },
     },
     h2: {
       fontWeight: 600,
-      fontSize: "2em",
+      fontSize: "2rem",
       fontFamily: "var(--quicksand), sans-serif",
-      [breakpoints.down("md")]: {
-        fontSize: "1.5em",
+      [breakpoints.down("sm")]: {
+        fontSize: "1.5rem",
       },
     },
     h3: {
       fontWeight: 600,
-      fontSize: "1.5em",
+      fontSize: "1.5rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
-        fontSize: "1.25em",
+        fontSize: "1.25rem",
       },
     },
     h4: {
       fontWeight: 600,
-      fontSize: "1.25em",
+      fontSize: "1.25rem",
       fontFamily: "var(--quicksand), sans-serif",
       [breakpoints.down("md")]: {
         fontWeight: 500,
       },
     },
-    h5: {
-      fontWeight: 700,
-      fontSize: "1em",
-      fontFamily: "var(--inter), sans-serif",
-    },
     body1: {
       fontWeight: 400,
-      fontSize: "1em",
+      fontSize: "1rem",
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     body1Bold: {
       fontWeight: 600,
-      fontSize: "1em",
+      fontSize: "1rem",
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     body2: {
       fontWeight: 500,
-      fontSize: "0.875em",
+      fontSize: "0.875rem",
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
     button: {
       fontWeight: 600,
-      fontSize: "1em",
+      fontSize: "1rem",
       fontFamily: "var(--quicksand), sans-serif",
       lineHeight: "150%",
       textTransform: "none",
     },
     caption: {
       fontWeight: 400,
-      fontSize: "0.75em",
+      fontSize: "0.75rem",
       fontFamily: "var(--inter), sans-serif",
       lineHeight: "150%",
     },
@@ -159,6 +154,28 @@ export const compassTheme = createTheme({
     MuiCheckbox: {
       defaultProps: {
         disableRipple: true,
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: ".5rem 1.5rem 1.5rem 1.5rem",
+        },
+      },
+    },
+    MuiDialogTitle: {
+      styleOverrides: {
+        root: {
+          paddingTop: "1.5rem",
+          paddingBottom: "1.5rem",
+        },
+      },
+    },
+    MuiDialogContent: {
+      styleOverrides: {
+        root: {
+          padding: ".5rem 1.5rem 1.5rem 1.5rem !important",
+        },
       },
     },
     MuiInputLabel: {
@@ -217,6 +234,42 @@ export const compassTheme = createTheme({
           },
           td: {
             border: "none",
+          },
+        },
+      },
+    },
+    MuiTableCell: {
+      styleOverrides: {
+        root: {
+          fontSize: ".875rem",
+          [breakpoints.down("sm")]: {
+            fontSize: ".75rem",
+          },
+        },
+      },
+    },
+    MuiTablePagination: {
+      styleOverrides: {
+        root: {
+          "& .MuiToolbar-root": {
+            backgroundColor: "transparent",
+          },
+        },
+      },
+    },
+    MuiTableSortLabel: {
+      styleOverrides: {
+        root: {
+          color: "var(--grey-40)",
+          fontWeight: "600",
+          fontSize: ".875rem",
+          [breakpoints.down("sm")]: {
+            fontSize: ".75rem",
+            fontWeight: "normal",
+            whiteSpace: "nowrap",
+          },
+          "&.Mui-active": {
+            color: "var(--grey-40)",
           },
         },
       },
@@ -362,6 +415,17 @@ export const compassTheme = createTheme({
     MuiTabs: {
       defaultProps: {
         indicatorColor: "transparent",
+      },
+    },
+    MuiToolbar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: "var(--primary-40)",
+          boxShadow: "0",
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "0",
+        },
       },
     },
   },

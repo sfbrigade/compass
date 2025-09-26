@@ -177,8 +177,8 @@ export const BenchmarkAssignmentModal = (
               }}
             >
               <List sx={{ p: 0 }} className={$benchmark.staffListItemText}>
-                {myParas
-                  ?.filter((para): para is ParaProps => para !== undefined)
+                {myParas?.records
+                  .filter((para): para is ParaProps => para !== undefined)
                   .map((para) => (
                     <ListItem
                       key={para.user_id}

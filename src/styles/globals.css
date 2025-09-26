@@ -51,18 +51,6 @@
   --grey-90: #f6f8f9;
   --grey-100: #ffffff;
 
-  /* Easy Text Size Scaling */
-  --base-size: 0.875rem; /* 14px */
-  --scale: 1.2;
-  --h1: calc(var(--h2) * var(--scale));
-  --h2: calc(var(--h3) * var(--scale));
-  --h3: calc(var(--h4) * var(--scale));
-  --h4: calc(var(--h5) * var(--scale));
-  --h5: calc(var(--h6) * var(--scale));
-  --h6: var(--base-size);
-  --sm: calc(var(--h6) / var(--scale));
-  --xs: calc(var(--sm) / var(--scale));
-
   /* Fonts */
   --quicksand: Quicksand;
   --inter: Inter;
@@ -88,8 +76,7 @@ body,
 #__next {
   height: 100%;
   overflow-x: auto;
-  padding-top: 0.5rem;
-  font-size: var(--base-size);
+  font-size: 16px;
 }
 
 strong {
@@ -105,124 +92,6 @@ input[type="password"],
 textarea {
   border: none;
   outline: none;
-}
-
-/* Scalable H elements with h classes that can be a substitute for H elements */
-h1,
-.h1,
-h2,
-.h2,
-h3,
-.h3,
-h4,
-.h4,
-h5,
-.h5,
-h6,
-.h6 {
-  font-weight: 600;
-  font-family: Quicksand;
-  line-height: 1.5;
-}
-
-h1,
-.h1 {
-  font-size: var(--h1);
-}
-
-h2,
-.h2 {
-  font-size: var(--h2);
-}
-
-h3,
-.h3 {
-  font-size: var(--h3);
-}
-
-h4,
-.h4 {
-  font-size: var(--h4);
-}
-
-h5,
-.h5 {
-  font-size: var(--h5);
-}
-
-h6,
-.h6 {
-  font-size: var(--h6);
-}
-
-.sm {
-  font-size: var(--sm);
-}
-
-.xs {
-  font-size: var(--xs);
-}
-
-p,
-.body1,
-.body2,
-.caption,
-.overline,
-span {
-  line-height: 1.5;
-  font-family: Inter;
-  font-weight: var(--regular);
-}
-
-p {
-  font-size: var(--base-size);
-}
-
-/* Text or similar style */
-.body1 {
-  font-size: var(--base-size);
-}
-
-/* Usage - description for filling out forms */
-.body2 {
-  font-size: var(--sm);
-}
-
-/* For Images */
-.caption {
-  font-size: var(--xs);
-}
-
-.overline {
-  font-size: var(--xs);
-  font-weight: var(--semibold);
-  text-transform: uppercase;
-}
-
-/* Breakpoints recommended by Bootstrap */
-/* Screens smaller than [480px] uses css above */
-
-/* Phones [wide screen] - Tablet [long screen] */
-@media only screen and (min-width: 480px) {
-  :root {
-    --base-size: 0.9375rem; /* 15px */
-  }
-}
-
-/* Tablets [wide screen]*/
-@media only screen and (min-width: 768px) {
-  :root {
-    --base-size: 1rem;
-  }
-}
-
-/* Desktops */
-@media only screen and (min-width: 992px) {
-  html,
-  body,
-  #__next {
-    padding-top: 0;
-  }
 }
 
 /* MUI Chart Overrides */
