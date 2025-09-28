@@ -54,10 +54,10 @@ try {
           STORYBOOK: "true",
           PUBLIC_URL: ".",
           DATABASE_URL: "postgres://postgres:@localhost:5432/compass",
-          NEXTAUTH_SECRET: "QNRbzrgB0hUv1acDkSngRGf6iO7ODN19wi99PoOTSNs=",
+          NEXTAUTH_SECRET: "process.env.NEXTAUTH_SECRET",
           GOOGLE_CLIENT_ID:
             "817144002327-u9epcuhf5k68c3mg2hoaj9ik9hgmfkjl.apps.googleusercontent.com",
-          GOOGLE_CLIENT_SECRET: "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",
+          GOOGLE_CLIENT_SECRET: "process.env.GOOGLE_CLIENT_SECRET",
           S3_USER_UPLOADS_ENDPOINT: "http://localhost:9000",
           S3_USER_UPLOADS_REGION: "us-east-1",
           S3_USER_UPLOADS_ACCESS_KEY_ID: "minioadmin",
@@ -13376,12 +13376,10 @@ In order to be iterable, non-array objects must have a [Symbol.iterator]() metho
               l(!0),
                 s &&
                   setTimeout(() => {
-                    document
-                      .getElementById(`${s}-option`)
-                      ?.scrollIntoView({
-                        behavior: "smooth",
-                        inline: "nearest",
-                      });
+                    document.getElementById(`${s}-option`)?.scrollIntoView({
+                      behavior: "smooth",
+                      inline: "nearest",
+                    });
                   }, 200);
             },
             [l]
