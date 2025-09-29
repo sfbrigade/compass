@@ -1,10 +1,11 @@
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useState, type ReactNode } from "react";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
-
+import Chips from "../design_system/Chips/Chips";
 import Button from "@/components/design_system/button/Button";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
@@ -77,27 +78,32 @@ const BenchmarkListElement = ({
           padding: "1rem",
         }}
       >
-        <Typography
-          sx={{ color: "var(--primary-40)" }}
-          variant="overline"
-          display="block"
-          gutterBottom
-        >
-          #{(index ?? 0) + 1} created on {format(benchmark?.created_at, "P")}
-        </Typography>
+        <Chips
+          color="default"
+          size="medium"
+          icon={<CalendarMonthIcon />}
+          label={`Created on: ${format(benchmark?.created_at, "P")}`}
+        />
+
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
-            <ContentPasteIcon
-              sx={{
-                color: "var(--grey-10)",
-                fontSize: 12,
-                margin: "1.25rem",
-                marginLeft: "0.5rem",
-                marginRight: "0.5rem",
-              }}
-            />
-
             <Box sx={{ margin: "1rem", marginLeft: ".5rem" }}>
+              <Chips
+                label={(index ?? 0) + 1}
+                color="default"
+                size="medium"
+                sx={{
+                  marginRight: "0.5rem",
+                }}
+                icon={
+                  <ContentPasteIcon
+                    sx={{
+                      color: "var(--grey-10)",
+                      fontSize: 20,
+                    }}
+                  />
+                }
+              />
               {benchmark.description}
             </Box>
           </Box>
@@ -118,16 +124,58 @@ const BenchmarkListElement = ({
         >
           <Info description={"BASELINE LEVEL"}>
             {" "}
-            {benchmark?.baseline_level}%{" "}
+            <Chips
+              label={benchmark?.baseline_level + "%"}
+              color="primary"
+              size="medium"
+            ></Chips>
           </Info>
-          <Info description={"TARGET LEVEL"}> {benchmark?.target_level}% </Info>
+          <Info description={"TARGET LEVEL"}>
+            <Chips
+              label={benchmark?.target_level + "%"}
+              color="primary"
+              size="medium"
+            ></Chips>
+          </Info>
           <Info description={"CURRENT LEVEL"}>
             {" "}
-            {benchmark?.current_level || "N/A"}{" "}
+            {benchmark?.current_level ? (
+              <Chips
+                label={benchmark?.current_level + "%"}
+                color="primary"
+                size="medium"
+              ></Chips>
+            ) : (
+              <Chips
+                label={"0%"}
+                color="default"
+                size="medium"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "primary",
+                }}
+              ></Chips>
+            )}
           </Info>
           <Info description={"# OF TRIALS"}>
             {" "}
-            {benchmark?.number_of_trials || "N/A"}
+            {benchmark?.number_of_trials ? (
+              <Chips
+                label={benchmark?.number_of_trials}
+                color="primary"
+                size="medium"
+              ></Chips>
+            ) : (
+              <Chips
+                label={"0"}
+                color="default"
+                size="medium"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "primary",
+                }}
+              ></Chips>
+            )}
           </Info>
           <Info description={"STAFF"}>
             <BenchmarkAssignees
