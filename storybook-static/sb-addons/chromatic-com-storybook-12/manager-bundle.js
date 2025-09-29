@@ -55,8 +55,7 @@ try {
           PUBLIC_URL: ".",
           DATABASE_URL: "postgres://postgres:@localhost:5432/compass",
           NEXTAUTH_SECRET: "process.env.NEXTAUTH_SECRET",
-          GOOGLE_CLIENT_ID:
-            "817144002327-u9epcuhf5k68c3mg2hoaj9ik9hgmfkjl.apps.googleusercontent.com",
+          GOOGLE_CLIENT_ID: "process.env.GOOGLE_CLIENT_ID",
           GOOGLE_CLIENT_SECRET: "process.env.GOOGLE_CLIENT_SECRET",
           S3_USER_UPLOADS_ENDPOINT: "http://localhost:9000",
           S3_USER_UPLOADS_REGION: "us-east-1",
