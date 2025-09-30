@@ -63,6 +63,7 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
       }}
     >
       {/* Goal Description */}
+
       {goal && (
         <GoalHeader
           name={`Goal #${goal.number}`}

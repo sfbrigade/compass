@@ -15,7 +15,6 @@
 
 .layout__breadcrumbs {
   position: fixed;
-  z-index:2s;
   display: flex;
   align-items: center;
   left: 0m;
