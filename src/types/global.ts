@@ -53,6 +53,7 @@ export type TrialData = {
   unsuccess: number;
   first_name: string;
   last_name: string;
+  trial_data_id: string;
 };
 
 export interface ProcessedTrialData extends TrialData {
