@@ -274,9 +274,11 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
         <CardContent ref={ref}>
           <Stack spacing={2}>
             <Stack
-              direction="row"
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
               justifyContent="space-between"
-              alignItems="center"
+              alignItems={{ xs: "stretch", sm: "center" }}
+              sx={{ pt: 2 }}
             >
               <Stack direction="row" spacing={2} alignItems="center">
                 <ToggleButtonGroup
@@ -329,18 +331,21 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
                 {exportReportMutation.isLoading
                   ? "Generating..."
                   : "Data Report"}
-                <Download sx={{ ml: 1 }} />
+                {!exportReportMutation.isLoading && (
+                  <Download sx={{ ml: 1, verticalAlign: "middle" }} />
+                )}
               </Button>
             </Stack>
             <ChartContainer
               className="benchmark-chart"
-              sx={{ margin: "auto", display: "block" }}
+              sx={{ margin: "auto", display: "block", maxWidth: "100%" }}
               xAxis={[
                 {
                   data: createdAtDates,
-                  scaleType: "time",
+                  scaleType: "point",
                   id: "x-axis-id",
                   valueFormatter: (value: string | number | Date) => {
+                    if (!value) return "";
                     return new Date(value).toLocaleDateString("en-US", {
                       month: "short",
                       day: "numeric",
@@ -356,7 +361,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
                 },
               ]}
               series={series}
-              width={Math.min(720, width)}
+              width={width || 300}
               height={400}
             >
               <ChartsGrid horizontal />
@@ -364,7 +369,10 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
               {chartView !== "scatter" && <LinePlot />}
               <ScatterPlot />
 
-              <ChartsXAxis label="Trial date" axisId="x-axis-id" />
+              <ChartsXAxis
+                label={`Trial Date (${new Date(createdAtDates[0]).getFullYear()})`}
+                axisId="x-axis-id"
+              />
               <ChartsYAxis label="Success rate" />
 
               {targetLevel && (
@@ -378,11 +386,23 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
               )}
 
               <CustomItemTooltip datePoints={datePoints} />
-              <ChartsLegend />
+              <ChartsLegend
+                direction="row"
+                position={{ vertical: "top", horizontal: "left" }}
+                slotProps={{
+                  legend: {
+                    labelStyle: { fontSize: 14 },
+                  },
+                }}
+              />
             </ChartContainer>
 
             {avgRate.length > 0 && (
-              <Stack direction="row" spacing={3} sx={{ pt: 2 }}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={3}
+                sx={{ pt: 2 }}
+              >
                 <Box>
                   <Typography variant="body2" color="text.secondary">
                     Average Success Rate
