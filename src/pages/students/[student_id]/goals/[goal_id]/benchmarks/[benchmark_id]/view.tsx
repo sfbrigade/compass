@@ -215,7 +215,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
     if (chartView !== "line") {
       series.push(
         {
-          label: "Single Trial Days",
+          label: "Single Trial",
           data: soloPoints as ScatterValueType[],
           type: "scatter" as const,
           id: "solo-points",
@@ -224,7 +224,7 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
             valueFormatter(v as SoloPoint),
         },
         {
-          label: "Multiple Trial Days",
+          label: "Multiple Trials",
           data: bulkPoints as ScatterValueType[],
           type: "scatter" as const,
           id: "multi-points",
