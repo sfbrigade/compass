@@ -60,6 +60,10 @@ function Students({
   sortAsc,
   render,
 }: DataTablePageProps<RecordType, NewRecordType>) {
+  const [nameError, setNameError] = useState(false);
+
+  const [GradeError, setGradeError] = useState(false);
+
   const { data, isLoading } =
     trpc.case_manager.getMyStudentsAndIepInfo.useQuery({
       page,
@@ -93,11 +97,33 @@ function Students({
 
   async function onSubmit() {
     if (!record) return;
-    await addRecord.mutateAsync({
-      ...record,
-      grade: Number(record.grade),
-    });
-    await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
+    console.log(record);
+
+    const alphabeticalRegex = /^[A-Za-z]+$/;
+
+    if (
+      !alphabeticalRegex.test(record.first_name) ||
+      !alphabeticalRegex.test(record.last_name)
+    ) {
+      setNameError(true);
+      setTimeout(() => {
+        setNameError(false);
+      }, 3000);
+      return;
+    } else if (Number(record.grade) === 0) {
+      setGradeError(true);
+      setTimeout(() => {
+        setGradeError(false);
+      }, 3000);
+      return;
+    } else {
+      await addRecord.mutateAsync({
+        ...record,
+        grade: Number(record.grade),
+      });
+      await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
+    }
+
     setRecord(undefined);
   }
 
@@ -126,20 +152,27 @@ function Students({
           label="First Name"
           value={record.first_name}
           onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
-          error={hasError(["first_name"])}
+          error={hasError(["first_name"]) || nameError}
+          helperText={
+            nameError ? "Only letters, spaces, and hyphens allowed" : ""
+          }
         />
         <TextField
           label="Last Name"
           value={record.last_name}
           onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
-          error={hasError(["last_name"])}
+          error={hasError(["last_name"]) || nameError}
+          helperText={
+            nameError ? "Only letters, spaces, and hyphens allowed" : ""
+          }
         />
         <TextField
           label="Grade"
           type="number"
           value={record.grade}
           onChange={(e) => setRecord({ ...record, grade: e.target.value })}
-          error={hasError(["grade"])}
+          error={hasError(["grade"]) || GradeError}
+          helperText={GradeError ? "Grade cannot be 0" : ""}
         />
         <TextField
           label="IEP End Date"

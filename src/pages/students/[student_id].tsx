@@ -38,6 +38,9 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
+  const [formError, setFormError] = useState(false);
+  const [helperText, setHelperText] = useState("");
+
   const utils = trpc.useContext();
   const router = useRouter();
   const { student_id } = router.query;
@@ -97,20 +100,44 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       return; // TODO: improve error handling
     }
 
-    editMutation.mutate({
-      student_id: student.student_id,
-      first_name: data.get("firstName") as string,
-      last_name: data.get("lastName") as string,
-      email: (data.get("email") as string) || null,
-      grade: Number(data.get("grade")) || 0,
-    });
+    const alphabeticalRegex = /^[A-Za-z]+$/;
 
-    if (activeIep) {
-      editIepMutation.mutate({
+    if (
+      !alphabeticalRegex.test(data.get("firstName") as string) ||
+      !alphabeticalRegex.test(data.get("lastName") as string)
+    ) {
+      setFormError(true);
+      setHelperText("Only letters, spaces, and hyphens allowed");
+      setTimeout(() => {
+        setFormError(false);
+        setHelperText("");
+      }, 3000);
+
+      return;
+    } else if (Number(data.get("grade")) === 0) {
+      setFormError(true);
+      setHelperText("Grade must be between 1 and 12");
+      setTimeout(() => {
+        setHelperText("");
+        setFormError(false);
+      }, 3000);
+      return;
+    } else {
+      editMutation.mutate({
         student_id: student.student_id,
-        start_date: new Date(parseISO(data.get("start_date") as string)),
-        end_date: new Date(parseISO(data.get("end_date") as string)),
+        first_name: data.get("firstName") as string,
+        last_name: data.get("lastName") as string,
+        email: (data.get("email") as string) || null,
+        grade: Number(data.get("grade")) || 0,
       });
+
+      if (activeIep) {
+        editIepMutation.mutate({
+          student_id: student.student_id,
+          start_date: new Date(parseISO(data.get("start_date") as string)),
+          end_date: new Date(parseISO(data.get("end_date") as string)),
+        });
+      }
     }
 
     handleMainState();
@@ -257,6 +284,8 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
         endDate={endDate}
         setStartDate={setStartDate}
         onSubmit={handleEditStudent}
+        error={formError}
+        helperText={helperText}
       />
 
       {/* Archiving Student Modal appears when "Archive" button is pressed*/}

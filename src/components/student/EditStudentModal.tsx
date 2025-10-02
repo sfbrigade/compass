@@ -32,6 +32,12 @@ interface EditStudentModalProps {
 
   // Form submission
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+
+  // Validation errors
+  error?: boolean;
+
+  //helperText
+  helperText?: string;
 }
 
 export const EditStudentModal = ({
@@ -43,6 +49,8 @@ export const EditStudentModal = ({
   endDate,
   setStartDate,
   onSubmit,
+  error,
+  helperText,
 }: EditStudentModalProps) => {
   return (
     <Modal
@@ -71,6 +79,8 @@ export const EditStudentModal = ({
                     name="firstName"
                     defaultValue={student?.first_name || ""}
                     required
+                    error={error}
+                    helperText={helperText}
                   />
                 </Container>
                 <Container className={$CompassModal.editModalContainer}>
@@ -81,6 +91,8 @@ export const EditStudentModal = ({
                     name="lastName"
                     defaultValue={student?.last_name || ""}
                     required
+                    error={error}
+                    helperText={helperText}
                   />
                 </Container>
                 <Container className={$CompassModal.editModalContainer}>
@@ -99,6 +111,8 @@ export const EditStudentModal = ({
                     type="number"
                     name="grade"
                     defaultValue={(student?.grade || 0).toString()}
+                    error={error}
+                    helperText={helperText}
                     required
                   />
                 </Container>
