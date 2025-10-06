@@ -107,31 +107,11 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const soloPoints: SoloPoint[] = [];
   const bulkPoints: BulkPoint[] = [];
 
-  const allTrials: Array<{
-    trial_id: string;
-    date: Date;
-    successRate: number;
-    staffName: string;
-    success: number;
-    numberOfAttempts: number;
-  }> = [];
-
   for (const createdAtDate in datePoints) {
     const successRate = calcAverage(datePoints[createdAtDate]);
     const staffNames = new Set(
       datePoints[createdAtDate].map(({ staffName }) => staffName)
     );
-
-    datePoints[createdAtDate].forEach((trial, idx) => {
-      allTrials.push({
-        trial_id: trial.trial_data_id || `${createdAtDate}-${idx}`,
-        date: new Date(createdAtDate),
-        successRate: trial.successRate,
-        staffName: trial.staffName,
-        success: trial.success,
-        numberOfAttempts: trial.numberOfAttempts,
-      });
-    });
 
     if (datePoints[createdAtDate].length === 1) {
       const staffName = Array.from(staffNames)[0];
