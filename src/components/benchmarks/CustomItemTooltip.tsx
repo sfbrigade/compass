@@ -73,6 +73,8 @@ export function CustomItemTooltip({ datePoints = {} }: CustomItemTooltipProps) {
 
   const trials = getTrialsForPoint();
   const formattedDate = getFormattedDate();
+  const rangeMarkerType = getRangeMarkerType();
+
   const isMultiTrial = trials.length > 1;
 
   return (
@@ -116,9 +118,7 @@ export function CustomItemTooltip({ datePoints = {} }: CustomItemTooltipProps) {
               }}
             />
             <Typography variant="body2" sx={{ fontWeight: "medium" }}>
-              {getRangeMarkerType()
-                ? `${getRangeMarkerType()}`
-                : tooltipData.label}
+              {rangeMarkerType || tooltipData.label}
             </Typography>
             <Typography variant="body2" sx={{ fontWeight: "bold", ml: "auto" }}>
               {tooltipData.formattedValue}
