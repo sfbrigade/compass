@@ -1,5 +1,5 @@
-import { Chip } from "@mui/material";
-import { SxProps, Theme } from "@mui/material/styles";
+import { Chip as MuiChip } from "@mui/material";
+import { SxProps, Theme } from "@mui/material";
 import { ReactElement } from "react";
 
 interface ChipsProps {
@@ -16,6 +16,7 @@ interface ChipsProps {
   size: "small" | "medium";
   sx?: SxProps<Theme>;
   label?: string | number;
+  variant?: "filled" | "outlined";
   icon?: ReactElement;
 }
 
@@ -25,16 +26,18 @@ function Chips({
   disabled = false,
   size,
   label,
+  variant,
   icon,
   sx = [],
 }: ChipsProps) {
   return (
-    <Chip
+    <MuiChip
       label={label}
       clickable={clickable}
       color={color}
       disabled={disabled}
       size={size}
+      variant={variant}
       icon={icon}
       sx={sx}
     />

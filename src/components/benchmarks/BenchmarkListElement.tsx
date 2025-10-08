@@ -1,17 +1,20 @@
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { useState, type ReactNode } from "react";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
-import Chips from "../design_system/Chips/Chips";
+import Chip from "../design_system/chip/Chip";
 import Button from "@/components/design_system/button/Button";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
 import { Benchmark } from "@/types/global";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 
 interface BenchmarkProps {
   benchmark: Benchmark;
@@ -35,15 +38,33 @@ const Info = ({ description, children }: InfoProps) => {
         textAlign: "center",
       }}
     >
-      <Typography
-        sx={{ marginBottom: "0.5em" }}
-        variant="overline"
-        display="block"
-        gutterBottom
-      >
-        {description}
-      </Typography>
+      {description.includes("Assigned STAFF") ||
+      description.includes("DATA") ? (
+        <Typography
+          sx={{ marginTop: "1em", color: "gray" }}
+          variant="overline"
+          display="block"
+          gutterBottom
+        >
+          {description}
+        </Typography>
+      ) : (
+        ""
+      )}
       {children}
+      {description.includes("Assigned STAFF") ||
+      description.includes("DATA") ? (
+        ""
+      ) : (
+        <Typography
+          sx={{ marginTop: "1em", color: "gray" }}
+          variant="overline"
+          display="block"
+          gutterBottom
+        >
+          {description}
+        </Typography>
+      )}
     </Box>
   );
 };
@@ -78,28 +99,31 @@ const BenchmarkListElement = ({
           padding: "1rem",
         }}
       >
-        <Chips
+        <Chip
           color="default"
           size="medium"
-          icon={<CalendarMonthIcon />}
-          label={`Created on: ${format(benchmark?.created_at, "P")}`}
+          variant="outlined"
+          icon={<CalendarMonthOutlinedIcon />}
+          sx={{ fontWeight: "medium" }}
+          label={`Created on: ${format(benchmark?.created_at, "PPP")}`}
         />
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
-            <Box sx={{ margin: "1rem", marginLeft: ".5rem" }}>
-              <Chips
+            <Box sx={{ marginTop: "1.5rem" }}>
+              <Chip
                 label={(index ?? 0) + 1}
                 color="default"
                 size="medium"
                 sx={{
                   marginRight: "0.5rem",
+                  padding: "0.5rem",
                 }}
                 icon={
                   <ContentPasteIcon
                     sx={{
                       color: "var(--grey-10)",
-                      fontSize: 20,
+                      fontSize: 15,
                     }}
                   />
                 }
@@ -124,65 +148,103 @@ const BenchmarkListElement = ({
         >
           <Info description={"BASELINE LEVEL"}>
             {" "}
-            <Chips
-              label={benchmark?.baseline_level + "%"}
-              color="primary"
-              size="medium"
-            ></Chips>
+            {benchmark?.baseline_level ? (
+              <Chip
+                label={benchmark?.baseline_level + "%"}
+                sx={{ width: "4rem", height: "1.8rem" }}
+                size="medium"
+                color="primary"
+              />
+            ) : (
+              <Chip
+                label={"0%"}
+                color="primary"
+                variant="outlined"
+                size="medium"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "default",
+                  width: "3rem",
+                  height: "1.8rem",
+                  fontWeight: "bold",
+                }}
+              />
+            )}
           </Info>
           <Info description={"TARGET LEVEL"}>
-            <Chips
-              label={benchmark?.target_level + "%"}
-              color="primary"
-              size="medium"
-            ></Chips>
+            {" "}
+            {benchmark?.target_level ? (
+              <Chip
+                label={benchmark?.target_level + "%"}
+                sx={{ width: "4rem", height: "1.8rem" }}
+                size="medium"
+                color="primary"
+              />
+            ) : (
+              <Chip
+                label={"0%"}
+                color="primary"
+                variant="outlined"
+                size="medium"
+                sx={{
+                  border: "1px solid",
+                  borderColor: "default",
+                  width: "3rem",
+                  height: "1.8rem",
+                  fontWeight: "bold",
+                }}
+              />
+            )}
           </Info>
           <Info description={"CURRENT LEVEL"}>
             {" "}
             {benchmark?.current_level ? (
-              <Chips
+              <Chip
                 label={benchmark?.current_level + "%"}
+                sx={{ width: "4rem", height: "1.8rem" }}
                 color="primary"
                 size="medium"
-              ></Chips>
+              />
             ) : (
-              <Chips
+              <Chip
                 label={"0%"}
-                color="default"
+                color="primary"
+                variant="outlined"
                 size="medium"
                 sx={{
                   border: "1px solid",
-                  borderColor: "primary",
+                  borderColor: "default",
+                  width: "3rem",
+                  height: "1.8rem",
+                  fontWeight: "bold",
                 }}
-              ></Chips>
+              />
             )}
           </Info>
           <Info description={"# OF TRIALS"}>
             {" "}
             {benchmark?.number_of_trials ? (
-              <Chips
+              <Chip
                 label={benchmark?.number_of_trials}
                 color="primary"
                 size="medium"
-              ></Chips>
+                sx={{ width: "3rem", height: "1.8rem" }}
+              />
             ) : (
-              <Chips
+              <Chip
                 label={"0"}
                 color="default"
                 size="medium"
                 sx={{
                   border: "1px solid",
                   borderColor: "primary",
+                  width: "3rem",
+                  height: "1.8rem",
                 }}
-              ></Chips>
+              />
             )}
           </Info>
-          <Info description={"STAFF"}>
-            <BenchmarkAssignees
-              benchmark={benchmark}
-              onAssign={() => setIsAssignmentModalOpen(true)}
-            />
-          </Info>
+
           <Info description="DATA">
             <Box
               sx={{
@@ -199,7 +261,12 @@ const BenchmarkListElement = ({
                 }}
               >
                 <Link href={`/benchmarks/${benchmark.benchmark_id}`}>
-                  <Button variant="tertiary">Collect Data</Button>
+                  <Button
+                    variant="tertiary"
+                    startIcon={<ContentPasteOutlinedIcon fontSize="medium" />}
+                  >
+                    Collect Data
+                  </Button>
                 </Link>
               </Box>
               <Box
@@ -216,11 +283,18 @@ const BenchmarkListElement = ({
                     alert("To be implemented");
                   }}
                   variant="tertiary"
+                  startIcon={<VisibilityOutlinedIcon />}
                 >
                   View Data
                 </Button>
               </Box>
             </Box>
+          </Info>
+          <Info description={"Assigned STAFF"}>
+            <BenchmarkAssignees
+              benchmark={benchmark}
+              onAssign={() => setIsAssignmentModalOpen(true)}
+            />
           </Info>
         </Box>
       </Box>
