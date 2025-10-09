@@ -1,5 +1,4 @@
 import { ProcessedTrialData, TrialData } from "@/types/global";
-import { ScatterValueType } from "@mui/x-charts";
 
 export const calculateSuccessRate = ({
   success,
@@ -29,30 +28,6 @@ export const calcAverage = (trialData: TrialData[]) => {
   }
 
   return nonZeros > 0 ? sum / nonZeros : null;
-};
-
-export const findMinDatePoint = (datePoints: ScatterValueType[]) => {
-  let minDatePoint = { ...datePoints[0] };
-
-  datePoints.forEach((datePoint) => {
-    if (datePoint.y < minDatePoint.y) {
-      minDatePoint = { ...datePoint };
-    }
-  });
-
-  return minDatePoint;
-};
-
-export const findMaxDatePoint = (datePoints: ScatterValueType[]) => {
-  let maxDatePoint = { ...datePoints[0] };
-
-  datePoints.forEach((datePoint) => {
-    if (datePoint.y < maxDatePoint.y) {
-      maxDatePoint = { ...datePoint };
-    }
-  });
-
-  return maxDatePoint;
 };
 
 export const groupTrialsByDate = (
