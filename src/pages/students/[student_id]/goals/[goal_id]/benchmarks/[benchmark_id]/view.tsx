@@ -10,12 +10,13 @@ import {
   LinePlot,
   ScatterPlot,
   ScatterValueType,
+  ChartsLegend,
+  ChartsGrid,
 } from "@mui/x-charts";
 
 import {
   Benchmark,
   BulkPoint,
-  DatePoint,
   Goal,
   ProcessedTrialData,
   SoloPoint,
@@ -27,8 +28,21 @@ import { CustomItemTooltip } from "@/components/benchmarks/CustomItemTooltip";
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import GoalPage from "../../../[goal_id]";
-import { Typography, Card, CardContent, Stack } from "@mui/material";
-import { Download } from "@mui/icons-material";
+import {
+  Typography,
+  Card,
+  CardContent,
+  Stack,
+  ToggleButton,
+  ToggleButtonGroup,
+  Chip,
+  Box,
+} from "@mui/material";
+import {
+  Download,
+  TrendingUp,
+  ScatterPlot as ScatterPlotIcon,
+} from "@mui/icons-material";
 import Button from "@/components/design_system/button/Button";
 
 const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
@@ -36,6 +50,10 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const router = useRouter();
   const ref = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(0);
+  const [chartView, setChartView] = useState<"combined" | "line" | "scatter">(
+    "combined"
+  );
+  const [explodedPoints, setExplodedPoints] = useState<ScatterValueType[]>([]);
 
   function handleResize() {
     if (ref.current) {
@@ -61,20 +79,9 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
     { enabled: Boolean(goal_id) }
   );
 
-  const [explodedPoints, setExplodedPoints] = useState<ScatterValueType[]>([]);
-
-  const {
-    data: benchmark,
-    // id,
-    // isLoading: benchmarkIsLoading,
-    // isError,
-  } = trpc.iep.getBenchmarkAndTrialData.useQuery(
-    {
-      benchmark_id: benchmark_id, // how does this line make sense?
-    },
-    {
-      enabled: Boolean(benchmark_id),
-    }
+  const { data: benchmark } = trpc.iep.getBenchmarkAndTrialData.useQuery(
+    { benchmark_id },
+    { enabled: Boolean(benchmark_id) }
   );
 
   const { data: student } = trpc.student.getStudentById.useQuery(
@@ -92,9 +99,6 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
 
   const targetLevel = benchmark?.target_level ? benchmark.target_level : null;
 
-  // const createdAt: Date[] = [];
-  // const successRate: (number | null)[] = [];
-
   const datePoints: Record<string, ProcessedTrialData[]> = groupTrialsByDate(
     benchmark?.trials || []
   );
@@ -102,13 +106,6 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   const avgRate: number[] = [];
   const soloPoints: SoloPoint[] = [];
   const bulkPoints: BulkPoint[] = [];
-
-  const getDateFromPtNumber = (
-    pointNumber: number,
-    pointArray: DatePoint[]
-  ) => {
-    return new Date(pointArray[pointNumber].x).toDateString();
-  };
 
   for (const createdAtDate in datePoints) {
     const successRate = calcAverage(datePoints[createdAtDate]);
@@ -142,14 +139,6 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
   }
 
   const createdAtDates = Object.keys(datePoints).map((d) => new Date(d));
-
-  console.log("soloPoints: ", soloPoints);
-
-  console.log("bulkPoints: ", bulkPoints);
-
-  console.log("avgRate", avgRate);
-
-  console.log("createdAtDates", createdAtDates);
 
   const exportReportMutation = trpc.iep.exportReport.useMutation();
 
@@ -185,6 +174,77 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
     }
   };
 
+  // Build series based on selected view
+  const series = [];
+
+  if (
+    chartView === "combined" ||
+    chartView === "line" ||
+    chartView === "scatter"
+  ) {
+    if (chartView !== "scatter") {
+      series.push({
+        label: "Trend line",
+        data: avgRate,
+        type: "line" as const,
+        color: "#5347D7",
+        id: "average-line",
+      });
+    }
+
+    if (chartView !== "line") {
+      series.push(
+        {
+          label: "Single Trial",
+          data: soloPoints as ScatterValueType[],
+          type: "scatter" as const,
+          id: "solo-points",
+          color: "#9B93F1",
+          valueFormatter: (v: ScatterValueType) =>
+            valueFormatter(v as SoloPoint),
+        },
+        {
+          label: "Multiple Trials",
+          data: bulkPoints as ScatterValueType[],
+          type: "scatter" as const,
+          id: "multi-points",
+          color: "#20159E",
+          valueFormatter: (v: ScatterValueType) =>
+            valueFormatter(v as BulkPoint),
+        }
+      );
+
+      const rangeMarkers: { x: number; y: number; id: string }[] = [];
+      for (let i = 0; i < createdAtDates.length; i++) {
+        const dateKey = Object.keys(datePoints)[i];
+        const trialsForDate = datePoints[dateKey];
+
+        if (trialsForDate.length > 1) {
+          const rates = trialsForDate.map((trial) => trial.successRate);
+          const minRate = Math.min(...rates);
+          const maxRate = Math.max(...rates);
+          const dateTime = createdAtDates[i].getTime();
+
+          rangeMarkers.push(
+            { x: dateTime, y: minRate, id: `min-${dateKey}` },
+            { x: dateTime, y: maxRate, id: `max-${dateKey}` }
+          );
+        }
+      }
+
+      if (rangeMarkers.length > 0) {
+        series.push({
+          data: rangeMarkers,
+          type: "scatter" as const,
+          color: "#78909C",
+          id: "range-markers",
+          markerSize: 4,
+          valueFormatter: (v: ScatterValueType) => `${v.y?.toFixed(1)}%`,
+        });
+      }
+    }
+  }
+
   return (
     <Stack spacing={4}>
       <Typography variant="h1">
@@ -192,129 +252,167 @@ const ViewBenchmarkPage: NextPageWithBreadcrumbs = () => {
       </Typography>
       <Card>
         <CardContent ref={ref}>
-          <Stack
-            direction="row"
-            justifyContent="space-between"
-            alignItems="center"
-            sx={{ mb: 2 }}
-          >
-            <Typography variant="h6" color="text.secondary">
-              [Legend Labels]
-              {/* TODO: Change to include legend labels. */}
-            </Typography>
-            <Button
-              onClick={handleExportReport}
-              disabled={
-                exportReportMutation.isLoading ||
-                !student ||
-                !goal ||
-                !benchmark
-              }
+          <Stack spacing={2}>
+            <Stack
+              direction={{ xs: "column", sm: "row" }}
+              spacing={2}
+              justifyContent="space-between"
+              alignItems={{ xs: "stretch", sm: "center" }}
+              sx={{ pt: 2 }}
             >
-              {exportReportMutation.isLoading ? "Generating..." : "Data Report"}
-              <Download
-                style={{
-                  display: "inline-flex",
-                  verticalAlign: "middle",
-                  marginLeft: "8px",
+              <Stack direction="row" spacing={2} alignItems="center">
+                <ToggleButtonGroup
+                  value={chartView}
+                  exclusive
+                  onChange={(
+                    _: React.MouseEvent<HTMLElement>,
+                    newView: "combined" | "line" | "scatter" | null
+                  ) => {
+                    if (
+                      newView === "combined" ||
+                      newView === "line" ||
+                      newView === "scatter"
+                    ) {
+                      setChartView(newView);
+                    }
+                  }}
+                  size="small"
+                >
+                  <ToggleButton value="combined">Combined</ToggleButton>
+                  <ToggleButton value="line">
+                    <TrendingUp sx={{ mr: 1 }} />
+                    Trend
+                  </ToggleButton>
+                  <ToggleButton value="scatter">
+                    <ScatterPlotIcon sx={{ mr: 1 }} />
+                    Points
+                  </ToggleButton>
+                </ToggleButtonGroup>
+
+                {explodedPoints.length > 0 && (
+                  <Chip
+                    label="Individual trials visible"
+                    color="secondary"
+                    size="small"
+                    onDelete={() => setExplodedPoints([])}
+                  />
+                )}
+              </Stack>
+
+              <Button
+                onClick={handleExportReport}
+                disabled={
+                  exportReportMutation.isLoading ||
+                  !student ||
+                  !goal ||
+                  !benchmark
+                }
+              >
+                {exportReportMutation.isLoading
+                  ? "Generating..."
+                  : "Data Report"}
+                {!exportReportMutation.isLoading && (
+                  <Download sx={{ ml: 1, verticalAlign: "middle" }} />
+                )}
+              </Button>
+            </Stack>
+            <ChartContainer
+              className="benchmark-chart"
+              sx={{ margin: "auto", display: "block", maxWidth: "100%" }}
+              xAxis={[
+                {
+                  data: createdAtDates,
+                  scaleType: "point",
+                  id: "x-axis-id",
+                  valueFormatter: (value: string | number | Date) => {
+                    if (!value) return "";
+                    return new Date(value).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    });
+                  },
+                },
+              ]}
+              yAxis={[
+                {
+                  min: 0,
+                  max: 100,
+                  valueFormatter: (value: number) => `${value}%`,
+                },
+              ]}
+              series={series}
+              width={width || 300}
+              height={400}
+            >
+              <ChartsGrid horizontal />
+
+              {chartView !== "scatter" && <LinePlot />}
+              <ScatterPlot />
+
+              <ChartsXAxis
+                label={`Trial Date (${new Date(createdAtDates[0]).getFullYear()})`}
+                axisId="x-axis-id"
+              />
+              <ChartsYAxis label="Success rate" />
+
+              {targetLevel && (
+                <ChartsReferenceLine
+                  y={targetLevel}
+                  label={`Target Level: ${targetLevel}%`}
+                  lineStyle={{ strokeDasharray: "10 5", stroke: "#568200B2" }}
+                  labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
+                  labelAlign="end"
+                />
+              )}
+
+              <CustomItemTooltip datePoints={datePoints} />
+              <ChartsLegend
+                direction="row"
+                position={{ vertical: "top", horizontal: "left" }}
+                slotProps={{
+                  legend: {
+                    labelStyle: { fontSize: 14 },
+                  },
                 }}
               />
-            </Button>
-          </Stack>
-          {benchmark?.trials.map((trial) => (
-            <div key={trial.trial_data_id}>{trial.notes}</div>
-          ))}
-          <ChartContainer
-            className="benchmark-chart"
-            sx={{ margin: "auto", display: "block" }}
-            xAxis={[
-              { data: createdAtDates, scaleType: "time", id: "x-axis-id" },
-              {
-                data: [createdAtDates[2], createdAtDates[3]],
-                scaleType: "time",
-                id: "2nd-x-axis",
-              },
-            ]}
-            yAxis={[
-              {
-                min: 0,
-                max: 100,
-                valueFormatter: (value: number) => `${value}%`,
-              },
-            ]}
-            series={[
-              {
-                label: "Trend line",
-                data: avgRate,
-                type: "line",
-              },
-              {
-                label: "Solo points",
-                data: soloPoints as ScatterValueType[],
-                type: "scatter",
-                id: "solo-points",
-                valueFormatter: (v) =>
-                  valueFormatter(v as BulkPoint | SoloPoint),
-              },
-              {
-                label: "Multi points",
-                data: bulkPoints as ScatterValueType[],
-                type: "scatter",
-                id: "multi-points",
-                valueFormatter: (v) =>
-                  valueFormatter(v as BulkPoint | SoloPoint),
-              },
-              {
-                label: "Single Date points",
-                data: explodedPoints,
-                type: "scatter",
-                id: "exploded-points",
-                valueFormatter: (v) =>
-                  valueFormatter(v as BulkPoint | SoloPoint),
-              },
-            ]}
-            width={Math.min(720, width)}
-            height={300}
-          >
-            <LinePlot />
-            <ChartsXAxis label="Trial date" axisId="x-axis-id" />
-            <ChartsYAxis label="Success rate" />
-            <ScatterPlot
-              onItemClick={(_, d) => {
-                if (d.seriesId === "multi-points") {
-                  if (explodedPoints.length === 0) {
-                    const dateKey = getDateFromPtNumber(
-                      d.dataIndex,
-                      bulkPoints
-                    );
-                    const explodedDatePoints = datePoints[dateKey].map(
-                      (trialData, idx) => ({
-                        x: new Date(dateKey).getTime(),
-                        y: trialData.successRate,
-                        id: `${dateKey} ${idx}`,
-                        staffName: trialData.staffName,
-                        success: trialData.success,
-                        numberOfAttempts: trialData.numberOfAttempts,
-                      })
-                    );
-                    setExplodedPoints([...explodedDatePoints]);
-                  } else {
-                    setExplodedPoints([]);
-                  }
-                }
-              }}
-            />
-            {targetLevel && (
-              <ChartsReferenceLine
-                y={targetLevel}
-                label={`Target Level: ${targetLevel}%`}
-                lineStyle={{ strokeDasharray: "10 5" }}
-                labelStyle={{ fontSize: "12", lineHeight: 1.2 }}
-                labelAlign="end"
-              />
+            </ChartContainer>
+
+            {avgRate.length > 0 && (
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={3}
+                sx={{ pt: 2 }}
+              >
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Average Success Rate
+                  </Typography>
+                  <Typography variant="h6" color="primary">
+                    {(
+                      avgRate.reduce((a, b) => a + b, 0) / avgRate.length
+                    ).toFixed(1)}
+                    %
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Latest Average Success Rate
+                  </Typography>
+                  <Typography variant="h6" color="primary">
+                    {avgRate[avgRate.length - 1]?.toFixed(1)}%
+                  </Typography>
+                </Box>
+                <Box>
+                  <Typography variant="body2" color="text.secondary">
+                    Total Trials
+                  </Typography>
+                  <Typography variant="h6" color="primary">
+                    {benchmark?.trials?.length || 0}
+                  </Typography>
+                </Box>
+              </Stack>
             )}
-            <CustomItemTooltip />
-          </ChartContainer>
+          </Stack>
         </CardContent>
       </Card>
 

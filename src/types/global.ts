@@ -53,6 +53,7 @@ export type TrialData = {
   unsuccess: number;
   first_name: string;
   last_name: string;
+  trial_data_id: string;
 };
 
 export interface ProcessedTrialData extends TrialData {
@@ -63,8 +64,10 @@ export interface ProcessedTrialData extends TrialData {
 
 export const valueFormatter = (point: SoloPoint | BulkPoint): string => {
   if ("numberOfTrials" in point) {
-    return `${point.y.toFixed(1)}% (${point.numberOfTrials} trials) [${point.staffNames.join(" ")}]`;
+    return `${point.y.toFixed(1)}% avg (${point.numberOfTrials} trials)`;
   } else {
-    return `${point.y.toFixed(1)}% (${point.success} / ${point.numberOfAttempts}) [${point.staffName}]`;
+    return `${point.y.toFixed(1)}% avg over ${point.numberOfAttempts} attempt${
+      point.numberOfAttempts !== 1 ? "s" : ""
+    }`;
   }
 };
