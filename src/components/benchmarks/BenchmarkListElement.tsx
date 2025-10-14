@@ -4,6 +4,7 @@ import { useState, type ReactNode } from "react";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
 import Chip from "../design_system/chip/Chip";
+import LogicChip from "./BenchmarkChipController";
 import Button from "@/components/design_system/button/Button";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
@@ -41,7 +42,15 @@ const Info = ({ description, children }: InfoProps) => {
       {description.includes("Assigned STAFF") ||
       description.includes("DATA") ? (
         <Typography
-          sx={{ marginTop: "1em", color: "gray" }}
+          sx={{
+            marginTop: "1em",
+            color: "gray",
+            fontWeight: "600",
+            fontStyle: "semi bold",
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+          }}
           variant="overline"
           display="block"
           gutterBottom
@@ -57,7 +66,15 @@ const Info = ({ description, children }: InfoProps) => {
         ""
       ) : (
         <Typography
-          sx={{ marginTop: "1em", color: "gray" }}
+          sx={{
+            marginTop: "1em",
+            color: "gray",
+            fontWeight: "600",
+            fontStyle: "semi bold",
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+          }}
           variant="overline"
           display="block"
           gutterBottom
@@ -100,11 +117,8 @@ const BenchmarkListElement = ({
         }}
       >
         <Chip
-          color="default"
-          size="medium"
-          variant="outlined"
-          icon={<CalendarMonthOutlinedIcon />}
-          sx={{ fontWeight: "medium" }}
+          icon={<CalendarMonthOutlinedIcon style={{ color: "black" }} />}
+          className="calendar-chip"
           label={`Created on: ${format(benchmark?.created_at, "PPP")}`}
         />
 
@@ -113,17 +127,14 @@ const BenchmarkListElement = ({
             <Box sx={{ marginTop: "1.5rem" }}>
               <Chip
                 label={(index ?? 0) + 1}
-                color="default"
-                size="medium"
-                sx={{
-                  marginRight: "0.5rem",
-                  padding: "0.5rem",
-                }}
+                className="task-chip"
                 icon={
                   <ContentPasteIcon
-                    sx={{
-                      color: "var(--grey-10)",
-                      fontSize: 15,
+                    style={{
+                      color: "black",
+                      width: "24",
+                      height: "16",
+                      gap: "8px",
                     }}
                   />
                 }
@@ -148,101 +159,19 @@ const BenchmarkListElement = ({
         >
           <Info description={"BASELINE LEVEL"}>
             {" "}
-            {benchmark?.baseline_level ? (
-              <Chip
-                label={benchmark?.baseline_level + "%"}
-                sx={{ width: "4rem", height: "1.8rem" }}
-                size="medium"
-                color="primary"
-              />
-            ) : (
-              <Chip
-                label={"0%"}
-                color="primary"
-                variant="outlined"
-                size="medium"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "default",
-                  width: "3rem",
-                  height: "1.8rem",
-                  fontWeight: "bold",
-                }}
-              />
-            )}
+            <LogicChip data={benchmark?.baseline_level} />
           </Info>
           <Info description={"TARGET LEVEL"}>
             {" "}
-            {benchmark?.target_level ? (
-              <Chip
-                label={benchmark?.target_level + "%"}
-                sx={{ width: "4rem", height: "1.8rem" }}
-                size="medium"
-                color="primary"
-              />
-            ) : (
-              <Chip
-                label={"0%"}
-                color="primary"
-                variant="outlined"
-                size="medium"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "default",
-                  width: "3rem",
-                  height: "1.8rem",
-                  fontWeight: "bold",
-                }}
-              />
-            )}
+            <LogicChip data={benchmark?.target_level} />
           </Info>
           <Info description={"CURRENT LEVEL"}>
             {" "}
-            {benchmark?.current_level ? (
-              <Chip
-                label={benchmark?.current_level + "%"}
-                sx={{ width: "4rem", height: "1.8rem" }}
-                color="primary"
-                size="medium"
-              />
-            ) : (
-              <Chip
-                label={"0%"}
-                color="primary"
-                variant="outlined"
-                size="medium"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "default",
-                  width: "3rem",
-                  height: "1.8rem",
-                  fontWeight: "bold",
-                }}
-              />
-            )}
+            <LogicChip data={benchmark?.current_level} />
           </Info>
           <Info description={"# OF TRIALS"}>
             {" "}
-            {benchmark?.number_of_trials ? (
-              <Chip
-                label={benchmark?.number_of_trials}
-                color="primary"
-                size="medium"
-                sx={{ width: "3rem", height: "1.8rem" }}
-              />
-            ) : (
-              <Chip
-                label={"0"}
-                color="default"
-                size="medium"
-                sx={{
-                  border: "1px solid",
-                  borderColor: "primary",
-                  width: "3rem",
-                  height: "1.8rem",
-                }}
-              />
-            )}
+            <LogicChip data={benchmark?.number_of_trials} notifier={true} />
           </Info>
 
           <Info description="DATA">
