@@ -119,7 +119,7 @@ const BenchmarkListElement = ({
         <Chip
           icon={<CalendarMonthOutlinedIcon style={{ color: "black" }} />}
           className="calendar-chip"
-          label={`Created on: ${format(benchmark?.created_at, "PPP")}`}
+          label={`Created on: ${format(benchmark?.created_at, "MMM, d, yyyy")}`}
         />
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
