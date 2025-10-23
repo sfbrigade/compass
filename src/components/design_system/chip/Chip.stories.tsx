@@ -6,18 +6,13 @@ import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined
 import Chip from "./Chip";
 
 const meta = {
-  title: "Components/Design System/Chips",
+  title: "Components/Design System/Chip",
   component: Chip,
 } satisfies Meta<typeof Chip>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// export const calendarChip:Story = {
-//   args:{
-//     className:"calandar-chip"
-//   }
-// }
 export const Primary: Story = {
   args: {
     label: "Primary Chip",
@@ -47,10 +42,3 @@ export const Task_Chip: Story = {
     className: "task-chip",
   },
 };
-
-// export const DateChip:Story = {
-//   args:{
-//     color:"#FFFFFF",
-
-//   }
-// }
