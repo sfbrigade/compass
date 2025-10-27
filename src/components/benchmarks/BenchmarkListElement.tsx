@@ -12,8 +12,6 @@ import { Benchmark } from "@/types/global";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
-import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 
@@ -117,28 +115,14 @@ const BenchmarkListElement = ({
         }}
       >
         <Chip
-          icon={<CalendarMonthOutlinedIcon style={{ color: "black" }} />}
-          className="calendar-chip"
+          variant="calendar"
           label={`Created on: ${format(benchmark?.created_at, "MMM, d, yyyy")}`}
         />
 
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
             <Box sx={{ marginTop: "1.5rem" }}>
-              <Chip
-                label={(index ?? 0) + 1}
-                className="task-chip"
-                icon={
-                  <ContentPasteIcon
-                    style={{
-                      color: "black",
-                      width: "24",
-                      height: "16",
-                      gap: "8px",
-                    }}
-                  />
-                }
-              />
+              <Chip label={(index ?? 0) + 1} variant="task" />
               {benchmark.description}
             </Box>
           </Box>

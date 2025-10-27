@@ -1,7 +1,9 @@
 import { Chip as MuiChip } from "@mui/material";
 import { SxProps, Theme } from "@mui/material";
-import classes from "./Chip.module.css";
 import { ReactElement } from "react";
+
+import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 
 interface ChipProps {
   clickable?: boolean;
@@ -17,7 +19,13 @@ interface ChipProps {
   size?: "small" | "medium";
   sx?: SxProps<Theme>;
   label?: string | number;
-  variant?: "filled" | "outlined";
+  variant?:
+    | "filled"
+    | "outlined"
+    | "primary"
+    | "secondary"
+    | "calendar"
+    | "task";
   icon?: ReactElement;
   className?: string;
 }
@@ -41,8 +49,22 @@ function Chip({
       disabled={disabled}
       size={size}
       variant={variant}
-      icon={icon}
-      className={classes[className as keyof typeof classes]}
+      icon={
+        variant === "calendar" ? (
+          <CalendarMonthOutlinedIcon style={{ color: "black" }} />
+        ) : variant === "task" ? (
+          <ContentPasteIcon
+            style={{
+              color: "black",
+              width: "16px",
+              gap: "8px",
+            }}
+          />
+        ) : (
+          icon
+        )
+      }
+      className={className}
       sx={sx}
     />
   );

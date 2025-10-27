@@ -8,14 +8,13 @@ export default function BenchmarkChipController({
   data,
   notifier,
 }: BenchmarkChipControllerProps) {
-  console.log(notifier);
   if (data && !notifier) {
-    return <Chip label={data + "%"} className="data-chip" />;
+    return <Chip label={data + "%"} variant="primary" />;
   } else if (data && notifier) {
-    return <Chip label={data} className="data-chip" />;
+    return <Chip label={data} variant="primary" />;
   } else if (notifier) {
-    return <Chip label={0} className="empty-chip" />;
+    return <Chip label={0} variant="secondary" />;
   } else {
-    return <Chip label={0 + "%"} className="empty-chip" />;
+    return <Chip label={0 + "%"} variant="secondary" />;
   }
 }
