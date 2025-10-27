@@ -12,7 +12,6 @@ import { Benchmark } from "@/types/global";
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 
 interface BenchmarkProps {
@@ -190,16 +189,11 @@ const BenchmarkListElement = ({
                   textAlign: "center",
                 }}
               >
-                {/* Placeholder href to replace with actual path */}
-                <Button
-                  onClick={() => {
-                    alert("To be implemented");
-                  }}
-                  variant="tertiary"
-                  startIcon={<VisibilityOutlinedIcon />}
+                <Link
+                  href={`${router.asPath}/benchmarks/${benchmark.benchmark_id}/view`}
                 >
-                  View Data
-                </Button>
+                  <Button variant="tertiary">View Data</Button>
+                </Link>
               </Box>
             </Box>
           </Info>

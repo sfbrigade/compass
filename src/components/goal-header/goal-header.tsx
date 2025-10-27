@@ -16,15 +16,22 @@ type GoalHeaderProps = {
   name: string;
   description: string;
   createdAt: string | Date;
+  editable?: boolean;
 };
 
-export const GoalHeader = (props: GoalHeaderProps) => {
+export const GoalHeader = ({
+  goalId,
+  name,
+  description,
+  createdAt,
+  editable = true,
+}: GoalHeaderProps) => {
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
   const utils = trpc.useContext();
   const showEditGoal = () => {
     setEditGoal(true);
-    setEditGoalInput(props.description || "");
+    setEditGoalInput(description || "");
   };
 
   // TODO: modify callbacks for toast notification
@@ -35,7 +42,7 @@ export const GoalHeader = (props: GoalHeaderProps) => {
 
   const submitEditGoal = () => {
     editMutation.mutate({
-      goal_id: props.goalId,
+      goal_id: goalId,
       description: editGoalInput,
     });
     setEditGoal(false);
@@ -49,64 +56,66 @@ export const GoalHeader = (props: GoalHeaderProps) => {
   return (
     <Container className={$GoalPage.goalDescriptionContainer}>
       <Grid container justifyContent="space-between">
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={{ marginBottom: "28px" }}>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Typography variant="h3" color="var(--primary-40)">
-              {props.name}
+              {name}
             </Typography>
             <Typography variant="h3">|</Typography>
             <Typography variant="h3" color="#788591">
-              Added: {format(new Date(props.createdAt), "MM/dd/yyyy")}
+              Added: {format(new Date(createdAt), "MM/dd/yyyy")}
             </Typography>
           </Stack>
         </Stack>
-        <Grid
-          sx={{
-            display: "flex",
-            flexDirection: "start",
-            justifyContent: "start",
-            justifyItems: "start",
-            height: "100%",
-            pb: 1,
-          }}
-          item
-        >
-          {!editGoal && (
-            <>
-              <Button
-                variant="tertiary"
-                onClick={showEditGoal}
-                sx={{
-                  margin: "auto",
-                }}
-              >
-                Edit Goal
-              </Button>
-              <Button
-                variant="secondary"
-                onClick={() => alert("to be implemented")}
-              >
-                View all goals
-              </Button>
-            </>
-          )}
-          {editGoal && (
-            <>
-              <Button
-                variant="tertiary"
-                form="editGoalForm"
-                onClick={cancelEditGoal}
-              >
-                Cancel
-              </Button>
-              <Button form="editGoalForm" onClick={submitEditGoal}>
-                Save
-              </Button>
-            </>
-          )}
-        </Grid>
+        {editable && (
+          <Grid
+            sx={{
+              display: "flex",
+              flexDirection: "start",
+              justifyContent: "start",
+              justifyItems: "start",
+              height: "100%",
+              pb: 1,
+            }}
+            item
+          >
+            {!editGoal && (
+              <>
+                <Button
+                  variant="tertiary"
+                  onClick={showEditGoal}
+                  sx={{
+                    margin: "auto",
+                  }}
+                >
+                  Edit Goal
+                </Button>
+                <Button
+                  variant="secondary"
+                  onClick={() => alert("to be implemented")}
+                >
+                  View all goals
+                </Button>
+              </>
+            )}
+            {editGoal && (
+              <>
+                <Button
+                  variant="tertiary"
+                  form="editGoalForm"
+                  onClick={cancelEditGoal}
+                >
+                  Cancel
+                </Button>
+                <Button form="editGoalForm" onClick={submitEditGoal}>
+                  Save
+                </Button>
+              </>
+            )}
+          </Grid>
+        )}
       </Grid>
-      {editGoal && (
+      {editGoal && editable && (
         <TextareaAutosize
           className={$GoalPage.editGoalFormTextArea}
           value={editGoalInput}
@@ -117,9 +126,7 @@ export const GoalHeader = (props: GoalHeaderProps) => {
         />
       )}
 
-      {!editGoal && (
-        <Typography variant="body1">{props.description}</Typography>
-      )}
+      {!editGoal && <Typography variant="body1">{description}</Typography>}
     </Container>
   );
 };

@@ -3,7 +3,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import Chip from "./Chip";
 
 const meta = {
-  title: "Components/Design System/Chips",
+  title: "Components/Design System/Chip",
   component: Chip,
 } satisfies Meta<typeof Chip>;
 
