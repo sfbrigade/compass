@@ -38,10 +38,38 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const [formError, setFormError] = useState(false);
-  const [helperText, setHelperText] = useState("");
+  interface errorMessage {
+    message: string;
+    field: string | null;
+  }
+  interface FormError {
+    error: boolean;
+    errorMessage: errorMessage;
+  }
 
+  const [formError, setFormError] = useState<FormError>({
+    error: false,
+    errorMessage: { message: "", field: null },
+  });
   const utils = trpc.useContext();
+
+  // Handle error timeout
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (formError.error) {
+      timeoutId = setTimeout(() => {
+        setFormError({
+          error: false,
+          errorMessage: { message: "", field: null },
+        });
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [formError]);
   const router = useRouter();
   const { student_id } = router.query;
 
@@ -106,21 +134,22 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       !alphabeticalRegex.test(data.get("firstName") as string) ||
       !alphabeticalRegex.test(data.get("lastName") as string)
     ) {
-      setFormError(true);
-      setHelperText("Only letters, spaces, and hyphens allowed");
-      setTimeout(() => {
-        setFormError(false);
-        setHelperText("");
-      }, 3000);
-
+      setFormError({
+        error: true,
+        errorMessage: {
+          message: "Only letters, spaces, and hyphens allowed",
+          field: "name",
+        },
+      });
       return;
     } else if (Number(data.get("grade")) === 0) {
-      setFormError(true);
-      setHelperText("Grade must be between 1 and 12");
-      setTimeout(() => {
-        setHelperText("");
-        setFormError(false);
-      }, 3000);
+      setFormError({
+        error: true,
+        errorMessage: {
+          message: "Grade must be between 1 and 12",
+          field: "grade",
+        },
+      });
       return;
     } else {
       editMutation.mutate({
@@ -284,8 +313,8 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
         endDate={endDate}
         setStartDate={setStartDate}
         onSubmit={handleEditStudent}
-        error={formError}
-        helperText={helperText}
+        error={formError.error}
+        helperText={formError.errorMessage}
       />
 
       {/* Archiving Student Modal appears when "Archive" button is pressed*/}

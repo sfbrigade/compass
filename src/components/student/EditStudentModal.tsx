@@ -37,7 +37,10 @@ interface EditStudentModalProps {
   error?: boolean;
 
   //helperText
-  helperText?: string;
+  helperText?: {
+    message: string;
+    field?: string | null;
+  };
 }
 
 export const EditStudentModal = ({
@@ -80,7 +83,9 @@ export const EditStudentModal = ({
                     defaultValue={student?.first_name || ""}
                     required
                     error={error}
-                    helperText={helperText}
+                    helperText={
+                      helperText?.field === "name" ? helperText.message : ""
+                    }
                   />
                 </Container>
                 <Container className={$CompassModal.editModalContainer}>
@@ -92,7 +97,9 @@ export const EditStudentModal = ({
                     defaultValue={student?.last_name || ""}
                     required
                     error={error}
-                    helperText={helperText}
+                    helperText={
+                      helperText?.field === "name" ? helperText.message : ""
+                    }
                   />
                 </Container>
                 <Container className={$CompassModal.editModalContainer}>
@@ -111,8 +118,10 @@ export const EditStudentModal = ({
                     type="number"
                     name="grade"
                     defaultValue={(student?.grade || 0).toString()}
-                    error={error}
-                    helperText={helperText}
+                    error={helperText?.field === "grade" ? true : false}
+                    helperText={
+                      helperText?.field === "grade" ? helperText.message : ""
+                    }
                     required
                   />
                 </Container>
