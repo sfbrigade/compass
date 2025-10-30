@@ -18,6 +18,7 @@ import $Image from "../../styles/Image.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
 import { EditStudentModal } from "@/components/student/EditStudentModal";
+import Chip from "@/components/design_system/chip/Chip";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
@@ -172,11 +173,20 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
             direction="row"
             alignItems="center"
             justifyContent="space-between"
+            flexWrap="wrap"
           >
-            <Typography variant="h3">
+            <Typography
+              variant="h3"
+              sx={{ width: { xs: "100%", sm: "auto" }, mb: { xs: 2, sm: 0 } }}
+            >
               {student?.first_name} {student?.last_name}
             </Typography>
-            <Stack direction="row" spacing={2}>
+            <Stack
+              direction="row"
+              spacing={2}
+              justifyContent="flex-end"
+              width={{ xs: "100%", sm: "auto" }}
+            >
               <Button
                 variant="tertiary"
                 size="small"
@@ -193,12 +203,21 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
               </Button>
             </Stack>
           </Stack>
-          <Stack direction="row" spacing={5}>
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            spacing={{ xs: 2, sm: 5 }}
+          >
             <Stack spacing={0.25}>
               <Typography variant="body1Bold" color="var(--grey-40)">
                 Grade
               </Typography>
-              <Typography variant="body1" sx={{ textAlign: "center" }}>
+              <Typography
+                variant="body1"
+                sx={{
+                  textAlign: { xs: "left", sm: "center" },
+                  lineHeight: "2rem",
+                }}
+              >
                 {student?.grade}
               </Typography>
             </Stack>
@@ -207,7 +226,10 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
                 IEP Start Date
               </Typography>
               <Typography variant="body1">
-                {activeIep?.start_date.toLocaleDateString() ?? "None"}
+                <Chip
+                  variant="calendar"
+                  label={activeIep?.start_date.toLocaleDateString() ?? "None"}
+                />
               </Typography>
             </Stack>
             <Stack spacing={0.25}>
@@ -215,14 +237,19 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
                 IEP End Date
               </Typography>
               <Typography variant="body1">
-                {activeIep?.end_date.toLocaleDateString() ?? "None"}
+                <Chip
+                  variant="calendar"
+                  label={activeIep?.end_date.toLocaleDateString() ?? "None"}
+                />
               </Typography>
             </Stack>
             <Stack spacing={0.25}>
               <Typography variant="body1Bold" color="var(--grey-40)">
                 Email
               </Typography>
-              <Typography variant="body1">{student?.email ?? ""}</Typography>
+              <Typography variant="body1" sx={{ lineHeight: "2rem" }}>
+                {student?.email ?? ""}
+              </Typography>
             </Stack>
           </Stack>
         </CardContent>
