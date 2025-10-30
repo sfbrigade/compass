@@ -19,7 +19,7 @@ interface DialogProps {
   confirmLabel?: string;
   fullScreenOnMobile: boolean;
   onCancel?: () => void;
-  onConfirm?: () => void;
+  onConfirm?: (e: React.FormEvent<HTMLFormElement>) => void;
   open: boolean;
   size: "xs" | "sm" | "md" | "lg" | "xl";
   title: ReactNode;
@@ -41,7 +41,7 @@ function Dialog({
 
   function onFormSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    onConfirm?.();
+    onConfirm?.(event);
   }
 
   return (

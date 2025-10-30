@@ -17,7 +17,7 @@ import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
-import { EditStudentModal } from "@/components/student/EditStudentModal";
+import { EditStudentModal } from "./EditStudentModal";
 import Chip from "@/components/design_system/chip/Chip";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
