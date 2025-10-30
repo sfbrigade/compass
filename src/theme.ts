@@ -145,6 +145,16 @@ export const compassTheme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "& .MuiButton-startIcon": {
+            marginRight: "0.25rem",
+            height: "1.25rem",
+          },
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
