@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, ChangeEvent, ReactNode } from "react";
-import { Grid2 as Grid, Stack, Typography } from "@mui/material";
+import { Grid as Grid, Stack, Typography } from "@mui/material";
 
 import Search from "@/components/design_system/search/Search";
 

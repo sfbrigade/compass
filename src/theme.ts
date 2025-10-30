@@ -26,6 +26,15 @@ declare module "@mui/material/Tabs" {
   }
 }
 
+declare module "@mui/material/Chip" {
+  interface ChipPropsVariantOverrides {
+    primary: true;
+    secondary: true;
+    calendar: true;
+    task: true;
+  }
+}
+
 export const compassTheme = createTheme({
   cssVariables: true,
   palette: {
@@ -136,6 +145,16 @@ export const compassTheme = createTheme({
     },
   },
   components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          "& .MuiButton-startIcon": {
+            marginRight: "0.25rem",
+            height: "1.25rem",
+          },
+        },
+      },
+    },
     MuiCard: {
       styleOverrides: {
         root: {
@@ -427,6 +446,67 @@ export const compassTheme = createTheme({
           padding: "0",
         },
       },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          fontFamily: "var(--inter)",
+          fontWeight: "500",
+          fontSize: "14px",
+          lineHeight: "150%",
+          letterSpacing: "0%",
+          width: "fit-content",
+        },
+      },
+      variants: [
+        {
+          props: { variant: "primary" },
+          style: {
+            height: "25px",
+            backgroundColor: "var(--primary)",
+            borderRadius: "20px",
+            padding: "2px 4px",
+            gap: "8px",
+            color: "var(--on-primary)",
+            textAlign: "center",
+            verticalAlign: "middle",
+          },
+        },
+        {
+          props: { variant: "secondary" },
+          style: {
+            height: "25px",
+            backgroundColor: "var(--primary-container)",
+            border: "1px var(--primary) solid",
+            borderRadius: "20px",
+            padding: "2px 4px",
+            gap: "8px",
+            textAlign: "center",
+            verticalAlign: "middle",
+            color: "var(--primary-40)",
+          },
+        },
+        {
+          props: { variant: "calendar" },
+          style: {
+            backgroundColor: "var(--on-primary)",
+            border: "1px #788591 solid",
+            borderRadius: "16px",
+            padding: "2px 2px",
+            color: "var(--on-background)",
+          },
+        },
+        {
+          props: { variant: "task" },
+          style: {
+            height: "26px",
+            backgroundColor: "var(--grey-80)",
+            borderRadius: "16px",
+            marginRight: "8px",
+            padding: "2px 10px",
+          },
+        },
+      ],
     },
   },
 });
