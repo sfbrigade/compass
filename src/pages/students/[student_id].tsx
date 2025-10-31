@@ -1,4 +1,4 @@
-import { trpc } from "@/client/lib/trpc";
+import { FormEvent, useEffect, useState } from "react";
 import {
   Box,
   Card,
@@ -10,23 +10,23 @@ import {
 } from "@mui/material";
 import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import Iep from "../../components/iep/Iep";
-import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
+
+import noGoals from "../../public/img/no-goals-icon.png";
 import $Image from "../../styles/Image.module.css";
 import $CompassModal from "../../components/design_system/modal/CompassModal.module.css";
 import $StudentPage from "../../styles/StudentPage.module.css";
-import { EditStudentModal } from "./EditStudentModal";
-import Chip from "@/components/design_system/chip/Chip";
 
-import type { NextPageWithBreadcrumbs } from "@/pages/_app";
+import { trpc } from "@/client/lib/trpc";
 import type { Breadcrumb } from "@/components/design_system/breadcrumbs/Breadcrumbs";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
 import Button from "@/components/design_system/button/Button";
-
-import * as React from "react";
+import Chip from "@/components/design_system/chip/Chip";
+import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import type { Student } from "@/types/global";
+
+import { EditStudentModal } from "./EditStudentModal";
+import Iep from "./Iep";
 
 const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -90,7 +90,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
     onSuccess: () => utils.student.getActiveStudentIep.invalidate(),
   });
 
-  const handleEditStudent = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditStudent = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const data = new FormData(e.currentTarget as HTMLFormElement);
 
@@ -141,7 +141,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
     setEndDate(formattedEndDate);
   };
 
-  const handleIepSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleIepSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
