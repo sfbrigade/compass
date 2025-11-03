@@ -120,10 +120,10 @@ export const case_manager = router({
   addStudent: hasCaseManager
     .input(
       z.object({
-        first_name: z.string(),
-        last_name: z.string(),
+        first_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+        last_name: z.string().regex(/^[a-zA-Z\s-]+$/),
         email: z.string().email().nullable().optional(),
-        grade: z.number(),
+        grade: z.number().min(1).max(12),
         end_date: z.string().date().optional(),
       })
     )
@@ -163,10 +163,10 @@ export const case_manager = router({
     .input(
       z.object({
         student_id: z.string(),
-        first_name: z.string(),
-        last_name: z.string(),
+        first_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+        last_name: z.string().regex(/^[a-zA-Z\s-]+$/),
         email: z.string().email().nullable().optional(),
-        grade: z.number(),
+        grade: z.number().min(1).max(12),
       })
     )
     .mutation(async (req) => {

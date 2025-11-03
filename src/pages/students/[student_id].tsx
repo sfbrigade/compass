@@ -12,6 +12,7 @@ import { addYears, format, parseISO, subDays } from "date-fns";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Iep from "../../components/iep/Iep";
+import { z } from "zod";
 import noGoals from "../../public/img/no-goals-icon.png";
 import Image from "next/image";
 import $Image from "../../styles/Image.module.css";
@@ -38,38 +39,17 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  interface errorMessage {
-    message: string;
-    field: string | null;
-  }
   interface FormError {
     error: boolean;
-    errorMessage: errorMessage;
+    errorMessage: string;
   }
 
   const [formError, setFormError] = useState<FormError>({
     error: false,
-    errorMessage: { message: "", field: null },
+    errorMessage: "",
   });
   const utils = trpc.useContext();
 
-  // Handle error timeout
-  useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
-    if (formError.error) {
-      timeoutId = setTimeout(() => {
-        setFormError({
-          error: false,
-          errorMessage: { message: "", field: null },
-        });
-      }, 3000);
-    }
-    return () => {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-    };
-  }, [formError]);
   const router = useRouter();
   const { student_id } = router.query;
 
@@ -101,7 +81,22 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       const breadcrumbs = ViewStudentPage.getBreadcrumbs?.({ student });
       setBreadcrumbs(breadcrumbs);
     }
-  }, [student, setBreadcrumbs]);
+
+    let timeoutId: NodeJS.Timeout;
+    if (formError.error) {
+      timeoutId = setTimeout(() => {
+        setFormError({
+          error: false,
+          errorMessage: "",
+        });
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [student, setBreadcrumbs, formError]);
 
   const returnToStudentList = async () => {
     await router.push(`/students`);
@@ -114,6 +109,7 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
 
   const editMutation = trpc.case_manager.editStudent.useMutation({
     onSuccess: () => utils.student.getStudentById.invalidate(),
+    meta: { disableGlobalOnError: true },
   });
 
   const editIepMutation = trpc.student.editIep.useMutation({
@@ -128,30 +124,20 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
       return; // TODO: improve error handling
     }
 
-    const alphabeticalRegex = /^[A-Za-z]+$/;
+    const recordSchema = z.object({
+      first_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+      last_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+      email: z.string().email().nullable().optional(),
+      grade: z.number().min(1).max(12),
+    });
 
-    if (
-      !alphabeticalRegex.test(data.get("firstName") as string) ||
-      !alphabeticalRegex.test(data.get("lastName") as string)
-    ) {
-      setFormError({
-        error: true,
-        errorMessage: {
-          message: "Only letters, spaces, and hyphens allowed",
-          field: "name",
-        },
+    try {
+      recordSchema.parse({
+        first_name: data.get("firstName") as string,
+        last_name: data.get("lastName") as string,
+        email: (data.get("email") as string) || null,
+        grade: Number(data.get("grade")),
       });
-      return;
-    } else if (Number(data.get("grade")) === 0) {
-      setFormError({
-        error: true,
-        errorMessage: {
-          message: "Grade must be between 1 and 12",
-          field: "grade",
-        },
-      });
-      return;
-    } else {
       editMutation.mutate({
         student_id: student.student_id,
         first_name: data.get("firstName") as string,
@@ -167,9 +153,15 @@ const ViewStudentPage: NextPageWithBreadcrumbs = () => {
           end_date: new Date(parseISO(data.get("end_date") as string)),
         });
       }
-    }
 
-    handleMainState();
+      handleMainState();
+    } catch {
+      setFormError({
+        error: true,
+        errorMessage:
+          "Only letters, spaces, and hyphens allowed, left blanked or number is out of range(must be between 1 and 12).",
+      });
+    }
   };
 
   const archiveMutation = trpc.case_manager.removeStudent.useMutation();
