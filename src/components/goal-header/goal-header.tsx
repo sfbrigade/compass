@@ -1,16 +1,19 @@
 import {
   Stack,
   Typography,
-  Grid,
   Container,
   TextareaAutosize,
+  Chip,
+  Box,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useState } from "react";
+import { AdjustOutlined, CalendarMonthOutlined } from "@mui/icons-material";
 
 import Button from "@/components/design_system/button/Button";
 import { trpc } from "@/client/lib/trpc";
 import $GoalPage from "@/styles/GoalPage.module.css";
+
 type GoalHeaderProps = {
   goalId: string;
   name: string;
@@ -29,6 +32,7 @@ export const GoalHeader = ({
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
   const utils = trpc.useContext();
+
   const showEditGoal = () => {
     setEditGoal(true);
     setEditGoalInput(description || "");
@@ -53,80 +57,117 @@ export const GoalHeader = ({
     setEditGoal(false);
     setEditGoalInput("");
   };
+
   return (
     <Container className={$GoalPage.goalDescriptionContainer}>
-      <Grid container justifyContent="space-between">
-        <Stack spacing={2} sx={{ marginBottom: "28px" }}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h3" color="var(--primary-40)">
-              {name}
-            </Typography>
-            <Typography variant="h3">|</Typography>
-            <Typography variant="h3" color="#788591">
-              Added: {format(new Date(createdAt), "MM/dd/yyyy")}
-            </Typography>
-          </Stack>
-        </Stack>
-        {editable && (
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: "start",
-              justifyContent: "start",
-              justifyItems: "start",
-              height: "100%",
-              pb: 1,
-            }}
-            item
-          >
-            {!editGoal && (
-              <>
-                <Button
-                  variant="tertiary"
-                  onClick={showEditGoal}
-                  sx={{
-                    margin: "auto",
-                  }}
-                >
-                  Edit Goal
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => alert("to be implemented")}
-                >
-                  View all goals
-                </Button>
-              </>
-            )}
-            {editGoal && (
-              <>
-                <Button
-                  variant="tertiary"
-                  form="editGoalForm"
-                  onClick={cancelEditGoal}
-                >
-                  Cancel
-                </Button>
-                <Button form="editGoalForm" onClick={submitEditGoal}>
-                  Save
-                </Button>
-              </>
-            )}
-          </Grid>
-        )}
-      </Grid>
-      {editGoal && editable && (
-        <TextareaAutosize
-          className={$GoalPage.editGoalFormTextArea}
-          value={editGoalInput}
-          name="description"
-          onChange={(e) => {
-            setEditGoalInput(e.target.value);
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", md: "center" },
+            gap: 2,
           }}
-        />
-      )}
-
-      {!editGoal && <Typography variant="body1">{description}</Typography>}
+        >
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1.5}
+            alignItems="flex-start"
+            sx={{ flexShrink: 0 }}
+          >
+            <Chip icon={<AdjustOutlined />} label={name} variant="outlined" />
+            <Chip
+              icon={<CalendarMonthOutlined />}
+              label={`Created on: ${format(new Date(createdAt), "MMM, dd, yyyy")}`}
+              variant="outlined"
+            />
+          </Stack>
+          {editable && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 1,
+                width: { xs: "100%", md: "auto" },
+              }}
+            >
+              {!editGoal && (
+                <>
+                  <Button
+                    variant="tertiary"
+                    onClick={showEditGoal}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    Edit goal
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => alert("to be implemented")}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    View all goals
+                  </Button>
+                </>
+              )}
+              {editGoal && (
+                <>
+                  <Button
+                    variant="tertiary"
+                    onClick={cancelEditGoal}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={submitEditGoal}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    Save
+                  </Button>
+                </>
+              )}
+            </Box>
+          )}
+        </Box>
+        {editGoal && editable ? (
+          <TextareaAutosize
+            className={$GoalPage.editGoalFormTextArea}
+            value={editGoalInput}
+            name="description"
+            onChange={(e) => {
+              setEditGoalInput(e.target.value);
+            }}
+            style={{
+              width: "100%",
+              padding: "12px",
+              fontSize: "0.95rem",
+              lineHeight: "1.6",
+              borderRadius: "4px",
+              border: "1px solid #e0e0e0",
+              fontFamily: "inherit",
+              minHeight: "100px",
+            }}
+          />
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "0.95rem",
+              lineHeight: "1.6",
+              color: "#1a1a1a",
+            }}
+          >
+            {description}
+          </Typography>
+        )}
+      </Box>
     </Container>
   );
 };

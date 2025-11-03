@@ -66,7 +66,7 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
 
       {goal && (
         <GoalHeader
-          name={`Goal #${goal.number}`}
+          name={`Goal ${goal.number}`}
           description={goal.description}
           createdAt={goal.created_at}
           goalId={goal.goal_id}
