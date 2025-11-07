@@ -9,6 +9,8 @@ import {
   List,
   ListItem,
   Stack,
+  Tab,
+  Tabs,
   Typography,
 } from "@mui/material";
 
@@ -70,22 +72,14 @@ const Iep = ({ iep_id }: IepProps) => {
   }
 
   return (
-    <Stack spacing={2}>
+    <Stack>
       <Stack direction="row" alignItems="center" justifyContent="space-between">
-        <Typography variant="h4">Goals ({goals?.length ?? 0})</Typography>
-        {!showAddGoalForm && (
-          <Button onClick={revealAddGoalForm}>Add Goal</Button>
-        )}
+        <Tabs value={1}>
+          <Tab value={1} label={`Goals (${goals?.length ?? 0})`} disabled />
+        </Tabs>
+        <Button onClick={revealAddGoalForm}>Add Goal</Button>
       </Stack>
-
-      {/* {toggleAddGoalAlert ? (
-        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
-          Here is a gentle confirmation that your action was successful.
-        </Alert>
-      ) : (
-        ""
-      )} */}
-      <Card>
+      <Card sx={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}>
         {/* List of goals */}
         {((goals && goals?.length >= 1) || showAddGoalForm) && (
           <Grid container className={$Iep.goalsContainer}>

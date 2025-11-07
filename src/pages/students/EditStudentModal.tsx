@@ -33,7 +33,7 @@ interface EditStudentModalProps {
   onSubmit: (e: FormEvent<HTMLFormElement>) => void;
 }
 
-export const EditStudentModal = ({
+const EditStudentModal = ({
   open,
   handleClose,
   student,
@@ -106,3 +106,5 @@ export const EditStudentModal = ({
     </Dialog>
   );
 };
+
+export default EditStudentModal;

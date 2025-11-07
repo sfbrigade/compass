@@ -25,7 +25,7 @@ import Chip from "@/components/design_system/chip/Chip";
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import type { Student } from "@/types/global";
 
-import { EditStudentModal } from "./EditStudentModal";
+import EditStudentModal from "./EditStudentModal";
 import Iep from "./Iep";
 
 const ViewStudentPage: NextPageWithBreadcrumbs = () => {
