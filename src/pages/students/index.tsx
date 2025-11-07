@@ -117,7 +117,7 @@ function Students({
         clearTimeout(timeoutId);
       }
     };
-  });
+  }, [formError]);
   async function onSubmit() {
     if (!record) return;
     console.log(record);
