@@ -120,7 +120,6 @@ function Students({
   }, [formError]);
   async function onSubmit() {
     if (!record) return;
-    console.log(record);
 
     const recordSchema = z.object({
       first_name: z.string().regex(/^[a-zA-Z\s-]+$/),
