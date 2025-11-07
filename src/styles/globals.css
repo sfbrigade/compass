@@ -93,3 +93,9 @@ textarea {
   border: none;
   outline: none;
 }
+
+/* MUI Chart Overrides */
+/* from: https://stackoverflow.com/questions/77853618/in-mui-x-charts-how-to-prevent-linechart-y-axis-label-from-overlapping-with-tic */
+.benchmark-chart .MuiChartsAxis-directionY .MuiChartsAxis-label {
+  transform: translateX(-12px) !important;
+}

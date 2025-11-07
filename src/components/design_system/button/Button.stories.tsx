@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react";
 
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
+
 import Button from "./Button";
 
 const meta: Meta<typeof Button> = {
@@ -34,6 +36,33 @@ export const Tertiary: Story = {
   },
 };
 
+export const PrimaryWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "large",
+    variant: "primary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
+  },
+};
+
+export const SecondaryWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "large",
+    variant: "secondary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
+  },
+};
+
+export const TertiaryWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "large",
+    variant: "tertiary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
+  },
+};
+
 export const PrimarySmall: Story = {
   args: {
     children: "Button",
@@ -55,5 +84,32 @@ export const TertiarySmall: Story = {
     children: "Button",
     size: "small",
     variant: "tertiary",
+  },
+};
+
+export const PrimarySmallWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "small",
+    variant: "primary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
+  },
+};
+
+export const SecondarySmallWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "small",
+    variant: "secondary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
+  },
+};
+
+export const TertiarySmallWithIcon: Story = {
+  args: {
+    children: "Button",
+    size: "small",
+    variant: "tertiary",
+    startIcon: <ContentPasteOutlinedIcon fontSize="medium" />,
   },
 };

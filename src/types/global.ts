@@ -29,3 +29,45 @@ export interface TaskData {
   created_at: Date;
   benchmark_id: string;
 }
+
+export interface DatePoint {
+  x: number;
+  y: number;
+  id: string;
+}
+
+export interface SoloPoint extends DatePoint {
+  staffName: string;
+  success: number;
+  numberOfAttempts: number;
+}
+
+export interface BulkPoint extends DatePoint {
+  staffNames: string[];
+  numberOfTrials: number;
+}
+
+export type TrialData = {
+  success: number;
+  created_at: Date;
+  unsuccess: number;
+  first_name: string;
+  last_name: string;
+  trial_data_id: string;
+};
+
+export interface ProcessedTrialData extends TrialData {
+  successRate: number;
+  staffName: string;
+  numberOfAttempts: number;
+}
+
+export const valueFormatter = (point: SoloPoint | BulkPoint): string => {
+  if ("numberOfTrials" in point) {
+    return `${point.y.toFixed(1)}% avg (${point.numberOfTrials} trials)`;
+  } else {
+    return `${point.y.toFixed(1)}% avg over ${point.numberOfAttempts} attempt${
+      point.numberOfAttempts !== 1 ? "s" : ""
+    }`;
+  }
+};

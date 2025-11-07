@@ -1,6 +1,6 @@
 import { MouseEventHandler, ReactNode } from "react";
 import { Button as MuiButton } from "@mui/material";
-import { SxProps, Theme } from "@mui/material/styles";
+import { SxProps, Theme } from "@mui/material";
 import classNames from "classnames";
 
 import classes from "./Button.module.css";
@@ -15,6 +15,7 @@ interface ButtonProps {
   sx?: SxProps<Theme>;
   type?: "button" | "submit" | "reset";
   variant?: "primary" | "secondary" | "tertiary";
+  startIcon?: ReactNode;
 }
 
 function Button({
@@ -27,6 +28,7 @@ function Button({
   sx = [],
   type,
   variant = "primary",
+  startIcon,
 }: ButtonProps) {
   return (
     <MuiButton
@@ -41,6 +43,7 @@ function Button({
       onClick={onClick}
       sx={sx}
       type={type}
+      startIcon={startIcon}
     >
       {children}
     </MuiButton>
