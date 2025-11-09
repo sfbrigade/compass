@@ -1,16 +1,18 @@
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
-import ContentPasteIcon from "@mui/icons-material/ContentPaste";
 import { useState, type ReactNode } from "react";
 import { format } from "date-fns";
 import Typography from "@mui/material/Typography";
-
+import Chip from "../design_system/chip/Chip";
+import LogicChip from "./BenchmarkChipController";
 import Button from "@/components/design_system/button/Button";
 import { BenchmarkAssignmentModal } from "./BenchmarkAssignmentModal";
 import BenchmarkAssignees from "./BenchmarkAssignees";
 import { Benchmark } from "@/types/global";
 import Link from "next/link";
 import { useRouter } from "next/router";
+
+import ContentPasteOutlinedIcon from "@mui/icons-material/ContentPasteOutlined";
 
 interface BenchmarkProps {
   benchmark: Benchmark;
@@ -34,15 +36,49 @@ const Info = ({ description, children }: InfoProps) => {
         textAlign: "center",
       }}
     >
-      <Typography
-        sx={{ marginBottom: "0.5em" }}
-        variant="overline"
-        display="block"
-        gutterBottom
-      >
-        {description}
-      </Typography>
+      {description.includes("Assigned STAFF") ||
+      description.includes("DATA") ? (
+        <Typography
+          sx={{
+            marginTop: "1em",
+            color: "gray",
+            fontWeight: "600",
+            fontStyle: "semi bold",
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+          }}
+          variant="overline"
+          display="block"
+          gutterBottom
+        >
+          {description}
+        </Typography>
+      ) : (
+        ""
+      )}
       {children}
+      {description.includes("Assigned STAFF") ||
+      description.includes("DATA") ? (
+        ""
+      ) : (
+        <Typography
+          sx={{
+            marginTop: "1em",
+            color: "gray",
+            fontWeight: "600",
+            fontStyle: "semi bold",
+            fontSize: "12px",
+            lineHeight: "100%",
+            letterSpacing: "0%",
+          }}
+          variant="overline"
+          display="block"
+          gutterBottom
+        >
+          {description}
+        </Typography>
+      )}
     </Box>
   );
 };
@@ -77,27 +113,15 @@ const BenchmarkListElement = ({
           padding: "1rem",
         }}
       >
-        <Typography
-          sx={{ color: "var(--primary-40)" }}
-          variant="overline"
-          display="block"
-          gutterBottom
-        >
-          #{(index ?? 0) + 1} created on {format(benchmark?.created_at, "P")}
-        </Typography>
+        <Chip
+          variant="calendar"
+          label={`Created on: ${format(benchmark?.created_at, "MMM, d, yyyy")}`}
+        />
+
         <Box sx={{ display: "flex", justifyContent: "space-between" }}>
           <Box sx={{ display: "flex" }}>
-            <ContentPasteIcon
-              sx={{
-                color: "var(--grey-10)",
-                fontSize: 12,
-                margin: "1.25rem",
-                marginLeft: "0.5rem",
-                marginRight: "0.5rem",
-              }}
-            />
-
-            <Box sx={{ margin: "1rem", marginLeft: ".5rem" }}>
+            <Box sx={{ marginTop: "1.5rem" }}>
+              <Chip label={(index ?? 0) + 1} variant="task" />
               {benchmark.description}
             </Box>
           </Box>
@@ -118,23 +142,21 @@ const BenchmarkListElement = ({
         >
           <Info description={"BASELINE LEVEL"}>
             {" "}
-            {benchmark?.baseline_level}%{" "}
+            <LogicChip data={benchmark?.baseline_level} />
           </Info>
-          <Info description={"TARGET LEVEL"}> {benchmark?.target_level}% </Info>
+          <Info description={"TARGET LEVEL"}>
+            {" "}
+            <LogicChip data={benchmark?.target_level} />
+          </Info>
           <Info description={"CURRENT LEVEL"}>
             {" "}
-            {benchmark?.current_level || "N/A"}{" "}
+            <LogicChip data={benchmark?.current_level} />
           </Info>
           <Info description={"# OF TRIALS"}>
             {" "}
-            {benchmark?.number_of_trials || "N/A"}
+            <LogicChip data={benchmark?.number_of_trials} notifier={true} />
           </Info>
-          <Info description={"STAFF"}>
-            <BenchmarkAssignees
-              benchmark={benchmark}
-              onAssign={() => setIsAssignmentModalOpen(true)}
-            />
-          </Info>
+
           <Info description="DATA">
             <Box
               sx={{
@@ -151,7 +173,12 @@ const BenchmarkListElement = ({
                 }}
               >
                 <Link href={`/benchmarks/${benchmark.benchmark_id}`}>
-                  <Button variant="tertiary">Collect Data</Button>
+                  <Button
+                    variant="tertiary"
+                    startIcon={<ContentPasteOutlinedIcon fontSize="medium" />}
+                  >
+                    Collect Data
+                  </Button>
                 </Link>
               </Box>
               <Box
@@ -169,6 +196,12 @@ const BenchmarkListElement = ({
                 </Link>
               </Box>
             </Box>
+          </Info>
+          <Info description={"Assigned STAFF"}>
+            <BenchmarkAssignees
+              benchmark={benchmark}
+              onAssign={() => setIsAssignmentModalOpen(true)}
+            />
           </Info>
         </Box>
       </Box>

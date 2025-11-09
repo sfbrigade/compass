@@ -44,7 +44,6 @@ const Iep = ({ iep_id }: IepProps) => {
   const handleGoalSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-
     // removing category from input options, not part of MVP
     goalMutation.mutate({
       iep_id: iep_id,
@@ -79,6 +78,13 @@ const Iep = ({ iep_id }: IepProps) => {
         )}
       </Stack>
 
+      {/* {toggleAddGoalAlert ? (
+        <Alert icon={<CheckIcon fontSize="inherit" />} severity="success">
+          Here is a gentle confirmation that your action was successful.
+        </Alert>
+      ) : (
+        ""
+      )} */}
       <Card>
         {/* List of goals */}
         {((goals && goals?.length >= 1) || showAddGoalForm) && (
@@ -149,6 +155,7 @@ const Iep = ({ iep_id }: IepProps) => {
             )}
           </Grid>
         )}
+
         {/* No Goal in DB yet */}
         {goals?.length == 0 && !showAddGoalForm && (
           <CardContent>
