@@ -4,35 +4,36 @@ import { getTransporter } from "@/backend/lib/nodemailer";
 import { user } from "zapatos/schema";
 import { UserType } from "@/types/auth";
 
-interface paraInputProps {
-  first_name: string;
-  last_name: string;
-  email: string;
+interface createParaProps {
+  para: {
+    first_name: string;
+    last_name: string;
+    email: string;
+  };
+  db: KyselyDatabaseInstance;
+  case_manager_name: string;
+  from_email: string;
+  to_email: string;
+  env: Env;
 }
-
 /**
  * Checks for the existence of a user with the given email, if
  * they do not exist, create the user with the role of "para",
  * initiate email sending without awaiting result
  */
 export async function createPara(
-  para: paraInputProps,
-  db: KyselyDatabaseInstance,
-  case_manager_name: string,
-  from_email: string,
-  to_email: string,
-  env: Env
+  paraProps: createParaProps
 ): Promise<user.Selectable> {
-  const { first_name, last_name, email } = para;
+  const { first_name, last_name, email } = paraProps.para;
 
-  let paraData = await db
+  let paraData = await paraProps.db
     .selectFrom("user")
     .where("email", "=", email.toLowerCase())
     .selectAll()
     .executeTakeFirst();
 
   if (!paraData) {
-    paraData = await db
+    paraData = await paraProps.db
       .insertInto("user")
       .values({
         first_name,
@@ -45,11 +46,11 @@ export async function createPara(
 
     // promise, will not interfere with returning paraData
     void sendInviteEmail(
-      from_email,
-      to_email,
+      paraProps.from_email,
+      paraProps.to_email,
       first_name,
-      case_manager_name,
-      env
+      paraProps.case_manager_name,
+      paraProps.env
     );
   }
 

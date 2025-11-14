@@ -320,14 +320,19 @@ export const case_manager = router({
       })
     )
     .mutation(async (req) => {
-      const para = await createPara(
-        req.input,
-        req.ctx.db,
-        req.ctx.auth.session.user?.name ?? "",
-        req.ctx.env.EMAIL_FROM,
-        req.input.email,
-        req.ctx.env
-      );
+      const paraProps = {
+        para: {
+          first_name: req.input.first_name,
+          last_name: req.input.last_name,
+          email: req.input.email,
+        },
+        db: req.ctx.db,
+        from_email: req.ctx.env.EMAIL_FROM,
+        to_email: req.input.email,
+        case_manager_name: req.ctx.auth.session.user?.name ?? "",
+        env: req.ctx.env,
+      };
+      const para = await createPara(paraProps);
 
       return await assignParaToCaseManager(
         para.user_id,
