@@ -172,7 +172,9 @@ const BenchmarkListElement = ({
                   textAlign: "center",
                 }}
               >
-                <Link href={`/benchmarks/${benchmark.benchmark_id}`}>
+                <Link
+                  href={`${router.asPath}/benchmarks/${benchmark.benchmark_id}/dataEntry`}
+                >
                   <Button
                     variant="tertiary"
                     startIcon={<ContentPasteOutlinedIcon fontSize="medium" />}

@@ -32,6 +32,7 @@ declare module "@mui/material/Chip" {
     secondary: true;
     calendar: true;
     task: true;
+    target: true;
   }
 }
 
@@ -504,6 +505,16 @@ export const compassTheme = createTheme({
             borderRadius: "16px",
             marginRight: "8px",
             padding: "2px 10px",
+          },
+        },
+        {
+          props: { variant: "target" },
+          style: {
+            backgroundColor: "var(--on-primary)",
+            border: "1px #788591 solid",
+            borderRadius: "16px",
+            padding: "2px 2px",
+            color: "var(--on-background)",
           },
         },
       ],

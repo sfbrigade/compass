@@ -17,7 +17,9 @@ export interface TaskData {
   task_id: string;
   first_name: string;
   last_name: string;
+  student_id: string;
   category: string;
+  goal_id: string;
   description: string;
   instructions: string | null;
   attempts_per_trial: number | null;

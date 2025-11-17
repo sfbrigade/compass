@@ -3,13 +3,12 @@ import {
   Typography,
   Container,
   TextareaAutosize,
-  Chip,
   Box,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useState } from "react";
-import { AdjustOutlined, CalendarMonthOutlined } from "@mui/icons-material";
 
+import Chip from "@/components/design_system/chip/Chip";
 import Button from "@/components/design_system/button/Button";
 import { trpc } from "@/client/lib/trpc";
 import $GoalPage from "@/styles/GoalPage.module.css";
@@ -82,11 +81,10 @@ export const GoalHeader = ({
             alignItems="flex-start"
             sx={{ flexShrink: 0 }}
           >
-            <Chip icon={<AdjustOutlined />} label={name} variant="outlined" />
+            <Chip label={name} variant="target" />
             <Chip
-              icon={<CalendarMonthOutlined />}
               label={`Created on: ${format(new Date(createdAt), "MMM, dd, yyyy")}`}
-              variant="outlined"
+              variant="calendar"
             />
           </Stack>
           {editable && (
@@ -99,22 +97,22 @@ export const GoalHeader = ({
               }}
             >
               {!editGoal && (
-                <>
+                <Box sx={{ display: "flex", justifyContent: "right" }}>
                   <Button
                     variant="tertiary"
                     onClick={showEditGoal}
-                    sx={{ width: { xs: "100%", md: "auto" } }}
+                    sx={{ width: { md: "auto" } }}
                   >
                     Edit goal
                   </Button>
                   <Button
                     variant="secondary"
                     onClick={() => alert("to be implemented")}
-                    sx={{ width: { xs: "100%", md: "auto" } }}
+                    sx={{ width: { md: "auto" } }}
                   >
                     View all goals
                   </Button>
-                </>
+                </Box>
               )}
               {editGoal && (
                 <>
@@ -146,22 +144,26 @@ export const GoalHeader = ({
             }}
             style={{
               width: "100%",
-              padding: "12px",
+              padding: "24px",
               fontSize: "0.95rem",
               lineHeight: "1.6",
-              borderRadius: "4px",
-              border: "1px solid #e0e0e0",
+              borderRadius: "8px",
+              border: "1px solid var(--outline)",
               fontFamily: "inherit",
               minHeight: "100px",
+              backgroundColor: "var(--on-primary)",
             }}
           />
         ) : (
           <Typography
             variant="body1"
             sx={{
-              fontSize: "0.95rem",
-              lineHeight: "1.6",
-              color: "#1a1a1a",
+              fontSize: "16px",
+              lineHeight: "150%",
+              color: "var(--on-background)",
+              fontFamily: "var(--inter)",
+              fontWeight: 400,
+              letterSpacing: "0%",
             }}
           >
             {description}
