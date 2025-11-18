@@ -32,7 +32,7 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
   );
   const benchmarkId = (router.query?.benchmark_id as string) || "";
   const filteredBenchmark = benchmarks?.find(
-    (e) => e.benchmark_id === benchmarkId
+    (e: Benchmark) => e.benchmark_id === benchmarkId
   );
   useEffect(() => {
     if (student && goal) {

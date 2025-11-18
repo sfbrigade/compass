@@ -10,11 +10,14 @@ import type { Benchmark } from "@/types/global";
 
 import styles from "./GoalCard.module.css";
 
+import { useRouter } from "next/router";
+
 export default function BenchmarksContainer({
   benchmarks,
 }: {
   benchmarks: Benchmark | undefined;
 }) {
+  const router = useRouter();
   return (
     <Box
       sx={{
@@ -71,7 +74,13 @@ export default function BenchmarksContainer({
         <Box
           sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
         >
-          <Button>Start Trial</Button>
+          <Button
+            onClick={() =>
+              router.push(`/benchmarks/${benchmarks?.benchmark_id}`)
+            }
+          >
+            Start Trial
+          </Button>
         </Box>
       </Box>
     </Box>

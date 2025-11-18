@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 .GridItems {
   background-color: var(--primary-99);
   border-radius: 8px;
@@ -27,53 +25,3 @@
   line-height: 150%;
   color: var(--primary-20);
 }
-=======
-=======
->>>>>>> parent of 009ee99 (testing)
-.GridItems {
-  background-color: var(--primary-99);
-  border-radius: 8px;
-  padding: 16px;
-  gap: 16px;
-  text-align: start;
-
-  @media (max-width: 600px) {
-<<<<<<< HEAD
-    width:100%;
-=======
-    width: 100%;
->>>>>>> parent of 009ee99 (testing)
-  }
-}
-.GridItems > h1 {
-  color: var(--primary-20);
-  font-weight: 600;
-<<<<<<< HEAD
-  font-size:20px;
-=======
-  font-size: 20px;
->>>>>>> parent of 009ee99 (testing)
-
-  font-family: var(--quicksand);
-}
-
-<<<<<<< HEAD
-.GridItems>p{
-  margin-top:5px;
-  font-family:(--inter);
-  font-weight:400;
-  font-size:16px;
-  line-height: 150%;
-  color:var(--primary-20);
-}
->>>>>>> parent of 7feba60 (fixing breaks)
-=======
-.GridItems > p {
-  margin-top: 5px;
-  font-family: (--inter);
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  color: var(--primary-20);
-}
->>>>>>> parent of 009ee99 (testing)
