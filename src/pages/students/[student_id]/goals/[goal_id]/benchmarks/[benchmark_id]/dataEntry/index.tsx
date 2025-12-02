@@ -48,7 +48,7 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
     <>
       <Box sx={{ textAlign: "left" }}>
         <h1>Data Entry</h1>
-        <h1 id={styles.mainH1}>
+        <h1 id={styles.mainh1}>
           {student?.first_name} {student?.last_name}
         </h1>
       </Box>

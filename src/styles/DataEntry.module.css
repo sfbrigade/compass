@@ -1,4 +1,4 @@
-#mainH1 {
+.mainh1 {
   font-family: "quicksand";
   font-weight: 600;
   line-height: "100%";
@@ -9,7 +9,7 @@
   margin-bottom: "30px";
 }
 
-#goalStack {
+.goalStack {
   display: "flex";
   flex-direction: "column";
   align-items: "center";
