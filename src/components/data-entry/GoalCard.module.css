@@ -19,7 +19,7 @@
 
 .GridItems > p {
   margin-top: 5px;
-  font-family: (--inter);
+  font-family: var(--inter);
   font-weight: 400;
   font-size: 16px;
   line-height: 150%;

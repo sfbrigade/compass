@@ -4,7 +4,6 @@ import Grid2 from "@mui/material/Grid2";
 import Chip from "../design_system/chip/Chip";
 
 import Button from "@/components/design_system/button/Button";
-import { Typography } from "@mui/material";
 
 import type { Benchmark } from "@/types/global";
 
@@ -27,7 +26,8 @@ export default function BenchmarksContainer({
     >
       <Box
         sx={{
-          display: "flex-col",
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "space-between",
           backgroundColor: "var(--grey-100)",
           padding: "24px",
@@ -35,15 +35,9 @@ export default function BenchmarksContainer({
           borderRadius: "8px",
         }}
       >
-        <Typography
-          sx={{ color: "var(--primary-40)" }}
-          variant="overline"
-          display="block"
-          gutterBottom
-        ></Typography>
         <Chip
           variant="task"
-          label={`Benchmark ${benchmarks?.number.toString()}`}
+          label={`Benchmark ${benchmarks ? benchmarks?.number.toString() : ""}`}
           sx={{ marginTop: "10px", marginBottom: "10px" }}
         />
         <p>{benchmarks?.description}</p>

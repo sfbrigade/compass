@@ -9,7 +9,9 @@ import type { Benchmark, Goal, Student } from "@/types/global";
 
 import type { NextPageWithBreadcrumbs } from "@/pages/_app";
 import { useBreadcrumbsContext } from "@/components/design_system/breadcrumbs/BreadcrumbsContext";
-import ViewStudentPage from "../../../../../[student_id]";
+import ViewStudentPage from "../../../../../../[student_id]";
+
+import styles from "@/styles/DataEntry.module.css";
 
 const GoalPage: NextPageWithBreadcrumbs = () => {
   const { setBreadcrumbs } = useBreadcrumbsContext();
@@ -46,33 +48,11 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
     <>
       <Box sx={{ textAlign: "left" }}>
         <h1>Data Entry</h1>
-        <h1
-          style={{
-            fontFamily: "quicksand",
-            fontWeight: 600,
-            fontStyle: "semibold",
-            lineHeight: "100%",
-            fontSize: "20px",
-            letterSpacing: "0%",
-            color: "var(--primary)",
-            marginTop: "5px",
-            marginBottom: "30px",
-          }}
-        >
+        <h1 id={styles.mainH1}>
           {student?.first_name} {student?.last_name}
         </h1>
       </Box>
-      <Stack
-        spacing={2}
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          width: "100%",
-          maxWidth: "1200px",
-          margin: "auto",
-        }}
-      >
+      <Stack spacing={2} id={styles.goalStack}>
         {goal && (
           <GoalHeader
             name={`Goal ${goal.number}`}
@@ -108,17 +88,12 @@ GoalPage.getBreadcrumbs = function getBreadcrumbs({
     });
     breadcrumbs.push({
       href: `/students/${student.student_id}/goals/${goal.goal_id}/benchmarks/${filteredBenchmark.benchmark_id}`,
-      children: `Benchmark #${filteredBenchmark.number}`,
+      children: `Benchmark ${filteredBenchmark.number}`,
     });
     breadcrumbs.push({
       children: "Data Entry",
     });
   }
-  // if (filteredBenchmark) {
-  //   breadcrumbs.push({
-  //     children: `Benchmark #${filteredBenchmark.number}`,
-  //   });
-  // }
   return breadcrumbs;
 };
 
