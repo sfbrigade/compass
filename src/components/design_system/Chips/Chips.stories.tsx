@@ -11,7 +11,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const primary: Story = {
+export const Primary: Story = {
   args: {
     color: "primary",
     size: "medium",
@@ -19,7 +19,7 @@ export const primary: Story = {
   },
 };
 
-export const empty: Story = {
+export const Empty: Story = {
   args: {
     color: "default",
     size: "medium",
