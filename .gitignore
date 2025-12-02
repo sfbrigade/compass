@@ -19,6 +19,9 @@ terraform.tfstate*
 # CSS declarations
 *.css.d.ts
 
+#storybook-static
+storybook-static
+
 # misc
 .DS_Store
 .vscode

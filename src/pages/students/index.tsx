@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { format } from "date-fns";
 import { TableRow, TableCell, TextField } from "@mui/material";
 import Image from "next/image";
@@ -13,6 +13,8 @@ import {
 import emptyState from "../../public/img/empty-state.png";
 
 import { trpc, RouterOutputs } from "@/client/lib/trpc";
+
+import z from "zod";
 
 const COLUMNS: DataTableColumn[] = [
   {
@@ -52,6 +54,11 @@ type RecordType = Unpacked<
   RouterOutputs["case_manager"]["getMyStudentsAndIepInfo"]["records"]
 >;
 
+interface FormError {
+  error: boolean;
+  errorMessage: string;
+}
+
 function Students({
   page,
   pageSize,
@@ -70,6 +77,10 @@ function Students({
     });
 
   const [record, setRecord] = useState<NewRecordType>();
+  const [formError, setFormError] = useState<FormError>({
+    error: false,
+    errorMessage: "",
+  });
   const focusRef = useRef<HTMLInputElement>();
 
   function onAddRecord() {
@@ -91,14 +102,51 @@ function Students({
     meta: { disableGlobalOnError: true },
   });
 
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+    if (formError.error) {
+      timeoutId = setTimeout(() => {
+        setFormError({
+          error: false,
+          errorMessage: "",
+        });
+      }, 3000);
+    }
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [formError]);
   async function onSubmit() {
     if (!record) return;
-    await addRecord.mutateAsync({
-      ...record,
-      grade: Number(record.grade),
+
+    const recordSchema = z.object({
+      first_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+      last_name: z.string().regex(/^[a-zA-Z\s-]+$/),
+      email: z.string().email().nullable().optional(),
+      grade: z.number().min(0).max(12),
+      end_date: z.string().date().optional(),
     });
-    await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
-    setRecord(undefined);
+
+    try {
+      recordSchema.parse({
+        ...record,
+        grade: Number(record.grade),
+      });
+      await addRecord.mutateAsync({
+        ...record,
+        grade: Number(record.grade),
+      });
+      await utils.case_manager.getMyStudentsAndIepInfo.invalidate();
+      setRecord(undefined);
+    } catch {
+      setFormError({
+        error: true,
+        errorMessage:
+          "Only letters, spaces, and hyphens allowed, left blanked or number is out of range(must be between 1 and 12).",
+      });
+    }
   }
 
   return render({
@@ -119,34 +167,38 @@ function Students({
       </>
     ),
     totalCount: data?.totalCount,
-    renderForm: (record, hasError) => (
+    renderForm: (record) => (
       <>
         <TextField
           inputRef={focusRef}
           label="First Name"
           value={record.first_name}
           onChange={(e) => setRecord({ ...record, first_name: e.target.value })}
-          error={hasError(["first_name"])}
+          error={formError.error}
+          helperText={formError.errorMessage}
         />
         <TextField
           label="Last Name"
           value={record.last_name}
           onChange={(e) => setRecord({ ...record, last_name: e.target.value })}
-          error={hasError(["last_name"])}
+          error={formError.error}
+          helperText={formError.errorMessage}
         />
         <TextField
           label="Grade"
           type="number"
           value={record.grade}
           onChange={(e) => setRecord({ ...record, grade: e.target.value })}
-          error={hasError(["grade"])}
+          error={formError.error}
+          helperText={formError.errorMessage}
         />
         <TextField
           label="IEP End Date"
           type="date"
           value={record.end_date}
           onChange={(e) => setRecord({ ...record, end_date: e.target.value })}
-          error={hasError(["end_date"])}
+          error={formError.error}
+          helperText={formError.errorMessage}
         />
       </>
     ),
