@@ -1,5 +1,4 @@
-import Box from "@mui/material/Box";
-import Grid2 from "@mui/material/Grid2";
+import { Card, CardContent, Grid2, Stack } from "@mui/material";
 
 import Chip from "../design_system/chip/Chip";
 
@@ -18,26 +17,11 @@ export default function BenchmarksContainer({
 }) {
   const router = useRouter();
   return (
-    <Box
-      sx={{
-        marginBottom: "2rem",
-        width: "100%",
-      }}
-    >
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "space-between",
-          backgroundColor: "var(--grey-100)",
-          padding: "24px",
-          gap: "24px",
-          borderRadius: "8px",
-        }}
-      >
+    <Card>
+      <CardContent>
         <Chip
           variant="task"
-          label={`Benchmark ${benchmarks ? benchmarks?.number.toString() : ""}`}
+          label={`Benchmark #${benchmarks ? benchmarks?.number.toString() : ""}`}
           sx={{ marginTop: "10px", marginBottom: "10px" }}
         />
         <p>{benchmarks?.description}</p>
@@ -46,7 +30,7 @@ export default function BenchmarksContainer({
           spacing={2}
           columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           direction={{ xs: "column", sm: "row" }}
-          sx={{ marginTop: "30px", width: "100%" }}
+          sx={{ marginTop: "30px", width: "100%", marginBottom: "1.5rem" }}
         >
           <Grid2 size={6} className={styles.GridItems}>
             <h1>Frequency</h1>
@@ -65,9 +49,7 @@ export default function BenchmarksContainer({
             <p>{benchmarks?.setup}</p>
           </Grid2>
         </Grid2>
-        <Box
-          sx={{ display: "flex", justifyContent: "center", marginTop: "20px" }}
-        >
+        <Stack alignItems="center">
           <Button
             onClick={() =>
               router.push(`/benchmarks/${benchmarks?.benchmark_id}`)
@@ -75,8 +57,8 @@ export default function BenchmarksContainer({
           >
             Start Trial
           </Button>
-        </Box>
-      </Box>
-    </Box>
+        </Stack>
+      </CardContent>
+    </Card>
   );
 }

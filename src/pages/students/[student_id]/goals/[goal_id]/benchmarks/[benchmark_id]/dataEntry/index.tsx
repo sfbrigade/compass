@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { Stack, Box } from "@mui/material";
+import { Stack, Typography } from "@mui/material";
 
 import { trpc } from "@/client/lib/trpc";
 import GoalCard from "@/components/data-entry/GoalCard";
@@ -46,16 +46,16 @@ const GoalPage: NextPageWithBreadcrumbs = () => {
 
   return (
     <>
-      <Box sx={{ textAlign: "left" }}>
-        <h1>Data Entry</h1>
-        <h1 id={styles.mainh1}>
+      <Stack spacing={1} sx={{ marginBottom: "2rem" }}>
+        <Typography variant="h3">Data Entry</Typography>
+        <Typography variant="h4" color="primary">
           {student?.first_name} {student?.last_name}
-        </h1>
-      </Box>
+        </Typography>
+      </Stack>
       <Stack spacing={2} id={styles.goalStack}>
         {goal && (
           <GoalHeader
-            name={`Goal ${goal.number}`}
+            name={`Goal #${goal.number}`}
             description={goal.description}
             createdAt={goal.created_at}
             goalId={goal.goal_id}
@@ -88,7 +88,7 @@ GoalPage.getBreadcrumbs = function getBreadcrumbs({
     });
     breadcrumbs.push({
       href: `/students/${student.student_id}/goals/${goal.goal_id}/benchmarks/${filteredBenchmark.benchmark_id}`,
-      children: `Benchmark ${filteredBenchmark.number}`,
+      children: `Benchmark #${filteredBenchmark.number}`,
     });
     breadcrumbs.push({
       children: "Data Entry",
