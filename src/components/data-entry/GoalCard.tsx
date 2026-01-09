@@ -10,7 +10,7 @@ import styles from "./GoalCard.module.css";
 
 import { useRouter } from "next/router";
 
-export default function BenchmarksContainer({
+export default function GoalCard({
   benchmarks,
 }: {
   benchmarks: Benchmark | undefined;
