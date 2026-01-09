@@ -1,16 +1,18 @@
 import {
   Stack,
   Typography,
-  Grid,
   Container,
   TextareaAutosize,
+  Box,
 } from "@mui/material";
 import { format } from "date-fns";
 import { useState } from "react";
 
+import Chip from "@/components/design_system/chip/Chip";
 import Button from "@/components/design_system/button/Button";
 import { trpc } from "@/client/lib/trpc";
 import $GoalPage from "@/styles/GoalPage.module.css";
+
 type GoalHeaderProps = {
   goalId: string;
   name: string;
@@ -29,6 +31,7 @@ export const GoalHeader = ({
   const [editGoal, setEditGoal] = useState(false);
   const [editGoalInput, setEditGoalInput] = useState("");
   const utils = trpc.useContext();
+
   const showEditGoal = () => {
     setEditGoal(true);
     setEditGoalInput(description || "");
@@ -53,80 +56,120 @@ export const GoalHeader = ({
     setEditGoal(false);
     setEditGoalInput("");
   };
+
   return (
     <Container className={$GoalPage.goalDescriptionContainer}>
-      <Grid container justifyContent="space-between">
-        <Stack spacing={2} sx={{ marginBottom: "28px" }}>
-          <Stack direction="row" alignItems="center" spacing={1}>
-            <Typography variant="h3" color="var(--primary-40)">
-              {name}
-            </Typography>
-            <Typography variant="h3">|</Typography>
-            <Typography variant="h3" color="#788591">
-              Added: {format(new Date(createdAt), "MM/dd/yyyy")}
-            </Typography>
-          </Stack>
-        </Stack>
-        {editable && (
-          <Grid
-            sx={{
-              display: "flex",
-              flexDirection: "start",
-              justifyContent: "start",
-              justifyItems: "start",
-              height: "100%",
-              pb: 1,
-            }}
-            item
-          >
-            {!editGoal && (
-              <>
-                <Button
-                  variant="tertiary"
-                  onClick={showEditGoal}
-                  sx={{
-                    margin: "auto",
-                  }}
-                >
-                  Edit Goal
-                </Button>
-                <Button
-                  variant="secondary"
-                  onClick={() => alert("to be implemented")}
-                >
-                  View all goals
-                </Button>
-              </>
-            )}
-            {editGoal && (
-              <>
-                <Button
-                  variant="tertiary"
-                  form="editGoalForm"
-                  onClick={cancelEditGoal}
-                >
-                  Cancel
-                </Button>
-                <Button form="editGoalForm" onClick={submitEditGoal}>
-                  Save
-                </Button>
-              </>
-            )}
-          </Grid>
-        )}
-      </Grid>
-      {editGoal && editable && (
-        <TextareaAutosize
-          className={$GoalPage.editGoalFormTextArea}
-          value={editGoalInput}
-          name="description"
-          onChange={(e) => {
-            setEditGoalInput(e.target.value);
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            justifyContent: "space-between",
+            alignItems: { xs: "flex-start", md: "center" },
+            gap: 2,
           }}
-        />
-      )}
-
-      {!editGoal && <Typography variant="body1">{description}</Typography>}
+        >
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1.5}
+            alignItems="flex-start"
+            sx={{ flexShrink: 0 }}
+          >
+            <Chip label={name} variant="target" />
+            <Chip
+              label={`Created on: ${format(new Date(createdAt), "MMM, dd, yyyy")}`}
+              variant="calendar"
+            />
+          </Stack>
+          {editable && (
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                gap: 1,
+                width: { xs: "100%", md: "auto" },
+              }}
+            >
+              {!editGoal && (
+                <Box sx={{ display: "flex", justifyContent: "right" }}>
+                  <Button
+                    variant="tertiary"
+                    onClick={showEditGoal}
+                    sx={{ width: { md: "auto" } }}
+                  >
+                    Edit goal
+                  </Button>
+                  <Button
+                    variant="secondary"
+                    onClick={() => alert("to be implemented")}
+                    sx={{ width: { md: "auto" } }}
+                  >
+                    View all goals
+                  </Button>
+                </Box>
+              )}
+              {editGoal && (
+                <>
+                  <Button
+                    variant="tertiary"
+                    onClick={cancelEditGoal}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    onClick={submitEditGoal}
+                    sx={{ width: { xs: "100%", md: "auto" } }}
+                  >
+                    Save
+                  </Button>
+                </>
+              )}
+            </Box>
+          )}
+        </Box>
+        {editGoal && editable ? (
+          <TextareaAutosize
+            className={$GoalPage.editGoalFormTextArea}
+            value={editGoalInput}
+            name="description"
+            onChange={(e) => {
+              setEditGoalInput(e.target.value);
+            }}
+            style={{
+              width: "100%",
+              padding: "24px",
+              fontSize: "0.95rem",
+              lineHeight: "1.6",
+              borderRadius: "8px",
+              border: "1px solid var(--outline)",
+              fontFamily: "inherit",
+              minHeight: "100px",
+              backgroundColor: "var(--on-primary)",
+            }}
+          />
+        ) : (
+          <Typography
+            variant="body1"
+            sx={{
+              fontSize: "16px",
+              lineHeight: "150%",
+              color: "var(--on-background)",
+              fontFamily: "var(--inter)",
+              fontWeight: 400,
+              letterSpacing: "0%",
+            }}
+          >
+            {description}
+          </Typography>
+        )}
+      </Box>
     </Container>
   );
 };

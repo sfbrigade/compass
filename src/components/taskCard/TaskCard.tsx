@@ -9,7 +9,9 @@ interface ParaTaskCard {
   task_id: string;
   first_name: string;
   last_name: string;
+  student_id: string;
   category: string;
+  goal_id: string;
   description: string;
   instructions: string | null;
   number_of_trials: number | null;
@@ -48,7 +50,11 @@ const TaskCard = ({ task }: TaskCardProps) => {
               }`
       }
       header={`${task.first_name} ${task.last_name}`}
-      onClick={() => router.push(`/benchmarks/${task.benchmark_id}`)}
+      onClick={() =>
+        router.push(
+          `/students/${task.student_id}/goals/${task.goal_id}/benchmarks/${task.benchmark_id}/dataEntry`
+        )
+      }
       sx={{ mb: "1.5rem" }}
     >
       {task?.description}

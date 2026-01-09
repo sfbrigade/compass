@@ -1,0 +1,19 @@
+.mainh1 {
+  font-family: "quicksand";
+  font-weight: 600;
+  line-height: "100%";
+  font-size: "20px";
+  letter-spacing: "0%";
+  color: "var(--primary)";
+  margin-top: "5px";
+  margin-bottom: "30px";
+}
+
+.goalStack {
+  display: "flex";
+  flex-direction: "column";
+  align-items: "center";
+  width: "100%";
+  max-width: "1200px";
+  margin: "auto";
+}

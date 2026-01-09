@@ -4,6 +4,7 @@ import { ReactElement } from "react";
 
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import AdsClickOutlinedIcon from "@mui/icons-material/AdsClickOutlined";
 
 interface ChipProps {
   clickable?: boolean;
@@ -25,7 +26,8 @@ interface ChipProps {
     | "primary"
     | "secondary"
     | "calendar"
-    | "task";
+    | "task"
+    | "target";
   icon?: ReactElement;
   className?: string;
 }
@@ -54,6 +56,14 @@ function Chip({
           <CalendarMonthOutlinedIcon style={{ color: "black" }} />
         ) : variant === "task" ? (
           <ContentPasteIcon
+            style={{
+              color: "black",
+              width: "16px",
+              gap: "8px",
+            }}
+          />
+        ) : variant === "target" ? (
+          <AdsClickOutlinedIcon
             style={{
               color: "black",
               width: "16px",

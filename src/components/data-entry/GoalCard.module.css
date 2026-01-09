@@ -1,0 +1,27 @@
+.GridItems {
+  background-color: var(--primary-99);
+  border-radius: 8px;
+  padding: 16px;
+  gap: 16px;
+  text-align: start;
+
+  @media (max-width: 600px) {
+    width: 100%;
+  }
+}
+.GridItems > h1 {
+  color: var(--primary-20);
+  font-weight: 600;
+  font-size: 20px;
+
+  font-family: var(--quicksand);
+}
+
+.GridItems > p {
+  margin-top: 5px;
+  font-family: var(--inter);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 150%;
+  color: var(--primary-20);
+}
